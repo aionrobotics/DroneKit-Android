@@ -64,6 +64,7 @@ import com.MAVLink.icarous.*;
 public class MAVLinkPacket implements Serializable {
     private static final long serialVersionUID = 2095947771227815314L;
 
+    public static final int MAVLINK_STX = 0xFE; // 254
     public static final int MAVLINK1_STX = 0xFE; // 254
     public static final int MAVLINK2_STX = 0xFD; // 253
     public static final int MAVLINK1_HEADER_LEN = 6;
