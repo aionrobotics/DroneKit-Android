@@ -6,6 +6,8 @@ import android.support.annotation.IntDef;
 import com.o3dr.services.android.lib.drone.companion.solo.tlv.TLVMessageTypes;
 import com.o3dr.services.android.lib.drone.companion.solo.tlv.TLVPacket;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.ByteBuffer;
 
 /**
@@ -26,6 +28,7 @@ public class SoloSplinePathSettings extends TLVPacket {
         AUTO_POINT_CAMERA,
         FREE_LOOK
     })
+    @Retention(RetentionPolicy.SOURCE)
     public @interface CameraControl{};
     public static final int AUTO_POINT_CAMERA = 0;
     public static final int FREE_LOOK = 1;

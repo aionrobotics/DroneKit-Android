@@ -3,6 +3,8 @@ package com.o3dr.services.android.lib.drone.companion.solo.tlv;
 import android.os.Parcel;
 import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.ByteBuffer;
 
 /**
@@ -31,6 +33,7 @@ public class SoloPanoOptions extends TLVPacket {
             PANO_PREFERENCE_SPHERICAL,
             PANO_PREFERENCE_VIDEO
     })
+    @Retention(RetentionPolicy.SOURCE)
     public @interface PanoPreference{}
 
     public static final int PANO_PREFERENCE_CYLINDRICAL = 0;

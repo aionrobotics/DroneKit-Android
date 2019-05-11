@@ -3,6 +3,8 @@ package com.o3dr.services.android.lib.drone.companion.solo.tlv;
 import android.os.Parcel;
 import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.ByteBuffer;
 
 /**
@@ -16,6 +18,7 @@ public class SoloFollowOptionsV2 extends SoloFollowOptions {
         FOLLOW_PREFERENCE_FREE_LOOK,
         FOLLOW_PREFERENCE_LEASH
     })
+    @Retention(RetentionPolicy.SOURCE)
     public @interface FollowPreference{}
 
     public static final int FOLLOW_PREFERENCE_NONE = -1;
