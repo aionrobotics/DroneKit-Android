@@ -162,7 +162,7 @@ public class MAVLinkPacket implements Serializable {
     /**
      * Update CRC for this packet.
      */
-    public void generateCRC() {
+    public void generateCRC(byte payload_len) {
         if(crc == null) {
             crc = new CRC();
         } else {
@@ -170,7 +170,7 @@ public class MAVLinkPacket implements Serializable {
         }
 
         if(isMavlink2) {
-            crc.update_checksum(len);
+            crc.update_checksum(payload_len);
             crc.update_checksum(incompatFlags);
             crc.update_checksum(compatFlags);
             crc.update_checksum(seq);
@@ -180,7 +180,7 @@ public class MAVLinkPacket implements Serializable {
             crc.update_checksum(msgid >>> 8);
             crc.update_checksum(msgid >>> 16);
         } else {
-            crc.update_checksum(len);
+            crc.update_checksum(payload_len);
             crc.update_checksum(seq);
             crc.update_checksum(sysid);
             crc.update_checksum(compid);
@@ -189,8 +189,7 @@ public class MAVLinkPacket implements Serializable {
 
         payload.resetIndex();
 
-        final int payloadSize = payload.size();
-        for (int i = 0; i < payloadSize; i++) {
+        for (int i = 0; i < payload_len; i++) {
             crc.update_checksum(payload.getByte());
         }
         crc.finish_checksum(msgid);
@@ -208,27 +207,50 @@ public class MAVLinkPacket implements Serializable {
 
     }
 
+    private byte mav_trim_payload(byte length) {
+
+        while (length > 1 && payload.payload.get(length-1) == 0) {
+            length--;
+        }
+        return length;
+    }
+
     /**
      * Encode this packet for transmission.
      *
      * @return Array with bytes to be transmitted
      */
     public byte[] encodePacket() {
-        int bufLen;
+        byte payload_len;
+        byte signature_len;
+        byte header_len;
+        int magic;
+
         if(isMavlink2) {
-            bufLen = MAVLINK2_HEADER_LEN + len + 2;
+            header_len = MAVLINK2_HEADER_LEN;
+            magic = MAVLINK2_STX;
+
+            // determine the length of payload excluding trailing zeros
+            payload_len = mav_trim_payload((byte)len);
 
             //TODO: implement signature, maybe in encodeSignedPacket()
-            //bufLen = MAVLINK2_HEADER_LEN + len + 2 + Signature.MAX_SIGNATURE_SIZE;
+            signature_len = 0;
         } else {
-            bufLen = MAVLINK1_HEADER_LEN + len + 2;
+            header_len = MAVLINK1_HEADER_LEN ;
+            magic = MAVLINK1_STX;
+            payload_len = (byte)len;
+            signature_len = 0;
         }
+
+        final int bufLen = header_len + 2 + payload_len + signature_len;
         byte[] buffer = new byte[bufLen];
         
         int i = 0;
+
+        // -- construct packet
         if(isMavlink2) {
-            buffer[i++] = (byte) MAVLINK2_STX;
-            buffer[i++] = (byte) len;
+            buffer[i++] = (byte) magic;
+            buffer[i++] = (byte) payload_len;
             buffer[i++] = (byte) incompatFlags;
             buffer[i++] = (byte) compatFlags;
             buffer[i++] = (byte) seq;
@@ -238,19 +260,20 @@ public class MAVLinkPacket implements Serializable {
             buffer[i++] = (byte) (msgid >>> 8);
             buffer[i++] = (byte) (msgid >>> 16);
         } else {
-            buffer[i++] = (byte) MAVLINK1_STX;
-            buffer[i++] = (byte) len;
+            buffer[i++] = (byte) magic;
+            buffer[i++] = (byte) payload_len;
             buffer[i++] = (byte) seq;
             buffer[i++] = (byte) sysid;
             buffer[i++] = (byte) compid;
             buffer[i++] = (byte) msgid;
         }
 
-        for (int j = 0, size = payload.size(); j < size; ++j) {
+        for (int j = 0; j < payload_len; ++j) {
             buffer[i++] = payload.payload.get(j);
         }
+        // packet complete
 
-        generateCRC();
+        generateCRC(payload_len);
         buffer[i++] = (byte) (crc.getLSB());
         buffer[i++] = (byte) (crc.getMSB());
 

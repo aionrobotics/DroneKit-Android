@@ -92,7 +92,7 @@ public class Parser {
                     break;
 
                 case MAVLINK_PARSE_STATE_GOT_STX:
-                    m = new MAVLinkPacket(c, true);
+                    m = new MAVLinkPacket(c, isMavlink2);
                     state = MAV_states.MAVLINK_PARSE_STATE_GOT_LENGTH;
                     break;
 
@@ -148,7 +148,7 @@ public class Parser {
                     break;
 
                 case MAVLINK_PARSE_STATE_GOT_PAYLOAD:
-                    m.generateCRC();
+                    m.generateCRC((byte)m.payload.size());
                     // Check first checksum byte
                     if (c != m.crc.getLSB()) {
                         state = MAV_states.MAVLINK_PARSE_STATE_IDLE;
@@ -246,7 +246,7 @@ public class Parser {
                     break;
 
                 case MAVLINK_PARSE_STATE_GOT_PAYLOAD:
-                    m.generateCRC();
+                    m.generateCRC((byte)m.payload.size());
                     // Check first checksum byte
                     if (c != m.crc.getLSB()) {
                         state = MAV_states.MAVLINK_PARSE_STATE_IDLE;
