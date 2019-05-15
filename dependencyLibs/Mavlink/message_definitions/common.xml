@@ -2100,8 +2100,8 @@
       <entry value="3" name="MAV_ICE_FUEL_LEVEL_UNITS_GALLON">
         <description>Gallon.</description>
       </entry>
-      <entry value="4" name="MAV_ICE_FUEL_LEVEL_UNITS_LITRE">
-        <description>Litre.</description>
+      <entry value="4" name="MAV_ICE_FUEL_LEVEL_UNITS_LITER">
+        <description>Liter.</description>
       </entry>
     </enum>
     <enum name="MAV_ICE_FUEL_TYPE">
