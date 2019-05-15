@@ -2086,6 +2086,108 @@
         <description>Current mission operation cancelled (e.g. mission upload, mission download).</description>
       </entry>
     </enum>
+    <enum name="MAV_ICE_FUEL_LEVEL_UNITS">
+      <description>Internal Combusion Engine (ICE) fuel level units.</description>
+      <entry value="0" name="MAV_ICE_FUEL_LEVEL_UNITS_PERCENT">
+        <description>Percent.</description>
+      </entry>
+      <entry value="1" name="MAV_ICE_FUEL_LEVEL_UNITS_POUNDS">
+        <description>Pounds.</description>
+      </entry>
+      <entry value="2" name="MAV_ICE_FUEL_LEVEL_UNITS_KILOGRAMS">
+        <description>Kilograms.</description>
+      </entry>
+      <entry value="3" name="MAV_ICE_FUEL_LEVEL_UNITS_GALLON">
+        <description>Gallon.</description>
+      </entry>
+      <entry value="4" name="MAV_ICE_FUEL_LEVEL_UNITS_LITRE">
+        <description>Litre.</description>
+      </entry>
+    </enum>
+    <enum name="MAV_ICE_FUEL_TYPE">
+      <description>Internal Combusion Engine (ICE) fuel type.</description>
+      <entry value="0" name="MAV_ICE_FUEL_TYPE_GASOLINE">
+        <description>Gasoline or Petrol.</description>
+      </entry>
+      <entry value="1" name="MAV_ICE_FUEL_TYPE_DIESEL">
+        <description>Diesel.</description>
+      </entry>
+      <entry value="2" name="MAV_ICE_FUEL_TYPE_2_STROKE_MIX">
+        <description>2 Stroke Mix.</description>
+      </entry>
+      <entry value="3" name="MAV_ICE_FUEL_TYPE_KEROSENE">
+        <description>Kerosene.</description>
+      </entry>
+      <entry value="4" name="MAV_ICE_FUEL_TYPE_JET_A_1">
+        <description>Jet A-1.</description>
+      </entry>
+      <entry value="5" name="MAV_ICE_FUEL_TYPE_JET_B">
+        <description>Jet B.</description>
+      </entry>
+      <entry value="6" name="MAV_ICE_FUEL_TYPE_JET_TS_1">
+        <description>Jet TS-1.</description>
+      </entry>
+      <entry value="7" name="MAV_ICE_FUEL_TYPE_AVGAS_80">
+        <description>AVGAS 80.</description>
+      </entry>
+      <entry value="8" name="MAV_ICE_FUEL_TYPE_AVGAS_100">
+        <description>AVGAS 100.</description>
+      </entry>
+      <entry value="9" name="MAV_ICE_FUEL_TYPE_AVGAS_100LL">
+        <description>AVGAS 100LL.</description>
+      </entry>
+    </enum>
+    <enum name="MAV_ICE_TRANSMISSION_GEAR_STATE">
+      <description>The state of the vehicle's engine transmission, also known as gear. This is typically used in vehicles with internal combustion engines.</description>
+      <entry value="0" name="MAV_ICE_TRANSMISSION_GEAR_STATE_PARK">
+        <description>Park.</description>
+      </entry>
+      <entry value="1" name="MAV_ICE_TRANSMISSION_GEAR_STATE_NEUTRAL">
+        <description>Neutral. Engine is physically disconnected.</description>
+      </entry>
+      <entry value="2" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD">
+        <description>Forward for single gear systems or Variable Transmissions.</description>
+      </entry>
+      <entry value="3" name="MAV_ICE_TRANSMISSION_GEAR_STATE_REVERSE">
+        <description>Reverse for single gear systems or Variable Transmissions.</description>
+      </entry>
+      <entry value="4" name="MAV_ICE_TRANSMISSION_GEAR_STATE_REVERSE_1">
+        <description>Reverse 1. Implies multiple gears exist.</description>
+      </entry>
+      <entry value="5" name="MAV_ICE_TRANSMISSION_GEAR_STATE_REVERSE_2">
+        <description>Reverse 2 for faster reverse speeds.</description>
+      </entry>
+      <entry value="6" name="MAV_ICE_TRANSMISSION_GEAR_STATE_REVERSE_3">
+        <description>Reverse 3 for faster reverse speeds.</description>
+      </entry>
+      <entry value="7" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_1">
+        <description>First gear. Implies multiple gears exist.</description>
+      </entry>
+      <entry value="8" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_2">
+        <description>Second gear.</description>
+      </entry>
+      <entry value="9" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_3">
+        <description>Third gear.</description>
+      </entry>
+      <entry value="10" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_4">
+        <description>Fourth gear.</description>
+      </entry>
+      <entry value="11" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_5">
+        <description>Fifth gear.</description>
+      </entry>
+      <entry value="12" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_6">
+        <description>Sixth gear.</description>
+      </entry>
+      <entry value="13" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_7">
+        <description>Seventh gear.</description>
+      </entry>
+      <entry value="14" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_8">
+        <description>Eighth gear.</description>
+      </entry>
+      <entry value="15" name="MAV_ICE_TRANSMISSION_GEAR_STATE_FORWARD_9">
+        <description>Ninth gear.</description>
+      </entry>
+    </enum>
     <enum name="MAV_SEVERITY">
       <description>Indicates the severity level, generally used for status messages to indicate their relative urgency. Based on RFC-5424 using expanded definitions at: http://www.kiwisyslog.com/kb/info:-syslog-message-levels/.</description>
       <entry value="0" name="MAV_SEVERITY_EMERGENCY">
@@ -4583,6 +4685,30 @@
       <description>Status text message (use only for important status and error messages). The full message payload can be used for status text, but we recommend that updates be kept concise. Note: The message is intended as a less restrictive replacement for STATUSTEXT.</description>
       <field type="uint8_t" name="severity" enum="MAV_SEVERITY">Severity of status. Relies on the definitions within RFC-5424.</field>
       <field type="char[254]" name="text">Status text message, without null termination character.</field>
+    </message>
+    <!-- ICE (Internal Combustion Engine) related messages. Please keep the range [370, 390) reserved for ICE. -->
+	<message id="370" name="SET_ICE_TRANSMISSION_STATE">
+      <description>Select which gear the vehicle engine transmission shall be in. This is usually for vehicles with internal combustion engines.</description>
+      <field type="uint8_t" name="index">Index of gearbox transmission to set.</field>
+      <field type="uint8_t" name="state" enum="MAV_ICE_TRANSMISSION_GEAR_STATE">Gear position state.</field>
+    </message>
+	<message id="371" name="ICE_TRANSMISSION_STATE">
+      <description>The gear state of the vehicles engine transmission. This is usually for vehicles with internal combustion engines.</description>
+      <field type="uint8_t" name="index">Index of gearbox transmission to set.</field>
+      <field type="uint8_t" name="state" enum="MAV_ICE_TRANSMISSION_GEAR_STATE">Gear position state.</field>
+    </message>
+	<message id="372" name="ICE_FUEL_LEVEL">
+      <description>Fuel tank/cell level.</description>
+      <field type="uint8_t" name="index">Index of gearbox transmission to set.</field>
+      <field type="uint8_t" name="type" enum="MAV_ICE_FUEL_TYPE">Fuel type.</field>
+      <field type="uint8_t" name="units" enum="MAV_ICE_FUEL_LEVEL_UNITS">Fuel level measurement units.</field>
+      <field type="float" name="level_max">Fuel level - Max. Useful to calculate a percent.</field>
+      <field type="float" name="level">Fuel level - Current.</field>
+    </message>
+	<message id="373" name="ICE_COOLANT_TEMP">
+      <description>The temperature of the cooleant system of an internal combustion engine.</description>
+      <field type="uint8_t" name="index">Index of coolant system.</field>
+      <field type="float" name="temperature" units="degC">Temperature</field>
     </message>
     <!-- Rover specific messages -->
     <message id="9000" name="WHEEL_DISTANCE">
