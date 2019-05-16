@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
- * ICAROUS heartbeat
- */
-public class msg_icarous_heartbeat extends MAVLinkMessage {
+* ICAROUS heartbeat
+*/
+public class msg_icarous_heartbeat extends MAVLinkMessage{
 
     public static final int MAVLINK_MSG_ID_ICAROUS_HEARTBEAT = 42000;
     public static final int MAVLINK_MSG_LENGTH = 1;
@@ -22,69 +22,62 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
 
       
     /**
-     * See the FMS_STATE enum.
-     */
+    * See the FMS_STATE enum.
+    */
     public short status;
     
 
     /**
-     * Generates the payload for a mavlink message for a message of this type
-     * @return
-     */
-    public MAVLinkPacket pack() {
+    * Generates the payload for a mavlink message for a message of this type
+    * @return
+    */
+    public MAVLinkPacket pack(){
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
-        
+              
         packet.payload.putUnsignedByte(status);
         
-        if(isMavlink2) {
-            
-        }
         return packet;
     }
 
     /**
-     * Decode a icarous_heartbeat message into this class fields
-     *
-     * @param payload The message to decode
-     */
+    * Decode a icarous_heartbeat message into this class fields
+    *
+    * @param payload The message to decode
+    */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-        
+              
         this.status = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
     }
 
     /**
-     * Constructor for a new message, just initializes the msgid
-     */
-    public msg_icarous_heartbeat() {
+    * Constructor for a new message, just initializes the msgid
+    */
+    public msg_icarous_heartbeat(){
         msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
     }
 
     /**
-     * Constructor for a new message, initializes the message with the payload
-     * from a mavlink packet
-     *
-     */
-    public msg_icarous_heartbeat(MAVLinkPacket mavLinkPacket) {
+    * Constructor for a new message, initializes the message with the payload
+    * from a mavlink packet
+    *
+    */
+    public msg_icarous_heartbeat(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
-        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
       
     /**
-     * Returns a string with the MSG name and data
-     */
-    public String toString() {
+    * Returns a string with the MSG name and data
+    */
+    public String toString(){
         return "MAVLINK_MSG_ID_ICAROUS_HEARTBEAT - sysid:"+sysid+" compid:"+compid+" status:"+status+"";
     }
 }

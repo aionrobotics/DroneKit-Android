@@ -295,7 +295,7 @@ public class WaypointManager extends DroneVariable {
 		 */
         writeIndex = msg.seq;
         msg_mission_item item = mission.get(writeIndex);
-        item.isMavlink2 = true;
+        //item.isMavlink2 = true;
         item.mission_type = 0;
         item.target_system = myDrone.getSysid();
         item.target_component = myDrone.getCompid();

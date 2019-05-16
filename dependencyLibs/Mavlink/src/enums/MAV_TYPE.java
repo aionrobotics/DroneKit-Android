@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
- * 
- */
+* MAVLINK system type. All components in a system should report this type in their HEARTBEAT.
+*/
 public class MAV_TYPE {
    public static final int MAV_TYPE_GENERIC = 0; /* Generic micro air vehicle. | */
    public static final int MAV_TYPE_FIXED_WING = 1; /* Fixed wing aircraft. | */
@@ -36,13 +36,13 @@ public class MAV_TYPE {
    public static final int MAV_TYPE_VTOL_RESERVED3 = 23; /* VTOL reserved 3 | */
    public static final int MAV_TYPE_VTOL_RESERVED4 = 24; /* VTOL reserved 4 | */
    public static final int MAV_TYPE_VTOL_RESERVED5 = 25; /* VTOL reserved 5 | */
-   public static final int MAV_TYPE_GIMBAL = 26; /* Onboard gimbal | */
-   public static final int MAV_TYPE_ADSB = 27; /* Onboard ADSB peripheral | */
+   public static final int MAV_TYPE_GIMBAL = 26; /* Gimbal (standalone) | */
+   public static final int MAV_TYPE_ADSB = 27; /* ADSB system (standalone) | */
    public static final int MAV_TYPE_PARAFOIL = 28; /* Steerable, nonrigid airfoil | */
    public static final int MAV_TYPE_DODECAROTOR = 29; /* Dodecarotor | */
-   public static final int MAV_TYPE_CAMERA = 30; /* Camera | */
+   public static final int MAV_TYPE_CAMERA = 30; /* Camera (standalone) | */
    public static final int MAV_TYPE_CHARGING_STATION = 31; /* Charging station | */
-   public static final int MAV_TYPE_FLARM = 32; /* Onboard FLARM collision avoidance system | */
+   public static final int MAV_TYPE_FLARM = 32; /* FLARM collision avoidance system (standalone) | */
    public static final int MAV_TYPE_ENUM_END = 33; /*  | */
 }
             

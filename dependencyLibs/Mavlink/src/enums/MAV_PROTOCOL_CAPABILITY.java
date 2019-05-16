@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
- * Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability.
- */
+* Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability.
+*/
 public class MAV_PROTOCOL_CAPABILITY {
    public static final int MAV_PROTOCOL_CAPABILITY_MISSION_FLOAT = 1; /* Autopilot supports MISSION float message type. | */
    public static final int MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT = 2; /* Autopilot supports the new param float message type. | */
@@ -23,7 +23,7 @@ public class MAV_PROTOCOL_CAPABILITY {
    public static final int MAV_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET = 1024; /* Autopilot supports direct actuator control. | */
    public static final int MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION = 2048; /* Autopilot supports the flight termination command. | */
    public static final int MAV_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION = 4096; /* Autopilot supports onboard compass calibration. | */
-   public static final int MAV_PROTOCOL_CAPABILITY_MAVLINK2 = 8192; /* Autopilot supports mavlink version 2. | */
+   public static final int MAV_PROTOCOL_CAPABILITY_MAVLINK2 = 8192; /* Autopilot supports MAVLink version 2. | */
    public static final int MAV_PROTOCOL_CAPABILITY_MISSION_FENCE = 16384; /* Autopilot supports mission fence protocol. | */
    public static final int MAV_PROTOCOL_CAPABILITY_MISSION_RALLY = 32768; /* Autopilot supports mission rally point protocol. | */
    public static final int MAV_PROTOCOL_CAPABILITY_FLIGHT_INFORMATION = 65536; /* Autopilot supports the flight information protocol. | */

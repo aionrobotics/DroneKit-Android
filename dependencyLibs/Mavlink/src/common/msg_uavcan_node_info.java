@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
- * General information describing a particular UAVCAN node. Please refer to the definition of the UAVCAN service "uavcan.protocol.GetNodeInfo" for the background information. This message should be emitted by the system whenever a new node appears online, or an existing node reboots. Additionally, it can be emitted upon request from the other end of the MAVLink channel (see MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a low frequency. The UAVCAN specification is available at http://uavcan.org.
- */
-public class msg_uavcan_node_info extends MAVLinkMessage {
+* General information describing a particular UAVCAN node. Please refer to the definition of the UAVCAN service "uavcan.protocol.GetNodeInfo" for the background information. This message should be emitted by the system whenever a new node appears online, or an existing node reboots. Additionally, it can be emitted upon request from the other end of the MAVLink channel (see MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a low frequency. The UAVCAN specification is available at http://uavcan.org.
+*/
+public class msg_uavcan_node_info extends MAVLinkMessage{
 
     public static final int MAVLINK_MSG_ID_UAVCAN_NODE_INFO = 311;
     public static final int MAVLINK_MSG_LENGTH = 116;
@@ -22,149 +22,142 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
 
       
     /**
-     * Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-     */
+    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
+    */
     public long time_usec;
       
     /**
-     * The number of seconds since the start-up of the node.
-     */
+    * Time since the start-up of the node.
+    */
     public long uptime_sec;
       
     /**
-     * Version control system (VCS) revision identifier (e.g. git short commit hash). Zero if unknown.
-     */
+    * Version control system (VCS) revision identifier (e.g. git short commit hash). Zero if unknown.
+    */
     public long sw_vcs_commit;
       
     /**
-     * Node name string. For example, "sapog.px4.io".
-     */
+    * Node name string. For example, "sapog.px4.io".
+    */
     public byte name[] = new byte[80];
       
     /**
-     * Hardware major version number.
-     */
+    * Hardware major version number.
+    */
     public short hw_version_major;
       
     /**
-     * Hardware minor version number.
-     */
+    * Hardware minor version number.
+    */
     public short hw_version_minor;
       
     /**
-     * Hardware unique 128-bit ID.
-     */
+    * Hardware unique 128-bit ID.
+    */
     public short hw_unique_id[] = new short[16];
       
     /**
-     * Software major version number.
-     */
+    * Software major version number.
+    */
     public short sw_version_major;
       
     /**
-     * Software minor version number.
-     */
+    * Software minor version number.
+    */
     public short sw_version_minor;
     
 
     /**
-     * Generates the payload for a mavlink message for a message of this type
-     * @return
-     */
-    public MAVLinkPacket pack() {
+    * Generates the payload for a mavlink message for a message of this type
+    * @return
+    */
+    public MAVLinkPacket pack(){
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
-        
+              
         packet.payload.putUnsignedLong(time_usec);
-        
+              
         packet.payload.putUnsignedInt(uptime_sec);
-        
+              
         packet.payload.putUnsignedInt(sw_vcs_commit);
-        
+              
         
         for (int i = 0; i < name.length; i++) {
             packet.payload.putByte(name[i]);
         }
                     
-        
+              
         packet.payload.putUnsignedByte(hw_version_major);
-        
+              
         packet.payload.putUnsignedByte(hw_version_minor);
-        
+              
         
         for (int i = 0; i < hw_unique_id.length; i++) {
             packet.payload.putUnsignedByte(hw_unique_id[i]);
         }
                     
-        
+              
         packet.payload.putUnsignedByte(sw_version_major);
-        
+              
         packet.payload.putUnsignedByte(sw_version_minor);
         
-        if(isMavlink2) {
-            
-        }
         return packet;
     }
 
     /**
-     * Decode a uavcan_node_info message into this class fields
-     *
-     * @param payload The message to decode
-     */
+    * Decode a uavcan_node_info message into this class fields
+    *
+    * @param payload The message to decode
+    */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-        
+              
         this.time_usec = payload.getUnsignedLong();
-        
+              
         this.uptime_sec = payload.getUnsignedInt();
-        
+              
         this.sw_vcs_commit = payload.getUnsignedInt();
-        
+              
          
         for (int i = 0; i < this.name.length; i++) {
-            try { this.name[i] = payload.getByte(); } catch(IndexOutOfBoundsException ex) { break; }
+            this.name[i] = payload.getByte();
         }
                 
-        
+              
         this.hw_version_major = payload.getUnsignedByte();
-        
+              
         this.hw_version_minor = payload.getUnsignedByte();
-        
+              
          
         for (int i = 0; i < this.hw_unique_id.length; i++) {
-            try { this.hw_unique_id[i] = payload.getUnsignedByte(); } catch(IndexOutOfBoundsException ex) { break; }
+            this.hw_unique_id[i] = payload.getUnsignedByte();
         }
                 
-        
+              
         this.sw_version_major = payload.getUnsignedByte();
-        
+              
         this.sw_version_minor = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
     }
 
     /**
-     * Constructor for a new message, just initializes the msgid
-     */
-    public msg_uavcan_node_info() {
+    * Constructor for a new message, just initializes the msgid
+    */
+    public msg_uavcan_node_info(){
         msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
     }
 
     /**
-     * Constructor for a new message, initializes the message with the payload
-     * from a mavlink packet
-     *
-     */
-    public msg_uavcan_node_info(MAVLinkPacket mavLinkPacket) {
+    * Constructor for a new message, initializes the message with the payload
+    * from a mavlink packet
+    *
+    */
+    public msg_uavcan_node_info(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
-        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -199,9 +192,9 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
     }
                                    
     /**
-     * Returns a string with the MSG name and data
-     */
-    public String toString() {
+    * Returns a string with the MSG name and data
+    */
+    public String toString(){
         return "MAVLINK_MSG_ID_UAVCAN_NODE_INFO - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" uptime_sec:"+uptime_sec+" sw_vcs_commit:"+sw_vcs_commit+" name:"+name+" hw_version_major:"+hw_version_major+" hw_version_minor:"+hw_version_minor+" hw_unique_id:"+hw_unique_id+" sw_version_major:"+sw_version_major+" sw_version_minor:"+sw_version_minor+"";
     }
 }

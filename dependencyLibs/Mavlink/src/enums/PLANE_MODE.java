@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
- * A mapping of plane flight modes for custom_mode field of heartbeat
- */
+* A mapping of plane flight modes for custom_mode field of heartbeat.
+*/
 public class PLANE_MODE {
    public static final int PLANE_MODE_MANUAL = 0; /*  | */
    public static final int PLANE_MODE_CIRCLE = 1; /*  | */
@@ -30,6 +30,7 @@ public class PLANE_MODE {
    public static final int PLANE_MODE_QLOITER = 19; /*  | */
    public static final int PLANE_MODE_QLAND = 20; /*  | */
    public static final int PLANE_MODE_QRTL = 21; /*  | */
-   public static final int PLANE_MODE_ENUM_END = 22; /*  | */
+   public static final int PLANE_MODE_QAUTOTUNE = 22; /*  | */
+   public static final int PLANE_MODE_ENUM_END = 23; /*  | */
 }
             
