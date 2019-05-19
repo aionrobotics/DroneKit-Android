@@ -853,18 +853,6 @@ public class MAVLinkPacket implements Serializable {
             case msg_statustext_long.MAVLINK_MSG_ID_STATUSTEXT_LONG:
                 return  new msg_statustext_long(this);
                  
-            case msg_set_ice_transmission_state.MAVLINK_MSG_ID_SET_ICE_TRANSMISSION_STATE:
-                return  new msg_set_ice_transmission_state(this);
-                 
-            case msg_ice_transmission_state.MAVLINK_MSG_ID_ICE_TRANSMISSION_STATE:
-                return  new msg_ice_transmission_state(this);
-                 
-            case msg_ice_fuel_level.MAVLINK_MSG_ID_ICE_FUEL_LEVEL:
-                return  new msg_ice_fuel_level(this);
-                 
-            case msg_ice_coolant_temp.MAVLINK_MSG_ID_ICE_COOLANT_TEMP:
-                return  new msg_ice_coolant_temp(this);
-                 
             case msg_wheel_distance.MAVLINK_MSG_ID_WHEEL_DISTANCE:
                 return  new msg_wheel_distance(this);
             
