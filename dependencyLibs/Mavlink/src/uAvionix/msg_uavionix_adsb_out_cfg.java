@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec thereafter)
-*/
-public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage{
+ * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec thereafter)
+ */
+public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG = 10001;
     public static final int MAVLINK_MSG_LENGTH = 20;
@@ -22,125 +22,132 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage{
 
       
     /**
-    * Vehicle address (24 bit)
-    */
+     * Vehicle address (24 bit)
+     */
     public long ICAO;
       
     /**
-    * Aircraft stall speed in cm/s
-    */
+     * Aircraft stall speed in cm/s
+     */
     public int stallSpeed;
       
     /**
-    * Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9, " " only)
-    */
+     * Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9, " " only)
+     */
     public byte callsign[] = new byte[9];
       
     /**
-    * Transmitting vehicle type. See ADSB_EMITTER_TYPE enum
-    */
+     * Transmitting vehicle type. See ADSB_EMITTER_TYPE enum
+     */
     public short emitterType;
       
     /**
-    * Aircraft length and width encoding (table 2-35 of DO-282B)
-    */
+     * Aircraft length and width encoding (table 2-35 of DO-282B)
+     */
     public short aircraftSize;
       
     /**
-    * GPS antenna lateral offset (table 2-36 of DO-282B)
-    */
+     * GPS antenna lateral offset (table 2-36 of DO-282B)
+     */
     public short gpsOffsetLat;
       
     /**
-    * GPS antenna longitudinal offset from nose [if non-zero, take position (in meters) divide by 2 and add one] (table 2-37 DO-282B)
-    */
+     * GPS antenna longitudinal offset from nose [if non-zero, take position (in meters) divide by 2 and add one] (table 2-37 DO-282B)
+     */
     public short gpsOffsetLon;
       
     /**
-    * ADS-B transponder reciever and transmit enable flags
-    */
+     * ADS-B transponder reciever and transmit enable flags
+     */
     public short rfSelect;
     
 
     /**
-    * Generates the payload for a mavlink message for a message of this type
-    * @return
-    */
-    public MAVLinkPacket pack(){
-        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
+     * Generates the payload for a mavlink message for a message of this type
+     * @return
+     */
+    public MAVLinkPacket pack() {
+        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
-              
+        
         packet.payload.putUnsignedInt(ICAO);
-              
+        
         packet.payload.putUnsignedShort(stallSpeed);
-              
+        
         
         for (int i = 0; i < callsign.length; i++) {
             packet.payload.putByte(callsign[i]);
         }
                     
-              
+        
         packet.payload.putUnsignedByte(emitterType);
-              
+        
         packet.payload.putUnsignedByte(aircraftSize);
-              
+        
         packet.payload.putUnsignedByte(gpsOffsetLat);
-              
+        
         packet.payload.putUnsignedByte(gpsOffsetLon);
-              
+        
         packet.payload.putUnsignedByte(rfSelect);
         
+        if(isMavlink2) {
+            
+        }
         return packet;
     }
 
     /**
-    * Decode a uavionix_adsb_out_cfg message into this class fields
-    *
-    * @param payload The message to decode
-    */
+     * Decode a uavionix_adsb_out_cfg message into this class fields
+     *
+     * @param payload The message to decode
+     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-              
+        
         this.ICAO = payload.getUnsignedInt();
-              
+        
         this.stallSpeed = payload.getUnsignedShort();
-              
+        
          
         for (int i = 0; i < this.callsign.length; i++) {
             this.callsign[i] = payload.getByte();
         }
                 
-              
+        
         this.emitterType = payload.getUnsignedByte();
-              
+        
         this.aircraftSize = payload.getUnsignedByte();
-              
+        
         this.gpsOffsetLat = payload.getUnsignedByte();
-              
+        
         this.gpsOffsetLon = payload.getUnsignedByte();
-              
+        
         this.rfSelect = payload.getUnsignedByte();
         
+        if(isMavlink2) {
+            
+        }
     }
 
     /**
-    * Constructor for a new message, just initializes the msgid
-    */
-    public msg_uavionix_adsb_out_cfg(){
+     * Constructor for a new message, just initializes the msgid
+     */
+    public msg_uavionix_adsb_out_cfg() {
         msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
     }
 
     /**
-    * Constructor for a new message, initializes the message with the payload
-    * from a mavlink packet
-    *
-    */
-    public msg_uavionix_adsb_out_cfg(MAVLinkPacket mavLinkPacket){
+     * Constructor for a new message, initializes the message with the payload
+     * from a mavlink packet
+     *
+     */
+    public msg_uavionix_adsb_out_cfg(MAVLinkPacket mavLinkPacket) {
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -175,9 +182,9 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage{
     }
                                    
     /**
-    * Returns a string with the MSG name and data
-    */
-    public String toString(){
+     * Returns a string with the MSG name and data
+     */
+    public String toString() {
         return "MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG - sysid:"+sysid+" compid:"+compid+" ICAO:"+ICAO+" stallSpeed:"+stallSpeed+" callsign:"+callsign+" emitterType:"+emitterType+" aircraftSize:"+aircraftSize+" gpsOffsetLat:"+gpsOffsetLat+" gpsOffsetLon:"+gpsOffsetLon+" rfSelect:"+rfSelect+"";
     }
 }

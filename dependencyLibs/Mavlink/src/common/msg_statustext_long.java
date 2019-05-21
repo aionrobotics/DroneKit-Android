@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Status text message (use only for important status and error messages). The full message payload can be used for status text, but we recommend that updates be kept concise. Note: The message is intended as a less restrictive replacement for STATUSTEXT.
-*/
-public class msg_statustext_long extends MAVLinkMessage{
+ * Status text message (use only for important status and error messages). The full message payload can be used for status text, but we recommend that updates be kept concise. Note: The message is intended as a less restrictive replacement for STATUSTEXT.
+ */
+public class msg_statustext_long extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_STATUSTEXT_LONG = 365;
     public static final int MAVLINK_MSG_LENGTH = 255;
@@ -22,71 +22,78 @@ public class msg_statustext_long extends MAVLinkMessage{
 
       
     /**
-    * Severity of status. Relies on the definitions within RFC-5424.
-    */
+     * Severity of status. Relies on the definitions within RFC-5424.
+     */
     public short severity;
       
     /**
-    * Status text message, without null termination character.
-    */
+     * Status text message, without null termination character.
+     */
     public byte text[] = new byte[254];
     
 
     /**
-    * Generates the payload for a mavlink message for a message of this type
-    * @return
-    */
-    public MAVLinkPacket pack(){
-        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
+     * Generates the payload for a mavlink message for a message of this type
+     * @return
+     */
+    public MAVLinkPacket pack() {
+        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_STATUSTEXT_LONG;
-              
+        
         packet.payload.putUnsignedByte(severity);
-              
+        
         
         for (int i = 0; i < text.length; i++) {
             packet.payload.putByte(text[i]);
         }
                     
         
+        if(isMavlink2) {
+            
+        }
         return packet;
     }
 
     /**
-    * Decode a statustext_long message into this class fields
-    *
-    * @param payload The message to decode
-    */
+     * Decode a statustext_long message into this class fields
+     *
+     * @param payload The message to decode
+     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-              
+        
         this.severity = payload.getUnsignedByte();
-              
+        
          
         for (int i = 0; i < this.text.length; i++) {
             this.text[i] = payload.getByte();
         }
                 
         
+        if(isMavlink2) {
+            
+        }
     }
 
     /**
-    * Constructor for a new message, just initializes the msgid
-    */
-    public msg_statustext_long(){
+     * Constructor for a new message, just initializes the msgid
+     */
+    public msg_statustext_long() {
         msgid = MAVLINK_MSG_ID_STATUSTEXT_LONG;
     }
 
     /**
-    * Constructor for a new message, initializes the message with the payload
-    * from a mavlink packet
-    *
-    */
-    public msg_statustext_long(MAVLinkPacket mavLinkPacket){
+     * Constructor for a new message, initializes the message with the payload
+     * from a mavlink packet
+     *
+     */
+    public msg_statustext_long(MAVLinkPacket mavLinkPacket) {
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_STATUSTEXT_LONG;
+        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -121,9 +128,9 @@ public class msg_statustext_long extends MAVLinkMessage{
     }
                          
     /**
-    * Returns a string with the MSG name and data
-    */
-    public String toString(){
+     * Returns a string with the MSG name and data
+     */
+    public String toString() {
         return "MAVLINK_MSG_ID_STATUSTEXT_LONG - sysid:"+sysid+" compid:"+compid+" severity:"+severity+" text:"+text+"";
     }
 }

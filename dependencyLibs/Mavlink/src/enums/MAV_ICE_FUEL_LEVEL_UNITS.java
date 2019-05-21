@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* Internal Combusion Engine (ICE) fuel level units.
-*/
+ * Internal Combusion Engine (ICE) fuel level units.
+ */
 public class MAV_ICE_FUEL_LEVEL_UNITS {
    public static final int MAV_ICE_FUEL_LEVEL_UNITS_PERCENT = 0; /* Percent. | */
    public static final int MAV_ICE_FUEL_LEVEL_UNITS_POUNDS = 1; /* Pounds. | */

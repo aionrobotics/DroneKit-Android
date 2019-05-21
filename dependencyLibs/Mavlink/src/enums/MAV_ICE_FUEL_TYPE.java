@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* Internal Combusion Engine (ICE) fuel type.
-*/
+ * Internal Combusion Engine (ICE) fuel type.
+ */
 public class MAV_ICE_FUEL_TYPE {
    public static final int MAV_ICE_FUEL_TYPE_GASOLINE = 0; /* Gasoline or Petrol. | */
    public static final int MAV_ICE_FUEL_TYPE_DIESEL = 1; /* Diesel. | */

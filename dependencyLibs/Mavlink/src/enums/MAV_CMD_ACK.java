@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* ACK / NACK / ERROR values as a result of MAV_CMDs and for mission item transmission.
-*/
+ * ACK / NACK / ERROR values as a result of MAV_CMDs and for mission item transmission.
+ */
 public class MAV_CMD_ACK {
    public static final int MAV_CMD_ACK_OK = 1; /* Command / mission item is ok. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
    public static final int MAV_CMD_ACK_ERR_FAIL = 2; /* Generic error message if none of the other reasons fails or if no detailed error reporting is implemented. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */

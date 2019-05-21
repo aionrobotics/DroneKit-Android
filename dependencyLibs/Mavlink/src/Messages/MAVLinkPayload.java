@@ -8,6 +8,9 @@ package com.MAVLink.Messages;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Wrapper around {@link ByteBuffer} to represent a MAVLink message payload
+ */
 public class MAVLinkPayload {
 
     private static final byte UNSIGNED_BYTE_MIN_VALUE = 0;
@@ -26,20 +29,9 @@ public class MAVLinkPayload {
     public final ByteBuffer payload;
     public int index;
 
-    /**
-     * Mavlink2 allows not sending paramaters if the remaining parameter values are zeros.
-     * This variable helps to detect this occurance to avoid bad index value when the previous parameter has zero.
-     */
-    public boolean allZeros = false;
-
     public MAVLinkPayload(int payloadSize) {
-       if(payloadSize > MAX_PAYLOAD_SIZE) {
-            payload = ByteBuffer.allocate(MAX_PAYLOAD_SIZE);
-        } else {
-            payload = ByteBuffer.allocate(payloadSize);
-        }
-
-        resetIndex();
+       // This has to be larger than the received payloadSize since MAVLINK V2 will truncate the payloads to the last non-zero value
+       payload = ByteBuffer.allocate(MAX_PAYLOAD_SIZE);
     }
 
     public ByteBuffer getData() {
@@ -59,247 +51,67 @@ public class MAVLinkPayload {
     }
 
     public byte getByte() {
-
-        if (allZeros) return 0;
-
         byte result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 1 > len)
-            {
-                allZeros = true;
-                return result;
-            }
-
-            result |= (payload.get(index + 0) & 0xFF);
-            index += 1;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 0) & 0xFF);
+        index += 1;
         return result;
     }
 
-    public short getUnsignedByte(){
-
-        if (allZeros) return 0;
-
+    public short getUnsignedByte() {
         short result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 1 > len)
-            {
-                allZeros = true;
-                return result;
-            }
-
-            result |= payload.get(index + 0) & 0xFF;
-            index+= 1;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
-        return result;
+        result |= payload.get(index + 0) & 0xFF;
+        index += 1;
+        return result; 
     }
 
     public short getShort() {
-
-        if (allZeros) return 0;
-
         short result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 2 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            index += 2;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 1) & 0xFF) << 8;
+        result |= (payload.get(index + 0) & 0xFF);
+        index += 2;
         return result;
     }
 
-    public int getUnsignedShort(){
-
-        if (allZeros) return 0;
-
+    public int getUnsignedShort() {
         int result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 2 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            index += 2;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 1) & 0xFF) << 8;
+        result |= (payload.get(index + 0) & 0xFF);
+        index += 2;
         return result;
     }
 
     public int getInt() {
-
-        if (allZeros) return 0;
-
         int result = 0;
-        try
-        {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 4 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            if (index + 2 == len) return result ;
-            result |= (payload.get(index + 2) & 0xFF) << 16;
-            if (index + 3 == len) return result ;
-            result |= (payload.get(index + 3) & 0xFF) << 24;
-            index += 4;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 3) & 0xFF) << 24;
+        result |= (payload.get(index + 2) & 0xFF) << 16;
+        result |= (payload.get(index + 1) & 0xFF) << 8;
+        result |= (payload.get(index + 0) & 0xFF);
+        index += 4;
         return result;
     }
 
-    public long getUnsignedInt(){
-
-        if (allZeros) return 0;
-
+    public long getUnsignedInt() {
         long result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 4 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            if (index + 2 == len) return result ;
-            result |= (payload.get(index + 2) & 0xFF) << 16;
-            if (index + 3 == len) return result ;
-            result |= (payload.get(index + 3) & 0xFF) << 24;
-            index += 4;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 3) & 0xFFL) << 24;
+        result |= (payload.get(index + 2) & 0xFFL) << 16;
+        result |= (payload.get(index + 1) & 0xFFL) << 8;
+        result |= (payload.get(index + 0) & 0xFFL);
+        index += 4;
         return result;
     }
-
-
 
     public long getLong() {
-
-        if (allZeros) return 0;
-
         long result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 8 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            if (index + 2 == len) return result ;
-            result |= (payload.get(index + 2) & 0xFF) << 16;
-            if (index + 3 == len) return result ;
-            result |= (payload.get(index + 3) & 0xFF) << 24;
-            if (index + 4 == len) return result ;
-            result |= (payload.get(index + 4) & 0xFF) << 32;
-            if (index + 5 == len) return result ;
-            result |= (payload.get(index + 5) & 0xFF) << 40;
-            if (index + 6 == len) return result ;
-            result |= (payload.get(index + 6) & 0xFF) << 48;
-            if (index + 7 == len) return result ;
-            result |= (payload.get(index + 7) & 0xFF) << 56;
-            index += 8;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 7) & 0xFFL) << 56;
+        result |= (payload.get(index + 6) & 0xFFL) << 48;
+        result |= (payload.get(index + 5) & 0xFFL) << 40;
+        result |= (payload.get(index + 4) & 0xFFL) << 32;
+        result |= (payload.get(index + 3) & 0xFFL) << 24;
+        result |= (payload.get(index + 2) & 0xFFL) << 16;
+        result |= (payload.get(index + 1) & 0xFFL) << 8;
+        result |= (payload.get(index + 0) & 0xFFL);
+        index += 8;
         return result;
-
-    }
-
-
-
-    public double getDouble() {
-
-        if (allZeros) return 0;
-
-        long result = 0;
-        try {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 8 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF);
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 8;
-            if (index + 2 == len) return result ;
-            result |= (payload.get(index + 2) & 0xFF) << 16;
-            if (index + 3 == len) return result ;
-            result |= (payload.get(index + 3) & 0xFF) << 24;
-            if (index + 4 == len) return result ;
-            result |= (payload.get(index + 4) & 0xFF) << 32;
-            if (index + 5 == len) return result ;
-            result |= (payload.get(index + 5) & 0xFF) << 40;
-            if (index + 6 == len) return result ;
-            result |= (payload.get(index + 6) & 0xFF) << 48;
-            if (index + 7 == len) return result ;
-            result |= (payload.get(index + 7) & 0xFF) << 56;
-            index += 8;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
-        
-        return Double.longBitsToDouble(result);
-
     }
 
     public long getUnsignedLong(){
@@ -307,55 +119,33 @@ public class MAVLinkPayload {
     }
     
     public long getLongReverse() {
-
-        if (allZeros) return 0;
-
         long result = 0;
-        try
-        {
-            final byte[] array = payload.array();
-            final int len = array.length;
-            if (index + 8 > len)
-            {
-                allZeros = true;
-            }
-
-            if (index == len) return result ;
-            result |= (payload.get(index + 0) & 0xFF) << 56;
-            if (index + 1 == len) return result ;
-            result |= (payload.get(index + 1) & 0xFF) << 48;
-            if (index + 2 == len) return result ;
-            result |= (payload.get(index + 2) & 0xFF) << 40;
-            if (index + 3 == len) return result ;
-            result |= (payload.get(index + 3) & 0xFF) << 32;
-            if (index + 4 == len) return result ;
-            result |= (payload.get(index + 4) & 0xFF) << 24;
-            if (index + 5 == len) return result ;
-            result |= (payload.get(index + 5) & 0xFF) << 16;
-            if (index + 6 == len) return result ;
-            result |= (payload.get(index + 6) & 0xFF) << 8;
-            if (index + 7 == len) return result ;
-            result |= (payload.get(index + 7) & 0xFF);
-            index += 8;
-        }
-        catch (final Exception ex)
-        {
-            allZeros = true;
-        }
+        result |= (payload.get(index + 0) & 0xFFL) << 56;
+        result |= (payload.get(index + 1) & 0xFFL) << 48;
+        result |= (payload.get(index + 2) & 0xFFL) << 40;
+        result |= (payload.get(index + 3) & 0xFFL) << 32;
+        result |= (payload.get(index + 4) & 0xFFL) << 24;
+        result |= (payload.get(index + 5) & 0xFFL) << 16;
+        result |= (payload.get(index + 6) & 0xFFL) << 8;
+        result |= (payload.get(index + 7) & 0xFFL);
+        index += 8;
         return result;
-
     }
 
     public float getFloat() {
         return Float.intBitsToFloat(getInt());
     }
+
+    public double getDouble() {
+        return Double.longBitsToDouble(getLong());
+    }   
     
     public void putByte(byte data) {
         add(data);
     }
 
-    public void putUnsignedByte(short data){
-        if(data < UNSIGNED_BYTE_MIN_VALUE || data > UNSIGNED_BYTE_MAX_VALUE){
+    public void putUnsignedByte(short data) {
+        if(data < UNSIGNED_BYTE_MIN_VALUE || data > UNSIGNED_BYTE_MAX_VALUE) {
             throw new IllegalArgumentException("Value is outside of the range of an unsigned byte: " + data);
         }
 
@@ -367,8 +157,8 @@ public class MAVLinkPayload {
         add((byte) (data >> 8));
     }
 
-    public void putUnsignedShort(int data){
-        if(data < UNSIGNED_SHORT_MIN_VALUE || data > UNSIGNED_SHORT_MAX_VALUE){
+    public void putUnsignedShort(int data) {
+        if(data < UNSIGNED_SHORT_MIN_VALUE || data > UNSIGNED_SHORT_MAX_VALUE) {
             throw new IllegalArgumentException("Value is outside of the range of an unsigned short: " + data);
         }
 
@@ -382,29 +172,13 @@ public class MAVLinkPayload {
         add((byte) (data >> 24));
     }
 
-    public void putUnsignedInt(long data){
-        if(data < UNSIGNED_INT_MIN_VALUE || data > UNSIGNED_INT_MAX_VALUE){
+    public void putUnsignedInt(long data) {
+        if(data < UNSIGNED_INT_MIN_VALUE || data > UNSIGNED_INT_MAX_VALUE) {
             throw new IllegalArgumentException("Value is outside of the range of an unsigned int: " + data);
         }
 
         putInt((int) data);
     }
-
-
-    public void putDouble(double ddata) {
-
-        long data = Double.doubleToLongBits(ddata);
-
-        add((byte) (data >> 0));
-        add((byte) (data >> 8));
-        add((byte) (data >> 16));
-        add((byte) (data >> 24));
-        add((byte) (data >> 32));
-        add((byte) (data >> 40));
-        add((byte) (data >> 48));
-        add((byte) (data >> 56));
-    }
-
 
     public void putLong(long data) {
         add((byte) (data >> 0));
@@ -417,9 +191,8 @@ public class MAVLinkPayload {
         add((byte) (data >> 56));
     }
 
-
-    public void putUnsignedLong(long data){
-        if(data < UNSIGNED_LONG_MIN_VALUE){
+    public void putUnsignedLong(long data) {
+        if(data < UNSIGNED_LONG_MIN_VALUE) {
             throw new IllegalArgumentException("Value is outside of the range of an unsigned long: " + data);
         }
 
@@ -428,6 +201,10 @@ public class MAVLinkPayload {
 
     public void putFloat(float data) {
         putInt(Float.floatToIntBits(data));
+    }
+
+    public void putDouble(double data) {
+        putLong(Double.doubleToLongBits(data));
     }
 
 }

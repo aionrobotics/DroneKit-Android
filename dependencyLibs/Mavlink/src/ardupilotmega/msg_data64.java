@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Data packet, size 64.
-*/
-public class msg_data64 extends MAVLinkMessage{
+ * Data packet, size 64.
+ */
+public class msg_data64 extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_DATA64 = 171;
     public static final int MAVLINK_MSG_LENGTH = 66;
@@ -22,88 +22,95 @@ public class msg_data64 extends MAVLinkMessage{
 
       
     /**
-    * Data type.
-    */
+     * Data type.
+     */
     public short type;
       
     /**
-    * Data length.
-    */
+     * Data length.
+     */
     public short len;
       
     /**
-    * Raw data.
-    */
+     * Raw data.
+     */
     public short data[] = new short[64];
     
 
     /**
-    * Generates the payload for a mavlink message for a message of this type
-    * @return
-    */
-    public MAVLinkPacket pack(){
-        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
+     * Generates the payload for a mavlink message for a message of this type
+     * @return
+     */
+    public MAVLinkPacket pack() {
+        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_DATA64;
-              
+        
         packet.payload.putUnsignedByte(type);
-              
+        
         packet.payload.putUnsignedByte(len);
-              
+        
         
         for (int i = 0; i < data.length; i++) {
             packet.payload.putUnsignedByte(data[i]);
         }
                     
         
+        if(isMavlink2) {
+            
+        }
         return packet;
     }
 
     /**
-    * Decode a data64 message into this class fields
-    *
-    * @param payload The message to decode
-    */
+     * Decode a data64 message into this class fields
+     *
+     * @param payload The message to decode
+     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-              
+        
         this.type = payload.getUnsignedByte();
-              
+        
         this.len = payload.getUnsignedByte();
-              
+        
          
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getUnsignedByte();
         }
                 
         
+        if(isMavlink2) {
+            
+        }
     }
 
     /**
-    * Constructor for a new message, just initializes the msgid
-    */
-    public msg_data64(){
+     * Constructor for a new message, just initializes the msgid
+     */
+    public msg_data64() {
         msgid = MAVLINK_MSG_ID_DATA64;
     }
 
     /**
-    * Constructor for a new message, initializes the message with the payload
-    * from a mavlink packet
-    *
-    */
-    public msg_data64(MAVLinkPacket mavLinkPacket){
+     * Constructor for a new message, initializes the message with the payload
+     * from a mavlink packet
+     *
+     */
+    public msg_data64(MAVLinkPacket mavLinkPacket) {
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_DATA64;
+        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
           
     /**
-    * Returns a string with the MSG name and data
-    */
-    public String toString(){
+     * Returns a string with the MSG name and data
+     */
+    public String toString() {
         return "MAVLINK_MSG_ID_DATA64 - sysid:"+sysid+" compid:"+compid+" type:"+type+" len:"+len+" data:"+data+"";
     }
 }

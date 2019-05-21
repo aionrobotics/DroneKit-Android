@@ -11,9 +11,9 @@ import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Configure AP SSID and Password.
-*/
-public class msg_wifi_config_ap extends MAVLinkMessage{
+ * Configure AP SSID and Password.
+ */
+public class msg_wifi_config_ap extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_WIFI_CONFIG_AP = 299;
     public static final int MAVLINK_MSG_LENGTH = 96;
@@ -22,79 +22,86 @@ public class msg_wifi_config_ap extends MAVLinkMessage{
 
       
     /**
-    * Name of Wi-Fi network (SSID). Leave it blank to leave it unchanged.
-    */
+     * Name of Wi-Fi network (SSID). Leave it blank to leave it unchanged.
+     */
     public byte ssid[] = new byte[32];
       
     /**
-    * Password. Leave it blank for an open AP.
-    */
+     * Password. Leave it blank for an open AP.
+     */
     public byte password[] = new byte[64];
     
 
     /**
-    * Generates the payload for a mavlink message for a message of this type
-    * @return
-    */
-    public MAVLinkPacket pack(){
-        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
+     * Generates the payload for a mavlink message for a message of this type
+     * @return
+     */
+    public MAVLinkPacket pack() {
+        MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
-              
+        
         
         for (int i = 0; i < ssid.length; i++) {
             packet.payload.putByte(ssid[i]);
         }
                     
-              
+        
         
         for (int i = 0; i < password.length; i++) {
             packet.payload.putByte(password[i]);
         }
                     
         
+        if(isMavlink2) {
+            
+        }
         return packet;
     }
 
     /**
-    * Decode a wifi_config_ap message into this class fields
-    *
-    * @param payload The message to decode
-    */
+     * Decode a wifi_config_ap message into this class fields
+     *
+     * @param payload The message to decode
+     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
-              
+        
          
         for (int i = 0; i < this.ssid.length; i++) {
             this.ssid[i] = payload.getByte();
         }
                 
-              
+        
          
         for (int i = 0; i < this.password.length; i++) {
             this.password[i] = payload.getByte();
         }
                 
         
+        if(isMavlink2) {
+            
+        }
     }
 
     /**
-    * Constructor for a new message, just initializes the msgid
-    */
-    public msg_wifi_config_ap(){
+     * Constructor for a new message, just initializes the msgid
+     */
+    public msg_wifi_config_ap() {
         msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
     }
 
     /**
-    * Constructor for a new message, initializes the message with the payload
-    * from a mavlink packet
-    *
-    */
-    public msg_wifi_config_ap(MAVLinkPacket mavLinkPacket){
+     * Constructor for a new message, initializes the message with the payload
+     * from a mavlink packet
+     *
+     */
+    public msg_wifi_config_ap(MAVLinkPacket mavLinkPacket) {
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
         this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+        this.isMavlink2 = mavLinkPacket.isMavlink2;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -158,9 +165,9 @@ public class msg_wifi_config_ap extends MAVLinkMessage{
     }
                          
     /**
-    * Returns a string with the MSG name and data
-    */
-    public String toString(){
+     * Returns a string with the MSG name and data
+     */
+    public String toString() {
         return "MAVLINK_MSG_ID_WIFI_CONFIG_AP - sysid:"+sysid+" compid:"+compid+" ssid:"+ssid+" password:"+password+"";
     }
 }

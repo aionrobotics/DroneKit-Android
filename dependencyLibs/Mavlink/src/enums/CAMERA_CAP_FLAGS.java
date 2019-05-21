@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* Camera capability flags (Bitmap)
-*/
+ * Camera capability flags (Bitmap)
+ */
 public class CAMERA_CAP_FLAGS {
    public static final int CAMERA_CAP_FLAGS_CAPTURE_VIDEO = 1; /* Camera is able to record video | */
    public static final int CAMERA_CAP_FLAGS_CAPTURE_IMAGE = 2; /* Camera is able to capture images | */

@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* Enumeration for battery charge states.
-*/
+ * Enumeration for battery charge states.
+ */
 public class MAV_BATTERY_CHARGE_STATE {
    public static final int MAV_BATTERY_CHARGE_STATE_UNDEFINED = 0; /* Low battery state is not provided | */
    public static final int MAV_BATTERY_CHARGE_STATE_OK = 1; /* Battery is not in low state. Normal operation. | */

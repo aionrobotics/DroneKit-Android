@@ -7,8 +7,8 @@
 package com.MAVLink.enums;
 
 /** 
-* The state of the vehicle's engine transmission, also known as gear. This is typically used in vehicles with internal combustion engines.
-*/
+ * The state of the vehicle's engine transmission, also known as gear. This is typically used in vehicles with internal combustion engines.
+ */
 public class MAV_ICE_TRANSMISSION_GEAR_STATE {
    public static final int MAV_ICE_TRANSMISSION_GEAR_STATE_UNKNOWN = 0; /* Unknown. | */
    public static final int MAV_ICE_TRANSMISSION_GEAR_STATE_PARK = 1; /* Park. | */
