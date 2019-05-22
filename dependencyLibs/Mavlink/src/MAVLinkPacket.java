@@ -7,7 +7,6 @@
 package com.MAVLink;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import com.MAVLink.Messages.MAVLinkPayload;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.ardupilotmega.CRC;
@@ -212,18 +211,13 @@ public class MAVLinkPacket implements Serializable {
      * @param payload
      * @return minimum length of valid data
      */
-    private int mavTrimPayload (final ByteBuffer payload)
+    private int mavTrimPayload(final byte[] payload)
     {
-        final byte[] array = payload.array();
-        final int offset = payload.position();
-        for (int i= offset-1; i>=0;--i)
-        {
-            if (array[i] != 0)
-            {
-                return i+1; 
-            }
+        int length = payload.length;
+        while (length > 1 && payload[length-1] == 0) {
+            length--;
         }
-        return len;
+        return length;
     }
     
     /**
@@ -236,7 +230,7 @@ public class MAVLinkPacket implements Serializable {
         final int payloadSize;
         
         if (isMavlink2) {
-            payloadSize = mavTrimPayload(payload.payload);
+            payloadSize = mavTrimPayload(payload.payload.array());
             bufLen = MAVLINK2_HEADER_LEN + payloadSize + 2;
 
             //TODO: implement signature, maybe in encodeSignedPacket()

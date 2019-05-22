@@ -7,7 +7,6 @@
 package com.MAVLink.Messages;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 import com.MAVLink.MAVLinkPacket;
 
