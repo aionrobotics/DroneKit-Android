@@ -98,6 +98,23 @@ public class Gps implements DroneAttribute {
         }
     }
 
+    public LatLong getPosition_SkipEkfValidCheck() {
+        return getPosition_SkipEkfValidCheck(true);
+    }
+
+    public LatLong getPosition_SkipEkfValidCheck(boolean checkGpsFix) {
+        if (position == null) {
+            return null;
+        }
+        if (checkGpsFix && getFixStatus() == NO_FIX) {
+            return null;
+        }
+        if (position.getLatitude() == 0 && position.getLongitude() == 0) {
+            return null;
+        }
+        return position;
+    }
+
     public void setGpsEph(double gpsEph) {
         this.gpsEph = gpsEph;
     }
