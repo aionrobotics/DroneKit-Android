@@ -4,7 +4,7 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-package com.MAVLink.icarous;
+package com.mavlink.icarous;
 
 import java.util.HashMap;
 import java.util.Map;

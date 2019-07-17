@@ -5,10 +5,10 @@
  */
 
 // MESSAGE RALLY_POINT PACKING
-package com.MAVLink.ardupilotmega;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.ardupilotmega;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * A rally point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV -> GCS.

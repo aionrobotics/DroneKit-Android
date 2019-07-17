@@ -4,7 +4,7 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-package com.MAVLink.enums;
+package com.mavlink.enums;
 
 /** 
  * ACK / NACK / ERROR values as a result of MAV_CMDs and for mission item transmission.

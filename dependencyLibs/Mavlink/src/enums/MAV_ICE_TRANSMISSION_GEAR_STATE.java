@@ -4,7 +4,7 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-package com.MAVLink.enums;
+package com.mavlink.enums;
 
 /** 
  * The state of the vehicle's engine transmission, also known as gear. This is typically used in vehicles with internal combustion engines.

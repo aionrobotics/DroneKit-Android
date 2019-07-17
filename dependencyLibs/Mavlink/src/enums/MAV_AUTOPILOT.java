@@ -4,7 +4,7 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-package com.MAVLink.enums;
+package com.mavlink.enums;
 
 /** 
  * Micro air vehicle / autopilot classes. This identifies the individual model.

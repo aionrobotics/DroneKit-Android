@@ -5,10 +5,10 @@
  */
 
 // MESSAGE NAV_CONTROLLER_OUTPUT PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * The state of the fixed wing navigation and position controller.

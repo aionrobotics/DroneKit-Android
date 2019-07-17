@@ -5,10 +5,10 @@
  */
 
 // MESSAGE LOG_REQUEST_LIST PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Request a list of available logs. On some systems calling this may stop on-board logging until LOG_REQUEST_END is called.

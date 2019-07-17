@@ -5,10 +5,10 @@
  */
 
 // MESSAGE GOPRO_SET_REQUEST PACKING
-package com.MAVLink.ardupilotmega;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.ardupilotmega;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Request to set a GOPRO_COMMAND with a desired.

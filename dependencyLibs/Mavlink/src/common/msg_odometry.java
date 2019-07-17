@@ -5,10 +5,10 @@
  */
 
 // MESSAGE ODOMETRY PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147 standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
@@ -16,7 +16,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 public class msg_odometry extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_ODOMETRY = 331;
-    public static final int MAVLINK_MSG_LENGTH = 230;
+    public static final int MAVLINK_MSG_LENGTH = 231;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ODOMETRY;
 
 
@@ -95,6 +95,11 @@ public class msg_odometry extends MAVLinkMessage {
      * Coordinate frame of reference for the velocity in free space (twist) data.
      */
     public short child_frame_id;
+      
+    /**
+     * Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+     */
+    public short reset_counter;
     
 
     /**
@@ -150,6 +155,8 @@ public class msg_odometry extends MAVLinkMessage {
         packet.payload.putUnsignedByte(child_frame_id);
         
         if(isMavlink2) {
+            
+            packet.payload.putUnsignedByte(reset_counter);
             
         }
         return packet;
@@ -207,6 +214,8 @@ public class msg_odometry extends MAVLinkMessage {
         
         if(isMavlink2) {
             
+            this.reset_counter = payload.getUnsignedByte();
+            
         }
     }
 
@@ -230,12 +239,12 @@ public class msg_odometry extends MAVLinkMessage {
         unpack(mavLinkPacket.payload);        
     }
 
-                                  
+                                    
     /**
      * Returns a string with the MSG name and data
      */
     public String toString() {
-        return "MAVLINK_MSG_ID_ODOMETRY - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" x:"+x+" y:"+y+" z:"+z+" q:"+q+" vx:"+vx+" vy:"+vy+" vz:"+vz+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" pose_covariance:"+pose_covariance+" velocity_covariance:"+velocity_covariance+" frame_id:"+frame_id+" child_frame_id:"+child_frame_id+"";
+        return "MAVLINK_MSG_ID_ODOMETRY - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" x:"+x+" y:"+y+" z:"+z+" q:"+q+" vx:"+vx+" vy:"+vy+" vz:"+vz+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" pose_covariance:"+pose_covariance+" velocity_covariance:"+velocity_covariance+" frame_id:"+frame_id+" child_frame_id:"+child_frame_id+" reset_counter:"+reset_counter+"";
     }
 }
         

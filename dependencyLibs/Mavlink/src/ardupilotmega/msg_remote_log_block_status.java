@@ -5,10 +5,10 @@
  */
 
 // MESSAGE REMOTE_LOG_BLOCK_STATUS PACKING
-package com.MAVLink.ardupilotmega;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.ardupilotmega;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Send Status of each log block that autopilot board might have sent.

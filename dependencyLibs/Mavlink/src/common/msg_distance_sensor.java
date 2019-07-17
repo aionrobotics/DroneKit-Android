@@ -5,10 +5,10 @@
  */
 
 // MESSAGE DISTANCE_SENSOR PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Distance sensor information for an onboard rangefinder.
@@ -57,7 +57,7 @@ public class msg_distance_sensor extends MAVLinkMessage {
     public short orientation;
       
     /**
-     * Measurement variance. Max standard deviation is 6cm. 256 if unknown.
+     * Measurement variance. Max standard deviation is 6cm. 255 if unknown.
      */
     public short covariance;
       

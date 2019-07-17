@@ -5,10 +5,10 @@
  */
 
 // MESSAGE MESSAGE_INTERVAL PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * The interval between messages for a particular MAVLink message ID. This interface replaces DATA_STREAM

@@ -4,17 +4,17 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
         
-package com.MAVLink;
+package com.mavlink;
 
 import java.io.Serializable;
-import com.MAVLink.Messages.MAVLinkPayload;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.ardupilotmega.CRC;
+import com.mavlink.messages.MAVLinkPayload;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.ardupilotmega.CRC;
 
-import com.MAVLink.ardupilotmega.*;
-import com.MAVLink.common.*;
-import com.MAVLink.uAvionix.*;
-import com.MAVLink.icarous.*;
+import com.mavlink.ardupilotmega.*;
+import com.mavlink.common.*;
+import com.mavlink.uAvionix.*;
+import com.mavlink.icarous.*;
 
 /**
  * Common interface for all MAVLink Messages

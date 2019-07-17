@@ -5,10 +5,10 @@
  */
 
 // MESSAGE UAVIONIX_ADSB_OUT_CFG PACKING
-package com.MAVLink.uAvionix;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.uAvionix;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec thereafter)

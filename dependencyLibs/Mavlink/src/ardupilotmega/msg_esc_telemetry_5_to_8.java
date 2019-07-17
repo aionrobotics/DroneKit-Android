@@ -5,10 +5,10 @@
  */
 
 // MESSAGE ESC_TELEMETRY_5_TO_8 PACKING
-package com.MAVLink.ardupilotmega;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.ardupilotmega;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * ESC Telemetry Data for ESCs 5 to 8, matching data sent by BLHeli ESCs.

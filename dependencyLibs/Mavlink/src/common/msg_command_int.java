@@ -5,13 +5,13 @@
  */
 
 // MESSAGE COMMAND_INT PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
- * Message encoding a command with parameters as scaled integers. Scaling depends on the actual command value.
+ * Message encoding a command with parameters as scaled integers. Scaling depends on the actual command value. The command microservice is documented at https://mavlink.io/en/services/command.html
  */
 public class msg_command_int extends MAVLinkMessage {
 

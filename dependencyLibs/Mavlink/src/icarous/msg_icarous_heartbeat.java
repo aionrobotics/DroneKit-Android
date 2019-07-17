@@ -5,10 +5,10 @@
  */
 
 // MESSAGE ICAROUS_HEARTBEAT PACKING
-package com.MAVLink.icarous;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.icarous;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * ICAROUS heartbeat

@@ -5,10 +5,10 @@
  */
 
 // MESSAGE SETUP_SIGNING PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp will disable signing

@@ -5,10 +5,10 @@
  */
 
 // MESSAGE GLOBAL_VISION_POSITION_ESTIMATE PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
  * Global position/attitude estimate from a vision source.
@@ -16,7 +16,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 public class msg_global_vision_position_estimate extends MAVLinkMessage {
 
     public static final int MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE = 101;
-    public static final int MAVLINK_MSG_LENGTH = 116;
+    public static final int MAVLINK_MSG_LENGTH = 117;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE;
 
 
@@ -60,6 +60,11 @@ public class msg_global_vision_position_estimate extends MAVLinkMessage {
      * Row-major representation of pose 6x6 cross-covariance matrix upper right triangle (states: x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
      */
     public float covariance[] = new float[21];
+      
+    /**
+     * Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+     */
+    public short reset_counter;
     
 
     /**
@@ -93,6 +98,8 @@ public class msg_global_vision_position_estimate extends MAVLinkMessage {
             packet.payload.putFloat(covariance[i]);
         }
                     
+            
+            packet.payload.putUnsignedByte(reset_counter);
             
         }
         return packet;
@@ -128,6 +135,8 @@ public class msg_global_vision_position_estimate extends MAVLinkMessage {
         }
                 
             
+            this.reset_counter = payload.getUnsignedByte();
+            
         }
     }
 
@@ -151,12 +160,12 @@ public class msg_global_vision_position_estimate extends MAVLinkMessage {
         unpack(mavLinkPacket.payload);        
     }
 
-                    
+                      
     /**
      * Returns a string with the MSG name and data
      */
     public String toString() {
-        return "MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE - sysid:"+sysid+" compid:"+compid+" usec:"+usec+" x:"+x+" y:"+y+" z:"+z+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" covariance:"+covariance+"";
+        return "MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE - sysid:"+sysid+" compid:"+compid+" usec:"+usec+" x:"+x+" y:"+y+" z:"+z+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" covariance:"+covariance+" reset_counter:"+reset_counter+"";
     }
 }
         

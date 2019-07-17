@@ -5,13 +5,13 @@
  */
 
 // MESSAGE STORAGE_INFORMATION PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
- * Information about a storage medium.
+ * Information about a storage medium. This message is sent in response to a request and whenever the status of the storage changes (STORAGE_STATUS).
  */
 public class msg_storage_information extends MAVLinkMessage {
 
@@ -27,17 +27,17 @@ public class msg_storage_information extends MAVLinkMessage {
     public long time_boot_ms;
       
     /**
-     * Total capacity.
+     * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
      */
     public float total_capacity;
       
     /**
-     * Used capacity.
+     * Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
      */
     public float used_capacity;
       
     /**
-     * Available storage capacity.
+     * Available storage capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
      */
     public float available_capacity;
       
@@ -62,7 +62,7 @@ public class msg_storage_information extends MAVLinkMessage {
     public short storage_count;
       
     /**
-     * Status of storage (0 not available, 1 unformatted, 2 formatted)
+     * Status of storage
      */
     public short status;
     

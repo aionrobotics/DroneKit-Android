@@ -5,13 +5,13 @@
  */
 
 // MESSAGE PARAM_REQUEST_LIST PACKING
-package com.MAVLink.common;
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+package com.mavlink.common;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
         
 /**
- * Request all parameters of this component. After this request, all parameters are emitted.
+ * Request all parameters of this component. After this request, all parameters are emitted. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html
  */
 public class msg_param_request_list extends MAVLinkMessage {
 
