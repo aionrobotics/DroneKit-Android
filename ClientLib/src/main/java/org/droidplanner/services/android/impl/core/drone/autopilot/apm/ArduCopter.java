@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.MAVLink.Messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkMessage;
 import com.github.zafarkhaja.semver.Version;
 
 import com.o3dr.android.client.apis.CapabilityApi;

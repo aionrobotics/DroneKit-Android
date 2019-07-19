@@ -1,6 +1,6 @@
 package org.droidplanner.services.android.impl.core.drone.autopilot;
 
-import com.MAVLink.Messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkMessage;
 
 import org.droidplanner.services.android.impl.communication.model.DataLink;
 import org.droidplanner.services.android.impl.core.MAVLink.WaypointManager;

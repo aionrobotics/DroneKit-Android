@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.os.SystemClock;
 
-import com.MAVLink.ardupilotmega.msg_ekf_status_report;
-import com.MAVLink.enums.EKF_STATUS_FLAGS;
+import com.mavlink.ardupilotmega.msg_ekf_status_report;
+import com.mavlink.enums.EKF_STATUS_FLAGS;
 
 import org.droidplanner.services.android.impl.core.MAVLink.MavLinkCommands;
 import org.droidplanner.services.android.impl.core.MAVLink.WaypointManager;

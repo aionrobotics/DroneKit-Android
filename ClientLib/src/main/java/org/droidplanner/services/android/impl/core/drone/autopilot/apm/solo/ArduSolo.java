@@ -7,9 +7,9 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.view.Surface;
 
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.common.msg_statustext;
-import com.MAVLink.enums.MAV_TYPE;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.common.msg_statustext;
+import com.mavlink.enums.MAV_TYPE;
 import com.o3dr.android.client.apis.CapabilityApi;
 import com.o3dr.services.android.lib.drone.attribute.AttributeEvent;
 import com.o3dr.services.android.lib.drone.attribute.AttributeType;

@@ -3,7 +3,7 @@ package com.o3dr.android.client.apis.solo;
 import android.os.Bundle;
 import android.view.Surface;
 
-import com.MAVLink.enums.GOPRO_COMMAND;
+import com.mavlink.enums.GOPRO_COMMAND;
 import com.o3dr.android.client.Drone;
 import com.o3dr.android.client.apis.CameraApi;
 import com.o3dr.android.client.apis.CapabilityApi;

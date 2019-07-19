@@ -5,8 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
 import com.o3dr.services.android.lib.drone.connection.ConnectionParameter;
 import com.o3dr.services.android.lib.drone.connection.ConnectionType;
 import com.o3dr.services.android.lib.gcs.link.LinkConnectionStatus;

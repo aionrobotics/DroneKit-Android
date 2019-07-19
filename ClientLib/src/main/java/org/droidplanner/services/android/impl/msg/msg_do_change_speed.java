@@ -1,8 +1,8 @@
 package org.droidplanner.services.android.impl.msg;
 
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Messages.MAVLinkPayload;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.messages.MAVLinkPayload;
 
 /**
  * Created by kellys on 2/12/17.

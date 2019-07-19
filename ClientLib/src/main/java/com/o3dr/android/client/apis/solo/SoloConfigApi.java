@@ -2,7 +2,7 @@ package com.o3dr.android.client.apis.solo;
 
 import android.os.Bundle;
 
-import com.MAVLink.ardupilotmega.msg_led_control;
+import com.mavlink.ardupilotmega.msg_led_control;
 import com.o3dr.android.client.Drone;
 import com.o3dr.android.client.utils.TxPowerComplianceCountries;
 import com.o3dr.services.android.lib.drone.attribute.error.CommandExecutionError;

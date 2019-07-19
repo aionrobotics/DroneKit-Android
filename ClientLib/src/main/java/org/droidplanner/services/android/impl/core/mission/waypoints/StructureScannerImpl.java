@@ -1,7 +1,9 @@
 package org.droidplanner.services.android.impl.core.mission.waypoints;
 
-import com.MAVLink.common.msg_mission_item;
-import com.MAVLink.enums.MAV_CMD;
+import com.mavlink.common.msg_mission_item;
+import com.mavlink.enums.MAV_CMD;
+import com.o3dr.services.android.lib.coordinate.LatLong;
+import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 
 import org.droidplanner.services.android.impl.core.helpers.geoTools.GeoTools;
 import org.droidplanner.services.android.impl.core.mission.Mission;
@@ -12,8 +14,6 @@ import org.droidplanner.services.android.impl.core.polygon.Polygon;
 import org.droidplanner.services.android.impl.core.survey.CameraInfo;
 import org.droidplanner.services.android.impl.core.survey.SurveyData;
 import org.droidplanner.services.android.impl.core.survey.grid.GridBuilder;
-import com.o3dr.services.android.lib.coordinate.LatLong;
-import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 
 import java.util.ArrayList;
 import java.util.List;

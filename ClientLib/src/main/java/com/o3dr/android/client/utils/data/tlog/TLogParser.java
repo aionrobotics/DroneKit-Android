@@ -4,9 +4,9 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.Parser;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.Parser;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

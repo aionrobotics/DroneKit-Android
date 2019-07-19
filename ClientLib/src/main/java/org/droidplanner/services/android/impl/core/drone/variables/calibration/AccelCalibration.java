@@ -3,8 +3,8 @@ package org.droidplanner.services.android.impl.core.drone.variables.calibration;
 import android.os.Handler;
 import android.os.RemoteException;
 
-import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.common.msg_statustext;
+import com.mavlink.messages.MAVLinkMessage;
+import com.mavlink.common.msg_statustext;
 
 import org.droidplanner.services.android.impl.core.MAVLink.MavLinkCalibration;
 import org.droidplanner.services.android.impl.core.drone.DroneInterfaces;

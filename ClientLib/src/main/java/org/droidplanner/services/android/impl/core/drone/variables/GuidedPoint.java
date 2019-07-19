@@ -3,7 +3,7 @@ package org.droidplanner.services.android.impl.core.drone.variables;
 import android.os.Handler;
 import android.os.RemoteException;
 
-import com.MAVLink.enums.MAV_TYPE;
+import com.mavlink.enums.MAV_TYPE;
 import com.o3dr.services.android.lib.coordinate.LatLong;
 import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 import com.o3dr.services.android.lib.drone.attribute.AttributeType;

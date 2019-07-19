@@ -1,7 +1,7 @@
 package org.droidplanner.services.android.impl.core.drone.variables;
 
-import com.MAVLink.common.msg_rc_channels_raw;
-import com.MAVLink.common.msg_servo_output_raw;
+import com.mavlink.common.msg_rc_channels_raw;
+import com.mavlink.common.msg_servo_output_raw;
 
 import org.droidplanner.services.android.impl.core.drone.DroneInterfaces.DroneEventsType;
 import org.droidplanner.services.android.impl.core.drone.DroneVariable;

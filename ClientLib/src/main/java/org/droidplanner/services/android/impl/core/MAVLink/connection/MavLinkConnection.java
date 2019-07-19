@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
-import com.MAVLink.MAVLinkPacket;
-import com.MAVLink.Messages.MAVLinkStats;
-import com.MAVLink.Parser;
+import com.mavlink.MAVLinkPacket;
+import com.mavlink.messages.MAVLinkStats;
+import com.mavlink.Parser;
 import com.o3dr.services.android.lib.gcs.link.LinkConnectionStatus;
 
 import org.droidplanner.services.android.impl.core.model.Logger;
