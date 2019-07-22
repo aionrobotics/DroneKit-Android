@@ -91,28 +91,13 @@ public class Gps implements DroneAttribute {
     }
 
     public LatLong getPosition() {
-        if (isValid()) {
+        if (position == null || isValid()) {
+            return position;
+        } else if ((getFixStatus() != NO_FIX) && (position.getLatitude() != 0D || position.getLongitude() != 0D)) {
             return position;
         } else {
             return null;
         }
-    }
-
-    public LatLong getPosition_SkipEkfValidCheck() {
-        return getPosition_SkipEkfValidCheck(true);
-    }
-
-    public LatLong getPosition_SkipEkfValidCheck(boolean checkGpsFix) {
-        if (position == null) {
-            return null;
-        }
-        if (checkGpsFix && getFixStatus() == NO_FIX) {
-            return null;
-        }
-        if (position.getLatitude() == 0 && position.getLongitude() == 0) {
-            return null;
-        }
-        return position;
     }
 
     public void setGpsEph(double gpsEph) {
