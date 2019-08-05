@@ -90,14 +90,22 @@ public class Gps implements DroneAttribute {
         }
     }
 
-    public LatLong getPosition() {
+    public LatLong getPosition(final boolean requireGoodFix) {
         if (position == null || isValid()) {
+            // definitely valid or definitely not valid
             return position;
-        } else if ((getFixStatus() != NO_FIX) && (position.getLatitude() != 0D || position.getLongitude() != 0D)) {
+        } else if (position.getLatitude() == 0D && position.getLongitude() == 0D) {
+            // data is useless
+            return null;
+        } else if (getFixStatus() != NO_FIX || !requireGoodFix) {
+            // there's non-zero data that we can return.
             return position;
         } else {
             return null;
         }
+    }
+    public LatLong getPosition() {
+        return getPosition(false);
     }
 
     public void setGpsEph(double gpsEph) {
