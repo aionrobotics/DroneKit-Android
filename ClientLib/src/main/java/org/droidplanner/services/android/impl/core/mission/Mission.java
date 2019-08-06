@@ -23,6 +23,7 @@ import org.droidplanner.services.android.impl.core.mission.commands.CameraTrigge
 import org.droidplanner.services.android.impl.core.mission.commands.ChangeSpeedImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ConditionYawImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
@@ -283,6 +284,9 @@ public class Mission extends DroneVariable<GenericMavLinkDrone> {
                     break;
                 case MAV_CMD.MAV_CMD_DO_JUMP:
                     received.add(new DoJumpImpl(msg, this));
+                    break;
+                case MAV_CMD.MAV_CMD_DO_ENGINE_CONTROL:
+                    received.add(new EngineControlImpl(msg, this));
                     break;
 
                 default:

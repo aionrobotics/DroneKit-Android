@@ -8,6 +8,7 @@ import com.o3dr.services.android.lib.drone.mission.item.MissionItem;
 import com.o3dr.services.android.lib.drone.mission.item.command.CameraTrigger;
 import com.o3dr.services.android.lib.drone.mission.item.command.ChangeSpeed;
 import com.o3dr.services.android.lib.drone.mission.item.command.DoJump;
+import com.o3dr.services.android.lib.drone.mission.item.command.EngineControl;
 import com.o3dr.services.android.lib.drone.mission.item.command.EpmGripper;
 import com.o3dr.services.android.lib.drone.mission.item.command.LoiterToAlt;
 import com.o3dr.services.android.lib.drone.mission.item.command.ResetROI;
@@ -254,6 +255,16 @@ public enum MissionItemType {
         @Override
         protected Creator<DoJump> getMissionItemCreator() {
             return DoJump.CREATOR;
+        }
+    },
+
+    ENGINE_CONTROL("Engine Control") {
+        @Override
+        public MissionItem getNewItem() { return new EngineControl(); }
+
+        @Override
+        protected Creator<EngineControl> getMissionItemCreator() {
+            return EngineControl.CREATOR;
         }
     },
 

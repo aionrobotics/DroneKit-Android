@@ -6,6 +6,7 @@ import org.droidplanner.services.android.impl.core.mission.commands.CameraTrigge
 import org.droidplanner.services.android.impl.core.mission.commands.ChangeSpeedImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ConditionYawImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
@@ -44,6 +45,7 @@ public enum MissionItemType {
     SET_RELAY("Set Relay"),
     DO_LAND_START("Do Land Start"),
     DO_JUMP("Do Jump"),
+    ENGINE_CONTROL("Engine Control"),
     LOITER_TO_ALT("Loiter to Alt"),
     TAKE_PICTURE("Take Picture")
     ;
@@ -100,6 +102,8 @@ public enum MissionItemType {
                 return new DoLandStartImpl(referenceItem);
             case DO_JUMP:
                 return new DoJumpImpl(referenceItem);
+            case ENGINE_CONTROL:
+                return new EngineControlImpl(referenceItem);
             default:
                 throw new IllegalArgumentException("Unrecognized mission item type (" + name + ")" + "");
         }

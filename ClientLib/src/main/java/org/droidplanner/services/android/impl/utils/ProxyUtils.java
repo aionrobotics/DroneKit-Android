@@ -7,6 +7,7 @@ import com.o3dr.services.android.lib.drone.mission.item.MissionItem;
 import com.o3dr.services.android.lib.drone.mission.item.command.CameraTrigger;
 import com.o3dr.services.android.lib.drone.mission.item.command.ChangeSpeed;
 import com.o3dr.services.android.lib.drone.mission.item.command.DoJump;
+import com.o3dr.services.android.lib.drone.mission.item.command.EngineControl;
 import com.o3dr.services.android.lib.drone.mission.item.command.EpmGripper;
 import com.o3dr.services.android.lib.drone.mission.item.command.LoiterToAlt;
 import com.o3dr.services.android.lib.drone.mission.item.command.ResetROI;
@@ -34,6 +35,7 @@ import org.droidplanner.services.android.impl.core.mission.commands.CameraTrigge
 import org.droidplanner.services.android.impl.core.mission.commands.ChangeSpeedImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ConditionYawImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
@@ -325,6 +327,12 @@ public class ProxyUtils {
                 break;
             }
 
+            case ENGINE_CONTROL: {
+                EngineControl proxy = (EngineControl) proxyItem;
+                missionItemImpl = new EngineControlImpl(mission, proxy.getStarterControl(), proxy.getUnused(), proxy.getHeightDelayCm());
+                break;
+            }
+
             default:
                 missionItemImpl = null;
                 break;
@@ -586,6 +594,18 @@ public class ProxyUtils {
                 DoJump proxy = new DoJump();
                 proxy.setWaypoint(source.getWaypoint());
                 proxy.setRepeatCount(source.getRepeatCount());
+
+                proxyMissionItem = proxy;
+                break;
+            }
+
+            case ENGINE_CONTROL: {
+                EngineControlImpl source = (EngineControlImpl) itemImpl;
+
+                EngineControl proxy = new EngineControl();
+                proxy.setStarterControl(source.getStarterControl());
+                proxy.setUnused(source.getUnused());
+                proxy.setHeightDelayCm(source.getHeightDelayCm());
 
                 proxyMissionItem = proxy;
                 break;
