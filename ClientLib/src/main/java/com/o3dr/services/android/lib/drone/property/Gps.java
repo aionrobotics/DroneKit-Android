@@ -105,7 +105,7 @@ public class Gps implements DroneAttribute {
         }
     }
     public LatLong getPosition() {
-        return getPosition(false);
+        return getPosition(true);
     }
 
     public void setGpsEph(double gpsEph) {
