@@ -6,7 +6,7 @@ import com.o3dr.services.android.lib.drone.mission.MissionItemType;
 import com.o3dr.services.android.lib.drone.mission.item.MissionItem;
 
 /**
- * Created by Toby on 7/31/2015.
+ * Created by Tom on 8/6/2019.
  */
 public class EngineControl extends MissionItem implements MissionItem.Command, android.os.Parcelable {
     private int starter_control;
