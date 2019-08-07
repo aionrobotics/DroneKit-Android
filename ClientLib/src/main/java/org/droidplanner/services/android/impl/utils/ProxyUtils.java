@@ -6,6 +6,7 @@ import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 import com.o3dr.services.android.lib.drone.mission.item.MissionItem;
 import com.o3dr.services.android.lib.drone.mission.item.command.CameraTrigger;
 import com.o3dr.services.android.lib.drone.mission.item.command.ChangeSpeed;
+import com.o3dr.services.android.lib.drone.mission.item.command.Delay;
 import com.o3dr.services.android.lib.drone.mission.item.command.DoJump;
 import com.o3dr.services.android.lib.drone.mission.item.command.EngineControl;
 import com.o3dr.services.android.lib.drone.mission.item.command.EpmGripper;
@@ -34,6 +35,7 @@ import org.droidplanner.services.android.impl.core.mission.MissionItemImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.CameraTriggerImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ChangeSpeedImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ConditionYawImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.DelayImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
@@ -330,6 +332,12 @@ public class ProxyUtils {
             case ENGINE_CONTROL: {
                 EngineControl proxy = (EngineControl) proxyItem;
                 missionItemImpl = new EngineControlImpl(mission, proxy.getStarterControl(), proxy.getUnused(), proxy.getHeightDelayCm());
+                break;
+            }
+
+            case DELAY: {
+                Delay proxy = (Delay) proxyItem;
+                missionItemImpl = new DelayImpl(mission, proxy.getSeconds(), proxy.getUTChour(), proxy.getUTCminute(), proxy.getUTCsecond());
                 break;
             }
 
