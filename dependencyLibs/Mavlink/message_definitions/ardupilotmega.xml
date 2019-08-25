@@ -283,7 +283,6 @@
       </entry>
       <entry value="2" name="LAND_IMMEDIATELY">
         <description>Flag set when plane is to immediately descend to break altitude and land without GCS intervention. Flag not set when plane is to loiter at Rally point until commanded to land.</description>
-    <!-- parachute action enum -->
       </entry>
     </enum>
     <!-- gripper action enum -->
