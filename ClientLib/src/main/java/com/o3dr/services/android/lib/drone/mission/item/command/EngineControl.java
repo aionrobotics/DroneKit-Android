@@ -10,38 +10,43 @@ import com.o3dr.services.android.lib.drone.mission.item.MissionItem;
  */
 public class EngineControl extends MissionItem implements MissionItem.Command, android.os.Parcelable {
     private int starter_control;
-    private int unused;
+    private int cold_start;
     private int height_delay_cm;
+    private int gear_state;
 
     public EngineControl(){ super(MissionItemType.ENGINE_CONTROL); }
 
-    public EngineControl(int starter_control, int unused, int height_delay_cm) {
+    public EngineControl(int starter_control, int cold_start, int height_delay_cm, int gear_state) {
         super(MissionItemType.ENGINE_CONTROL);
         this.starter_control = starter_control;
-        this.unused = unused;
+        this.cold_start = cold_start;
         this.height_delay_cm = height_delay_cm;
+        this.gear_state = gear_state;
     }
 
     public EngineControl(EngineControl copy){
         this();
         this.starter_control = copy.starter_control;
-        this.unused = copy.unused;
+        this.cold_start = copy.cold_start;
         this.height_delay_cm = copy.height_delay_cm;
+        this.gear_state = copy.gear_state;
     }
 
     protected EngineControl(Parcel in) {
         super(in);
         starter_control = in.readInt();
-        unused = in.readInt();
+        cold_start = in.readInt();
         height_delay_cm = in.readInt();
+        gear_state = in.readInt();
     }
 
     @Override
     public String toString() {
         return "EngineControl{" +
                 "starter_control=" + starter_control +
-                ", unused=" + unused +
+                ", cold_start=" + cold_start +
                 ", height_delay_cm=" + height_delay_cm +
+                ", gear_state=" + gear_state +
                 '}';
     }
 
@@ -54,7 +59,8 @@ public class EngineControl extends MissionItem implements MissionItem.Command, a
         EngineControl engineControl = (EngineControl) o;
 
         if (starter_control != engineControl.starter_control) return false;
-        if (unused != engineControl.unused) return false;
+        if (cold_start != engineControl.cold_start) return false;
+        if (gear_state != engineControl.gear_state) return false;
         return height_delay_cm == engineControl.height_delay_cm;
 
     }
@@ -63,8 +69,9 @@ public class EngineControl extends MissionItem implements MissionItem.Command, a
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + starter_control;
-        result = 31 * result + unused;
+        result = 31 * result + cold_start;
         result = 31 * result + height_delay_cm;
+        result = 31 * result + gear_state;
         return result;
     }
 
@@ -72,8 +79,9 @@ public class EngineControl extends MissionItem implements MissionItem.Command, a
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(starter_control);
-        dest.writeInt(unused);
+        dest.writeInt(cold_start);
         dest.writeInt(height_delay_cm);
+        dest.writeInt(gear_state);
     }
 
     @Override
@@ -89,12 +97,10 @@ public class EngineControl extends MissionItem implements MissionItem.Command, a
         this.starter_control = starter_control;
     }
 
-    public int getUnused() {
-        return unused;
-    }
+    public int getColdStart() { return cold_start; }
 
-    public void setUnused(int unused) {
-        this.unused = unused;
+    public void setColdStart(int cold_start) {
+        this.cold_start = cold_start;
     }
 
     public int getHeightDelayCm() {
@@ -102,6 +108,12 @@ public class EngineControl extends MissionItem implements MissionItem.Command, a
     }
 
     public void setHeightDelayCm(int height_delay_cm) { this.height_delay_cm = height_delay_cm; }
+
+    public int getGearState() {
+        return gear_state;
+    }
+
+    public void setGearState(int gear_state) { this.gear_state = gear_state; }
 
     public static final Creator<EngineControl> CREATOR = new Creator<EngineControl>() {
         @Override

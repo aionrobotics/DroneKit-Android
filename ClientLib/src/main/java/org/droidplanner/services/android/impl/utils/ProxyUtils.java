@@ -331,7 +331,7 @@ public class ProxyUtils {
 
             case ENGINE_CONTROL: {
                 EngineControl proxy = (EngineControl) proxyItem;
-                missionItemImpl = new EngineControlImpl(mission, proxy.getStarterControl(), proxy.getUnused(), proxy.getHeightDelayCm());
+                missionItemImpl = new EngineControlImpl(mission, proxy.getStarterControl(), proxy.getColdStart(), proxy.getHeightDelayCm(), proxy.getGearState());
                 break;
             }
 
@@ -612,8 +612,9 @@ public class ProxyUtils {
 
                 EngineControl proxy = new EngineControl();
                 proxy.setStarterControl(source.getStarterControl());
-                proxy.setUnused(source.getUnused());
+                proxy.setColdStart(source.getColdStart());
                 proxy.setHeightDelayCm(source.getHeightDelayCm());
+                proxy.setGearState(source.getGearState());
 
                 proxyMissionItem = proxy;
                 break;
