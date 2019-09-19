@@ -12,6 +12,8 @@ import com.o3dr.services.android.lib.drone.mission.item.command.DoJump;
 import com.o3dr.services.android.lib.drone.mission.item.command.EngineControl;
 import com.o3dr.services.android.lib.drone.mission.item.command.EpmGripper;
 import com.o3dr.services.android.lib.drone.mission.item.command.LoiterToAlt;
+import com.o3dr.services.android.lib.drone.mission.item.command.RepeatRelay;
+import com.o3dr.services.android.lib.drone.mission.item.command.RepeatServo;
 import com.o3dr.services.android.lib.drone.mission.item.command.ResetROI;
 import com.o3dr.services.android.lib.drone.mission.item.command.ReturnToLaunch;
 import com.o3dr.services.android.lib.drone.mission.item.command.SetRelay;
@@ -194,6 +196,18 @@ public enum MissionItemType {
         }
     },
 
+    REPEAT_SERVO("Repeat Servo") {
+        @Override
+        public MissionItem getNewItem() {
+            return new RepeatServo();
+        }
+
+        @Override
+        protected Creator<RepeatServo> getMissionItemCreator() {
+            return RepeatServo.CREATOR;
+        }
+    },
+
     YAW_CONDITION("Set Yaw") {
         @Override
         public MissionItem getNewItem() {
@@ -215,6 +229,18 @@ public enum MissionItemType {
         @Override
         protected Creator<SetRelay> getMissionItemCreator() {
             return SetRelay.CREATOR;
+        }
+    },
+
+    REPEAT_RELAY("Repeat Relay") {
+        @Override
+        public MissionItem getNewItem() {
+            return new RepeatRelay();
+        }
+
+        @Override
+        protected Creator<RepeatRelay> getMissionItemCreator() {
+            return RepeatRelay.CREATOR;
         }
     },
 

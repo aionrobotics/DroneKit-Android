@@ -26,6 +26,8 @@ import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatRelayImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatServoImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetRelayImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetServoImpl;
@@ -240,6 +242,9 @@ public class Mission extends DroneVariable<GenericMavLinkDrone> {
                 case MAV_CMD.MAV_CMD_DO_SET_SERVO:
                     received.add(new SetServoImpl(msg, this));
                     break;
+                case MAV_CMD.MAV_CMD_DO_REPEAT_SERVO:
+                    received.add(new RepeatServoImpl(msg, this));
+                    break;
                 case MAV_CMD.MAV_CMD_NAV_WAYPOINT:
                     received.add(new WaypointImpl(msg, this));
                     break;
@@ -281,6 +286,9 @@ public class Mission extends DroneVariable<GenericMavLinkDrone> {
                     break;
                 case MAV_CMD.MAV_CMD_DO_SET_RELAY:
                     received.add(new SetRelayImpl(msg, this));
+                    break;
+                case MAV_CMD.MAV_CMD_DO_REPEAT_RELAY:
+                    received.add(new RepeatRelayImpl(msg, this));
                     break;
                 case MAV_CMD.MAV_CMD_DO_JUMP:
                     received.add(new DoJumpImpl(msg, this));

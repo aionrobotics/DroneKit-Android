@@ -11,6 +11,8 @@ import com.o3dr.services.android.lib.drone.mission.item.command.DoJump;
 import com.o3dr.services.android.lib.drone.mission.item.command.EngineControl;
 import com.o3dr.services.android.lib.drone.mission.item.command.EpmGripper;
 import com.o3dr.services.android.lib.drone.mission.item.command.LoiterToAlt;
+import com.o3dr.services.android.lib.drone.mission.item.command.RepeatRelay;
+import com.o3dr.services.android.lib.drone.mission.item.command.RepeatServo;
 import com.o3dr.services.android.lib.drone.mission.item.command.ResetROI;
 import com.o3dr.services.android.lib.drone.mission.item.command.ReturnToLaunch;
 import com.o3dr.services.android.lib.drone.mission.item.command.SetRelay;
@@ -40,6 +42,8 @@ import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatRelayImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatServoImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetRelayImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetServoImpl;
@@ -160,6 +164,14 @@ public class ProxyUtils {
                 SetServo proxy = (SetServo) proxyItem;
 
                 SetServoImpl temp = new SetServoImpl(mission, proxy.getChannel(), proxy.getPwm());
+
+                missionItemImpl = temp;
+                break;
+            }
+            case REPEAT_SERVO: {
+                RepeatServo proxy = (RepeatServo) proxyItem;
+
+                RepeatServoImpl temp = new RepeatServoImpl(mission, proxy.getChannel(), proxy.getPwm(), proxy.getCount(), proxy.getTime());
 
                 missionItemImpl = temp;
                 break;
@@ -320,6 +332,11 @@ public class ProxyUtils {
             case SET_RELAY: {
                 SetRelay proxy = (SetRelay) proxyItem;
                 missionItemImpl = new SetRelayImpl(mission, proxy.getRelayNumber(), proxy.isEnabled());
+                break;
+            }
+            case REPEAT_RELAY: {
+                RepeatRelay proxy = (RepeatRelay) proxyItem;
+                missionItemImpl = new RepeatRelayImpl(mission, proxy.getRelayNumber(), proxy.getCount(), proxy.getTime());
                 break;
             }
 
@@ -573,6 +590,18 @@ public class ProxyUtils {
                 proxyMissionItem = temp;
                 break;
             }
+            case REPEAT_SERVO: {
+                RepeatServoImpl source = (RepeatServoImpl) itemImpl;
+
+                RepeatServo temp = new RepeatServo();
+                temp.setChannel(source.getChannel());
+                temp.setPwm(source.getPwm());
+                temp.setCount(source.getCount());
+                temp.setTime(source.getTime());
+
+                proxyMissionItem = temp;
+                break;
+            }
             case CONDITION_YAW: {
                 ConditionYawImpl source = (ConditionYawImpl) itemImpl;
 
@@ -591,6 +620,18 @@ public class ProxyUtils {
                 SetRelay proxy = new SetRelay();
                 proxy.setRelayNumber(impl.getRelayNumber());
                 proxy.setEnabled(impl.isEnabled());
+
+                proxyMissionItem = proxy;
+                break;
+            }
+
+            case REPEAT_RELAY: {
+                RepeatRelayImpl impl = (RepeatRelayImpl) itemImpl;
+
+                RepeatRelay proxy = new RepeatRelay();
+                proxy.setRelayNumber(impl.getRelayNumber());
+                proxy.setCount(impl.getCount());
+                proxy.setTime(impl.getTime());
 
                 proxyMissionItem = proxy;
                 break;

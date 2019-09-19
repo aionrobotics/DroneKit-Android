@@ -6,14 +6,13 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.mavlink.messages.MAVLinkMessage;
+import com.github.zafarkhaja.semver.Version;
 import com.mavlink.ardupilotmega.msg_camera_feedback;
 import com.mavlink.ardupilotmega.msg_mag_cal_progress;
 import com.mavlink.ardupilotmega.msg_mag_cal_report;
 import com.mavlink.ardupilotmega.msg_mount_configure;
 import com.mavlink.ardupilotmega.msg_mount_status;
 import com.mavlink.ardupilotmega.msg_radio;
-import com.mavlink.common.msg_global_position_int;
 import com.mavlink.common.msg_named_value_int;
 import com.mavlink.common.msg_raw_imu;
 import com.mavlink.common.msg_rc_channels_raw;
@@ -23,7 +22,7 @@ import com.mavlink.common.msg_sys_status;
 import com.mavlink.common.msg_vfr_hud;
 import com.mavlink.enums.MAV_MOUNT_MODE;
 import com.mavlink.enums.MAV_SYS_STATUS_SENSOR;
-import com.github.zafarkhaja.semver.Version;
+import com.mavlink.messages.MAVLinkMessage;
 import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 import com.o3dr.services.android.lib.drone.action.ControlActions;
 import com.o3dr.services.android.lib.drone.action.ExperimentalActions;
@@ -245,10 +244,25 @@ public abstract class ArduPilot extends GenericMavLinkDrone {
                 MavLinkDoCmds.setRelay(this, relayNumber, isOn, listener);
                 return true;
 
+            case ExperimentalActions.ACTION_REPEAT_RELAY:
+                int repeatRelayNumber = data.getInt(ExperimentalActions.EXTRA_REPEAT_RELAY_NUMBER);
+                int repeatReleayCount = data.getInt(ExperimentalActions.EXTRA_REPEAT_RELAY_COUNT);
+                int repeatRelayTime = data.getInt(ExperimentalActions.EXTRA_REPEAT_RELAY_TIME);
+                MavLinkDoCmds.repeatRelay(this, repeatRelayNumber, repeatReleayCount, repeatRelayTime, listener);
+                return true;
+
             case ExperimentalActions.ACTION_SET_SERVO:
                 int channel = data.getInt(ExperimentalActions.EXTRA_SERVO_CHANNEL);
                 int pwm = data.getInt(ExperimentalActions.EXTRA_SERVO_PWM);
                 MavLinkDoCmds.setServo(this, channel, pwm, listener);
+                return true;
+
+            case ExperimentalActions.ACTION_REPEAT_SERVO:
+                int repeatServoChannel = data.getInt(ExperimentalActions.EXTRA_REPEAT_SERVO_CHANNEL);
+                int repeatServoPwm = data.getInt(ExperimentalActions.EXTRA_REPEAT_SERVO_PWM);
+                int repeatServoCount = data.getInt(ExperimentalActions.EXTRA_REPEAT_SERVO_COUNT);
+                int repeatServoTime = data.getInt(ExperimentalActions.EXTRA_REPEAT_SERVO_TIME);
+                MavLinkDoCmds.repeatServo(this, repeatServoChannel, repeatServoPwm, repeatServoCount, repeatServoTime, listener);
                 return true;
 
             // CONTROL ACTIONS

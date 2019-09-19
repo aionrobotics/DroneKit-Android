@@ -19,6 +19,8 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.o3dr.services.android.lib.drone.action.CameraActions.EXTRA_VIDEO_TAG;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACTION_REPEAT_RELAY;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACTION_REPEAT_SERVO;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACTION_SEND_MAVLINK_MESSAGE;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACTION_SET_RELAY;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACTION_SET_ROI;
@@ -27,6 +29,13 @@ import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.ACT
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_IS_RELAY_ON;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_MAVLINK_MESSAGE;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_RELAY_NUMBER;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_RELAY_COUNT;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_RELAY_NUMBER;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_RELAY_TIME;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_SERVO_CHANNEL;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_SERVO_COUNT;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_SERVO_PWM;
+import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_REPEAT_SERVO_TIME;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_SERVO_CHANNEL;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_SERVO_PWM;
 import static com.o3dr.services.android.lib.drone.action.ExperimentalActions.EXTRA_SET_ROI_LAT_LONG_ALT;
@@ -141,6 +150,31 @@ public class ExperimentalApi extends Api {
     }
 
     /**
+     * Repeat setting a Relay pin’s voltage high or low
+     *
+     * @param relayNumber
+     * @param count
+     * @param time
+     * */
+    public void repeatRelay(int relayNumber, int count, int time) { repeatRelay(relayNumber, count, time, null); }
+
+    /**
+     * Repeat setting a Relay pin’s voltage high or low
+     *
+     * @param relayNumber
+     * @param count
+     * @param time
+     * @param listener    Register a callback to receive update of the command execution state.
+     */
+    public void repeatRelay(int relayNumber, int count, int time, AbstractCommandListener listener) {
+        Bundle params = new Bundle(4);
+        params.putInt(EXTRA_REPEAT_RELAY_NUMBER, relayNumber);
+        params.putInt(EXTRA_REPEAT_RELAY_COUNT, count);
+        params.putInt(EXTRA_REPEAT_RELAY_TIME, time);
+        drone.performAsyncActionOnDroneThread(new Action(ACTION_REPEAT_RELAY, params), listener);
+    }
+
+    /**
      * Move a servo to a particular pwm value
      *
      * @param channel the output channel the servo is attached to
@@ -162,6 +196,34 @@ public class ExperimentalApi extends Api {
         params.putInt(EXTRA_SERVO_CHANNEL, channel);
         params.putInt(EXTRA_SERVO_PWM, pwm);
         drone.performAsyncActionOnDroneThread(new Action(ACTION_SET_SERVO, params), listener);
+    }
+
+    /**
+     * Repeat setting a servo to a particular pwm value
+     *
+     * @param channel the output channel the servo is attached to
+     * @param pwm     PWM value to output to the servo. Servo’s generally accept pwm values between 1000 and 2000
+     * @param count
+     * @param time
+     */
+    public void repeatServo(int channel, int pwm, int count, int time) { repeatServo(channel, pwm,count, time, null); }
+
+    /**
+     * Move a servo to a particular pwm value
+     *
+     * @param channel  the output channel the servo is attached to
+     * @param pwm      PWM value to output to the servo. Servo’s generally accept pwm values between 1000 and 2000
+     * @param count
+     * @param time
+     * @param listener Register a callback to receive update of the command execution state.
+     */
+    public void repeatServo(int channel, int pwm, int count, int time, AbstractCommandListener listener) {
+        Bundle params = new Bundle(4);
+        params.putInt(EXTRA_REPEAT_SERVO_CHANNEL, channel);
+        params.putInt(EXTRA_REPEAT_SERVO_PWM, pwm);
+        params.putInt(EXTRA_REPEAT_SERVO_COUNT, count);
+        params.putInt(EXTRA_REPEAT_SERVO_TIME, time);
+        drone.performAsyncActionOnDroneThread(new Action(ACTION_REPEAT_SERVO, params), listener);
     }
 
     /**

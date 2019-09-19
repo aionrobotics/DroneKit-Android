@@ -25,9 +25,20 @@ public class ExperimentalActions {
     public static final String EXTRA_RELAY_NUMBER = "extra_relay_number";
     public static final String EXTRA_IS_RELAY_ON = "extra_is_relay_on";
 
+    public static final String ACTION_REPEAT_RELAY = Utils.PACKAGE_NAME + ".action.REPEAT_RELAY";
+    public static final String EXTRA_REPEAT_RELAY_NUMBER = "extra_repeat_relay_number";
+    public static final String EXTRA_REPEAT_RELAY_COUNT = "extra_repeat_relay_count";
+    public static final String EXTRA_REPEAT_RELAY_TIME = "extra_repeat_relay_time";
+
     public static final String ACTION_SET_SERVO = Utils.PACKAGE_NAME + ".action.SET_SERVO";
     public static final String EXTRA_SERVO_CHANNEL = "extra_servo_channel";
     public static final String EXTRA_SERVO_PWM = "extra_servo_PWM";
+
+    public static final String ACTION_REPEAT_SERVO = Utils.PACKAGE_NAME + ".action.REPEAT_SERVO";
+    public static final String EXTRA_REPEAT_SERVO_CHANNEL = "extra_repeat_servo_channel";
+    public static final String EXTRA_REPEAT_SERVO_PWM = "extra_repeat_servo_PWM";
+    public static final String EXTRA_REPEAT_SERVO_COUNT = "extra_repeat_servo_count";
+    public static final String EXTRA_REPEAT_SERVO_TIME = "extra_repeat_servo_time";
 
     public static final String ACTION_START_VIDEO_STREAM_FOR_OBSERVER = Utils.PACKAGE_NAME + ".action.camera.START_VIDEO_STREAM_FOR_OBSERVER";
     public static final String ACTION_STOP_VIDEO_STREAM_FOR_OBSERVER = Utils.PACKAGE_NAME + ".action.camera.STOP_VIDEO_STREAM_FOR_OBSERVER";

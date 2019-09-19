@@ -6,10 +6,10 @@ import com.mavlink.common.msg_command_long;
 import com.mavlink.common.msg_mission_set_current;
 import com.mavlink.enums.GRIPPER_ACTIONS;
 import com.mavlink.enums.MAV_CMD;
-
-import org.droidplanner.services.android.impl.core.drone.autopilot.MavLinkDrone;
 import com.o3dr.services.android.lib.coordinate.LatLongAlt;
 import com.o3dr.services.android.lib.model.ICommandListener;
+
+import org.droidplanner.services.android.impl.core.drone.autopilot.MavLinkDrone;
 
 public class MavLinkDoCmds {
 
@@ -98,10 +98,33 @@ public class MavLinkDoCmds {
     }
 
     /**
+     * Set a Relay pin’s voltage high or low
+     *
+     * @param drone         target vehicle
+     * @param relayNumber
+     * @param count         Cycle count
+     * @param time          Cycle time.
+     */
+    public static void repeatRelay(MavLinkDrone drone, int relayNumber, int count, int time, ICommandListener listener) {
+        if (drone == null)
+            return;
+
+        msg_command_long msg = new msg_command_long();
+        msg.target_system = drone.getSysid();
+        msg.target_component = drone.getCompid();
+        msg.command = MAV_CMD.MAV_CMD_DO_REPEAT_RELAY;
+        msg.param1 = relayNumber;
+        msg.param2 = count;
+        msg.param3 = time;
+
+        drone.getMavClient().sendMessage(msg, listener);
+    }
+
+    /**
      * Move a servo to a particular pwm value
      *
      * @param drone   target vehicle
-     * @param channel he output channel the servo is attached to
+     * @param channel the output channel the servo is attached to
      * @param pwm     PWM value to output to the servo. Servo’s generally accept pwm values between 1000 and 2000
      */
     public static void setServo(MavLinkDrone drone, int channel, int pwm, ICommandListener listener) {
@@ -114,6 +137,31 @@ public class MavLinkDoCmds {
         msg.command = MAV_CMD.MAV_CMD_DO_SET_SERVO;
         msg.param1 = channel;
         msg.param2 = pwm;
+
+        drone.getMavClient().sendMessage(msg, listener);
+    }
+
+    /**
+     * Move a servo to a particular pwm value
+     *
+     * @param drone   target vehicle
+     * @param channel the output channel the servo is attached to
+     * @param pwm     PWM value to output to the servo. Servo’s generally accept pwm values between 1000 and 2000
+     * @param count   Cycle count
+     * @param time    Cycle time.
+     */
+    public static void repeatServo(MavLinkDrone drone, int channel, int pwm, int count, int time, ICommandListener listener) {
+        if (drone == null)
+            return;
+
+        msg_command_long msg = new msg_command_long();
+        msg.target_system = drone.getSysid();
+        msg.target_component = drone.getCompid();
+        msg.command = MAV_CMD.MAV_CMD_DO_REPEAT_SERVO;
+        msg.param1 = channel;
+        msg.param2 = pwm;
+        msg.param3 = count;
+        msg.param4 = time;
 
         drone.getMavClient().sendMessage(msg, listener);
     }

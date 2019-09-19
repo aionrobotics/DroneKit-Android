@@ -10,6 +10,8 @@ import org.droidplanner.services.android.impl.core.mission.commands.DoJumpImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EngineControlImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.EpmGripperImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.LoiterToAltImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatRelayImpl;
+import org.droidplanner.services.android.impl.core.mission.commands.RepeatServoImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.ReturnToHomeImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetRelayImpl;
 import org.droidplanner.services.android.impl.core.mission.commands.SetServoImpl;
@@ -42,8 +44,10 @@ public enum MissionItemType {
     CAMERA_TRIGGER("Camera Trigger"),
     EPM_GRIPPER("EPM"),
     SET_SERVO("Set Servo"),
+    REPEAT_SERVO("Repeat Servo"),
     CONDITION_YAW("Set Yaw"),
     SET_RELAY("Set Relay"),
+    REPEAT_RELAY("Repeat Relay"),
     DO_LAND_START("Do Land Start"),
     DO_JUMP("Do Jump"),
     ENGINE_CONTROL("Engine Control"),
@@ -96,10 +100,14 @@ public enum MissionItemType {
                 return new StructureScannerImpl(referenceItem);
             case SET_SERVO:
                 return new SetServoImpl(referenceItem);
+            case REPEAT_SERVO:
+                return new RepeatServoImpl(referenceItem);
             case CONDITION_YAW:
                 return new ConditionYawImpl(referenceItem);
             case SET_RELAY:
                 return new SetRelayImpl(referenceItem);
+            case REPEAT_RELAY:
+                return new RepeatRelayImpl(referenceItem);
             case DO_LAND_START:
                 return new DoLandStartImpl(referenceItem);
             case DO_JUMP:
