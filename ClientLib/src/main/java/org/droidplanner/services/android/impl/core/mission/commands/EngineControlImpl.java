@@ -69,7 +69,7 @@ public class EngineControlImpl extends MissionCMD{
     public void unpackMAVMessage(msg_mission_item mavMsg) {
         starter_control = (int)mavMsg.param1;
         cold_start = (int)mavMsg.param2;
-        height_delay_cm = (int)mavMsg.param3;
+        height_delay_cm = (int)mavMsg.param3 * 100;
         gear_state = (int)mavMsg.param4;
     }
 
