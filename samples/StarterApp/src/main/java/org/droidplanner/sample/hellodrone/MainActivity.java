@@ -468,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements DroneListener, To
     protected void updateVehicleMode() {
         State vehicleState = this.drone.getAttribute(AttributeType.STATE);
         VehicleMode vehicleMode = vehicleState.getVehicleMode();
-        ArrayAdapter arrayAdapter = (ArrayAdapter) this.modeSelector.getAdapter();
+        ArrayAdapter<VehicleMode> arrayAdapter = (ArrayAdapter<VehicleMode>)this.modeSelector.getAdapter();
         this.modeSelector.setSelection(arrayAdapter.getPosition(vehicleMode));
     }
 
