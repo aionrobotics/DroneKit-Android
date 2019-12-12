@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Set a parameter value (write new value to permanent storage). IMPORTANT: The receiving component should acknowledge the new parameter value by sending a PARAM_VALUE message to all communication partners. This will also ensure that multiple GCS all have an up-to-date list of all parameters. If the sending GCS did not receive a PARAM_VALUE message within its timeout time, it should re-send the PARAM_SET message. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html
@@ -18,7 +23,6 @@ public class msg_param_set extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_PARAM_SET = 23;
     public static final int MAVLINK_MSG_LENGTH = 23;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PARAM_SET;
-
 
       
     /**
@@ -58,22 +62,16 @@ public class msg_param_set extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_PARAM_SET;
         
         packet.payload.putFloat(param_value);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         
         for (int i = 0; i < param_id.length; i++) {
             packet.payload.putByte(param_id[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(param_type);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -86,29 +84,54 @@ public class msg_param_set extends MAVLinkMessage {
         payload.resetIndex();
         
         this.param_value = payload.getFloat();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.param_id.length; i++) {
             this.param_id[i] = payload.getByte();
         }
                 
-        
         this.param_type = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_param_set() {
-        msgid = MAVLINK_MSG_ID_PARAM_SET;
+        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_param_set( float param_value, short target_system, short target_component, byte[] param_id, short param_type) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
+
+        this.param_value = param_value;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.param_id = param_id;
+        this.param_type = param_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_param_set( float param_value, short target_system, short target_component, byte[] param_id, short param_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.param_value = param_value;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.param_id = param_id;
+        this.param_type = param_type;
+        
     }
 
     /**
@@ -117,11 +140,57 @@ public class msg_param_set extends MAVLinkMessage {
      *
      */
     public msg_param_set(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_param_set(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_SET;
+
+        readJSONheader(jo);
+        
+        this.param_value = (float)jo.optFloat("param_value");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+         
+        JSONArray ja_param_id = jo.optJSONArray("param_id");
+        for (int i = 0; i < Math.min(this.param_id.length, ja_param_id.length()); i++) {
+            this.param_id[i] = (byte)ja_param_id.getInt(i);
+        }
+                
+        this.param_type = (short)jo.optInt("param_type");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("param_value", param_value);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+         
+        JSONArray ja_param_id = new JSONArray();
+        for (int i = 0; i < this.param_id.length; i++) {
+            ja_param_id.put(this.param_id[i]);
+        }
+        jo.put("param_id", (Object)ja_param_id);
+                
+        jo.put("param_type", param_type);
+        
+        
+        return jo;
     }
 
            

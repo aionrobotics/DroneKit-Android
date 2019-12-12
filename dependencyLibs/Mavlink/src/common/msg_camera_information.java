@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about a camera
@@ -18,7 +23,6 @@ public class msg_camera_information extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_INFORMATION = 259;
     public static final int MAVLINK_MSG_LENGTH = 235;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_INFORMATION;
-
 
       
     /**
@@ -98,46 +102,32 @@ public class msg_camera_information extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putUnsignedInt(firmware_version);
-        
         packet.payload.putFloat(focal_length);
-        
         packet.payload.putFloat(sensor_size_h);
-        
         packet.payload.putFloat(sensor_size_v);
-        
         packet.payload.putUnsignedInt(flags);
-        
         packet.payload.putUnsignedShort(resolution_h);
-        
         packet.payload.putUnsignedShort(resolution_v);
-        
         packet.payload.putUnsignedShort(cam_definition_version);
-        
         
         for (int i = 0; i < vendor_name.length; i++) {
             packet.payload.putUnsignedByte(vendor_name[i]);
         }
                     
         
-        
         for (int i = 0; i < model_name.length; i++) {
             packet.payload.putUnsignedByte(model_name[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(lens_id);
-        
         
         for (int i = 0; i < cam_definition_uri.length; i++) {
             packet.payload.putByte(cam_definition_uri[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -150,53 +140,86 @@ public class msg_camera_information extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.firmware_version = payload.getUnsignedInt();
-        
         this.focal_length = payload.getFloat();
-        
         this.sensor_size_h = payload.getFloat();
-        
         this.sensor_size_v = payload.getFloat();
-        
         this.flags = payload.getUnsignedInt();
-        
         this.resolution_h = payload.getUnsignedShort();
-        
         this.resolution_v = payload.getUnsignedShort();
-        
         this.cam_definition_version = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.vendor_name.length; i++) {
             this.vendor_name[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.model_name.length; i++) {
             this.model_name[i] = payload.getUnsignedByte();
         }
                 
-        
         this.lens_id = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.cam_definition_uri.length; i++) {
             this.cam_definition_uri[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_information() {
-        msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_information( long time_boot_ms, long firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, long flags, int resolution_h, int resolution_v, int cam_definition_version, short[] vendor_name, short[] model_name, short lens_id, byte[] cam_definition_uri) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+
+        this.time_boot_ms = time_boot_ms;
+        this.firmware_version = firmware_version;
+        this.focal_length = focal_length;
+        this.sensor_size_h = sensor_size_h;
+        this.sensor_size_v = sensor_size_v;
+        this.flags = flags;
+        this.resolution_h = resolution_h;
+        this.resolution_v = resolution_v;
+        this.cam_definition_version = cam_definition_version;
+        this.vendor_name = vendor_name;
+        this.model_name = model_name;
+        this.lens_id = lens_id;
+        this.cam_definition_uri = cam_definition_uri;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_information( long time_boot_ms, long firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, long flags, int resolution_h, int resolution_v, int cam_definition_version, short[] vendor_name, short[] model_name, short lens_id, byte[] cam_definition_uri, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.firmware_version = firmware_version;
+        this.focal_length = focal_length;
+        this.sensor_size_h = sensor_size_h;
+        this.sensor_size_v = sensor_size_v;
+        this.flags = flags;
+        this.resolution_h = resolution_h;
+        this.resolution_v = resolution_v;
+        this.cam_definition_version = cam_definition_version;
+        this.vendor_name = vendor_name;
+        this.model_name = model_name;
+        this.lens_id = lens_id;
+        this.cam_definition_uri = cam_definition_uri;
+        
     }
 
     /**
@@ -205,11 +228,95 @@ public class msg_camera_information extends MAVLinkMessage {
      *
      */
     public msg_camera_information(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_information(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_INFORMATION;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.firmware_version = (long)jo.optLong("firmware_version");
+        this.focal_length = (float)jo.optFloat("focal_length");
+        this.sensor_size_h = (float)jo.optFloat("sensor_size_h");
+        this.sensor_size_v = (float)jo.optFloat("sensor_size_v");
+        this.flags = (long)jo.optLong("flags");
+        this.resolution_h = (int)jo.optInt("resolution_h");
+        this.resolution_v = (int)jo.optInt("resolution_v");
+        this.cam_definition_version = (int)jo.optInt("cam_definition_version");
+         
+        JSONArray ja_vendor_name = jo.optJSONArray("vendor_name");
+        for (int i = 0; i < Math.min(this.vendor_name.length, ja_vendor_name.length()); i++) {
+            this.vendor_name[i] = (short)ja_vendor_name.getInt(i);
+        }
+                
+         
+        JSONArray ja_model_name = jo.optJSONArray("model_name");
+        for (int i = 0; i < Math.min(this.model_name.length, ja_model_name.length()); i++) {
+            this.model_name[i] = (short)ja_model_name.getInt(i);
+        }
+                
+        this.lens_id = (short)jo.optInt("lens_id");
+         
+        JSONArray ja_cam_definition_uri = jo.optJSONArray("cam_definition_uri");
+        for (int i = 0; i < Math.min(this.cam_definition_uri.length, ja_cam_definition_uri.length()); i++) {
+            this.cam_definition_uri[i] = (byte)ja_cam_definition_uri.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("firmware_version", firmware_version);
+        jo.put("focal_length", focal_length);
+        jo.put("sensor_size_h", sensor_size_h);
+        jo.put("sensor_size_v", sensor_size_v);
+        jo.put("flags", flags);
+        jo.put("resolution_h", resolution_h);
+        jo.put("resolution_v", resolution_v);
+        jo.put("cam_definition_version", cam_definition_version);
+         
+        JSONArray ja_vendor_name = new JSONArray();
+        for (int i = 0; i < this.vendor_name.length; i++) {
+            ja_vendor_name.put(this.vendor_name[i]);
+        }
+        jo.put("vendor_name", (Object)ja_vendor_name);
+                
+         
+        JSONArray ja_model_name = new JSONArray();
+        for (int i = 0; i < this.model_name.length; i++) {
+            ja_model_name.put(this.model_name[i]);
+        }
+        jo.put("model_name", (Object)ja_model_name);
+                
+        jo.put("lens_id", lens_id);
+         
+        JSONArray ja_cam_definition_uri = new JSONArray();
+        for (int i = 0; i < this.cam_definition_uri.length; i++) {
+            ja_cam_definition_uri.put(this.cam_definition_uri[i]);
+        }
+        jo.put("cam_definition_uri", (Object)ja_cam_definition_uri);
+                
+        
+        
+        return jo;
     }
 
                              

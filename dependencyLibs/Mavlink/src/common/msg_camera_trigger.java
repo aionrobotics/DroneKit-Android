@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Camera-IMU triggering and synchronisation message.
@@ -18,7 +23,6 @@ public class msg_camera_trigger extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_TRIGGER = 112;
     public static final int MAVLINK_MSG_LENGTH = 12;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_TRIGGER;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_camera_trigger extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(seq);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_camera_trigger extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.seq = payload.getUnsignedInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_trigger() {
-        msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_trigger( long time_usec, long seq) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+
+        this.time_usec = time_usec;
+        this.seq = seq;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_trigger( long time_usec, long seq, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.seq = seq;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_camera_trigger extends MAVLinkMessage {
      *
      */
     public msg_camera_trigger(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_trigger(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_TRIGGER;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.seq = (long)jo.optLong("seq");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("seq", seq);
+        
+        
+        return jo;
     }
 
         

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The current system altitude.
@@ -18,7 +23,6 @@ public class msg_altitude extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ALTITUDE = 141;
     public static final int MAVLINK_MSG_LENGTH = 32;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ALTITUDE;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_altitude extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ALTITUDE;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(altitude_monotonic);
-        
         packet.payload.putFloat(altitude_amsl);
-        
         packet.payload.putFloat(altitude_local);
-        
         packet.payload.putFloat(altitude_relative);
-        
         packet.payload.putFloat(altitude_terrain);
-        
         packet.payload.putFloat(bottom_clearance);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_altitude extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.altitude_monotonic = payload.getFloat();
-        
         this.altitude_amsl = payload.getFloat();
-        
         this.altitude_local = payload.getFloat();
-        
         this.altitude_relative = payload.getFloat();
-        
         this.altitude_terrain = payload.getFloat();
-        
         this.bottom_clearance = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_altitude() {
-        msgid = MAVLINK_MSG_ID_ALTITUDE;
+        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_altitude( long time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance) {
+        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
+
+        this.time_usec = time_usec;
+        this.altitude_monotonic = altitude_monotonic;
+        this.altitude_amsl = altitude_amsl;
+        this.altitude_local = altitude_local;
+        this.altitude_relative = altitude_relative;
+        this.altitude_terrain = altitude_terrain;
+        this.bottom_clearance = bottom_clearance;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_altitude( long time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.altitude_monotonic = altitude_monotonic;
+        this.altitude_amsl = altitude_amsl;
+        this.altitude_local = altitude_local;
+        this.altitude_relative = altitude_relative;
+        this.altitude_terrain = altitude_terrain;
+        this.bottom_clearance = bottom_clearance;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_altitude extends MAVLinkMessage {
      *
      */
     public msg_altitude(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_altitude(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ALTITUDE;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.altitude_monotonic = (float)jo.optFloat("altitude_monotonic");
+        this.altitude_amsl = (float)jo.optFloat("altitude_amsl");
+        this.altitude_local = (float)jo.optFloat("altitude_local");
+        this.altitude_relative = (float)jo.optFloat("altitude_relative");
+        this.altitude_terrain = (float)jo.optFloat("altitude_terrain");
+        this.bottom_clearance = (float)jo.optFloat("bottom_clearance");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("altitude_monotonic", altitude_monotonic);
+        jo.put("altitude_amsl", altitude_amsl);
+        jo.put("altitude_local", altitude_local);
+        jo.put("altitude_relative", altitude_relative);
+        jo.put("altitude_terrain", altitude_terrain);
+        jo.put("bottom_clearance", bottom_clearance);
+        
+        
+        return jo;
     }
 
                   

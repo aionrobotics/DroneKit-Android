@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sets a desired vehicle position in a local north-east-down coordinate frame. Used by an external controller to command the vehicle (manual controller or other system).
@@ -18,7 +23,6 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED = 84;
     public static final int MAVLINK_MSG_LENGTH = 53;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
-
 
       
     /**
@@ -113,40 +117,23 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         packet.payload.putFloat(vx);
-        
         packet.payload.putFloat(vy);
-        
         packet.payload.putFloat(vz);
-        
         packet.payload.putFloat(afx);
-        
         packet.payload.putFloat(afy);
-        
         packet.payload.putFloat(afz);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(yaw_rate);
-        
         packet.payload.putUnsignedShort(type_mask);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(coordinate_frame);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -159,47 +146,83 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
         this.vx = payload.getFloat();
-        
         this.vy = payload.getFloat();
-        
         this.vz = payload.getFloat();
-        
         this.afx = payload.getFloat();
-        
         this.afy = payload.getFloat();
-        
         this.afz = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.yaw_rate = payload.getFloat();
-        
         this.type_mask = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.coordinate_frame = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_set_position_target_local_ned() {
-        msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_set_position_target_local_ned( long time_boot_ms, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate, int type_mask, short target_system, short target_component, short coordinate_frame) {
+        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+
+        this.time_boot_ms = time_boot_ms;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.afx = afx;
+        this.afy = afy;
+        this.afz = afz;
+        this.yaw = yaw;
+        this.yaw_rate = yaw_rate;
+        this.type_mask = type_mask;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.coordinate_frame = coordinate_frame;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_set_position_target_local_ned( long time_boot_ms, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate, int type_mask, short target_system, short target_component, short coordinate_frame, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.afx = afx;
+        this.afy = afy;
+        this.afz = afz;
+        this.yaw = yaw;
+        this.yaw_rate = yaw_rate;
+        this.type_mask = type_mask;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.coordinate_frame = coordinate_frame;
+        
     }
 
     /**
@@ -208,11 +231,68 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
      *
      */
     public msg_set_position_target_local_ned(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_set_position_target_local_ned(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+        this.vx = (float)jo.optFloat("vx");
+        this.vy = (float)jo.optFloat("vy");
+        this.vz = (float)jo.optFloat("vz");
+        this.afx = (float)jo.optFloat("afx");
+        this.afy = (float)jo.optFloat("afy");
+        this.afz = (float)jo.optFloat("afz");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.yaw_rate = (float)jo.optFloat("yaw_rate");
+        this.type_mask = (int)jo.optInt("type_mask");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.coordinate_frame = (short)jo.optInt("coordinate_frame");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("afx", afx);
+        jo.put("afy", afy);
+        jo.put("afz", afz);
+        jo.put("yaw", yaw);
+        jo.put("yaw_rate", yaw_rate);
+        jo.put("type_mask", type_mask);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("coordinate_frame", coordinate_frame);
+        
+        
+        return jo;
     }
 
                                     

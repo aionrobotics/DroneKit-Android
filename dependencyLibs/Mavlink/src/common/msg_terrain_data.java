@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a TERRAIN_REQUEST
@@ -18,7 +23,6 @@ public class msg_terrain_data extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_TERRAIN_DATA = 134;
     public static final int MAVLINK_MSG_LENGTH = 43;
     private static final long serialVersionUID = MAVLINK_MSG_ID_TERRAIN_DATA;
-
 
       
     /**
@@ -58,22 +62,16 @@ public class msg_terrain_data extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
         
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putUnsignedShort(grid_spacing);
-        
         
         for (int i = 0; i < data.length; i++) {
             packet.payload.putShort(data[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(gridbit);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -86,29 +84,54 @@ public class msg_terrain_data extends MAVLinkMessage {
         payload.resetIndex();
         
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.grid_spacing = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getShort();
         }
                 
-        
         this.gridbit = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_terrain_data() {
-        msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_terrain_data( int lat, int lon, int grid_spacing, short[] data, short gridbit) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+
+        this.lat = lat;
+        this.lon = lon;
+        this.grid_spacing = grid_spacing;
+        this.data = data;
+        this.gridbit = gridbit;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_terrain_data( int lat, int lon, int grid_spacing, short[] data, short gridbit, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.lat = lat;
+        this.lon = lon;
+        this.grid_spacing = grid_spacing;
+        this.data = data;
+        this.gridbit = gridbit;
+        
     }
 
     /**
@@ -117,11 +140,57 @@ public class msg_terrain_data extends MAVLinkMessage {
      *
      */
     public msg_terrain_data(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_terrain_data(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_DATA;
+
+        readJSONheader(jo);
+        
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.grid_spacing = (int)jo.optInt("grid_spacing");
+         
+        JSONArray ja_data = jo.optJSONArray("data");
+        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+            this.data[i] = (short)ja_data.getInt(i);
+        }
+                
+        this.gridbit = (short)jo.optInt("gridbit");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("grid_spacing", grid_spacing);
+         
+        JSONArray ja_data = new JSONArray();
+        for (int i = 0; i < this.data.length; i++) {
+            ja_data.put(this.data[i]);
+        }
+        jo.put("data", (Object)ja_data);
+                
+        jo.put("gridbit", gridbit);
+        
+        
+        return jo;
     }
 
               

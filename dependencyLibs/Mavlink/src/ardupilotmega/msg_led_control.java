@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Control vehicle LEDs.
@@ -18,7 +23,6 @@ public class msg_led_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LED_CONTROL = 186;
     public static final int MAVLINK_MSG_LENGTH = 29;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LED_CONTROL;
-
 
       
     /**
@@ -63,24 +67,17 @@ public class msg_led_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LED_CONTROL;
         
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(instance);
-        
         packet.payload.putUnsignedByte(pattern);
-        
         packet.payload.putUnsignedByte(custom_len);
-        
         
         for (int i = 0; i < custom_bytes.length; i++) {
             packet.payload.putUnsignedByte(custom_bytes[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -93,31 +90,57 @@ public class msg_led_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.instance = payload.getUnsignedByte();
-        
         this.pattern = payload.getUnsignedByte();
-        
         this.custom_len = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.custom_bytes.length; i++) {
             this.custom_bytes[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_led_control() {
-        msgid = MAVLINK_MSG_ID_LED_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_led_control( short target_system, short target_component, short instance, short pattern, short custom_len, short[] custom_bytes) {
+        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.instance = instance;
+        this.pattern = pattern;
+        this.custom_len = custom_len;
+        this.custom_bytes = custom_bytes;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_led_control( short target_system, short target_component, short instance, short pattern, short custom_len, short[] custom_bytes, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.instance = instance;
+        this.pattern = pattern;
+        this.custom_len = custom_len;
+        this.custom_bytes = custom_bytes;
+        
     }
 
     /**
@@ -126,11 +149,59 @@ public class msg_led_control extends MAVLinkMessage {
      *
      */
     public msg_led_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_led_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LED_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.instance = (short)jo.optInt("instance");
+        this.pattern = (short)jo.optInt("pattern");
+        this.custom_len = (short)jo.optInt("custom_len");
+         
+        JSONArray ja_custom_bytes = jo.optJSONArray("custom_bytes");
+        for (int i = 0; i < Math.min(this.custom_bytes.length, ja_custom_bytes.length()); i++) {
+            this.custom_bytes[i] = (short)ja_custom_bytes.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("instance", instance);
+        jo.put("pattern", pattern);
+        jo.put("custom_len", custom_len);
+         
+        JSONArray ja_custom_bytes = new JSONArray();
+        for (int i = 0; i < this.custom_bytes.length; i++) {
+            ja_custom_bytes.put(this.custom_bytes[i]);
+        }
+        jo.put("custom_bytes", (Object)ja_custom_bytes);
+                
+        
+        
+        return jo;
     }
 
                 

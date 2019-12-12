@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right).
@@ -18,7 +23,6 @@ public class msg_attitude extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ATTITUDE = 30;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ATTITUDE;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_attitude extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ATTITUDE;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(rollspeed);
-        
         packet.payload.putFloat(pitchspeed);
-        
         packet.payload.putFloat(yawspeed);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_attitude extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.rollspeed = payload.getFloat();
-        
         this.pitchspeed = payload.getFloat();
-        
         this.yawspeed = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_attitude() {
-        msgid = MAVLINK_MSG_ID_ATTITUDE;
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_attitude( long time_boot_ms, float roll, float pitch, float yaw, float rollspeed, float pitchspeed, float yawspeed) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_attitude( long time_boot_ms, float roll, float pitch, float yaw, float rollspeed, float pitchspeed, float yawspeed, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_attitude extends MAVLinkMessage {
      *
      */
     public msg_attitude(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_attitude(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.rollspeed = (float)jo.optFloat("rollspeed");
+        this.pitchspeed = (float)jo.optFloat("pitchspeed");
+        this.yawspeed = (float)jo.optFloat("yawspeed");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        jo.put("rollspeed", rollspeed);
+        jo.put("pitchspeed", pitchspeed);
+        jo.put("yawspeed", yawspeed);
+        
+        
+        return jo;
     }
 
                   

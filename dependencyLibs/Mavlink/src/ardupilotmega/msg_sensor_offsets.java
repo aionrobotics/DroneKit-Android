@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Offsets and calibrations values for hardware sensors. This makes it easier to debug the calibration process.
@@ -18,7 +23,6 @@ public class msg_sensor_offsets extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SENSOR_OFFSETS = 150;
     public static final int MAVLINK_MSG_LENGTH = 42;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SENSOR_OFFSETS;
-
 
       
     /**
@@ -93,32 +97,19 @@ public class msg_sensor_offsets extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
         
         packet.payload.putFloat(mag_declination);
-        
         packet.payload.putInt(raw_press);
-        
         packet.payload.putInt(raw_temp);
-        
         packet.payload.putFloat(gyro_cal_x);
-        
         packet.payload.putFloat(gyro_cal_y);
-        
         packet.payload.putFloat(gyro_cal_z);
-        
         packet.payload.putFloat(accel_cal_x);
-        
         packet.payload.putFloat(accel_cal_y);
-        
         packet.payload.putFloat(accel_cal_z);
-        
         packet.payload.putShort(mag_ofs_x);
-        
         packet.payload.putShort(mag_ofs_y);
-        
         packet.payload.putShort(mag_ofs_z);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -131,39 +122,71 @@ public class msg_sensor_offsets extends MAVLinkMessage {
         payload.resetIndex();
         
         this.mag_declination = payload.getFloat();
-        
         this.raw_press = payload.getInt();
-        
         this.raw_temp = payload.getInt();
-        
         this.gyro_cal_x = payload.getFloat();
-        
         this.gyro_cal_y = payload.getFloat();
-        
         this.gyro_cal_z = payload.getFloat();
-        
         this.accel_cal_x = payload.getFloat();
-        
         this.accel_cal_y = payload.getFloat();
-        
         this.accel_cal_z = payload.getFloat();
-        
         this.mag_ofs_x = payload.getShort();
-        
         this.mag_ofs_y = payload.getShort();
-        
         this.mag_ofs_z = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_sensor_offsets() {
-        msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_sensor_offsets( float mag_declination, int raw_press, int raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z, short mag_ofs_x, short mag_ofs_y, short mag_ofs_z) {
+        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+
+        this.mag_declination = mag_declination;
+        this.raw_press = raw_press;
+        this.raw_temp = raw_temp;
+        this.gyro_cal_x = gyro_cal_x;
+        this.gyro_cal_y = gyro_cal_y;
+        this.gyro_cal_z = gyro_cal_z;
+        this.accel_cal_x = accel_cal_x;
+        this.accel_cal_y = accel_cal_y;
+        this.accel_cal_z = accel_cal_z;
+        this.mag_ofs_x = mag_ofs_x;
+        this.mag_ofs_y = mag_ofs_y;
+        this.mag_ofs_z = mag_ofs_z;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_sensor_offsets( float mag_declination, int raw_press, int raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z, short mag_ofs_x, short mag_ofs_y, short mag_ofs_z, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.mag_declination = mag_declination;
+        this.raw_press = raw_press;
+        this.raw_temp = raw_temp;
+        this.gyro_cal_x = gyro_cal_x;
+        this.gyro_cal_y = gyro_cal_y;
+        this.gyro_cal_z = gyro_cal_z;
+        this.accel_cal_x = accel_cal_x;
+        this.accel_cal_y = accel_cal_y;
+        this.accel_cal_z = accel_cal_z;
+        this.mag_ofs_x = mag_ofs_x;
+        this.mag_ofs_y = mag_ofs_y;
+        this.mag_ofs_z = mag_ofs_z;
+        
     }
 
     /**
@@ -172,11 +195,60 @@ public class msg_sensor_offsets extends MAVLinkMessage {
      *
      */
     public msg_sensor_offsets(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_sensor_offsets(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SENSOR_OFFSETS;
+
+        readJSONheader(jo);
+        
+        this.mag_declination = (float)jo.optFloat("mag_declination");
+        this.raw_press = (int)jo.optInt("raw_press");
+        this.raw_temp = (int)jo.optInt("raw_temp");
+        this.gyro_cal_x = (float)jo.optFloat("gyro_cal_x");
+        this.gyro_cal_y = (float)jo.optFloat("gyro_cal_y");
+        this.gyro_cal_z = (float)jo.optFloat("gyro_cal_z");
+        this.accel_cal_x = (float)jo.optFloat("accel_cal_x");
+        this.accel_cal_y = (float)jo.optFloat("accel_cal_y");
+        this.accel_cal_z = (float)jo.optFloat("accel_cal_z");
+        this.mag_ofs_x = (short)jo.optInt("mag_ofs_x");
+        this.mag_ofs_y = (short)jo.optInt("mag_ofs_y");
+        this.mag_ofs_z = (short)jo.optInt("mag_ofs_z");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("mag_declination", mag_declination);
+        jo.put("raw_press", raw_press);
+        jo.put("raw_temp", raw_temp);
+        jo.put("gyro_cal_x", gyro_cal_x);
+        jo.put("gyro_cal_y", gyro_cal_y);
+        jo.put("gyro_cal_z", gyro_cal_z);
+        jo.put("accel_cal_x", accel_cal_x);
+        jo.put("accel_cal_y", accel_cal_y);
+        jo.put("accel_cal_z", accel_cal_z);
+        jo.put("mag_ofs_x", mag_ofs_x);
+        jo.put("mag_ofs_y", mag_ofs_y);
+        jo.put("mag_ofs_z", mag_ofs_z);
+        
+        
+        return jo;
     }
 
                             

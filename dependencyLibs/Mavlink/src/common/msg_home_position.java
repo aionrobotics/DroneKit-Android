@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * This message can be requested by sending the MAV_CMD_GET_HOME_POSITION command. The position the system will return to and land on. The position is set automatically by the system during the takeoff in case it was not explicitly set by the operator before or after. The position the system will return to and land on. The global and local positions encode the position in the respective coordinate frames, while the q parameter encodes the orientation of the surface. Under normal conditions it describes the heading and terrain slope, which can be used by the aircraft to adjust the approach. The approach 3D vector describes the point to which the system should fly in normal flight mode and then perform a landing sequence along the vector.
@@ -18,7 +23,6 @@ public class msg_home_position extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HOME_POSITION = 242;
     public static final int MAVLINK_MSG_LENGTH = 60;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HOME_POSITION;
-
 
       
     /**
@@ -88,33 +92,23 @@ public class msg_home_position extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HOME_POSITION;
         
         packet.payload.putInt(latitude);
-        
         packet.payload.putInt(longitude);
-        
         packet.payload.putInt(altitude);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-        
         packet.payload.putFloat(approach_x);
-        
         packet.payload.putFloat(approach_y);
-        
         packet.payload.putFloat(approach_z);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedLong(time_usec);
-            
         }
         return packet;
     }
@@ -128,33 +122,23 @@ public class msg_home_position extends MAVLinkMessage {
         payload.resetIndex();
         
         this.latitude = payload.getInt();
-        
         this.longitude = payload.getInt();
-        
         this.altitude = payload.getInt();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
          
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-        
         this.approach_x = payload.getFloat();
-        
         this.approach_y = payload.getFloat();
-        
         this.approach_z = payload.getFloat();
         
+        
         if(isMavlink2) {
-            
             this.time_usec = payload.getUnsignedLong();
-            
         }
     }
 
@@ -162,7 +146,50 @@ public class msg_home_position extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_home_position() {
-        msgid = MAVLINK_MSG_ID_HOME_POSITION;
+        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_home_position( int latitude, int longitude, int altitude, float x, float y, float z, float[] q, float approach_x, float approach_y, float approach_z, long time_usec) {
+        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.approach_x = approach_x;
+        this.approach_y = approach_y;
+        this.approach_z = approach_z;
+        this.time_usec = time_usec;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_home_position( int latitude, int longitude, int altitude, float x, float y, float z, float[] q, float approach_x, float approach_y, float approach_z, long time_usec, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.approach_x = approach_x;
+        this.approach_y = approach_y;
+        this.approach_z = approach_z;
+        this.time_usec = time_usec;
+        
     }
 
     /**
@@ -171,11 +198,69 @@ public class msg_home_position extends MAVLinkMessage {
      *
      */
     public msg_home_position(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_home_position(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HOME_POSITION;
+
+        readJSONheader(jo);
+        
+        this.latitude = (int)jo.optInt("latitude");
+        this.longitude = (int)jo.optInt("longitude");
+        this.altitude = (int)jo.optInt("altitude");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.approach_x = (float)jo.optFloat("approach_x");
+        this.approach_y = (float)jo.optFloat("approach_y");
+        this.approach_z = (float)jo.optFloat("approach_z");
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("latitude", latitude);
+        jo.put("longitude", longitude);
+        jo.put("altitude", altitude);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("approach_x", approach_x);
+        jo.put("approach_y", approach_y);
+        jo.put("approach_z", approach_z);
+        
+        jo.put("time_usec", time_usec);
+        
+        return jo;
     }
 
                           

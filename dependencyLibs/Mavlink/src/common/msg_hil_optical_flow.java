@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Simulated optical flow from a flow sensor (e.g. PX4FLOW or optical mouse sensor)
@@ -18,7 +23,6 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_OPTICAL_FLOW = 114;
     public static final int MAVLINK_MSG_LENGTH = 44;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
-
 
       
     /**
@@ -93,32 +97,19 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(integration_time_us);
-        
         packet.payload.putFloat(integrated_x);
-        
         packet.payload.putFloat(integrated_y);
-        
         packet.payload.putFloat(integrated_xgyro);
-        
         packet.payload.putFloat(integrated_ygyro);
-        
         packet.payload.putFloat(integrated_zgyro);
-        
         packet.payload.putUnsignedInt(time_delta_distance_us);
-        
         packet.payload.putFloat(distance);
-        
         packet.payload.putShort(temperature);
-        
         packet.payload.putUnsignedByte(sensor_id);
-        
         packet.payload.putUnsignedByte(quality);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -131,39 +122,71 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.integration_time_us = payload.getUnsignedInt();
-        
         this.integrated_x = payload.getFloat();
-        
         this.integrated_y = payload.getFloat();
-        
         this.integrated_xgyro = payload.getFloat();
-        
         this.integrated_ygyro = payload.getFloat();
-        
         this.integrated_zgyro = payload.getFloat();
-        
         this.time_delta_distance_us = payload.getUnsignedInt();
-        
         this.distance = payload.getFloat();
-        
         this.temperature = payload.getShort();
-        
         this.sensor_id = payload.getUnsignedByte();
-        
         this.quality = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_optical_flow() {
-        msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_optical_flow( long time_usec, long integration_time_us, float integrated_x, float integrated_y, float integrated_xgyro, float integrated_ygyro, float integrated_zgyro, long time_delta_distance_us, float distance, short temperature, short sensor_id, short quality) {
+        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+
+        this.time_usec = time_usec;
+        this.integration_time_us = integration_time_us;
+        this.integrated_x = integrated_x;
+        this.integrated_y = integrated_y;
+        this.integrated_xgyro = integrated_xgyro;
+        this.integrated_ygyro = integrated_ygyro;
+        this.integrated_zgyro = integrated_zgyro;
+        this.time_delta_distance_us = time_delta_distance_us;
+        this.distance = distance;
+        this.temperature = temperature;
+        this.sensor_id = sensor_id;
+        this.quality = quality;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_optical_flow( long time_usec, long integration_time_us, float integrated_x, float integrated_y, float integrated_xgyro, float integrated_ygyro, float integrated_zgyro, long time_delta_distance_us, float distance, short temperature, short sensor_id, short quality, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.integration_time_us = integration_time_us;
+        this.integrated_x = integrated_x;
+        this.integrated_y = integrated_y;
+        this.integrated_xgyro = integrated_xgyro;
+        this.integrated_ygyro = integrated_ygyro;
+        this.integrated_zgyro = integrated_zgyro;
+        this.time_delta_distance_us = time_delta_distance_us;
+        this.distance = distance;
+        this.temperature = temperature;
+        this.sensor_id = sensor_id;
+        this.quality = quality;
+        
     }
 
     /**
@@ -172,11 +195,60 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
      *
      */
     public msg_hil_optical_flow(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_optical_flow(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_OPTICAL_FLOW;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.integration_time_us = (long)jo.optLong("integration_time_us");
+        this.integrated_x = (float)jo.optFloat("integrated_x");
+        this.integrated_y = (float)jo.optFloat("integrated_y");
+        this.integrated_xgyro = (float)jo.optFloat("integrated_xgyro");
+        this.integrated_ygyro = (float)jo.optFloat("integrated_ygyro");
+        this.integrated_zgyro = (float)jo.optFloat("integrated_zgyro");
+        this.time_delta_distance_us = (long)jo.optLong("time_delta_distance_us");
+        this.distance = (float)jo.optFloat("distance");
+        this.temperature = (short)jo.optInt("temperature");
+        this.sensor_id = (short)jo.optInt("sensor_id");
+        this.quality = (short)jo.optInt("quality");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("integration_time_us", integration_time_us);
+        jo.put("integrated_x", integrated_x);
+        jo.put("integrated_y", integrated_y);
+        jo.put("integrated_xgyro", integrated_xgyro);
+        jo.put("integrated_ygyro", integrated_ygyro);
+        jo.put("integrated_zgyro", integrated_zgyro);
+        jo.put("time_delta_distance_us", time_delta_distance_us);
+        jo.put("distance", distance);
+        jo.put("temperature", temperature);
+        jo.put("sensor_id", sensor_id);
+        jo.put("quality", quality);
+        
+        
+        return jo;
     }
 
                             

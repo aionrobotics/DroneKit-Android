@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Control message for rate gimbal.
@@ -18,7 +23,6 @@ public class msg_gimbal_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GIMBAL_CONTROL = 201;
     public static final int MAVLINK_MSG_LENGTH = 14;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GIMBAL_CONTROL;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_gimbal_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
         
         packet.payload.putFloat(demanded_rate_x);
-        
         packet.payload.putFloat(demanded_rate_y);
-        
         packet.payload.putFloat(demanded_rate_z);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_gimbal_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.demanded_rate_x = payload.getFloat();
-        
         this.demanded_rate_y = payload.getFloat();
-        
         this.demanded_rate_z = payload.getFloat();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gimbal_control() {
-        msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gimbal_control( float demanded_rate_x, float demanded_rate_y, float demanded_rate_z, short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+
+        this.demanded_rate_x = demanded_rate_x;
+        this.demanded_rate_y = demanded_rate_y;
+        this.demanded_rate_z = demanded_rate_z;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gimbal_control( float demanded_rate_x, float demanded_rate_y, float demanded_rate_z, short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.demanded_rate_x = demanded_rate_x;
+        this.demanded_rate_y = demanded_rate_y;
+        this.demanded_rate_z = demanded_rate_z;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_gimbal_control extends MAVLinkMessage {
      *
      */
     public msg_gimbal_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gimbal_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GIMBAL_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.demanded_rate_x = (float)jo.optFloat("demanded_rate_x");
+        this.demanded_rate_y = (float)jo.optFloat("demanded_rate_y");
+        this.demanded_rate_z = (float)jo.optFloat("demanded_rate_z");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("demanded_rate_x", demanded_rate_x);
+        jo.put("demanded_rate_y", demanded_rate_y);
+        jo.put("demanded_rate_z", demanded_rate_z);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
               

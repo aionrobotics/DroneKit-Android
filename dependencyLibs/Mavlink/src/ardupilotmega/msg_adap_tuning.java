@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Adaptive Controller tuning information.
@@ -18,7 +23,6 @@ public class msg_adap_tuning extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ADAP_TUNING = 11010;
     public static final int MAVLINK_MSG_LENGTH = 49;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ADAP_TUNING;
-
 
       
     /**
@@ -98,34 +102,20 @@ public class msg_adap_tuning extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
         
         packet.payload.putFloat(desired);
-        
         packet.payload.putFloat(achieved);
-        
         packet.payload.putFloat(error);
-        
         packet.payload.putFloat(theta);
-        
         packet.payload.putFloat(omega);
-        
         packet.payload.putFloat(sigma);
-        
         packet.payload.putFloat(theta_dot);
-        
         packet.payload.putFloat(omega_dot);
-        
         packet.payload.putFloat(sigma_dot);
-        
         packet.payload.putFloat(f);
-        
         packet.payload.putFloat(f_dot);
-        
         packet.payload.putFloat(u);
-        
         packet.payload.putUnsignedByte(axis);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -138,41 +128,74 @@ public class msg_adap_tuning extends MAVLinkMessage {
         payload.resetIndex();
         
         this.desired = payload.getFloat();
-        
         this.achieved = payload.getFloat();
-        
         this.error = payload.getFloat();
-        
         this.theta = payload.getFloat();
-        
         this.omega = payload.getFloat();
-        
         this.sigma = payload.getFloat();
-        
         this.theta_dot = payload.getFloat();
-        
         this.omega_dot = payload.getFloat();
-        
         this.sigma_dot = payload.getFloat();
-        
         this.f = payload.getFloat();
-        
         this.f_dot = payload.getFloat();
-        
         this.u = payload.getFloat();
-        
         this.axis = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_adap_tuning() {
-        msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_adap_tuning( float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u, short axis) {
+        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+
+        this.desired = desired;
+        this.achieved = achieved;
+        this.error = error;
+        this.theta = theta;
+        this.omega = omega;
+        this.sigma = sigma;
+        this.theta_dot = theta_dot;
+        this.omega_dot = omega_dot;
+        this.sigma_dot = sigma_dot;
+        this.f = f;
+        this.f_dot = f_dot;
+        this.u = u;
+        this.axis = axis;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_adap_tuning( float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u, short axis, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.desired = desired;
+        this.achieved = achieved;
+        this.error = error;
+        this.theta = theta;
+        this.omega = omega;
+        this.sigma = sigma;
+        this.theta_dot = theta_dot;
+        this.omega_dot = omega_dot;
+        this.sigma_dot = sigma_dot;
+        this.f = f;
+        this.f_dot = f_dot;
+        this.u = u;
+        this.axis = axis;
+        
     }
 
     /**
@@ -181,11 +204,62 @@ public class msg_adap_tuning extends MAVLinkMessage {
      *
      */
     public msg_adap_tuning(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_adap_tuning(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ADAP_TUNING;
+
+        readJSONheader(jo);
+        
+        this.desired = (float)jo.optFloat("desired");
+        this.achieved = (float)jo.optFloat("achieved");
+        this.error = (float)jo.optFloat("error");
+        this.theta = (float)jo.optFloat("theta");
+        this.omega = (float)jo.optFloat("omega");
+        this.sigma = (float)jo.optFloat("sigma");
+        this.theta_dot = (float)jo.optFloat("theta_dot");
+        this.omega_dot = (float)jo.optFloat("omega_dot");
+        this.sigma_dot = (float)jo.optFloat("sigma_dot");
+        this.f = (float)jo.optFloat("f");
+        this.f_dot = (float)jo.optFloat("f_dot");
+        this.u = (float)jo.optFloat("u");
+        this.axis = (short)jo.optInt("axis");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("desired", desired);
+        jo.put("achieved", achieved);
+        jo.put("error", error);
+        jo.put("theta", theta);
+        jo.put("omega", omega);
+        jo.put("sigma", sigma);
+        jo.put("theta_dot", theta_dot);
+        jo.put("omega_dot", omega_dot);
+        jo.put("sigma_dot", sigma_dot);
+        jo.put("f", f);
+        jo.put("f_dot", f_dot);
+        jo.put("u", u);
+        jo.put("axis", axis);
+        
+        
+        return jo;
     }
 
                               

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The RAW pressure readings for the typical setup of one absolute pressure and one differential pressure sensor. The sensor values should be the raw, UNSCALED ADC values.
@@ -18,7 +23,6 @@ public class msg_raw_pressure extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RAW_PRESSURE = 28;
     public static final int MAVLINK_MSG_LENGTH = 16;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RAW_PRESSURE;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_raw_pressure extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putShort(press_abs);
-        
         packet.payload.putShort(press_diff1);
-        
         packet.payload.putShort(press_diff2);
-        
         packet.payload.putShort(temperature);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_raw_pressure extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.press_abs = payload.getShort();
-        
         this.press_diff1 = payload.getShort();
-        
         this.press_diff2 = payload.getShort();
-        
         this.temperature = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_raw_pressure() {
-        msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_raw_pressure( long time_usec, short press_abs, short press_diff1, short press_diff2, short temperature) {
+        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+
+        this.time_usec = time_usec;
+        this.press_abs = press_abs;
+        this.press_diff1 = press_diff1;
+        this.press_diff2 = press_diff2;
+        this.temperature = temperature;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_raw_pressure( long time_usec, short press_abs, short press_diff1, short press_diff2, short temperature, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.press_abs = press_abs;
+        this.press_diff1 = press_diff1;
+        this.press_diff2 = press_diff2;
+        this.temperature = temperature;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_raw_pressure extends MAVLinkMessage {
      *
      */
     public msg_raw_pressure(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_raw_pressure(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RAW_PRESSURE;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.press_abs = (short)jo.optInt("press_abs");
+        this.press_diff1 = (short)jo.optInt("press_diff1");
+        this.press_diff2 = (short)jo.optInt("press_diff2");
+        this.temperature = (short)jo.optInt("temperature");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("press_abs", press_abs);
+        jo.put("press_diff1", press_diff1);
+        jo.put("press_diff2", press_diff2);
+        jo.put("temperature", temperature);
+        
+        
+        return jo;
     }
 
               

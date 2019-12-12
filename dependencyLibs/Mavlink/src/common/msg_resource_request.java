@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
@@ -18,7 +23,6 @@ public class msg_resource_request extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RESOURCE_REQUEST = 142;
     public static final int MAVLINK_MSG_LENGTH = 243;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RESOURCE_REQUEST;
-
 
       
     /**
@@ -58,26 +62,20 @@ public class msg_resource_request extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
         
         packet.payload.putUnsignedByte(request_id);
-        
         packet.payload.putUnsignedByte(uri_type);
-        
         
         for (int i = 0; i < uri.length; i++) {
             packet.payload.putUnsignedByte(uri[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(transfer_type);
-        
         
         for (int i = 0; i < storage.length; i++) {
             packet.payload.putUnsignedByte(storage[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -90,33 +88,58 @@ public class msg_resource_request extends MAVLinkMessage {
         payload.resetIndex();
         
         this.request_id = payload.getUnsignedByte();
-        
         this.uri_type = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.uri.length; i++) {
             this.uri[i] = payload.getUnsignedByte();
         }
                 
-        
         this.transfer_type = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.storage.length; i++) {
             this.storage[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_resource_request() {
-        msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_resource_request( short request_id, short uri_type, short[] uri, short transfer_type, short[] storage) {
+        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+
+        this.request_id = request_id;
+        this.uri_type = uri_type;
+        this.uri = uri;
+        this.transfer_type = transfer_type;
+        this.storage = storage;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_resource_request( short request_id, short uri_type, short[] uri, short transfer_type, short[] storage, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.request_id = request_id;
+        this.uri_type = uri_type;
+        this.uri = uri;
+        this.transfer_type = transfer_type;
+        this.storage = storage;
+        
     }
 
     /**
@@ -125,11 +148,68 @@ public class msg_resource_request extends MAVLinkMessage {
      *
      */
     public msg_resource_request(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_resource_request(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RESOURCE_REQUEST;
+
+        readJSONheader(jo);
+        
+        this.request_id = (short)jo.optInt("request_id");
+        this.uri_type = (short)jo.optInt("uri_type");
+         
+        JSONArray ja_uri = jo.optJSONArray("uri");
+        for (int i = 0; i < Math.min(this.uri.length, ja_uri.length()); i++) {
+            this.uri[i] = (short)ja_uri.getInt(i);
+        }
+                
+        this.transfer_type = (short)jo.optInt("transfer_type");
+         
+        JSONArray ja_storage = jo.optJSONArray("storage");
+        for (int i = 0; i < Math.min(this.storage.length, ja_storage.length()); i++) {
+            this.storage[i] = (short)ja_storage.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("request_id", request_id);
+        jo.put("uri_type", uri_type);
+         
+        JSONArray ja_uri = new JSONArray();
+        for (int i = 0; i < this.uri.length; i++) {
+            ja_uri.put(this.uri[i]);
+        }
+        jo.put("uri", (Object)ja_uri);
+                
+        jo.put("transfer_type", transfer_type);
+         
+        JSONArray ja_storage = new JSONArray();
+        for (int i = 0; i < this.storage.length; i++) {
+            ja_storage.put(this.storage[i]);
+        }
+        jo.put("storage", (Object)ja_storage);
+                
+        
+        
+        return jo;
     }
 
               

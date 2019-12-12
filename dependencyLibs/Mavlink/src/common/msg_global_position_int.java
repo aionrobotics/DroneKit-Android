@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up). It
@@ -19,7 +24,6 @@ public class msg_global_position_int extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GLOBAL_POSITION_INT = 33;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
-
 
       
     /**
@@ -79,26 +83,16 @@ public class msg_global_position_int extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putInt(relative_alt);
-        
         packet.payload.putShort(vx);
-        
         packet.payload.putShort(vy);
-        
         packet.payload.putShort(vz);
-        
         packet.payload.putUnsignedShort(hdg);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -111,33 +105,62 @@ public class msg_global_position_int extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.relative_alt = payload.getInt();
-        
         this.vx = payload.getShort();
-        
         this.vy = payload.getShort();
-        
         this.vz = payload.getShort();
-        
         this.hdg = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_global_position_int() {
-        msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_global_position_int( long time_boot_ms, int lat, int lon, int alt, int relative_alt, short vx, short vy, short vz, int hdg) {
+        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+
+        this.time_boot_ms = time_boot_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.relative_alt = relative_alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.hdg = hdg;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_global_position_int( long time_boot_ms, int lat, int lon, int alt, int relative_alt, short vx, short vy, short vz, int hdg, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.relative_alt = relative_alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.hdg = hdg;
+        
     }
 
     /**
@@ -146,11 +169,54 @@ public class msg_global_position_int extends MAVLinkMessage {
      *
      */
     public msg_global_position_int(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_global_position_int(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.relative_alt = (int)jo.optInt("relative_alt");
+        this.vx = (short)jo.optInt("vx");
+        this.vy = (short)jo.optInt("vy");
+        this.vz = (short)jo.optInt("vz");
+        this.hdg = (int)jo.optInt("hdg");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("relative_alt", relative_alt);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("hdg", hdg);
+        
+        
+        return jo;
     }
 
                       

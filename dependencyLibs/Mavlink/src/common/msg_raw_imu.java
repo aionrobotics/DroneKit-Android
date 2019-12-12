@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The RAW IMU readings for the usual 9DOF sensor setup. This message should always contain the true raw values without any scaling to allow data capture and system debugging.
@@ -18,7 +23,6 @@ public class msg_raw_imu extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RAW_IMU = 27;
     public static final int MAVLINK_MSG_LENGTH = 26;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RAW_IMU;
-
 
       
     /**
@@ -83,28 +87,17 @@ public class msg_raw_imu extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RAW_IMU;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putShort(xacc);
-        
         packet.payload.putShort(yacc);
-        
         packet.payload.putShort(zacc);
-        
         packet.payload.putShort(xgyro);
-        
         packet.payload.putShort(ygyro);
-        
         packet.payload.putShort(zgyro);
-        
         packet.payload.putShort(xmag);
-        
         packet.payload.putShort(ymag);
-        
         packet.payload.putShort(zmag);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -117,35 +110,65 @@ public class msg_raw_imu extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.xacc = payload.getShort();
-        
         this.yacc = payload.getShort();
-        
         this.zacc = payload.getShort();
-        
         this.xgyro = payload.getShort();
-        
         this.ygyro = payload.getShort();
-        
         this.zgyro = payload.getShort();
-        
         this.xmag = payload.getShort();
-        
         this.ymag = payload.getShort();
-        
         this.zmag = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_raw_imu() {
-        msgid = MAVLINK_MSG_ID_RAW_IMU;
+        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_raw_imu( long time_usec, short xacc, short yacc, short zacc, short xgyro, short ygyro, short zgyro, short xmag, short ymag, short zmag) {
+        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
+
+        this.time_usec = time_usec;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.xmag = xmag;
+        this.ymag = ymag;
+        this.zmag = zmag;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_raw_imu( long time_usec, short xacc, short yacc, short zacc, short xgyro, short ygyro, short zgyro, short xmag, short ymag, short zmag, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.xmag = xmag;
+        this.ymag = ymag;
+        this.zmag = zmag;
+        
     }
 
     /**
@@ -154,11 +177,56 @@ public class msg_raw_imu extends MAVLinkMessage {
      *
      */
     public msg_raw_imu(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_raw_imu(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RAW_IMU;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.xacc = (short)jo.optInt("xacc");
+        this.yacc = (short)jo.optInt("yacc");
+        this.zacc = (short)jo.optInt("zacc");
+        this.xgyro = (short)jo.optInt("xgyro");
+        this.ygyro = (short)jo.optInt("ygyro");
+        this.zgyro = (short)jo.optInt("zgyro");
+        this.xmag = (short)jo.optInt("xmag");
+        this.ymag = (short)jo.optInt("ymag");
+        this.zmag = (short)jo.optInt("zmag");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("xacc", xacc);
+        jo.put("yacc", yacc);
+        jo.put("zacc", zacc);
+        jo.put("xgyro", xgyro);
+        jo.put("ygyro", ygyro);
+        jo.put("zgyro", zgyro);
+        jo.put("xmag", xmag);
+        jo.put("ymag", ymag);
+        jo.put("zmag", zmag);
+        
+        
+        return jo;
     }
 
                         

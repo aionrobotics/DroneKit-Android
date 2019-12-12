@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for HIL_CONTROLS)
@@ -18,7 +23,6 @@ public class msg_hil_actuator_controls extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS = 93;
     public static final int MAVLINK_MSG_LENGTH = 81;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_hil_actuator_controls extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedLong(flags);
-        
         
         for (int i = 0; i < controls.length; i++) {
             packet.payload.putFloat(controls[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(mode);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_hil_actuator_controls extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.flags = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.controls.length; i++) {
             this.controls[i] = payload.getFloat();
         }
                 
-        
         this.mode = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_actuator_controls() {
-        msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_actuator_controls( long time_usec, long flags, float[] controls, short mode) {
+        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+
+        this.time_usec = time_usec;
+        this.flags = flags;
+        this.controls = controls;
+        this.mode = mode;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_actuator_controls( long time_usec, long flags, float[] controls, short mode, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.flags = flags;
+        this.controls = controls;
+        this.mode = mode;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_hil_actuator_controls extends MAVLinkMessage {
      *
      */
     public msg_hil_actuator_controls(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_actuator_controls(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.flags = (long)jo.optLong("flags");
+         
+        JSONArray ja_controls = jo.optJSONArray("controls");
+        for (int i = 0; i < Math.min(this.controls.length, ja_controls.length()); i++) {
+            this.controls[i] = (float)ja_controls.getFloat(i);
+        }
+                
+        this.mode = (short)jo.optInt("mode");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("flags", flags);
+         
+        JSONArray ja_controls = new JSONArray();
+        for (int i = 0; i < this.controls.length; i++) {
+            ja_controls.put(this.controls[i]);
+        }
+        jo.put("controls", (Object)ja_controls);
+                
+        jo.put("mode", mode);
+        
+        
+        return jo;
     }
 
             

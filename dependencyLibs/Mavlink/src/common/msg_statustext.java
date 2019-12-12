@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status text message. These messages are printed in yellow in the COMM console of QGroundControl. WARNING: They consume quite some bandwidth, so use only for important status and error messages. If implemented wisely, these messages are buffered on the MCU and sent only at a limited rate (e.g. 10 Hz).
@@ -18,7 +23,6 @@ public class msg_statustext extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_STATUSTEXT = 253;
     public static final int MAVLINK_MSG_LENGTH = 51;
     private static final long serialVersionUID = MAVLINK_MSG_ID_STATUSTEXT;
-
 
       
     /**
@@ -44,15 +48,12 @@ public class msg_statustext extends MAVLinkMessage {
         
         packet.payload.putUnsignedByte(severity);
         
-        
         for (int i = 0; i < text.length; i++) {
             packet.payload.putByte(text[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -65,23 +66,45 @@ public class msg_statustext extends MAVLinkMessage {
         payload.resetIndex();
         
         this.severity = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.text.length; i++) {
             this.text[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_statustext() {
-        msgid = MAVLINK_MSG_ID_STATUSTEXT;
+        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_statustext( short severity, byte[] text) {
+        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
+
+        this.severity = severity;
+        this.text = text;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_statustext( short severity, byte[] text, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.severity = severity;
+        this.text = text;
+        
     }
 
     /**
@@ -90,11 +113,51 @@ public class msg_statustext extends MAVLinkMessage {
      *
      */
     public msg_statustext(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_statustext(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_STATUSTEXT;
+
+        readJSONheader(jo);
+        
+        this.severity = (short)jo.optInt("severity");
+         
+        JSONArray ja_text = jo.optJSONArray("text");
+        for (int i = 0; i < Math.min(this.text.length, ja_text.length()); i++) {
+            this.text[i] = (byte)ja_text.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("severity", severity);
+         
+        JSONArray ja_text = new JSONArray();
+        for (int i = 0; i < this.text.length; i++) {
+            ja_text.put(this.text[i]);
+        }
+        jo.put("text", (Object)ja_text);
+                
+        
+        
+        return jo;
     }
 
        

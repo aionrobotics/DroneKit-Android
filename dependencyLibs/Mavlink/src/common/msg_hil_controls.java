@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs
@@ -18,7 +23,6 @@ public class msg_hil_controls extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_CONTROLS = 91;
     public static final int MAVLINK_MSG_LENGTH = 42;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_CONTROLS;
-
 
       
     /**
@@ -88,30 +92,18 @@ public class msg_hil_controls extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(roll_ailerons);
-        
         packet.payload.putFloat(pitch_elevator);
-        
         packet.payload.putFloat(yaw_rudder);
-        
         packet.payload.putFloat(throttle);
-        
         packet.payload.putFloat(aux1);
-        
         packet.payload.putFloat(aux2);
-        
         packet.payload.putFloat(aux3);
-        
         packet.payload.putFloat(aux4);
-        
         packet.payload.putUnsignedByte(mode);
-        
         packet.payload.putUnsignedByte(nav_mode);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -124,37 +116,68 @@ public class msg_hil_controls extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.roll_ailerons = payload.getFloat();
-        
         this.pitch_elevator = payload.getFloat();
-        
         this.yaw_rudder = payload.getFloat();
-        
         this.throttle = payload.getFloat();
-        
         this.aux1 = payload.getFloat();
-        
         this.aux2 = payload.getFloat();
-        
         this.aux3 = payload.getFloat();
-        
         this.aux4 = payload.getFloat();
-        
         this.mode = payload.getUnsignedByte();
-        
         this.nav_mode = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_controls() {
-        msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_controls( long time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, short mode, short nav_mode) {
+        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+
+        this.time_usec = time_usec;
+        this.roll_ailerons = roll_ailerons;
+        this.pitch_elevator = pitch_elevator;
+        this.yaw_rudder = yaw_rudder;
+        this.throttle = throttle;
+        this.aux1 = aux1;
+        this.aux2 = aux2;
+        this.aux3 = aux3;
+        this.aux4 = aux4;
+        this.mode = mode;
+        this.nav_mode = nav_mode;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_controls( long time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, short mode, short nav_mode, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.roll_ailerons = roll_ailerons;
+        this.pitch_elevator = pitch_elevator;
+        this.yaw_rudder = yaw_rudder;
+        this.throttle = throttle;
+        this.aux1 = aux1;
+        this.aux2 = aux2;
+        this.aux3 = aux3;
+        this.aux4 = aux4;
+        this.mode = mode;
+        this.nav_mode = nav_mode;
+        
     }
 
     /**
@@ -163,11 +186,58 @@ public class msg_hil_controls extends MAVLinkMessage {
      *
      */
     public msg_hil_controls(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_controls(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.roll_ailerons = (float)jo.optFloat("roll_ailerons");
+        this.pitch_elevator = (float)jo.optFloat("pitch_elevator");
+        this.yaw_rudder = (float)jo.optFloat("yaw_rudder");
+        this.throttle = (float)jo.optFloat("throttle");
+        this.aux1 = (float)jo.optFloat("aux1");
+        this.aux2 = (float)jo.optFloat("aux2");
+        this.aux3 = (float)jo.optFloat("aux3");
+        this.aux4 = (float)jo.optFloat("aux4");
+        this.mode = (short)jo.optInt("mode");
+        this.nav_mode = (short)jo.optInt("nav_mode");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("roll_ailerons", roll_ailerons);
+        jo.put("pitch_elevator", pitch_elevator);
+        jo.put("yaw_rudder", yaw_rudder);
+        jo.put("throttle", throttle);
+        jo.put("aux1", aux1);
+        jo.put("aux2", aux2);
+        jo.put("aux3", aux3);
+        jo.put("aux4", aux4);
+        jo.put("mode", mode);
+        jo.put("nav_mode", nav_mode);
+        
+        
+        return jo;
     }
 
                           

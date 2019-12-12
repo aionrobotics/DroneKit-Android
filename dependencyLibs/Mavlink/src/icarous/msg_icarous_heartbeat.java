@@ -9,6 +9,11 @@ package com.mavlink.icarous;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * ICAROUS heartbeat
@@ -18,7 +23,6 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ICAROUS_HEARTBEAT = 42000;
     public static final int MAVLINK_MSG_LENGTH = 1;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
-
 
       
     /**
@@ -39,9 +43,7 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
         
         packet.payload.putUnsignedByte(status);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -55,16 +57,37 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
         
         this.status = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_icarous_heartbeat() {
-        msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_icarous_heartbeat( short status) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+
+        this.status = status;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_icarous_heartbeat( short status, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.status = status;
+        
     }
 
     /**
@@ -73,11 +96,38 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
      *
      */
     public msg_icarous_heartbeat(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_icarous_heartbeat(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_HEARTBEAT;
+
+        readJSONheader(jo);
+        
+        this.status = (short)jo.optInt("status");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("status", status);
+        
+        
+        return jo;
     }
 
       

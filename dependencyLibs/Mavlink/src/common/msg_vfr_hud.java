@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
@@ -18,7 +23,6 @@ public class msg_vfr_hud extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_VFR_HUD = 74;
     public static final int MAVLINK_MSG_LENGTH = 20;
     private static final long serialVersionUID = MAVLINK_MSG_ID_VFR_HUD;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_vfr_hud extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_VFR_HUD;
         
         packet.payload.putFloat(airspeed);
-        
         packet.payload.putFloat(groundspeed);
-        
         packet.payload.putFloat(alt);
-        
         packet.payload.putFloat(climb);
-        
         packet.payload.putShort(heading);
-        
         packet.payload.putUnsignedShort(throttle);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_vfr_hud extends MAVLinkMessage {
         payload.resetIndex();
         
         this.airspeed = payload.getFloat();
-        
         this.groundspeed = payload.getFloat();
-        
         this.alt = payload.getFloat();
-        
         this.climb = payload.getFloat();
-        
         this.heading = payload.getShort();
-        
         this.throttle = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_vfr_hud() {
-        msgid = MAVLINK_MSG_ID_VFR_HUD;
+        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_vfr_hud( float airspeed, float groundspeed, float alt, float climb, short heading, int throttle) {
+        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
+
+        this.airspeed = airspeed;
+        this.groundspeed = groundspeed;
+        this.alt = alt;
+        this.climb = climb;
+        this.heading = heading;
+        this.throttle = throttle;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_vfr_hud( float airspeed, float groundspeed, float alt, float climb, short heading, int throttle, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.airspeed = airspeed;
+        this.groundspeed = groundspeed;
+        this.alt = alt;
+        this.climb = climb;
+        this.heading = heading;
+        this.throttle = throttle;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_vfr_hud extends MAVLinkMessage {
      *
      */
     public msg_vfr_hud(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_vfr_hud(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_VFR_HUD;
+
+        readJSONheader(jo);
+        
+        this.airspeed = (float)jo.optFloat("airspeed");
+        this.groundspeed = (float)jo.optFloat("groundspeed");
+        this.alt = (float)jo.optFloat("alt");
+        this.climb = (float)jo.optFloat("climb");
+        this.heading = (short)jo.optInt("heading");
+        this.throttle = (int)jo.optInt("throttle");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("airspeed", airspeed);
+        jo.put("groundspeed", groundspeed);
+        jo.put("alt", alt);
+        jo.put("climb", climb);
+        jo.put("heading", heading);
+        jo.put("throttle", throttle);
+        
+        
+        return jo;
     }
 
                 

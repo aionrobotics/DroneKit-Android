@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * General status information of an UAVCAN node. Please refer to the definition of the UAVCAN message "uavcan.protocol.NodeStatus" for the background information. The UAVCAN specification is available at http://uavcan.org.
@@ -18,7 +23,6 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_UAVCAN_NODE_STATUS = 310;
     public static final int MAVLINK_MSG_LENGTH = 17;
     private static final long serialVersionUID = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(uptime_sec);
-        
         packet.payload.putUnsignedShort(vendor_specific_status_code);
-        
         packet.payload.putUnsignedByte(health);
-        
         packet.payload.putUnsignedByte(mode);
-        
         packet.payload.putUnsignedByte(sub_mode);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.uptime_sec = payload.getUnsignedInt();
-        
         this.vendor_specific_status_code = payload.getUnsignedShort();
-        
         this.health = payload.getUnsignedByte();
-        
         this.mode = payload.getUnsignedByte();
-        
         this.sub_mode = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_uavcan_node_status() {
-        msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_uavcan_node_status( long time_usec, long uptime_sec, int vendor_specific_status_code, short health, short mode, short sub_mode) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+
+        this.time_usec = time_usec;
+        this.uptime_sec = uptime_sec;
+        this.vendor_specific_status_code = vendor_specific_status_code;
+        this.health = health;
+        this.mode = mode;
+        this.sub_mode = sub_mode;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_uavcan_node_status( long time_usec, long uptime_sec, int vendor_specific_status_code, short health, short mode, short sub_mode, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.uptime_sec = uptime_sec;
+        this.vendor_specific_status_code = vendor_specific_status_code;
+        this.health = health;
+        this.mode = mode;
+        this.sub_mode = sub_mode;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
      *
      */
     public msg_uavcan_node_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_uavcan_node_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_STATUS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.uptime_sec = (long)jo.optLong("uptime_sec");
+        this.vendor_specific_status_code = (int)jo.optInt("vendor_specific_status_code");
+        this.health = (short)jo.optInt("health");
+        this.mode = (short)jo.optInt("mode");
+        this.sub_mode = (short)jo.optInt("sub_mode");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("uptime_sec", uptime_sec);
+        jo.put("vendor_specific_status_code", vendor_specific_status_code);
+        jo.put("health", health);
+        jo.put("mode", mode);
+        jo.put("sub_mode", sub_mode);
+        
+        
+        return jo;
     }
 
                 

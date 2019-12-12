@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Emit the value of a onboard parameter. The inclusion of param_count and param_index in the message allows the recipient to keep track of received parameters and allows him to re-request missing parameters after a loss or timeout. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html
@@ -18,7 +23,6 @@ public class msg_param_value extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_PARAM_VALUE = 22;
     public static final int MAVLINK_MSG_LENGTH = 25;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PARAM_VALUE;
-
 
       
     /**
@@ -58,22 +62,16 @@ public class msg_param_value extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
         
         packet.payload.putFloat(param_value);
-        
         packet.payload.putUnsignedShort(param_count);
-        
         packet.payload.putUnsignedShort(param_index);
-        
         
         for (int i = 0; i < param_id.length; i++) {
             packet.payload.putByte(param_id[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(param_type);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -86,29 +84,54 @@ public class msg_param_value extends MAVLinkMessage {
         payload.resetIndex();
         
         this.param_value = payload.getFloat();
-        
         this.param_count = payload.getUnsignedShort();
-        
         this.param_index = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.param_id.length; i++) {
             this.param_id[i] = payload.getByte();
         }
                 
-        
         this.param_type = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_param_value() {
-        msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_param_value( float param_value, int param_count, int param_index, byte[] param_id, short param_type) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+
+        this.param_value = param_value;
+        this.param_count = param_count;
+        this.param_index = param_index;
+        this.param_id = param_id;
+        this.param_type = param_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_param_value( float param_value, int param_count, int param_index, byte[] param_id, short param_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.param_value = param_value;
+        this.param_count = param_count;
+        this.param_index = param_index;
+        this.param_id = param_id;
+        this.param_type = param_type;
+        
     }
 
     /**
@@ -117,11 +140,57 @@ public class msg_param_value extends MAVLinkMessage {
      *
      */
     public msg_param_value(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_param_value(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+
+        readJSONheader(jo);
+        
+        this.param_value = (float)jo.optFloat("param_value");
+        this.param_count = (int)jo.optInt("param_count");
+        this.param_index = (int)jo.optInt("param_index");
+         
+        JSONArray ja_param_id = jo.optJSONArray("param_id");
+        for (int i = 0; i < Math.min(this.param_id.length, ja_param_id.length()); i++) {
+            this.param_id[i] = (byte)ja_param_id.getInt(i);
+        }
+                
+        this.param_type = (short)jo.optInt("param_type");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("param_value", param_value);
+        jo.put("param_count", param_count);
+        jo.put("param_index", param_index);
+         
+        JSONArray ja_param_id = new JSONArray();
+        for (int i = 0; i < this.param_id.length; i++) {
+            ja_param_id.put(this.param_id[i]);
+        }
+        jo.put("param_id", (Object)ja_param_id);
+                
+        jo.put("param_type", param_type);
+        
+        
+        return jo;
     }
 
            

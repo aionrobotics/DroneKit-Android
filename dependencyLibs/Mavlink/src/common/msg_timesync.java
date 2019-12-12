@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Time synchronization message.
@@ -18,7 +23,6 @@ public class msg_timesync extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_TIMESYNC = 111;
     public static final int MAVLINK_MSG_LENGTH = 16;
     private static final long serialVersionUID = MAVLINK_MSG_ID_TIMESYNC;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_timesync extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_TIMESYNC;
         
         packet.payload.putLong(tc1);
-        
         packet.payload.putLong(ts1);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_timesync extends MAVLinkMessage {
         payload.resetIndex();
         
         this.tc1 = payload.getLong();
-        
         this.ts1 = payload.getLong();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_timesync() {
-        msgid = MAVLINK_MSG_ID_TIMESYNC;
+        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_timesync( long tc1, long ts1) {
+        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
+
+        this.tc1 = tc1;
+        this.ts1 = ts1;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_timesync( long tc1, long ts1, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.tc1 = tc1;
+        this.ts1 = ts1;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_timesync extends MAVLinkMessage {
      *
      */
     public msg_timesync(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_timesync(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_TIMESYNC;
+
+        readJSONheader(jo);
+        
+        this.tc1 = (long)jo.optLong("tc1");
+        this.ts1 = (long)jo.optLong("ts1");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("tc1", tc1);
+        jo.put("ts1", ts1);
+        
+        
+        return jo;
     }
 
         

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Erase all logs
@@ -18,7 +23,6 @@ public class msg_log_erase extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LOG_ERASE = 121;
     public static final int MAVLINK_MSG_LENGTH = 2;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOG_ERASE;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_log_erase extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LOG_ERASE;
         
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_log_erase extends MAVLinkMessage {
         payload.resetIndex();
         
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_log_erase() {
-        msgid = MAVLINK_MSG_ID_LOG_ERASE;
+        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_log_erase( short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_log_erase( short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_log_erase extends MAVLinkMessage {
      *
      */
     public msg_log_erase(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_log_erase(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ERASE;
+
+        readJSONheader(jo);
+        
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
         

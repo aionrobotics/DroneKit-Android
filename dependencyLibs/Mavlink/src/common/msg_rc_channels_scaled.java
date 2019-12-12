@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels that are inactive should be set to UINT16_MAX.
@@ -18,7 +23,6 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RC_CHANNELS_SCALED = 34;
     public static final int MAVLINK_MSG_LENGTH = 22;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
-
 
       
     /**
@@ -88,30 +92,18 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putShort(chan1_scaled);
-        
         packet.payload.putShort(chan2_scaled);
-        
         packet.payload.putShort(chan3_scaled);
-        
         packet.payload.putShort(chan4_scaled);
-        
         packet.payload.putShort(chan5_scaled);
-        
         packet.payload.putShort(chan6_scaled);
-        
         packet.payload.putShort(chan7_scaled);
-        
         packet.payload.putShort(chan8_scaled);
-        
         packet.payload.putUnsignedByte(port);
-        
         packet.payload.putUnsignedByte(rssi);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -124,37 +116,68 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.chan1_scaled = payload.getShort();
-        
         this.chan2_scaled = payload.getShort();
-        
         this.chan3_scaled = payload.getShort();
-        
         this.chan4_scaled = payload.getShort();
-        
         this.chan5_scaled = payload.getShort();
-        
         this.chan6_scaled = payload.getShort();
-        
         this.chan7_scaled = payload.getShort();
-        
         this.chan8_scaled = payload.getShort();
-        
         this.port = payload.getUnsignedByte();
-        
         this.rssi = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_rc_channels_scaled() {
-        msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_rc_channels_scaled( long time_boot_ms, short chan1_scaled, short chan2_scaled, short chan3_scaled, short chan4_scaled, short chan5_scaled, short chan6_scaled, short chan7_scaled, short chan8_scaled, short port, short rssi) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+
+        this.time_boot_ms = time_boot_ms;
+        this.chan1_scaled = chan1_scaled;
+        this.chan2_scaled = chan2_scaled;
+        this.chan3_scaled = chan3_scaled;
+        this.chan4_scaled = chan4_scaled;
+        this.chan5_scaled = chan5_scaled;
+        this.chan6_scaled = chan6_scaled;
+        this.chan7_scaled = chan7_scaled;
+        this.chan8_scaled = chan8_scaled;
+        this.port = port;
+        this.rssi = rssi;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_rc_channels_scaled( long time_boot_ms, short chan1_scaled, short chan2_scaled, short chan3_scaled, short chan4_scaled, short chan5_scaled, short chan6_scaled, short chan7_scaled, short chan8_scaled, short port, short rssi, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.chan1_scaled = chan1_scaled;
+        this.chan2_scaled = chan2_scaled;
+        this.chan3_scaled = chan3_scaled;
+        this.chan4_scaled = chan4_scaled;
+        this.chan5_scaled = chan5_scaled;
+        this.chan6_scaled = chan6_scaled;
+        this.chan7_scaled = chan7_scaled;
+        this.chan8_scaled = chan8_scaled;
+        this.port = port;
+        this.rssi = rssi;
+        
     }
 
     /**
@@ -163,11 +186,58 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
      *
      */
     public msg_rc_channels_scaled(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_rc_channels_scaled(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.chan1_scaled = (short)jo.optInt("chan1_scaled");
+        this.chan2_scaled = (short)jo.optInt("chan2_scaled");
+        this.chan3_scaled = (short)jo.optInt("chan3_scaled");
+        this.chan4_scaled = (short)jo.optInt("chan4_scaled");
+        this.chan5_scaled = (short)jo.optInt("chan5_scaled");
+        this.chan6_scaled = (short)jo.optInt("chan6_scaled");
+        this.chan7_scaled = (short)jo.optInt("chan7_scaled");
+        this.chan8_scaled = (short)jo.optInt("chan8_scaled");
+        this.port = (short)jo.optInt("port");
+        this.rssi = (short)jo.optInt("rssi");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("chan1_scaled", chan1_scaled);
+        jo.put("chan2_scaled", chan2_scaled);
+        jo.put("chan3_scaled", chan3_scaled);
+        jo.put("chan4_scaled", chan4_scaled);
+        jo.put("chan5_scaled", chan5_scaled);
+        jo.put("chan6_scaled", chan6_scaled);
+        jo.put("chan7_scaled", chan7_scaled);
+        jo.put("chan8_scaled", chan8_scaled);
+        jo.put("port", port);
+        jo.put("rssi", rssi);
+        
+        
+        return jo;
     }
 
                           

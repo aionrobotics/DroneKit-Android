@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Accept / deny control of this MAV
@@ -18,7 +23,6 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK = 6;
     public static final int MAVLINK_MSG_LENGTH = 3;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
-
 
       
     /**
@@ -48,14 +52,10 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
         
         packet.payload.putUnsignedByte(gcs_system_id);
-        
         packet.payload.putUnsignedByte(control_request);
-        
         packet.payload.putUnsignedByte(ack);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -68,21 +68,44 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
         payload.resetIndex();
         
         this.gcs_system_id = payload.getUnsignedByte();
-        
         this.control_request = payload.getUnsignedByte();
-        
         this.ack = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_change_operator_control_ack() {
-        msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_change_operator_control_ack( short gcs_system_id, short control_request, short ack) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+
+        this.gcs_system_id = gcs_system_id;
+        this.control_request = control_request;
+        this.ack = ack;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_change_operator_control_ack( short gcs_system_id, short control_request, short ack, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.gcs_system_id = gcs_system_id;
+        this.control_request = control_request;
+        this.ack = ack;
+        
     }
 
     /**
@@ -91,11 +114,42 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
      *
      */
     public msg_change_operator_control_ack(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_change_operator_control_ack(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
+
+        readJSONheader(jo);
+        
+        this.gcs_system_id = (short)jo.optInt("gcs_system_id");
+        this.control_request = (short)jo.optInt("control_request");
+        this.ack = (short)jo.optInt("ack");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("gcs_system_id", gcs_system_id);
+        jo.put("control_request", control_request);
+        jo.put("ack", ack);
+        
+        
+        return jo;
     }
 
           

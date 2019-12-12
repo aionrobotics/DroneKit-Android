@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Set the magnetometer offsets
@@ -18,7 +23,6 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SET_MAG_OFFSETS = 151;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
         
         packet.payload.putShort(mag_ofs_x);
-        
         packet.payload.putShort(mag_ofs_y);
-        
         packet.payload.putShort(mag_ofs_z);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
         payload.resetIndex();
         
         this.mag_ofs_x = payload.getShort();
-        
         this.mag_ofs_y = payload.getShort();
-        
         this.mag_ofs_z = payload.getShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_set_mag_offsets() {
-        msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_set_mag_offsets( short mag_ofs_x, short mag_ofs_y, short mag_ofs_z, short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+
+        this.mag_ofs_x = mag_ofs_x;
+        this.mag_ofs_y = mag_ofs_y;
+        this.mag_ofs_z = mag_ofs_z;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_set_mag_offsets( short mag_ofs_x, short mag_ofs_y, short mag_ofs_z, short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.mag_ofs_x = mag_ofs_x;
+        this.mag_ofs_y = mag_ofs_y;
+        this.mag_ofs_z = mag_ofs_z;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
      *
      */
     public msg_set_mag_offsets(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_set_mag_offsets(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
+
+        readJSONheader(jo);
+        
+        this.mag_ofs_x = (short)jo.optInt("mag_ofs_x");
+        this.mag_ofs_y = (short)jo.optInt("mag_ofs_y");
+        this.mag_ofs_z = (short)jo.optInt("mag_ofs_z");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("mag_ofs_x", mag_ofs_x);
+        jo.put("mag_ofs_y", mag_ofs_y);
+        jo.put("mag_ofs_z", mag_ofs_z);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
               

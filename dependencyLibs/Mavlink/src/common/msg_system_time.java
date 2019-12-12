@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The system time is the time of the master clock, typically the computer clock of the main onboard computer.
@@ -18,7 +23,6 @@ public class msg_system_time extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SYSTEM_TIME = 2;
     public static final int MAVLINK_MSG_LENGTH = 12;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SYSTEM_TIME;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_system_time extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
         
         packet.payload.putUnsignedLong(time_unix_usec);
-        
         packet.payload.putUnsignedInt(time_boot_ms);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_system_time extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_unix_usec = payload.getUnsignedLong();
-        
         this.time_boot_ms = payload.getUnsignedInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_system_time() {
-        msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_system_time( long time_unix_usec, long time_boot_ms) {
+        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+
+        this.time_unix_usec = time_unix_usec;
+        this.time_boot_ms = time_boot_ms;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_system_time( long time_unix_usec, long time_boot_ms, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_unix_usec = time_unix_usec;
+        this.time_boot_ms = time_boot_ms;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_system_time extends MAVLinkMessage {
      *
      */
     public msg_system_time(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_system_time(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+
+        readJSONheader(jo);
+        
+        this.time_unix_usec = (long)jo.optLong("time_unix_usec");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_unix_usec", time_unix_usec);
+        jo.put("time_boot_ms", time_boot_ms);
+        
+        
+        return jo;
     }
 
         

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Provides state for additional features
@@ -18,7 +23,6 @@ public class msg_extended_sys_state extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_EXTENDED_SYS_STATE = 245;
     public static final int MAVLINK_MSG_LENGTH = 2;
     private static final long serialVersionUID = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_extended_sys_state extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
         
         packet.payload.putUnsignedByte(vtol_state);
-        
         packet.payload.putUnsignedByte(landed_state);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_extended_sys_state extends MAVLinkMessage {
         payload.resetIndex();
         
         this.vtol_state = payload.getUnsignedByte();
-        
         this.landed_state = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_extended_sys_state() {
-        msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_extended_sys_state( short vtol_state, short landed_state) {
+        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+
+        this.vtol_state = vtol_state;
+        this.landed_state = landed_state;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_extended_sys_state( short vtol_state, short landed_state, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.vtol_state = vtol_state;
+        this.landed_state = landed_state;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_extended_sys_state extends MAVLinkMessage {
      *
      */
     public msg_extended_sys_state(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_extended_sys_state(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_EXTENDED_SYS_STATE;
+
+        readJSONheader(jo);
+        
+        this.vtol_state = (short)jo.optInt("vtol_state");
+        this.landed_state = (short)jo.optInt("landed_state");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("vtol_state", vtol_state);
+        jo.put("landed_state", landed_state);
+        
+        
+        return jo;
     }
 
         

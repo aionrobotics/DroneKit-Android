@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Settings of a camera, can be requested using MAV_CMD_REQUEST_CAMERA_SETTINGS.
@@ -18,7 +23,6 @@ public class msg_camera_settings extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_SETTINGS = 260;
     public static final int MAVLINK_MSG_LENGTH = 13;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_SETTINGS;
-
 
       
     /**
@@ -53,15 +57,14 @@ public class msg_camera_settings extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putUnsignedByte(mode_id);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(zoomLevel);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putFloat(focusLevel);
-            
         }
         return packet;
     }
@@ -75,15 +78,14 @@ public class msg_camera_settings extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.mode_id = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.zoomLevel = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
             this.focusLevel = payload.getFloat();
-            
         }
     }
 
@@ -91,7 +93,36 @@ public class msg_camera_settings extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_settings() {
-        msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_settings( long time_boot_ms, short mode_id, float zoomLevel, float focusLevel) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+
+        this.time_boot_ms = time_boot_ms;
+        this.mode_id = mode_id;
+        this.zoomLevel = zoomLevel;
+        this.focusLevel = focusLevel;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_settings( long time_boot_ms, short mode_id, float zoomLevel, float focusLevel, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.mode_id = mode_id;
+        this.zoomLevel = zoomLevel;
+        this.focusLevel = focusLevel;
+        
     }
 
     /**
@@ -100,11 +131,44 @@ public class msg_camera_settings extends MAVLinkMessage {
      *
      */
     public msg_camera_settings(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_settings(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_SETTINGS;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.mode_id = (short)jo.optInt("mode_id");
+        
+        this.zoomLevel = (float)jo.optFloat("zoomLevel");
+        this.focusLevel = (float)jo.optFloat("focusLevel");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("mode_id", mode_id);
+        
+        jo.put("zoomLevel", zoomLevel);
+        jo.put("focusLevel", focusLevel);
+        
+        return jo;
     }
 
             

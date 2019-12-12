@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
@@ -18,7 +23,6 @@ public class msg_landing_target extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LANDING_TARGET = 149;
     public static final int MAVLINK_MSG_LENGTH = 60;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LANDING_TARGET;
-
 
       
     /**
@@ -103,39 +107,36 @@ public class msg_landing_target extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(angle_x);
-        
         packet.payload.putFloat(angle_y);
-        
         packet.payload.putFloat(distance);
-        
         packet.payload.putFloat(size_x);
-        
         packet.payload.putFloat(size_y);
-        
         packet.payload.putUnsignedByte(target_num);
-        
         packet.payload.putUnsignedByte(frame);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(x);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putFloat(y);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putFloat(z);
-            
+        }
+        if(isMavlink2) {
             
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedByte(type);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedByte(position_valid);
-            
         }
         return packet;
     }
@@ -149,39 +150,36 @@ public class msg_landing_target extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.angle_x = payload.getFloat();
-        
         this.angle_y = payload.getFloat();
-        
         this.distance = payload.getFloat();
-        
         this.size_x = payload.getFloat();
-        
         this.size_y = payload.getFloat();
-        
         this.target_num = payload.getUnsignedByte();
-        
         this.frame = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.x = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
             this.y = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
             this.z = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
              
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-            
+        }
+        if(isMavlink2) {
             this.type = payload.getUnsignedByte();
-            
+        }
+        if(isMavlink2) {
             this.position_valid = payload.getUnsignedByte();
-            
         }
     }
 
@@ -189,7 +187,56 @@ public class msg_landing_target extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_landing_target() {
-        msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_landing_target( long time_usec, float angle_x, float angle_y, float distance, float size_x, float size_y, short target_num, short frame, float x, float y, float z, float[] q, short type, short position_valid) {
+        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+
+        this.time_usec = time_usec;
+        this.angle_x = angle_x;
+        this.angle_y = angle_y;
+        this.distance = distance;
+        this.size_x = size_x;
+        this.size_y = size_y;
+        this.target_num = target_num;
+        this.frame = frame;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.type = type;
+        this.position_valid = position_valid;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_landing_target( long time_usec, float angle_x, float angle_y, float distance, float size_x, float size_y, short target_num, short frame, float x, float y, float z, float[] q, short type, short position_valid, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.angle_x = angle_x;
+        this.angle_y = angle_y;
+        this.distance = distance;
+        this.size_x = size_x;
+        this.size_y = size_y;
+        this.target_num = target_num;
+        this.frame = frame;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.type = type;
+        this.position_valid = position_valid;
+        
     }
 
     /**
@@ -198,11 +245,75 @@ public class msg_landing_target extends MAVLinkMessage {
      *
      */
     public msg_landing_target(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_landing_target(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LANDING_TARGET;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.angle_x = (float)jo.optFloat("angle_x");
+        this.angle_y = (float)jo.optFloat("angle_y");
+        this.distance = (float)jo.optFloat("distance");
+        this.size_x = (float)jo.optFloat("size_x");
+        this.size_y = (float)jo.optFloat("size_y");
+        this.target_num = (short)jo.optInt("target_num");
+        this.frame = (short)jo.optInt("frame");
+        
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.type = (short)jo.optInt("type");
+        this.position_valid = (short)jo.optInt("position_valid");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("angle_x", angle_x);
+        jo.put("angle_y", angle_y);
+        jo.put("distance", distance);
+        jo.put("size_x", size_x);
+        jo.put("size_y", size_y);
+        jo.put("target_num", target_num);
+        jo.put("frame", frame);
+        
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("type", type);
+        jo.put("position_valid", position_valid);
+        
+        return jo;
     }
 
                                 

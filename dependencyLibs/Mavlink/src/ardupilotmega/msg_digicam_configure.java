@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Configure on-board Camera Control System.
@@ -18,7 +23,6 @@ public class msg_digicam_configure extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DIGICAM_CONFIGURE = 154;
     public static final int MAVLINK_MSG_LENGTH = 15;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
-
 
       
     /**
@@ -88,30 +92,18 @@ public class msg_digicam_configure extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
         
         packet.payload.putFloat(extra_value);
-        
         packet.payload.putUnsignedShort(shutter_speed);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(mode);
-        
         packet.payload.putUnsignedByte(aperture);
-        
         packet.payload.putUnsignedByte(iso);
-        
         packet.payload.putUnsignedByte(exposure_type);
-        
         packet.payload.putUnsignedByte(command_id);
-        
         packet.payload.putUnsignedByte(engine_cut_off);
-        
         packet.payload.putUnsignedByte(extra_param);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -124,37 +116,68 @@ public class msg_digicam_configure extends MAVLinkMessage {
         payload.resetIndex();
         
         this.extra_value = payload.getFloat();
-        
         this.shutter_speed = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.mode = payload.getUnsignedByte();
-        
         this.aperture = payload.getUnsignedByte();
-        
         this.iso = payload.getUnsignedByte();
-        
         this.exposure_type = payload.getUnsignedByte();
-        
         this.command_id = payload.getUnsignedByte();
-        
         this.engine_cut_off = payload.getUnsignedByte();
-        
         this.extra_param = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_digicam_configure() {
-        msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_digicam_configure( float extra_value, int shutter_speed, short target_system, short target_component, short mode, short aperture, short iso, short exposure_type, short command_id, short engine_cut_off, short extra_param) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+
+        this.extra_value = extra_value;
+        this.shutter_speed = shutter_speed;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mode = mode;
+        this.aperture = aperture;
+        this.iso = iso;
+        this.exposure_type = exposure_type;
+        this.command_id = command_id;
+        this.engine_cut_off = engine_cut_off;
+        this.extra_param = extra_param;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_digicam_configure( float extra_value, int shutter_speed, short target_system, short target_component, short mode, short aperture, short iso, short exposure_type, short command_id, short engine_cut_off, short extra_param, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.extra_value = extra_value;
+        this.shutter_speed = shutter_speed;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mode = mode;
+        this.aperture = aperture;
+        this.iso = iso;
+        this.exposure_type = exposure_type;
+        this.command_id = command_id;
+        this.engine_cut_off = engine_cut_off;
+        this.extra_param = extra_param;
+        
     }
 
     /**
@@ -163,11 +186,58 @@ public class msg_digicam_configure extends MAVLinkMessage {
      *
      */
     public msg_digicam_configure(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_digicam_configure(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONFIGURE;
+
+        readJSONheader(jo);
+        
+        this.extra_value = (float)jo.optFloat("extra_value");
+        this.shutter_speed = (int)jo.optInt("shutter_speed");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.mode = (short)jo.optInt("mode");
+        this.aperture = (short)jo.optInt("aperture");
+        this.iso = (short)jo.optInt("iso");
+        this.exposure_type = (short)jo.optInt("exposure_type");
+        this.command_id = (short)jo.optInt("command_id");
+        this.engine_cut_off = (short)jo.optInt("engine_cut_off");
+        this.extra_param = (short)jo.optInt("extra_param");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("extra_value", extra_value);
+        jo.put("shutter_speed", shutter_speed);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("mode", mode);
+        jo.put("aperture", aperture);
+        jo.put("iso", iso);
+        jo.put("exposure_type", exposure_type);
+        jo.put("command_id", command_id);
+        jo.put("engine_cut_off", engine_cut_off);
+        jo.put("extra_param", extra_param);
+        
+        
+        return jo;
     }
 
                           

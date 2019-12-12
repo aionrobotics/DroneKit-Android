@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * PID tuning information.
@@ -18,7 +23,6 @@ public class msg_pid_tuning extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_PID_TUNING = 194;
     public static final int MAVLINK_MSG_LENGTH = 25;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PID_TUNING;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_pid_tuning extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_PID_TUNING;
         
         packet.payload.putFloat(desired);
-        
         packet.payload.putFloat(achieved);
-        
         packet.payload.putFloat(FF);
-        
         packet.payload.putFloat(P);
-        
         packet.payload.putFloat(I);
-        
         packet.payload.putFloat(D);
-        
         packet.payload.putUnsignedByte(axis);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_pid_tuning extends MAVLinkMessage {
         payload.resetIndex();
         
         this.desired = payload.getFloat();
-        
         this.achieved = payload.getFloat();
-        
         this.FF = payload.getFloat();
-        
         this.P = payload.getFloat();
-        
         this.I = payload.getFloat();
-        
         this.D = payload.getFloat();
-        
         this.axis = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_pid_tuning() {
-        msgid = MAVLINK_MSG_ID_PID_TUNING;
+        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_pid_tuning( float desired, float achieved, float FF, float P, float I, float D, short axis) {
+        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
+
+        this.desired = desired;
+        this.achieved = achieved;
+        this.FF = FF;
+        this.P = P;
+        this.I = I;
+        this.D = D;
+        this.axis = axis;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_pid_tuning( float desired, float achieved, float FF, float P, float I, float D, short axis, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.desired = desired;
+        this.achieved = achieved;
+        this.FF = FF;
+        this.P = P;
+        this.I = I;
+        this.D = D;
+        this.axis = axis;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_pid_tuning extends MAVLinkMessage {
      *
      */
     public msg_pid_tuning(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_pid_tuning(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_PID_TUNING;
+
+        readJSONheader(jo);
+        
+        this.desired = (float)jo.optFloat("desired");
+        this.achieved = (float)jo.optFloat("achieved");
+        this.FF = (float)jo.optFloat("FF");
+        this.P = (float)jo.optFloat("P");
+        this.I = (float)jo.optFloat("I");
+        this.D = (float)jo.optFloat("D");
+        this.axis = (short)jo.optInt("axis");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("desired", desired);
+        jo.put("achieved", achieved);
+        jo.put("FF", FF);
+        jo.put("P", P);
+        jo.put("I", I);
+        jo.put("D", D);
+        jo.put("axis", axis);
+        
+        
+        return jo;
     }
 
                   

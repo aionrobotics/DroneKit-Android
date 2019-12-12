@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is useful for high throughput applications such as hardware in the loop simulations.
@@ -18,7 +23,6 @@ public class msg_hil_state_quaternion extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_STATE_QUATERNION = 115;
     public static final int MAVLINK_MSG_LENGTH = 64;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
-
 
       
     /**
@@ -114,43 +118,26 @@ public class msg_hil_state_quaternion extends MAVLinkMessage {
         
         packet.payload.putUnsignedLong(time_usec);
         
-        
         for (int i = 0; i < attitude_quaternion.length; i++) {
             packet.payload.putFloat(attitude_quaternion[i]);
         }
                     
-        
         packet.payload.putFloat(rollspeed);
-        
         packet.payload.putFloat(pitchspeed);
-        
         packet.payload.putFloat(yawspeed);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putShort(vx);
-        
         packet.payload.putShort(vy);
-        
         packet.payload.putShort(vz);
-        
         packet.payload.putUnsignedShort(ind_airspeed);
-        
         packet.payload.putUnsignedShort(true_airspeed);
-        
         packet.payload.putShort(xacc);
-        
         packet.payload.putShort(yacc);
-        
         packet.payload.putShort(zacc);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -163,51 +150,87 @@ public class msg_hil_state_quaternion extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.attitude_quaternion.length; i++) {
             this.attitude_quaternion[i] = payload.getFloat();
         }
                 
-        
         this.rollspeed = payload.getFloat();
-        
         this.pitchspeed = payload.getFloat();
-        
         this.yawspeed = payload.getFloat();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.vx = payload.getShort();
-        
         this.vy = payload.getShort();
-        
         this.vz = payload.getShort();
-        
         this.ind_airspeed = payload.getUnsignedShort();
-        
         this.true_airspeed = payload.getUnsignedShort();
-        
         this.xacc = payload.getShort();
-        
         this.yacc = payload.getShort();
-        
         this.zacc = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_state_quaternion() {
-        msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_state_quaternion( long time_usec, float[] attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int lat, int lon, int alt, short vx, short vy, short vz, int ind_airspeed, int true_airspeed, short xacc, short yacc, short zacc) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+
+        this.time_usec = time_usec;
+        this.attitude_quaternion = attitude_quaternion;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.ind_airspeed = ind_airspeed;
+        this.true_airspeed = true_airspeed;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_state_quaternion( long time_usec, float[] attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int lat, int lon, int alt, short vx, short vy, short vz, int ind_airspeed, int true_airspeed, short xacc, short yacc, short zacc, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.attitude_quaternion = attitude_quaternion;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.ind_airspeed = ind_airspeed;
+        this.true_airspeed = true_airspeed;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        
     }
 
     /**
@@ -216,11 +239,79 @@ public class msg_hil_state_quaternion extends MAVLinkMessage {
      *
      */
     public msg_hil_state_quaternion(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_state_quaternion(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+         
+        JSONArray ja_attitude_quaternion = jo.optJSONArray("attitude_quaternion");
+        for (int i = 0; i < Math.min(this.attitude_quaternion.length, ja_attitude_quaternion.length()); i++) {
+            this.attitude_quaternion[i] = (float)ja_attitude_quaternion.getFloat(i);
+        }
+                
+        this.rollspeed = (float)jo.optFloat("rollspeed");
+        this.pitchspeed = (float)jo.optFloat("pitchspeed");
+        this.yawspeed = (float)jo.optFloat("yawspeed");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.vx = (short)jo.optInt("vx");
+        this.vy = (short)jo.optInt("vy");
+        this.vz = (short)jo.optInt("vz");
+        this.ind_airspeed = (int)jo.optInt("ind_airspeed");
+        this.true_airspeed = (int)jo.optInt("true_airspeed");
+        this.xacc = (short)jo.optInt("xacc");
+        this.yacc = (short)jo.optInt("yacc");
+        this.zacc = (short)jo.optInt("zacc");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+         
+        JSONArray ja_attitude_quaternion = new JSONArray();
+        for (int i = 0; i < this.attitude_quaternion.length; i++) {
+            ja_attitude_quaternion.put(this.attitude_quaternion[i]);
+        }
+        jo.put("attitude_quaternion", (Object)ja_attitude_quaternion);
+                
+        jo.put("rollspeed", rollspeed);
+        jo.put("pitchspeed", pitchspeed);
+        jo.put("yawspeed", yawspeed);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("ind_airspeed", ind_airspeed);
+        jo.put("true_airspeed", true_airspeed);
+        jo.put("xacc", xacc);
+        jo.put("yacc", yacc);
+        jo.put("zacc", zacc);
+        
+        
+        return jo;
     }
 
                                     

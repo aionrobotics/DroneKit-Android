@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Speed estimate from a vision source.
@@ -18,7 +23,6 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE = 103;
     public static final int MAVLINK_MSG_LENGTH = 57;
     private static final long serialVersionUID = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
-
 
       
     /**
@@ -63,23 +67,20 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
         
         packet.payload.putUnsignedLong(usec);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
         
+        
         if(isMavlink2) {
-            
             
         for (int i = 0; i < covariance.length; i++) {
             packet.payload.putFloat(covariance[i]);
         }
                     
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedByte(reset_counter);
-            
         }
         return packet;
     }
@@ -93,23 +94,20 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
         payload.resetIndex();
         
         this.usec = payload.getUnsignedLong();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
         
+        
         if(isMavlink2) {
-            
              
         for (int i = 0; i < this.covariance.length; i++) {
             this.covariance[i] = payload.getFloat();
         }
                 
-            
+        }
+        if(isMavlink2) {
             this.reset_counter = payload.getUnsignedByte();
-            
         }
     }
 
@@ -117,7 +115,40 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_vision_speed_estimate() {
-        msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_vision_speed_estimate( long usec, float x, float y, float z, float[] covariance, short reset_counter) {
+        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+
+        this.usec = usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.covariance = covariance;
+        this.reset_counter = reset_counter;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_vision_speed_estimate( long usec, float x, float y, float z, float[] covariance, short reset_counter, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.usec = usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.covariance = covariance;
+        this.reset_counter = reset_counter;
+        
     }
 
     /**
@@ -126,11 +157,59 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
      *
      */
     public msg_vision_speed_estimate(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_vision_speed_estimate(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+
+        readJSONheader(jo);
+        
+        this.usec = (long)jo.optLong("usec");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+        
+         
+        JSONArray ja_covariance = jo.optJSONArray("covariance");
+        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        }
+                
+        this.reset_counter = (short)jo.optInt("reset_counter");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("usec", usec);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        
+         
+        JSONArray ja_covariance = new JSONArray();
+        for (int i = 0; i < this.covariance.length; i++) {
+            ja_covariance.put(this.covariance[i]);
+        }
+        jo.put("covariance", (Object)ja_covariance);
+                
+        jo.put("reset_counter", reset_counter);
+        
+        return jo;
     }
 
                 

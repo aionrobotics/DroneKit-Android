@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of DCM attitude estimator.
@@ -18,7 +23,6 @@ public class msg_ahrs extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AHRS = 163;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AHRS;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_ahrs extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_AHRS;
         
         packet.payload.putFloat(omegaIx);
-        
         packet.payload.putFloat(omegaIy);
-        
         packet.payload.putFloat(omegaIz);
-        
         packet.payload.putFloat(accel_weight);
-        
         packet.payload.putFloat(renorm_val);
-        
         packet.payload.putFloat(error_rp);
-        
         packet.payload.putFloat(error_yaw);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_ahrs extends MAVLinkMessage {
         payload.resetIndex();
         
         this.omegaIx = payload.getFloat();
-        
         this.omegaIy = payload.getFloat();
-        
         this.omegaIz = payload.getFloat();
-        
         this.accel_weight = payload.getFloat();
-        
         this.renorm_val = payload.getFloat();
-        
         this.error_rp = payload.getFloat();
-        
         this.error_yaw = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_ahrs() {
-        msgid = MAVLINK_MSG_ID_AHRS;
+        this.msgid = MAVLINK_MSG_ID_AHRS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_ahrs( float omegaIx, float omegaIy, float omegaIz, float accel_weight, float renorm_val, float error_rp, float error_yaw) {
+        this.msgid = MAVLINK_MSG_ID_AHRS;
+
+        this.omegaIx = omegaIx;
+        this.omegaIy = omegaIy;
+        this.omegaIz = omegaIz;
+        this.accel_weight = accel_weight;
+        this.renorm_val = renorm_val;
+        this.error_rp = error_rp;
+        this.error_yaw = error_yaw;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_ahrs( float omegaIx, float omegaIy, float omegaIz, float accel_weight, float renorm_val, float error_rp, float error_yaw, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AHRS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.omegaIx = omegaIx;
+        this.omegaIy = omegaIy;
+        this.omegaIz = omegaIz;
+        this.accel_weight = accel_weight;
+        this.renorm_val = renorm_val;
+        this.error_rp = error_rp;
+        this.error_yaw = error_yaw;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_ahrs extends MAVLinkMessage {
      *
      */
     public msg_ahrs(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AHRS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AHRS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_ahrs(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AHRS;
+
+        readJSONheader(jo);
+        
+        this.omegaIx = (float)jo.optFloat("omegaIx");
+        this.omegaIy = (float)jo.optFloat("omegaIy");
+        this.omegaIz = (float)jo.optFloat("omegaIz");
+        this.accel_weight = (float)jo.optFloat("accel_weight");
+        this.renorm_val = (float)jo.optFloat("renorm_val");
+        this.error_rp = (float)jo.optFloat("error_rp");
+        this.error_yaw = (float)jo.optFloat("error_yaw");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("omegaIx", omegaIx);
+        jo.put("omegaIy", omegaIy);
+        jo.put("omegaIz", omegaIz);
+        jo.put("accel_weight", accel_weight);
+        jo.put("renorm_val", renorm_val);
+        jo.put("error_rp", error_rp);
+        jo.put("error_yaw", error_yaw);
+        
+        
+        return jo;
     }
 
                   

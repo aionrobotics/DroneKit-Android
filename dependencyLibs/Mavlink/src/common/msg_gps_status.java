@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The positioning status, as reported by GPS. This message is intended to display status information about each satellite visible to the receiver. See message GLOBAL_POSITION for the global position estimate. This message can contain information for up to 20 satellites.
@@ -18,7 +23,6 @@ public class msg_gps_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GPS_STATUS = 25;
     public static final int MAVLINK_MSG_LENGTH = 101;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GPS_STATUS;
-
 
       
     /**
@@ -64,39 +68,32 @@ public class msg_gps_status extends MAVLinkMessage {
         
         packet.payload.putUnsignedByte(satellites_visible);
         
-        
         for (int i = 0; i < satellite_prn.length; i++) {
             packet.payload.putUnsignedByte(satellite_prn[i]);
         }
                     
-        
         
         for (int i = 0; i < satellite_used.length; i++) {
             packet.payload.putUnsignedByte(satellite_used[i]);
         }
                     
         
-        
         for (int i = 0; i < satellite_elevation.length; i++) {
             packet.payload.putUnsignedByte(satellite_elevation[i]);
         }
                     
-        
         
         for (int i = 0; i < satellite_azimuth.length; i++) {
             packet.payload.putUnsignedByte(satellite_azimuth[i]);
         }
                     
         
-        
         for (int i = 0; i < satellite_snr.length; i++) {
             packet.payload.putUnsignedByte(satellite_snr[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -109,47 +106,73 @@ public class msg_gps_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.satellites_visible = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.satellite_prn.length; i++) {
             this.satellite_prn[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.satellite_used.length; i++) {
             this.satellite_used[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.satellite_elevation.length; i++) {
             this.satellite_elevation[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.satellite_azimuth.length; i++) {
             this.satellite_azimuth[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.satellite_snr.length; i++) {
             this.satellite_snr[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gps_status() {
-        msgid = MAVLINK_MSG_ID_GPS_STATUS;
+        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gps_status( short satellites_visible, short[] satellite_prn, short[] satellite_used, short[] satellite_elevation, short[] satellite_azimuth, short[] satellite_snr) {
+        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
+
+        this.satellites_visible = satellites_visible;
+        this.satellite_prn = satellite_prn;
+        this.satellite_used = satellite_used;
+        this.satellite_elevation = satellite_elevation;
+        this.satellite_azimuth = satellite_azimuth;
+        this.satellite_snr = satellite_snr;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gps_status( short satellites_visible, short[] satellite_prn, short[] satellite_used, short[] satellite_elevation, short[] satellite_azimuth, short[] satellite_snr, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.satellites_visible = satellites_visible;
+        this.satellite_prn = satellite_prn;
+        this.satellite_used = satellite_used;
+        this.satellite_elevation = satellite_elevation;
+        this.satellite_azimuth = satellite_azimuth;
+        this.satellite_snr = satellite_snr;
+        
     }
 
     /**
@@ -158,11 +181,103 @@ public class msg_gps_status extends MAVLinkMessage {
      *
      */
     public msg_gps_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gps_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GPS_STATUS;
+
+        readJSONheader(jo);
+        
+        this.satellites_visible = (short)jo.optInt("satellites_visible");
+         
+        JSONArray ja_satellite_prn = jo.optJSONArray("satellite_prn");
+        for (int i = 0; i < Math.min(this.satellite_prn.length, ja_satellite_prn.length()); i++) {
+            this.satellite_prn[i] = (short)ja_satellite_prn.getInt(i);
+        }
+                
+         
+        JSONArray ja_satellite_used = jo.optJSONArray("satellite_used");
+        for (int i = 0; i < Math.min(this.satellite_used.length, ja_satellite_used.length()); i++) {
+            this.satellite_used[i] = (short)ja_satellite_used.getInt(i);
+        }
+                
+         
+        JSONArray ja_satellite_elevation = jo.optJSONArray("satellite_elevation");
+        for (int i = 0; i < Math.min(this.satellite_elevation.length, ja_satellite_elevation.length()); i++) {
+            this.satellite_elevation[i] = (short)ja_satellite_elevation.getInt(i);
+        }
+                
+         
+        JSONArray ja_satellite_azimuth = jo.optJSONArray("satellite_azimuth");
+        for (int i = 0; i < Math.min(this.satellite_azimuth.length, ja_satellite_azimuth.length()); i++) {
+            this.satellite_azimuth[i] = (short)ja_satellite_azimuth.getInt(i);
+        }
+                
+         
+        JSONArray ja_satellite_snr = jo.optJSONArray("satellite_snr");
+        for (int i = 0; i < Math.min(this.satellite_snr.length, ja_satellite_snr.length()); i++) {
+            this.satellite_snr[i] = (short)ja_satellite_snr.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("satellites_visible", satellites_visible);
+         
+        JSONArray ja_satellite_prn = new JSONArray();
+        for (int i = 0; i < this.satellite_prn.length; i++) {
+            ja_satellite_prn.put(this.satellite_prn[i]);
+        }
+        jo.put("satellite_prn", (Object)ja_satellite_prn);
+                
+         
+        JSONArray ja_satellite_used = new JSONArray();
+        for (int i = 0; i < this.satellite_used.length; i++) {
+            ja_satellite_used.put(this.satellite_used[i]);
+        }
+        jo.put("satellite_used", (Object)ja_satellite_used);
+                
+         
+        JSONArray ja_satellite_elevation = new JSONArray();
+        for (int i = 0; i < this.satellite_elevation.length; i++) {
+            ja_satellite_elevation.put(this.satellite_elevation[i]);
+        }
+        jo.put("satellite_elevation", (Object)ja_satellite_elevation);
+                
+         
+        JSONArray ja_satellite_azimuth = new JSONArray();
+        for (int i = 0; i < this.satellite_azimuth.length; i++) {
+            ja_satellite_azimuth.put(this.satellite_azimuth[i]);
+        }
+        jo.put("satellite_azimuth", (Object)ja_satellite_azimuth);
+                
+         
+        JSONArray ja_satellite_snr = new JSONArray();
+        for (int i = 0; i < this.satellite_snr.length; i++) {
+            ja_satellite_snr.put(this.satellite_snr[i]);
+        }
+        jo.put("satellite_snr", (Object)ja_satellite_snr);
+                
+        
+        
+        return jo;
     }
 
                 

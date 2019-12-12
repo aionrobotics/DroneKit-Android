@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sent from simulation to autopilot. This packet is useful for high throughput applications such as hardware in the loop simulations.
@@ -18,7 +23,6 @@ public class msg_hil_state extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_STATE = 90;
     public static final int MAVLINK_MSG_LENGTH = 56;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_STATE;
-
 
       
     /**
@@ -113,40 +117,23 @@ public class msg_hil_state extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_STATE;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(rollspeed);
-        
         packet.payload.putFloat(pitchspeed);
-        
         packet.payload.putFloat(yawspeed);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putShort(vx);
-        
         packet.payload.putShort(vy);
-        
         packet.payload.putShort(vz);
-        
         packet.payload.putShort(xacc);
-        
         packet.payload.putShort(yacc);
-        
         packet.payload.putShort(zacc);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -159,47 +146,83 @@ public class msg_hil_state extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.rollspeed = payload.getFloat();
-        
         this.pitchspeed = payload.getFloat();
-        
         this.yawspeed = payload.getFloat();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.vx = payload.getShort();
-        
         this.vy = payload.getShort();
-        
         this.vz = payload.getShort();
-        
         this.xacc = payload.getShort();
-        
         this.yacc = payload.getShort();
-        
         this.zacc = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_state() {
-        msgid = MAVLINK_MSG_ID_HIL_STATE;
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_state( long time_usec, float roll, float pitch, float yaw, float rollspeed, float pitchspeed, float yawspeed, int lat, int lon, int alt, short vx, short vy, short vz, short xacc, short yacc, short zacc) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
+
+        this.time_usec = time_usec;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_state( long time_usec, float roll, float pitch, float yaw, float rollspeed, float pitchspeed, float yawspeed, int lat, int lon, int alt, short vx, short vy, short vz, short xacc, short yacc, short zacc, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        
     }
 
     /**
@@ -208,11 +231,68 @@ public class msg_hil_state extends MAVLinkMessage {
      *
      */
     public msg_hil_state(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_state(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_STATE;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.rollspeed = (float)jo.optFloat("rollspeed");
+        this.pitchspeed = (float)jo.optFloat("pitchspeed");
+        this.yawspeed = (float)jo.optFloat("yawspeed");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.vx = (short)jo.optInt("vx");
+        this.vy = (short)jo.optInt("vy");
+        this.vz = (short)jo.optInt("vz");
+        this.xacc = (short)jo.optInt("xacc");
+        this.yacc = (short)jo.optInt("yacc");
+        this.zacc = (short)jo.optInt("zacc");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        jo.put("rollspeed", rollspeed);
+        jo.put("pitchspeed", pitchspeed);
+        jo.put("yawspeed", yawspeed);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("xacc", xacc);
+        jo.put("yacc", yacc);
+        jo.put("zacc", zacc);
+        
+        
+        return jo;
     }
 
                                     

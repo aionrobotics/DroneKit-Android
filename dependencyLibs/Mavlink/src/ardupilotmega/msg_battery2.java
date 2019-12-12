@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * 2nd Battery status
@@ -18,7 +23,6 @@ public class msg_battery2 extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_BATTERY2 = 181;
     public static final int MAVLINK_MSG_LENGTH = 4;
     private static final long serialVersionUID = MAVLINK_MSG_ID_BATTERY2;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_battery2 extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_BATTERY2;
         
         packet.payload.putUnsignedShort(voltage);
-        
         packet.payload.putShort(current_battery);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_battery2 extends MAVLinkMessage {
         payload.resetIndex();
         
         this.voltage = payload.getUnsignedShort();
-        
         this.current_battery = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_battery2() {
-        msgid = MAVLINK_MSG_ID_BATTERY2;
+        this.msgid = MAVLINK_MSG_ID_BATTERY2;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_battery2( int voltage, short current_battery) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY2;
+
+        this.voltage = voltage;
+        this.current_battery = current_battery;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_battery2( int voltage, short current_battery, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY2;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.voltage = voltage;
+        this.current_battery = current_battery;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_battery2 extends MAVLinkMessage {
      *
      */
     public msg_battery2(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY2;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_BATTERY2;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_battery2(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY2;
+
+        readJSONheader(jo);
+        
+        this.voltage = (int)jo.optInt("voltage");
+        this.current_battery = (short)jo.optInt("current_battery");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("voltage", voltage);
+        jo.put("current_battery", current_battery);
+        
+        
+        return jo;
     }
 
         

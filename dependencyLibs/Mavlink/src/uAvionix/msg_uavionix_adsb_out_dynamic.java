@@ -9,6 +9,11 @@ package com.mavlink.uAvionix;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
@@ -18,7 +23,6 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC = 10002;
     public static final int MAVLINK_MSG_LENGTH = 41;
     private static final long serialVersionUID = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
-
 
       
     /**
@@ -113,40 +117,23 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
         
         packet.payload.putUnsignedInt(utcTime);
-        
         packet.payload.putInt(gpsLat);
-        
         packet.payload.putInt(gpsLon);
-        
         packet.payload.putInt(gpsAlt);
-        
         packet.payload.putInt(baroAltMSL);
-        
         packet.payload.putUnsignedInt(accuracyHor);
-        
         packet.payload.putUnsignedShort(accuracyVert);
-        
         packet.payload.putUnsignedShort(accuracyVel);
-        
         packet.payload.putShort(velVert);
-        
         packet.payload.putShort(velNS);
-        
         packet.payload.putShort(VelEW);
-        
         packet.payload.putUnsignedShort(state);
-        
         packet.payload.putUnsignedShort(squawk);
-        
         packet.payload.putUnsignedByte(gpsFix);
-        
         packet.payload.putUnsignedByte(numSats);
-        
         packet.payload.putUnsignedByte(emergencyStatus);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -159,47 +146,83 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
         payload.resetIndex();
         
         this.utcTime = payload.getUnsignedInt();
-        
         this.gpsLat = payload.getInt();
-        
         this.gpsLon = payload.getInt();
-        
         this.gpsAlt = payload.getInt();
-        
         this.baroAltMSL = payload.getInt();
-        
         this.accuracyHor = payload.getUnsignedInt();
-        
         this.accuracyVert = payload.getUnsignedShort();
-        
         this.accuracyVel = payload.getUnsignedShort();
-        
         this.velVert = payload.getShort();
-        
         this.velNS = payload.getShort();
-        
         this.VelEW = payload.getShort();
-        
         this.state = payload.getUnsignedShort();
-        
         this.squawk = payload.getUnsignedShort();
-        
         this.gpsFix = payload.getUnsignedByte();
-        
         this.numSats = payload.getUnsignedByte();
-        
         this.emergencyStatus = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_uavionix_adsb_out_dynamic() {
-        msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_uavionix_adsb_out_dynamic( long utcTime, int gpsLat, int gpsLon, int gpsAlt, int baroAltMSL, long accuracyHor, int accuracyVert, int accuracyVel, short velVert, short velNS, short VelEW, int state, int squawk, short gpsFix, short numSats, short emergencyStatus) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+
+        this.utcTime = utcTime;
+        this.gpsLat = gpsLat;
+        this.gpsLon = gpsLon;
+        this.gpsAlt = gpsAlt;
+        this.baroAltMSL = baroAltMSL;
+        this.accuracyHor = accuracyHor;
+        this.accuracyVert = accuracyVert;
+        this.accuracyVel = accuracyVel;
+        this.velVert = velVert;
+        this.velNS = velNS;
+        this.VelEW = VelEW;
+        this.state = state;
+        this.squawk = squawk;
+        this.gpsFix = gpsFix;
+        this.numSats = numSats;
+        this.emergencyStatus = emergencyStatus;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_uavionix_adsb_out_dynamic( long utcTime, int gpsLat, int gpsLon, int gpsAlt, int baroAltMSL, long accuracyHor, int accuracyVert, int accuracyVel, short velVert, short velNS, short VelEW, int state, int squawk, short gpsFix, short numSats, short emergencyStatus, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.utcTime = utcTime;
+        this.gpsLat = gpsLat;
+        this.gpsLon = gpsLon;
+        this.gpsAlt = gpsAlt;
+        this.baroAltMSL = baroAltMSL;
+        this.accuracyHor = accuracyHor;
+        this.accuracyVert = accuracyVert;
+        this.accuracyVel = accuracyVel;
+        this.velVert = velVert;
+        this.velNS = velNS;
+        this.VelEW = VelEW;
+        this.state = state;
+        this.squawk = squawk;
+        this.gpsFix = gpsFix;
+        this.numSats = numSats;
+        this.emergencyStatus = emergencyStatus;
+        
     }
 
     /**
@@ -208,11 +231,68 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
      *
      */
     public msg_uavionix_adsb_out_dynamic(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_uavionix_adsb_out_dynamic(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+
+        readJSONheader(jo);
+        
+        this.utcTime = (long)jo.optLong("utcTime");
+        this.gpsLat = (int)jo.optInt("gpsLat");
+        this.gpsLon = (int)jo.optInt("gpsLon");
+        this.gpsAlt = (int)jo.optInt("gpsAlt");
+        this.baroAltMSL = (int)jo.optInt("baroAltMSL");
+        this.accuracyHor = (long)jo.optLong("accuracyHor");
+        this.accuracyVert = (int)jo.optInt("accuracyVert");
+        this.accuracyVel = (int)jo.optInt("accuracyVel");
+        this.velVert = (short)jo.optInt("velVert");
+        this.velNS = (short)jo.optInt("velNS");
+        this.VelEW = (short)jo.optInt("VelEW");
+        this.state = (int)jo.optInt("state");
+        this.squawk = (int)jo.optInt("squawk");
+        this.gpsFix = (short)jo.optInt("gpsFix");
+        this.numSats = (short)jo.optInt("numSats");
+        this.emergencyStatus = (short)jo.optInt("emergencyStatus");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("utcTime", utcTime);
+        jo.put("gpsLat", gpsLat);
+        jo.put("gpsLon", gpsLon);
+        jo.put("gpsAlt", gpsAlt);
+        jo.put("baroAltMSL", baroAltMSL);
+        jo.put("accuracyHor", accuracyHor);
+        jo.put("accuracyVert", accuracyVert);
+        jo.put("accuracyVel", accuracyVel);
+        jo.put("velVert", velVert);
+        jo.put("velNS", velNS);
+        jo.put("VelEW", VelEW);
+        jo.put("state", state);
+        jo.put("squawk", squawk);
+        jo.put("gpsFix", gpsFix);
+        jo.put("numSats", numSats);
+        jo.put("emergencyStatus", emergencyStatus);
+        
+        
+        return jo;
     }
 
                                     

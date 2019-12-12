@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request for terrain data and terrain status
@@ -18,7 +23,6 @@ public class msg_terrain_request extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_TERRAIN_REQUEST = 133;
     public static final int MAVLINK_MSG_LENGTH = 18;
     private static final long serialVersionUID = MAVLINK_MSG_ID_TERRAIN_REQUEST;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_terrain_request extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
         
         packet.payload.putUnsignedLong(mask);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putUnsignedShort(grid_spacing);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_terrain_request extends MAVLinkMessage {
         payload.resetIndex();
         
         this.mask = payload.getUnsignedLong();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.grid_spacing = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_terrain_request() {
-        msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_terrain_request( long mask, int lat, int lon, int grid_spacing) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+
+        this.mask = mask;
+        this.lat = lat;
+        this.lon = lon;
+        this.grid_spacing = grid_spacing;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_terrain_request( long mask, int lat, int lon, int grid_spacing, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.mask = mask;
+        this.lat = lat;
+        this.lon = lon;
+        this.grid_spacing = grid_spacing;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_terrain_request extends MAVLinkMessage {
      *
      */
     public msg_terrain_request(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_terrain_request(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REQUEST;
+
+        readJSONheader(jo);
+        
+        this.mask = (long)jo.optLong("mask");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.grid_spacing = (int)jo.optInt("grid_spacing");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("mask", mask);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("grid_spacing", grid_spacing);
+        
+        
+        return jo;
     }
 
             

@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Message with some status from APM to GCS about camera or antenna mount.
@@ -18,7 +23,6 @@ public class msg_mount_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MOUNT_STATUS = 158;
     public static final int MAVLINK_MSG_LENGTH = 14;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MOUNT_STATUS;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_mount_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
         
         packet.payload.putInt(pointing_a);
-        
         packet.payload.putInt(pointing_b);
-        
         packet.payload.putInt(pointing_c);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_mount_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.pointing_a = payload.getInt();
-        
         this.pointing_b = payload.getInt();
-        
         this.pointing_c = payload.getInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mount_status() {
-        msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mount_status( int pointing_a, int pointing_b, int pointing_c, short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+
+        this.pointing_a = pointing_a;
+        this.pointing_b = pointing_b;
+        this.pointing_c = pointing_c;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mount_status( int pointing_a, int pointing_b, int pointing_c, short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.pointing_a = pointing_a;
+        this.pointing_b = pointing_b;
+        this.pointing_c = pointing_c;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_mount_status extends MAVLinkMessage {
      *
      */
     public msg_mount_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mount_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_STATUS;
+
+        readJSONheader(jo);
+        
+        this.pointing_a = (int)jo.optInt("pointing_a");
+        this.pointing_b = (int)jo.optInt("pointing_b");
+        this.pointing_c = (int)jo.optInt("pointing_c");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("pointing_a", pointing_a);
+        jo.put("pointing_b", pointing_b);
+        jo.put("pointing_c", pointing_c);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
               

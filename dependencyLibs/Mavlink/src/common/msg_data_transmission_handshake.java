@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Handshake message to initiate, control and stop image streaming when using the Image Transmission Protocol: https://mavlink.io/en/services/image_transmission.html.
@@ -18,7 +23,6 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE = 130;
     public static final int MAVLINK_MSG_LENGTH = 13;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
         
         packet.payload.putUnsignedInt(size);
-        
         packet.payload.putUnsignedShort(width);
-        
         packet.payload.putUnsignedShort(height);
-        
         packet.payload.putUnsignedShort(packets);
-        
         packet.payload.putUnsignedByte(type);
-        
         packet.payload.putUnsignedByte(payload);
-        
         packet.payload.putUnsignedByte(jpg_quality);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
         payload.resetIndex();
         
         this.size = payload.getUnsignedInt();
-        
         this.width = payload.getUnsignedShort();
-        
         this.height = payload.getUnsignedShort();
-        
         this.packets = payload.getUnsignedShort();
-        
         this.type = payload.getUnsignedByte();
-        
         this.payload = payload.getUnsignedByte();
-        
         this.jpg_quality = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_data_transmission_handshake() {
-        msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_data_transmission_handshake( long size, int width, int height, int packets, short type, short payload, short jpg_quality) {
+        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.packets = packets;
+        this.type = type;
+        this.payload = payload;
+        this.jpg_quality = jpg_quality;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_data_transmission_handshake( long size, int width, int height, int packets, short type, short payload, short jpg_quality, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.packets = packets;
+        this.type = type;
+        this.payload = payload;
+        this.jpg_quality = jpg_quality;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
      *
      */
     public msg_data_transmission_handshake(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_data_transmission_handshake(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+
+        readJSONheader(jo);
+        
+        this.size = (long)jo.optLong("size");
+        this.width = (int)jo.optInt("width");
+        this.height = (int)jo.optInt("height");
+        this.packets = (int)jo.optInt("packets");
+        this.type = (short)jo.optInt("type");
+        this.payload = (short)jo.optInt("payload");
+        this.jpg_quality = (short)jo.optInt("jpg_quality");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("size", size);
+        jo.put("width", width);
+        jo.put("height", height);
+        jo.put("packets", packets);
+        jo.put("type", type);
+        jo.put("payload", payload);
+        jo.put("jpg_quality", jpg_quality);
+        
+        
+        return jo;
     }
 
                   

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The IMU readings in SI units in NED body frame
@@ -18,7 +23,6 @@ public class msg_hil_sensor extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_SENSOR = 107;
     public static final int MAVLINK_MSG_LENGTH = 64;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_SENSOR;
-
 
       
     /**
@@ -108,38 +112,22 @@ public class msg_hil_sensor extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(xacc);
-        
         packet.payload.putFloat(yacc);
-        
         packet.payload.putFloat(zacc);
-        
         packet.payload.putFloat(xgyro);
-        
         packet.payload.putFloat(ygyro);
-        
         packet.payload.putFloat(zgyro);
-        
         packet.payload.putFloat(xmag);
-        
         packet.payload.putFloat(ymag);
-        
         packet.payload.putFloat(zmag);
-        
         packet.payload.putFloat(abs_pressure);
-        
         packet.payload.putFloat(diff_pressure);
-        
         packet.payload.putFloat(pressure_alt);
-        
         packet.payload.putFloat(temperature);
-        
         packet.payload.putUnsignedInt(fields_updated);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -152,45 +140,80 @@ public class msg_hil_sensor extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.xacc = payload.getFloat();
-        
         this.yacc = payload.getFloat();
-        
         this.zacc = payload.getFloat();
-        
         this.xgyro = payload.getFloat();
-        
         this.ygyro = payload.getFloat();
-        
         this.zgyro = payload.getFloat();
-        
         this.xmag = payload.getFloat();
-        
         this.ymag = payload.getFloat();
-        
         this.zmag = payload.getFloat();
-        
         this.abs_pressure = payload.getFloat();
-        
         this.diff_pressure = payload.getFloat();
-        
         this.pressure_alt = payload.getFloat();
-        
         this.temperature = payload.getFloat();
-        
         this.fields_updated = payload.getUnsignedInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_sensor() {
-        msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_sensor( long time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, long fields_updated) {
+        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+
+        this.time_usec = time_usec;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.xmag = xmag;
+        this.ymag = ymag;
+        this.zmag = zmag;
+        this.abs_pressure = abs_pressure;
+        this.diff_pressure = diff_pressure;
+        this.pressure_alt = pressure_alt;
+        this.temperature = temperature;
+        this.fields_updated = fields_updated;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_sensor( long time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, long fields_updated, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.xmag = xmag;
+        this.ymag = ymag;
+        this.zmag = zmag;
+        this.abs_pressure = abs_pressure;
+        this.diff_pressure = diff_pressure;
+        this.pressure_alt = pressure_alt;
+        this.temperature = temperature;
+        this.fields_updated = fields_updated;
+        
     }
 
     /**
@@ -199,11 +222,66 @@ public class msg_hil_sensor extends MAVLinkMessage {
      *
      */
     public msg_hil_sensor(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_sensor(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_SENSOR;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.xacc = (float)jo.optFloat("xacc");
+        this.yacc = (float)jo.optFloat("yacc");
+        this.zacc = (float)jo.optFloat("zacc");
+        this.xgyro = (float)jo.optFloat("xgyro");
+        this.ygyro = (float)jo.optFloat("ygyro");
+        this.zgyro = (float)jo.optFloat("zgyro");
+        this.xmag = (float)jo.optFloat("xmag");
+        this.ymag = (float)jo.optFloat("ymag");
+        this.zmag = (float)jo.optFloat("zmag");
+        this.abs_pressure = (float)jo.optFloat("abs_pressure");
+        this.diff_pressure = (float)jo.optFloat("diff_pressure");
+        this.pressure_alt = (float)jo.optFloat("pressure_alt");
+        this.temperature = (float)jo.optFloat("temperature");
+        this.fields_updated = (long)jo.optLong("fields_updated");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("xacc", xacc);
+        jo.put("yacc", yacc);
+        jo.put("zacc", zacc);
+        jo.put("xgyro", xgyro);
+        jo.put("ygyro", ygyro);
+        jo.put("zgyro", zgyro);
+        jo.put("xmag", xmag);
+        jo.put("ymag", ymag);
+        jo.put("zmag", zmag);
+        jo.put("abs_pressure", abs_pressure);
+        jo.put("diff_pressure", diff_pressure);
+        jo.put("pressure_alt", pressure_alt);
+        jo.put("temperature", temperature);
+        jo.put("fields_updated", fields_updated);
+        
+        
+        return jo;
     }
 
                                   

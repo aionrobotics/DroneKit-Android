@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Heartbeat from a HeroBus attached GoPro.
@@ -18,7 +23,6 @@ public class msg_gopro_heartbeat extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GOPRO_HEARTBEAT = 215;
     public static final int MAVLINK_MSG_LENGTH = 3;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
-
 
       
     /**
@@ -48,14 +52,10 @@ public class msg_gopro_heartbeat extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
         
         packet.payload.putUnsignedByte(status);
-        
         packet.payload.putUnsignedByte(capture_mode);
-        
         packet.payload.putUnsignedByte(flags);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -68,21 +68,44 @@ public class msg_gopro_heartbeat extends MAVLinkMessage {
         payload.resetIndex();
         
         this.status = payload.getUnsignedByte();
-        
         this.capture_mode = payload.getUnsignedByte();
-        
         this.flags = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gopro_heartbeat() {
-        msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gopro_heartbeat( short status, short capture_mode, short flags) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+
+        this.status = status;
+        this.capture_mode = capture_mode;
+        this.flags = flags;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gopro_heartbeat( short status, short capture_mode, short flags, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.status = status;
+        this.capture_mode = capture_mode;
+        this.flags = flags;
+        
     }
 
     /**
@@ -91,11 +114,42 @@ public class msg_gopro_heartbeat extends MAVLinkMessage {
      *
      */
     public msg_gopro_heartbeat(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gopro_heartbeat(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_HEARTBEAT;
+
+        readJSONheader(jo);
+        
+        this.status = (short)jo.optInt("status");
+        this.capture_mode = (short)jo.optInt("capture_mode");
+        this.flags = (short)jo.optInt("flags");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("status", status);
+        jo.put("capture_mode", capture_mode);
+        jo.put("flags", flags);
+        
+        
+        return jo;
     }
 
           

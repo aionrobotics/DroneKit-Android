@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Cumulative distance traveled for each reported wheel.
@@ -18,7 +23,6 @@ public class msg_wheel_distance extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_WHEEL_DISTANCE = 9000;
     public static final int MAVLINK_MSG_LENGTH = 137;
     private static final long serialVersionUID = MAVLINK_MSG_ID_WHEEL_DISTANCE;
-
 
       
     /**
@@ -49,17 +53,13 @@ public class msg_wheel_distance extends MAVLinkMessage {
         
         packet.payload.putUnsignedLong(time_usec);
         
-        
         for (int i = 0; i < distance.length; i++) {
             packet.payload.putDouble(distance[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(count);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -72,25 +72,48 @@ public class msg_wheel_distance extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.distance.length; i++) {
             this.distance[i] = payload.getDouble();
         }
                 
-        
         this.count = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_wheel_distance() {
-        msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_wheel_distance( long time_usec, double[] distance, short count) {
+        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+
+        this.time_usec = time_usec;
+        this.distance = distance;
+        this.count = count;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_wheel_distance( long time_usec, double[] distance, short count, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.distance = distance;
+        this.count = count;
+        
     }
 
     /**
@@ -99,11 +122,53 @@ public class msg_wheel_distance extends MAVLinkMessage {
      *
      */
     public msg_wheel_distance(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_wheel_distance(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_WHEEL_DISTANCE;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+         
+        JSONArray ja_distance = jo.optJSONArray("distance");
+        for (int i = 0; i < Math.min(this.distance.length, ja_distance.length()); i++) {
+            this.distance[i] = (double)ja_distance.getDouble(i);
+        }
+                
+        this.count = (short)jo.optInt("count");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+         
+        JSONArray ja_distance = new JSONArray();
+        for (int i = 0; i < this.distance.length; i++) {
+            ja_distance.put(this.distance[i]);
+        }
+        jo.put("distance", (Object)ja_distance);
+                
+        jo.put("count", count);
+        
+        
+        return jo;
     }
 
           

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147 standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
@@ -18,7 +23,6 @@ public class msg_odometry extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ODOMETRY = 331;
     public static final int MAVLINK_MSG_LENGTH = 231;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ODOMETRY;
-
 
       
     /**
@@ -113,51 +117,36 @@ public class msg_odometry extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ODOMETRY;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-        
         packet.payload.putFloat(vx);
-        
         packet.payload.putFloat(vy);
-        
         packet.payload.putFloat(vz);
-        
         packet.payload.putFloat(rollspeed);
-        
         packet.payload.putFloat(pitchspeed);
-        
         packet.payload.putFloat(yawspeed);
-        
         
         for (int i = 0; i < pose_covariance.length; i++) {
             packet.payload.putFloat(pose_covariance[i]);
         }
                     
         
-        
         for (int i = 0; i < velocity_covariance.length; i++) {
             packet.payload.putFloat(velocity_covariance[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(frame_id);
-        
         packet.payload.putUnsignedByte(child_frame_id);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedByte(reset_counter);
-            
         }
         return packet;
     }
@@ -171,51 +160,36 @@ public class msg_odometry extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
          
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-        
         this.vx = payload.getFloat();
-        
         this.vy = payload.getFloat();
-        
         this.vz = payload.getFloat();
-        
         this.rollspeed = payload.getFloat();
-        
         this.pitchspeed = payload.getFloat();
-        
         this.yawspeed = payload.getFloat();
-        
          
         for (int i = 0; i < this.pose_covariance.length; i++) {
             this.pose_covariance[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.velocity_covariance.length; i++) {
             this.velocity_covariance[i] = payload.getFloat();
         }
                 
-        
         this.frame_id = payload.getUnsignedByte();
-        
         this.child_frame_id = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.reset_counter = payload.getUnsignedByte();
-            
         }
     }
 
@@ -223,7 +197,60 @@ public class msg_odometry extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_odometry() {
-        msgid = MAVLINK_MSG_ID_ODOMETRY;
+        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_odometry( long time_usec, float x, float y, float z, float[] q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, float[] pose_covariance, float[] velocity_covariance, short frame_id, short child_frame_id, short reset_counter) {
+        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.pose_covariance = pose_covariance;
+        this.velocity_covariance = velocity_covariance;
+        this.frame_id = frame_id;
+        this.child_frame_id = child_frame_id;
+        this.reset_counter = reset_counter;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_odometry( long time_usec, float x, float y, float z, float[] q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, float[] pose_covariance, float[] velocity_covariance, short frame_id, short child_frame_id, short reset_counter, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.q = q;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        this.pose_covariance = pose_covariance;
+        this.velocity_covariance = velocity_covariance;
+        this.frame_id = frame_id;
+        this.child_frame_id = child_frame_id;
+        this.reset_counter = reset_counter;
+        
     }
 
     /**
@@ -232,11 +259,101 @@ public class msg_odometry extends MAVLinkMessage {
      *
      */
     public msg_odometry(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_odometry(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ODOMETRY;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.vx = (float)jo.optFloat("vx");
+        this.vy = (float)jo.optFloat("vy");
+        this.vz = (float)jo.optFloat("vz");
+        this.rollspeed = (float)jo.optFloat("rollspeed");
+        this.pitchspeed = (float)jo.optFloat("pitchspeed");
+        this.yawspeed = (float)jo.optFloat("yawspeed");
+         
+        JSONArray ja_pose_covariance = jo.optJSONArray("pose_covariance");
+        for (int i = 0; i < Math.min(this.pose_covariance.length, ja_pose_covariance.length()); i++) {
+            this.pose_covariance[i] = (float)ja_pose_covariance.getFloat(i);
+        }
+                
+         
+        JSONArray ja_velocity_covariance = jo.optJSONArray("velocity_covariance");
+        for (int i = 0; i < Math.min(this.velocity_covariance.length, ja_velocity_covariance.length()); i++) {
+            this.velocity_covariance[i] = (float)ja_velocity_covariance.getFloat(i);
+        }
+                
+        this.frame_id = (short)jo.optInt("frame_id");
+        this.child_frame_id = (short)jo.optInt("child_frame_id");
+        
+        this.reset_counter = (short)jo.optInt("reset_counter");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("rollspeed", rollspeed);
+        jo.put("pitchspeed", pitchspeed);
+        jo.put("yawspeed", yawspeed);
+         
+        JSONArray ja_pose_covariance = new JSONArray();
+        for (int i = 0; i < this.pose_covariance.length; i++) {
+            ja_pose_covariance.put(this.pose_covariance[i]);
+        }
+        jo.put("pose_covariance", (Object)ja_pose_covariance);
+                
+         
+        JSONArray ja_velocity_covariance = new JSONArray();
+        for (int i = 0; i < this.velocity_covariance.length; i++) {
+            ja_velocity_covariance.put(this.velocity_covariance[i]);
+        }
+        jo.put("velocity_covariance", (Object)ja_velocity_covariance);
+                
+        jo.put("frame_id", frame_id);
+        jo.put("child_frame_id", child_frame_id);
+        
+        jo.put("reset_counter", reset_counter);
+        
+        return jo;
     }
 
                                     

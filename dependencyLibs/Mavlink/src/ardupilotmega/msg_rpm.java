@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * RPM sensor output.
@@ -18,7 +23,6 @@ public class msg_rpm extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RPM = 226;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RPM;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_rpm extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RPM;
         
         packet.payload.putFloat(rpm1);
-        
         packet.payload.putFloat(rpm2);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_rpm extends MAVLinkMessage {
         payload.resetIndex();
         
         this.rpm1 = payload.getFloat();
-        
         this.rpm2 = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_rpm() {
-        msgid = MAVLINK_MSG_ID_RPM;
+        this.msgid = MAVLINK_MSG_ID_RPM;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_rpm( float rpm1, float rpm2) {
+        this.msgid = MAVLINK_MSG_ID_RPM;
+
+        this.rpm1 = rpm1;
+        this.rpm2 = rpm2;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_rpm( float rpm1, float rpm2, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RPM;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.rpm1 = rpm1;
+        this.rpm2 = rpm2;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_rpm extends MAVLinkMessage {
      *
      */
     public msg_rpm(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RPM;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RPM;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_rpm(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RPM;
+
+        readJSONheader(jo);
+        
+        this.rpm1 = (float)jo.optFloat("rpm1");
+        this.rpm2 = (float)jo.optFloat("rpm2");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("rpm1", rpm1);
+        jo.put("rpm2", rpm2);
+        
+        
+        return jo;
     }
 
         

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Vibration levels and accelerometer clipping
@@ -18,7 +23,6 @@ public class msg_vibration extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_VIBRATION = 241;
     public static final int MAVLINK_MSG_LENGTH = 32;
     private static final long serialVersionUID = MAVLINK_MSG_ID_VIBRATION;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_vibration extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_VIBRATION;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(vibration_x);
-        
         packet.payload.putFloat(vibration_y);
-        
         packet.payload.putFloat(vibration_z);
-        
         packet.payload.putUnsignedInt(clipping_0);
-        
         packet.payload.putUnsignedInt(clipping_1);
-        
         packet.payload.putUnsignedInt(clipping_2);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_vibration extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.vibration_x = payload.getFloat();
-        
         this.vibration_y = payload.getFloat();
-        
         this.vibration_z = payload.getFloat();
-        
         this.clipping_0 = payload.getUnsignedInt();
-        
         this.clipping_1 = payload.getUnsignedInt();
-        
         this.clipping_2 = payload.getUnsignedInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_vibration() {
-        msgid = MAVLINK_MSG_ID_VIBRATION;
+        this.msgid = MAVLINK_MSG_ID_VIBRATION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_vibration( long time_usec, float vibration_x, float vibration_y, float vibration_z, long clipping_0, long clipping_1, long clipping_2) {
+        this.msgid = MAVLINK_MSG_ID_VIBRATION;
+
+        this.time_usec = time_usec;
+        this.vibration_x = vibration_x;
+        this.vibration_y = vibration_y;
+        this.vibration_z = vibration_z;
+        this.clipping_0 = clipping_0;
+        this.clipping_1 = clipping_1;
+        this.clipping_2 = clipping_2;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_vibration( long time_usec, float vibration_x, float vibration_y, float vibration_z, long clipping_0, long clipping_1, long clipping_2, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_VIBRATION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.vibration_x = vibration_x;
+        this.vibration_y = vibration_y;
+        this.vibration_z = vibration_z;
+        this.clipping_0 = clipping_0;
+        this.clipping_1 = clipping_1;
+        this.clipping_2 = clipping_2;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_vibration extends MAVLinkMessage {
      *
      */
     public msg_vibration(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_VIBRATION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_VIBRATION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_vibration(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_VIBRATION;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.vibration_x = (float)jo.optFloat("vibration_x");
+        this.vibration_y = (float)jo.optFloat("vibration_y");
+        this.vibration_z = (float)jo.optFloat("vibration_z");
+        this.clipping_0 = (long)jo.optLong("clipping_0");
+        this.clipping_1 = (long)jo.optLong("clipping_1");
+        this.clipping_2 = (long)jo.optLong("clipping_2");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("vibration_x", vibration_x);
+        jo.put("vibration_y", vibration_y);
+        jo.put("vibration_z", vibration_z);
+        jo.put("clipping_0", clipping_0);
+        jo.put("clipping_1", clipping_1);
+        jo.put("clipping_2", clipping_2);
+        
+        
+        return jo;
     }
 
                   

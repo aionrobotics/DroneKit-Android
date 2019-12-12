@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Reply to LOG_REQUEST_LIST
@@ -18,7 +23,6 @@ public class msg_log_entry extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LOG_ENTRY = 118;
     public static final int MAVLINK_MSG_LENGTH = 14;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOG_ENTRY;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_log_entry extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
         
         packet.payload.putUnsignedInt(time_utc);
-        
         packet.payload.putUnsignedInt(size);
-        
         packet.payload.putUnsignedShort(id);
-        
         packet.payload.putUnsignedShort(num_logs);
-        
         packet.payload.putUnsignedShort(last_log_num);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_log_entry extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_utc = payload.getUnsignedInt();
-        
         this.size = payload.getUnsignedInt();
-        
         this.id = payload.getUnsignedShort();
-        
         this.num_logs = payload.getUnsignedShort();
-        
         this.last_log_num = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_log_entry() {
-        msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_log_entry( long time_utc, long size, int id, int num_logs, int last_log_num) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+
+        this.time_utc = time_utc;
+        this.size = size;
+        this.id = id;
+        this.num_logs = num_logs;
+        this.last_log_num = last_log_num;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_log_entry( long time_utc, long size, int id, int num_logs, int last_log_num, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_utc = time_utc;
+        this.size = size;
+        this.id = id;
+        this.num_logs = num_logs;
+        this.last_log_num = last_log_num;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_log_entry extends MAVLinkMessage {
      *
      */
     public msg_log_entry(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_log_entry(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOG_ENTRY;
+
+        readJSONheader(jo);
+        
+        this.time_utc = (long)jo.optLong("time_utc");
+        this.size = (long)jo.optLong("size");
+        this.id = (int)jo.optInt("id");
+        this.num_logs = (int)jo.optInt("num_logs");
+        this.last_log_num = (int)jo.optInt("last_log_num");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_utc", time_utc);
+        jo.put("size", size);
+        jo.put("id", id);
+        jo.put("num_logs", num_logs);
+        jo.put("last_log_num", last_log_num);
+        
+        
+        return jo;
     }
 
               

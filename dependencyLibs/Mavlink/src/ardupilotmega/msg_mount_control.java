@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Message to control a camera mount, directional antenna, etc.
@@ -18,7 +23,6 @@ public class msg_mount_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MOUNT_CONTROL = 157;
     public static final int MAVLINK_MSG_LENGTH = 15;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MOUNT_CONTROL;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_mount_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
         
         packet.payload.putInt(input_a);
-        
         packet.payload.putInt(input_b);
-        
         packet.payload.putInt(input_c);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(save_position);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_mount_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.input_a = payload.getInt();
-        
         this.input_b = payload.getInt();
-        
         this.input_c = payload.getInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.save_position = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mount_control() {
-        msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mount_control( int input_a, int input_b, int input_c, short target_system, short target_component, short save_position) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+
+        this.input_a = input_a;
+        this.input_b = input_b;
+        this.input_c = input_c;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.save_position = save_position;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mount_control( int input_a, int input_b, int input_c, short target_system, short target_component, short save_position, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.input_a = input_a;
+        this.input_b = input_b;
+        this.input_c = input_c;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.save_position = save_position;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_mount_control extends MAVLinkMessage {
      *
      */
     public msg_mount_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mount_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.input_a = (int)jo.optInt("input_a");
+        this.input_b = (int)jo.optInt("input_b");
+        this.input_c = (int)jo.optInt("input_c");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.save_position = (short)jo.optInt("save_position");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("input_a", input_a);
+        jo.put("input_b", input_b);
+        jo.put("input_c", input_c);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("save_position", save_position);
+        
+        
+        return jo;
     }
 
                 

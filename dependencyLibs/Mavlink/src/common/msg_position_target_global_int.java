@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the autopilot. This should match the commands sent in SET_POSITION_TARGET_GLOBAL_INT if the vehicle is being controlled this way.
@@ -18,7 +23,6 @@ public class msg_position_target_global_int extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT = 87;
     public static final int MAVLINK_MSG_LENGTH = 51;
     private static final long serialVersionUID = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
-
 
       
     /**
@@ -103,36 +107,21 @@ public class msg_position_target_global_int extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putInt(lat_int);
-        
         packet.payload.putInt(lon_int);
-        
         packet.payload.putFloat(alt);
-        
         packet.payload.putFloat(vx);
-        
         packet.payload.putFloat(vy);
-        
         packet.payload.putFloat(vz);
-        
         packet.payload.putFloat(afx);
-        
         packet.payload.putFloat(afy);
-        
         packet.payload.putFloat(afz);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(yaw_rate);
-        
         packet.payload.putUnsignedShort(type_mask);
-        
         packet.payload.putUnsignedByte(coordinate_frame);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -145,43 +134,77 @@ public class msg_position_target_global_int extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.lat_int = payload.getInt();
-        
         this.lon_int = payload.getInt();
-        
         this.alt = payload.getFloat();
-        
         this.vx = payload.getFloat();
-        
         this.vy = payload.getFloat();
-        
         this.vz = payload.getFloat();
-        
         this.afx = payload.getFloat();
-        
         this.afy = payload.getFloat();
-        
         this.afz = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.yaw_rate = payload.getFloat();
-        
         this.type_mask = payload.getUnsignedShort();
-        
         this.coordinate_frame = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_position_target_global_int() {
-        msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_position_target_global_int( long time_boot_ms, int lat_int, int lon_int, float alt, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate, int type_mask, short coordinate_frame) {
+        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+
+        this.time_boot_ms = time_boot_ms;
+        this.lat_int = lat_int;
+        this.lon_int = lon_int;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.afx = afx;
+        this.afy = afy;
+        this.afz = afz;
+        this.yaw = yaw;
+        this.yaw_rate = yaw_rate;
+        this.type_mask = type_mask;
+        this.coordinate_frame = coordinate_frame;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_position_target_global_int( long time_boot_ms, int lat_int, int lon_int, float alt, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate, int type_mask, short coordinate_frame, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.lat_int = lat_int;
+        this.lon_int = lon_int;
+        this.alt = alt;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.afx = afx;
+        this.afy = afy;
+        this.afz = afz;
+        this.yaw = yaw;
+        this.yaw_rate = yaw_rate;
+        this.type_mask = type_mask;
+        this.coordinate_frame = coordinate_frame;
+        
     }
 
     /**
@@ -190,11 +213,64 @@ public class msg_position_target_global_int extends MAVLinkMessage {
      *
      */
     public msg_position_target_global_int(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_position_target_global_int(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.lat_int = (int)jo.optInt("lat_int");
+        this.lon_int = (int)jo.optInt("lon_int");
+        this.alt = (float)jo.optFloat("alt");
+        this.vx = (float)jo.optFloat("vx");
+        this.vy = (float)jo.optFloat("vy");
+        this.vz = (float)jo.optFloat("vz");
+        this.afx = (float)jo.optFloat("afx");
+        this.afy = (float)jo.optFloat("afy");
+        this.afz = (float)jo.optFloat("afz");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.yaw_rate = (float)jo.optFloat("yaw_rate");
+        this.type_mask = (int)jo.optInt("type_mask");
+        this.coordinate_frame = (short)jo.optInt("coordinate_frame");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("lat_int", lat_int);
+        jo.put("lon_int", lon_int);
+        jo.put("alt", alt);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("afx", afx);
+        jo.put("afy", afy);
+        jo.put("afz", afz);
+        jo.put("yaw", yaw);
+        jo.put("yaw_rate", yaw_rate);
+        jo.put("type_mask", type_mask);
+        jo.put("coordinate_frame", coordinate_frame);
+        
+        
+        return jo;
     }
 
                                 

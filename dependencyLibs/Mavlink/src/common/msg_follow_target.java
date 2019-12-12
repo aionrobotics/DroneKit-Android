@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Current motion information from a designated system
@@ -18,7 +23,6 @@ public class msg_follow_target extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_FOLLOW_TARGET = 144;
     public static final int MAVLINK_MSG_LENGTH = 93;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FOLLOW_TARGET;
-
 
       
     /**
@@ -88,50 +92,38 @@ public class msg_follow_target extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
         
         packet.payload.putUnsignedLong(timestamp);
-        
         packet.payload.putUnsignedLong(custom_state);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putFloat(alt);
-        
         
         for (int i = 0; i < vel.length; i++) {
             packet.payload.putFloat(vel[i]);
         }
                     
         
-        
         for (int i = 0; i < acc.length; i++) {
             packet.payload.putFloat(acc[i]);
         }
                     
-        
         
         for (int i = 0; i < attitude_q.length; i++) {
             packet.payload.putFloat(attitude_q[i]);
         }
                     
         
-        
         for (int i = 0; i < rates.length; i++) {
             packet.payload.putFloat(rates[i]);
         }
                     
         
-        
         for (int i = 0; i < position_cov.length; i++) {
             packet.payload.putFloat(position_cov[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(est_capabilities);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -144,57 +136,88 @@ public class msg_follow_target extends MAVLinkMessage {
         payload.resetIndex();
         
         this.timestamp = payload.getUnsignedLong();
-        
         this.custom_state = payload.getUnsignedLong();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getFloat();
-        
          
         for (int i = 0; i < this.vel.length; i++) {
             this.vel[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.acc.length; i++) {
             this.acc[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.attitude_q.length; i++) {
             this.attitude_q[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.rates.length; i++) {
             this.rates[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.position_cov.length; i++) {
             this.position_cov[i] = payload.getFloat();
         }
                 
-        
         this.est_capabilities = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_follow_target() {
-        msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_follow_target( long timestamp, long custom_state, int lat, int lon, float alt, float[] vel, float[] acc, float[] attitude_q, float[] rates, float[] position_cov, short est_capabilities) {
+        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+
+        this.timestamp = timestamp;
+        this.custom_state = custom_state;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vel = vel;
+        this.acc = acc;
+        this.attitude_q = attitude_q;
+        this.rates = rates;
+        this.position_cov = position_cov;
+        this.est_capabilities = est_capabilities;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_follow_target( long timestamp, long custom_state, int lat, int lon, float alt, float[] vel, float[] acc, float[] attitude_q, float[] rates, float[] position_cov, short est_capabilities, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.timestamp = timestamp;
+        this.custom_state = custom_state;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.vel = vel;
+        this.acc = acc;
+        this.attitude_q = attitude_q;
+        this.rates = rates;
+        this.position_cov = position_cov;
+        this.est_capabilities = est_capabilities;
+        
     }
 
     /**
@@ -203,11 +226,113 @@ public class msg_follow_target extends MAVLinkMessage {
      *
      */
     public msg_follow_target(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_follow_target(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_FOLLOW_TARGET;
+
+        readJSONheader(jo);
+        
+        this.timestamp = (long)jo.optLong("timestamp");
+        this.custom_state = (long)jo.optLong("custom_state");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (float)jo.optFloat("alt");
+         
+        JSONArray ja_vel = jo.optJSONArray("vel");
+        for (int i = 0; i < Math.min(this.vel.length, ja_vel.length()); i++) {
+            this.vel[i] = (float)ja_vel.getFloat(i);
+        }
+                
+         
+        JSONArray ja_acc = jo.optJSONArray("acc");
+        for (int i = 0; i < Math.min(this.acc.length, ja_acc.length()); i++) {
+            this.acc[i] = (float)ja_acc.getFloat(i);
+        }
+                
+         
+        JSONArray ja_attitude_q = jo.optJSONArray("attitude_q");
+        for (int i = 0; i < Math.min(this.attitude_q.length, ja_attitude_q.length()); i++) {
+            this.attitude_q[i] = (float)ja_attitude_q.getFloat(i);
+        }
+                
+         
+        JSONArray ja_rates = jo.optJSONArray("rates");
+        for (int i = 0; i < Math.min(this.rates.length, ja_rates.length()); i++) {
+            this.rates[i] = (float)ja_rates.getFloat(i);
+        }
+                
+         
+        JSONArray ja_position_cov = jo.optJSONArray("position_cov");
+        for (int i = 0; i < Math.min(this.position_cov.length, ja_position_cov.length()); i++) {
+            this.position_cov[i] = (float)ja_position_cov.getFloat(i);
+        }
+                
+        this.est_capabilities = (short)jo.optInt("est_capabilities");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("timestamp", timestamp);
+        jo.put("custom_state", custom_state);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+         
+        JSONArray ja_vel = new JSONArray();
+        for (int i = 0; i < this.vel.length; i++) {
+            ja_vel.put(this.vel[i]);
+        }
+        jo.put("vel", (Object)ja_vel);
+                
+         
+        JSONArray ja_acc = new JSONArray();
+        for (int i = 0; i < this.acc.length; i++) {
+            ja_acc.put(this.acc[i]);
+        }
+        jo.put("acc", (Object)ja_acc);
+                
+         
+        JSONArray ja_attitude_q = new JSONArray();
+        for (int i = 0; i < this.attitude_q.length; i++) {
+            ja_attitude_q.put(this.attitude_q[i]);
+        }
+        jo.put("attitude_q", (Object)ja_attitude_q);
+                
+         
+        JSONArray ja_rates = new JSONArray();
+        for (int i = 0; i < this.rates.length; i++) {
+            ja_rates.put(this.rates[i]);
+        }
+        jo.put("rates", (Object)ja_rates);
+                
+         
+        JSONArray ja_position_cov = new JSONArray();
+        for (int i = 0; i < this.position_cov.length; i++) {
+            ja_position_cov.put(this.position_cov[i]);
+        }
+        jo.put("position_cov", (Object)ja_position_cov);
+                
+        jo.put("est_capabilities", est_capabilities);
+        
+        
+        return jo;
     }
 
                           

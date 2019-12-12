@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Read out the safety zone the MAV currently assumes.
@@ -18,7 +23,6 @@ public class msg_safety_allowed_area extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA = 55;
     public static final int MAVLINK_MSG_LENGTH = 25;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_safety_allowed_area extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
         
         packet.payload.putFloat(p1x);
-        
         packet.payload.putFloat(p1y);
-        
         packet.payload.putFloat(p1z);
-        
         packet.payload.putFloat(p2x);
-        
         packet.payload.putFloat(p2y);
-        
         packet.payload.putFloat(p2z);
-        
         packet.payload.putUnsignedByte(frame);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_safety_allowed_area extends MAVLinkMessage {
         payload.resetIndex();
         
         this.p1x = payload.getFloat();
-        
         this.p1y = payload.getFloat();
-        
         this.p1z = payload.getFloat();
-        
         this.p2x = payload.getFloat();
-        
         this.p2y = payload.getFloat();
-        
         this.p2z = payload.getFloat();
-        
         this.frame = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_safety_allowed_area() {
-        msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_safety_allowed_area( float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, short frame) {
+        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+
+        this.p1x = p1x;
+        this.p1y = p1y;
+        this.p1z = p1z;
+        this.p2x = p2x;
+        this.p2y = p2y;
+        this.p2z = p2z;
+        this.frame = frame;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_safety_allowed_area( float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, short frame, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.p1x = p1x;
+        this.p1y = p1y;
+        this.p1z = p1z;
+        this.p2x = p2x;
+        this.p2y = p2y;
+        this.p2z = p2z;
+        this.frame = frame;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_safety_allowed_area extends MAVLinkMessage {
      *
      */
     public msg_safety_allowed_area(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_safety_allowed_area(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+
+        readJSONheader(jo);
+        
+        this.p1x = (float)jo.optFloat("p1x");
+        this.p1y = (float)jo.optFloat("p1y");
+        this.p1z = (float)jo.optFloat("p1z");
+        this.p2x = (float)jo.optFloat("p2x");
+        this.p2y = (float)jo.optFloat("p2y");
+        this.p2z = (float)jo.optFloat("p2z");
+        this.frame = (short)jo.optInt("frame");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("p1x", p1x);
+        jo.put("p1y", p1y);
+        jo.put("p1z", p1z);
+        jo.put("p2x", p2x);
+        jo.put("p2y", p2y);
+        jo.put("p2z", p2z);
+        jo.put("frame", frame);
+        
+        
+        return jo;
     }
 
                   

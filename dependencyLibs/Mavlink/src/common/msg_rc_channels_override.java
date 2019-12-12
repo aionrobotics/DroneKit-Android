@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The RAW values of the RC channels sent to the MAV to override info received from the RC radio. A value of UINT16_MAX means no change to that channel. A value of 0 means control of that channel should be released back to the RC radio. The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual receivers/transmitters might violate this specification.
@@ -18,7 +23,6 @@ public class msg_rc_channels_override extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE = 70;
     public static final int MAVLINK_MSG_LENGTH = 38;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
-
 
       
     /**
@@ -133,47 +137,46 @@ public class msg_rc_channels_override extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
         
         packet.payload.putUnsignedShort(chan1_raw);
-        
         packet.payload.putUnsignedShort(chan2_raw);
-        
         packet.payload.putUnsignedShort(chan3_raw);
-        
         packet.payload.putUnsignedShort(chan4_raw);
-        
         packet.payload.putUnsignedShort(chan5_raw);
-        
         packet.payload.putUnsignedShort(chan6_raw);
-        
         packet.payload.putUnsignedShort(chan7_raw);
-        
         packet.payload.putUnsignedShort(chan8_raw);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedShort(chan9_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan10_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan11_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan12_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan13_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan14_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan15_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan16_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan17_raw);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedShort(chan18_raw);
-            
         }
         return packet;
     }
@@ -187,47 +190,46 @@ public class msg_rc_channels_override extends MAVLinkMessage {
         payload.resetIndex();
         
         this.chan1_raw = payload.getUnsignedShort();
-        
         this.chan2_raw = payload.getUnsignedShort();
-        
         this.chan3_raw = payload.getUnsignedShort();
-        
         this.chan4_raw = payload.getUnsignedShort();
-        
         this.chan5_raw = payload.getUnsignedShort();
-        
         this.chan6_raw = payload.getUnsignedShort();
-        
         this.chan7_raw = payload.getUnsignedShort();
-        
         this.chan8_raw = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.chan9_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan10_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan11_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan12_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan13_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan14_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan15_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan16_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan17_raw = payload.getUnsignedShort();
-            
+        }
+        if(isMavlink2) {
             this.chan18_raw = payload.getUnsignedShort();
-            
         }
     }
 
@@ -235,7 +237,68 @@ public class msg_rc_channels_override extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_rc_channels_override() {
-        msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_rc_channels_override( int chan1_raw, int chan2_raw, int chan3_raw, int chan4_raw, int chan5_raw, int chan6_raw, int chan7_raw, int chan8_raw, short target_system, short target_component, int chan9_raw, int chan10_raw, int chan11_raw, int chan12_raw, int chan13_raw, int chan14_raw, int chan15_raw, int chan16_raw, int chan17_raw, int chan18_raw) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+
+        this.chan1_raw = chan1_raw;
+        this.chan2_raw = chan2_raw;
+        this.chan3_raw = chan3_raw;
+        this.chan4_raw = chan4_raw;
+        this.chan5_raw = chan5_raw;
+        this.chan6_raw = chan6_raw;
+        this.chan7_raw = chan7_raw;
+        this.chan8_raw = chan8_raw;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.chan9_raw = chan9_raw;
+        this.chan10_raw = chan10_raw;
+        this.chan11_raw = chan11_raw;
+        this.chan12_raw = chan12_raw;
+        this.chan13_raw = chan13_raw;
+        this.chan14_raw = chan14_raw;
+        this.chan15_raw = chan15_raw;
+        this.chan16_raw = chan16_raw;
+        this.chan17_raw = chan17_raw;
+        this.chan18_raw = chan18_raw;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_rc_channels_override( int chan1_raw, int chan2_raw, int chan3_raw, int chan4_raw, int chan5_raw, int chan6_raw, int chan7_raw, int chan8_raw, short target_system, short target_component, int chan9_raw, int chan10_raw, int chan11_raw, int chan12_raw, int chan13_raw, int chan14_raw, int chan15_raw, int chan16_raw, int chan17_raw, int chan18_raw, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.chan1_raw = chan1_raw;
+        this.chan2_raw = chan2_raw;
+        this.chan3_raw = chan3_raw;
+        this.chan4_raw = chan4_raw;
+        this.chan5_raw = chan5_raw;
+        this.chan6_raw = chan6_raw;
+        this.chan7_raw = chan7_raw;
+        this.chan8_raw = chan8_raw;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.chan9_raw = chan9_raw;
+        this.chan10_raw = chan10_raw;
+        this.chan11_raw = chan11_raw;
+        this.chan12_raw = chan12_raw;
+        this.chan13_raw = chan13_raw;
+        this.chan14_raw = chan14_raw;
+        this.chan15_raw = chan15_raw;
+        this.chan16_raw = chan16_raw;
+        this.chan17_raw = chan17_raw;
+        this.chan18_raw = chan18_raw;
+        
     }
 
     /**
@@ -244,11 +307,76 @@ public class msg_rc_channels_override extends MAVLinkMessage {
      *
      */
     public msg_rc_channels_override(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_rc_channels_override(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
+
+        readJSONheader(jo);
+        
+        this.chan1_raw = (int)jo.optInt("chan1_raw");
+        this.chan2_raw = (int)jo.optInt("chan2_raw");
+        this.chan3_raw = (int)jo.optInt("chan3_raw");
+        this.chan4_raw = (int)jo.optInt("chan4_raw");
+        this.chan5_raw = (int)jo.optInt("chan5_raw");
+        this.chan6_raw = (int)jo.optInt("chan6_raw");
+        this.chan7_raw = (int)jo.optInt("chan7_raw");
+        this.chan8_raw = (int)jo.optInt("chan8_raw");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        this.chan9_raw = (int)jo.optInt("chan9_raw");
+        this.chan10_raw = (int)jo.optInt("chan10_raw");
+        this.chan11_raw = (int)jo.optInt("chan11_raw");
+        this.chan12_raw = (int)jo.optInt("chan12_raw");
+        this.chan13_raw = (int)jo.optInt("chan13_raw");
+        this.chan14_raw = (int)jo.optInt("chan14_raw");
+        this.chan15_raw = (int)jo.optInt("chan15_raw");
+        this.chan16_raw = (int)jo.optInt("chan16_raw");
+        this.chan17_raw = (int)jo.optInt("chan17_raw");
+        this.chan18_raw = (int)jo.optInt("chan18_raw");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("chan1_raw", chan1_raw);
+        jo.put("chan2_raw", chan2_raw);
+        jo.put("chan3_raw", chan3_raw);
+        jo.put("chan4_raw", chan4_raw);
+        jo.put("chan5_raw", chan5_raw);
+        jo.put("chan6_raw", chan6_raw);
+        jo.put("chan7_raw", chan7_raw);
+        jo.put("chan8_raw", chan8_raw);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        jo.put("chan9_raw", chan9_raw);
+        jo.put("chan10_raw", chan10_raw);
+        jo.put("chan11_raw", chan11_raw);
+        jo.put("chan12_raw", chan12_raw);
+        jo.put("chan13_raw", chan13_raw);
+        jo.put("chan14_raw", chan14_raw);
+        jo.put("chan15_raw", chan15_raw);
+        jo.put("chan16_raw", chan16_raw);
+        jo.put("chan17_raw", chan17_raw);
+        jo.put("chan18_raw", chan18_raw);
+        
+        return jo;
     }
 
                                             

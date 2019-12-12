@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * To debug something using a named 3D vector.
@@ -18,7 +23,6 @@ public class msg_debug_vect extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DEBUG_VECT = 250;
     public static final int MAVLINK_MSG_LENGTH = 30;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DEBUG_VECT;
-
 
       
     /**
@@ -58,22 +62,16 @@ public class msg_debug_vect extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         
         for (int i = 0; i < name.length; i++) {
             packet.payload.putByte(name[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -86,29 +84,54 @@ public class msg_debug_vect extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
          
         for (int i = 0; i < this.name.length; i++) {
             this.name[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_debug_vect() {
-        msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_debug_vect( long time_usec, float x, float y, float z, byte[] name) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.name = name;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_debug_vect( long time_usec, float x, float y, float z, byte[] name, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.name = name;
+        
     }
 
     /**
@@ -117,11 +140,57 @@ public class msg_debug_vect extends MAVLinkMessage {
      *
      */
     public msg_debug_vect(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_debug_vect(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_VECT;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+         
+        JSONArray ja_name = jo.optJSONArray("name");
+        for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
+            this.name[i] = (byte)ja_name.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+         
+        JSONArray ja_name = new JSONArray();
+        for (int i = 0; i < this.name.length; i++) {
+            ja_name.put(this.name[i]);
+        }
+        jo.put("name", (Object)ja_name);
+                
+        
+        
+        return jo;
     }
 
              

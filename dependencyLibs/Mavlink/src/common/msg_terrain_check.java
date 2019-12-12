@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request that the vehicle report terrain height at the given location. Used by GCS to check if vehicle has all terrain data needed for a mission.
@@ -18,7 +23,6 @@ public class msg_terrain_check extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_TERRAIN_CHECK = 135;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_TERRAIN_CHECK;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_terrain_check extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
         
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_terrain_check extends MAVLinkMessage {
         payload.resetIndex();
         
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_terrain_check() {
-        msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_terrain_check( int lat, int lon) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+
+        this.lat = lat;
+        this.lon = lon;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_terrain_check( int lat, int lon, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.lat = lat;
+        this.lon = lon;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_terrain_check extends MAVLinkMessage {
      *
      */
     public msg_terrain_check(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_terrain_check(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_CHECK;
+
+        readJSONheader(jo);
+        
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        
+        
+        return jo;
     }
 
         

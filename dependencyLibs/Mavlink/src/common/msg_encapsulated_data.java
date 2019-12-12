@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Data packet for images sent using the Image Transmission Protocol: https://mavlink.io/en/services/image_transmission.html.
@@ -18,7 +23,6 @@ public class msg_encapsulated_data extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ENCAPSULATED_DATA = 131;
     public static final int MAVLINK_MSG_LENGTH = 255;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
-
 
       
     /**
@@ -44,15 +48,12 @@ public class msg_encapsulated_data extends MAVLinkMessage {
         
         packet.payload.putUnsignedShort(seqnr);
         
-        
         for (int i = 0; i < data.length; i++) {
             packet.payload.putUnsignedByte(data[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -65,23 +66,45 @@ public class msg_encapsulated_data extends MAVLinkMessage {
         payload.resetIndex();
         
         this.seqnr = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_encapsulated_data() {
-        msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_encapsulated_data( int seqnr, short[] data) {
+        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+
+        this.seqnr = seqnr;
+        this.data = data;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_encapsulated_data( int seqnr, short[] data, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.seqnr = seqnr;
+        this.data = data;
+        
     }
 
     /**
@@ -90,11 +113,51 @@ public class msg_encapsulated_data extends MAVLinkMessage {
      *
      */
     public msg_encapsulated_data(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_encapsulated_data(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
+
+        readJSONheader(jo);
+        
+        this.seqnr = (int)jo.optInt("seqnr");
+         
+        JSONArray ja_data = jo.optJSONArray("data");
+        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+            this.data[i] = (short)ja_data.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("seqnr", seqnr);
+         
+        JSONArray ja_data = new JSONArray();
+        for (int i = 0; i < this.data.length; i++) {
+            ja_data.put(this.data[i]);
+        }
+        jo.put("data", (Object)ja_data);
+                
+        
+        
+        return jo;
     }
 
         

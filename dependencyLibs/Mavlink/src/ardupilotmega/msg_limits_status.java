@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
@@ -18,7 +23,6 @@ public class msg_limits_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LIMITS_STATUS = 167;
     public static final int MAVLINK_MSG_LENGTH = 22;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LIMITS_STATUS;
-
 
       
     /**
@@ -78,26 +82,16 @@ public class msg_limits_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
         
         packet.payload.putUnsignedInt(last_trigger);
-        
         packet.payload.putUnsignedInt(last_action);
-        
         packet.payload.putUnsignedInt(last_recovery);
-        
         packet.payload.putUnsignedInt(last_clear);
-        
         packet.payload.putUnsignedShort(breach_count);
-        
         packet.payload.putUnsignedByte(limits_state);
-        
         packet.payload.putUnsignedByte(mods_enabled);
-        
         packet.payload.putUnsignedByte(mods_required);
-        
         packet.payload.putUnsignedByte(mods_triggered);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -110,33 +104,62 @@ public class msg_limits_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.last_trigger = payload.getUnsignedInt();
-        
         this.last_action = payload.getUnsignedInt();
-        
         this.last_recovery = payload.getUnsignedInt();
-        
         this.last_clear = payload.getUnsignedInt();
-        
         this.breach_count = payload.getUnsignedShort();
-        
         this.limits_state = payload.getUnsignedByte();
-        
         this.mods_enabled = payload.getUnsignedByte();
-        
         this.mods_required = payload.getUnsignedByte();
-        
         this.mods_triggered = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_limits_status() {
-        msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_limits_status( long last_trigger, long last_action, long last_recovery, long last_clear, int breach_count, short limits_state, short mods_enabled, short mods_required, short mods_triggered) {
+        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+
+        this.last_trigger = last_trigger;
+        this.last_action = last_action;
+        this.last_recovery = last_recovery;
+        this.last_clear = last_clear;
+        this.breach_count = breach_count;
+        this.limits_state = limits_state;
+        this.mods_enabled = mods_enabled;
+        this.mods_required = mods_required;
+        this.mods_triggered = mods_triggered;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_limits_status( long last_trigger, long last_action, long last_recovery, long last_clear, int breach_count, short limits_state, short mods_enabled, short mods_required, short mods_triggered, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.last_trigger = last_trigger;
+        this.last_action = last_action;
+        this.last_recovery = last_recovery;
+        this.last_clear = last_clear;
+        this.breach_count = breach_count;
+        this.limits_state = limits_state;
+        this.mods_enabled = mods_enabled;
+        this.mods_required = mods_required;
+        this.mods_triggered = mods_triggered;
+        
     }
 
     /**
@@ -145,11 +168,54 @@ public class msg_limits_status extends MAVLinkMessage {
      *
      */
     public msg_limits_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_limits_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LIMITS_STATUS;
+
+        readJSONheader(jo);
+        
+        this.last_trigger = (long)jo.optLong("last_trigger");
+        this.last_action = (long)jo.optLong("last_action");
+        this.last_recovery = (long)jo.optLong("last_recovery");
+        this.last_clear = (long)jo.optLong("last_clear");
+        this.breach_count = (int)jo.optInt("breach_count");
+        this.limits_state = (short)jo.optInt("limits_state");
+        this.mods_enabled = (short)jo.optInt("mods_enabled");
+        this.mods_required = (short)jo.optInt("mods_required");
+        this.mods_triggered = (short)jo.optInt("mods_triggered");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("last_trigger", last_trigger);
+        jo.put("last_action", last_action);
+        jo.put("last_recovery", last_recovery);
+        jo.put("last_clear", last_clear);
+        jo.put("breach_count", breach_count);
+        jo.put("limits_state", limits_state);
+        jo.put("mods_enabled", mods_enabled);
+        jo.put("mods_required", mods_required);
+        jo.put("mods_triggered", mods_triggered);
+        
+        
+        return jo;
     }
 
                       

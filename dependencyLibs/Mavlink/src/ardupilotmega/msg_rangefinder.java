@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Rangefinder reporting.
@@ -18,7 +23,6 @@ public class msg_rangefinder extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_RANGEFINDER = 173;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_RANGEFINDER;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_rangefinder extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_RANGEFINDER;
         
         packet.payload.putFloat(distance);
-        
         packet.payload.putFloat(voltage);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_rangefinder extends MAVLinkMessage {
         payload.resetIndex();
         
         this.distance = payload.getFloat();
-        
         this.voltage = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_rangefinder() {
-        msgid = MAVLINK_MSG_ID_RANGEFINDER;
+        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_rangefinder( float distance, float voltage) {
+        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
+
+        this.distance = distance;
+        this.voltage = voltage;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_rangefinder( float distance, float voltage, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.distance = distance;
+        this.voltage = voltage;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_rangefinder extends MAVLinkMessage {
      *
      */
     public msg_rangefinder(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_rangefinder(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_RANGEFINDER;
+
+        readJSONheader(jo);
+        
+        this.distance = (float)jo.optFloat("distance");
+        this.voltage = (float)jo.optFloat("voltage");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("distance", distance);
+        jo.put("voltage", voltage);
+        
+        
+        return jo;
     }
 
         

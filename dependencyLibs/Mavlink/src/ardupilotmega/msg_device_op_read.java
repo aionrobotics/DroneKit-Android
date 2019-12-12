@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Read registers for a device.
@@ -18,7 +23,6 @@ public class msg_device_op_read extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DEVICE_OP_READ = 11000;
     public static final int MAVLINK_MSG_LENGTH = 51;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DEVICE_OP_READ;
-
 
       
     /**
@@ -78,30 +82,20 @@ public class msg_device_op_read extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
         
         packet.payload.putUnsignedInt(request_id);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(bustype);
-        
         packet.payload.putUnsignedByte(bus);
-        
         packet.payload.putUnsignedByte(address);
-        
         
         for (int i = 0; i < busname.length; i++) {
             packet.payload.putByte(busname[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(regstart);
-        
         packet.payload.putUnsignedByte(count);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -114,37 +108,66 @@ public class msg_device_op_read extends MAVLinkMessage {
         payload.resetIndex();
         
         this.request_id = payload.getUnsignedInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.bustype = payload.getUnsignedByte();
-        
         this.bus = payload.getUnsignedByte();
-        
         this.address = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.busname.length; i++) {
             this.busname[i] = payload.getByte();
         }
                 
-        
         this.regstart = payload.getUnsignedByte();
-        
         this.count = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_device_op_read() {
-        msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_device_op_read( long request_id, short target_system, short target_component, short bustype, short bus, short address, byte[] busname, short regstart, short count) {
+        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+
+        this.request_id = request_id;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.bustype = bustype;
+        this.bus = bus;
+        this.address = address;
+        this.busname = busname;
+        this.regstart = regstart;
+        this.count = count;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_device_op_read( long request_id, short target_system, short target_component, short bustype, short bus, short address, byte[] busname, short regstart, short count, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.request_id = request_id;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.bustype = bustype;
+        this.bus = bus;
+        this.address = address;
+        this.busname = busname;
+        this.regstart = regstart;
+        this.count = count;
+        
     }
 
     /**
@@ -153,11 +176,65 @@ public class msg_device_op_read extends MAVLinkMessage {
      *
      */
     public msg_device_op_read(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_device_op_read(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DEVICE_OP_READ;
+
+        readJSONheader(jo);
+        
+        this.request_id = (long)jo.optLong("request_id");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.bustype = (short)jo.optInt("bustype");
+        this.bus = (short)jo.optInt("bus");
+        this.address = (short)jo.optInt("address");
+         
+        JSONArray ja_busname = jo.optJSONArray("busname");
+        for (int i = 0; i < Math.min(this.busname.length, ja_busname.length()); i++) {
+            this.busname[i] = (byte)ja_busname.getInt(i);
+        }
+                
+        this.regstart = (short)jo.optInt("regstart");
+        this.count = (short)jo.optInt("count");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("request_id", request_id);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("bustype", bustype);
+        jo.put("bus", bus);
+        jo.put("address", address);
+         
+        JSONArray ja_busname = new JSONArray();
+        for (int i = 0; i < this.busname.length; i++) {
+            ja_busname.put(this.busname[i]);
+        }
+        jo.put("busname", (Object)ja_busname);
+                
+        jo.put("regstart", regstart);
+        jo.put("count", count);
+        
+        
+        return jo;
     }
 
                  

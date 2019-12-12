@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The location and information of an ADSB vehicle
@@ -18,7 +23,6 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ADSB_VEHICLE = 246;
     public static final int MAVLINK_MSG_LENGTH = 38;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ADSB_VEHICLE;
-
 
       
     /**
@@ -98,38 +102,24 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
         
         packet.payload.putUnsignedInt(ICAO_address);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(altitude);
-        
         packet.payload.putUnsignedShort(heading);
-        
         packet.payload.putUnsignedShort(hor_velocity);
-        
         packet.payload.putShort(ver_velocity);
-        
         packet.payload.putUnsignedShort(flags);
-        
         packet.payload.putUnsignedShort(squawk);
-        
         packet.payload.putUnsignedByte(altitude_type);
-        
         
         for (int i = 0; i < callsign.length; i++) {
             packet.payload.putByte(callsign[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(emitter_type);
-        
         packet.payload.putUnsignedByte(tslc);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -142,45 +132,78 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
         payload.resetIndex();
         
         this.ICAO_address = payload.getUnsignedInt();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.altitude = payload.getInt();
-        
         this.heading = payload.getUnsignedShort();
-        
         this.hor_velocity = payload.getUnsignedShort();
-        
         this.ver_velocity = payload.getShort();
-        
         this.flags = payload.getUnsignedShort();
-        
         this.squawk = payload.getUnsignedShort();
-        
         this.altitude_type = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.callsign.length; i++) {
             this.callsign[i] = payload.getByte();
         }
                 
-        
         this.emitter_type = payload.getUnsignedByte();
-        
         this.tslc = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_adsb_vehicle() {
-        msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_adsb_vehicle( long ICAO_address, int lat, int lon, int altitude, int heading, int hor_velocity, short ver_velocity, int flags, int squawk, short altitude_type, byte[] callsign, short emitter_type, short tslc) {
+        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+
+        this.ICAO_address = ICAO_address;
+        this.lat = lat;
+        this.lon = lon;
+        this.altitude = altitude;
+        this.heading = heading;
+        this.hor_velocity = hor_velocity;
+        this.ver_velocity = ver_velocity;
+        this.flags = flags;
+        this.squawk = squawk;
+        this.altitude_type = altitude_type;
+        this.callsign = callsign;
+        this.emitter_type = emitter_type;
+        this.tslc = tslc;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_adsb_vehicle( long ICAO_address, int lat, int lon, int altitude, int heading, int hor_velocity, short ver_velocity, int flags, int squawk, short altitude_type, byte[] callsign, short emitter_type, short tslc, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.ICAO_address = ICAO_address;
+        this.lat = lat;
+        this.lon = lon;
+        this.altitude = altitude;
+        this.heading = heading;
+        this.hor_velocity = hor_velocity;
+        this.ver_velocity = ver_velocity;
+        this.flags = flags;
+        this.squawk = squawk;
+        this.altitude_type = altitude_type;
+        this.callsign = callsign;
+        this.emitter_type = emitter_type;
+        this.tslc = tslc;
+        
     }
 
     /**
@@ -189,11 +212,73 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
      *
      */
     public msg_adsb_vehicle(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_adsb_vehicle(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ADSB_VEHICLE;
+
+        readJSONheader(jo);
+        
+        this.ICAO_address = (long)jo.optLong("ICAO_address");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.altitude = (int)jo.optInt("altitude");
+        this.heading = (int)jo.optInt("heading");
+        this.hor_velocity = (int)jo.optInt("hor_velocity");
+        this.ver_velocity = (short)jo.optInt("ver_velocity");
+        this.flags = (int)jo.optInt("flags");
+        this.squawk = (int)jo.optInt("squawk");
+        this.altitude_type = (short)jo.optInt("altitude_type");
+         
+        JSONArray ja_callsign = jo.optJSONArray("callsign");
+        for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
+            this.callsign[i] = (byte)ja_callsign.getInt(i);
+        }
+                
+        this.emitter_type = (short)jo.optInt("emitter_type");
+        this.tslc = (short)jo.optInt("tslc");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("ICAO_address", ICAO_address);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("altitude", altitude);
+        jo.put("heading", heading);
+        jo.put("hor_velocity", hor_velocity);
+        jo.put("ver_velocity", ver_velocity);
+        jo.put("flags", flags);
+        jo.put("squawk", squawk);
+        jo.put("altitude_type", altitude_type);
+         
+        JSONArray ja_callsign = new JSONArray();
+        for (int i = 0; i < this.callsign.length; i++) {
+            ja_callsign.put(this.callsign[i]);
+        }
+        jo.put("callsign", (Object)ja_callsign);
+                
+        jo.put("emitter_type", emitter_type);
+        jo.put("tslc", tslc);
+        
+        
+        return jo;
     }
 
                          

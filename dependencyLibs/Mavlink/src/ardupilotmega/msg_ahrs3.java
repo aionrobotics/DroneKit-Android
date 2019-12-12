@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of third AHRS filter if available. This is for ANU research group (Ali and Sean).
@@ -18,7 +23,6 @@ public class msg_ahrs3 extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AHRS3 = 182;
     public static final int MAVLINK_MSG_LENGTH = 40;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AHRS3;
-
 
       
     /**
@@ -83,28 +87,17 @@ public class msg_ahrs3 extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_AHRS3;
         
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(altitude);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lng);
-        
         packet.payload.putFloat(v1);
-        
         packet.payload.putFloat(v2);
-        
         packet.payload.putFloat(v3);
-        
         packet.payload.putFloat(v4);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -117,35 +110,65 @@ public class msg_ahrs3 extends MAVLinkMessage {
         payload.resetIndex();
         
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.altitude = payload.getFloat();
-        
         this.lat = payload.getInt();
-        
         this.lng = payload.getInt();
-        
         this.v1 = payload.getFloat();
-        
         this.v2 = payload.getFloat();
-        
         this.v3 = payload.getFloat();
-        
         this.v4 = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_ahrs3() {
-        msgid = MAVLINK_MSG_ID_AHRS3;
+        this.msgid = MAVLINK_MSG_ID_AHRS3;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_ahrs3( float roll, float pitch, float yaw, float altitude, int lat, int lng, float v1, float v2, float v3, float v4) {
+        this.msgid = MAVLINK_MSG_ID_AHRS3;
+
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.altitude = altitude;
+        this.lat = lat;
+        this.lng = lng;
+        this.v1 = v1;
+        this.v2 = v2;
+        this.v3 = v3;
+        this.v4 = v4;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_ahrs3( float roll, float pitch, float yaw, float altitude, int lat, int lng, float v1, float v2, float v3, float v4, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AHRS3;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.altitude = altitude;
+        this.lat = lat;
+        this.lng = lng;
+        this.v1 = v1;
+        this.v2 = v2;
+        this.v3 = v3;
+        this.v4 = v4;
+        
     }
 
     /**
@@ -154,11 +177,56 @@ public class msg_ahrs3 extends MAVLinkMessage {
      *
      */
     public msg_ahrs3(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AHRS3;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AHRS3;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_ahrs3(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AHRS3;
+
+        readJSONheader(jo);
+        
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.altitude = (float)jo.optFloat("altitude");
+        this.lat = (int)jo.optInt("lat");
+        this.lng = (int)jo.optInt("lng");
+        this.v1 = (float)jo.optFloat("v1");
+        this.v2 = (float)jo.optFloat("v2");
+        this.v3 = (float)jo.optFloat("v3");
+        this.v4 = (float)jo.optFloat("v4");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        jo.put("altitude", altitude);
+        jo.put("lat", lat);
+        jo.put("lng", lng);
+        jo.put("v1", v1);
+        jo.put("v2", v2);
+        jo.put("v3", v3);
+        jo.put("v4", v4);
+        
+        
+        return jo;
     }
 
                         

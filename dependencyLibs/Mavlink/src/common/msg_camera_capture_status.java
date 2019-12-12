@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about the status of a capture.
@@ -18,7 +23,6 @@ public class msg_camera_capture_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS = 262;
     public static final int MAVLINK_MSG_LENGTH = 18;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_camera_capture_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(image_interval);
-        
         packet.payload.putUnsignedInt(recording_time_ms);
-        
         packet.payload.putFloat(available_capacity);
-        
         packet.payload.putUnsignedByte(image_status);
-        
         packet.payload.putUnsignedByte(video_status);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_camera_capture_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.image_interval = payload.getFloat();
-        
         this.recording_time_ms = payload.getUnsignedInt();
-        
         this.available_capacity = payload.getFloat();
-        
         this.image_status = payload.getUnsignedByte();
-        
         this.video_status = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_capture_status() {
-        msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_capture_status( long time_boot_ms, float image_interval, long recording_time_ms, float available_capacity, short image_status, short video_status) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+
+        this.time_boot_ms = time_boot_ms;
+        this.image_interval = image_interval;
+        this.recording_time_ms = recording_time_ms;
+        this.available_capacity = available_capacity;
+        this.image_status = image_status;
+        this.video_status = video_status;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_capture_status( long time_boot_ms, float image_interval, long recording_time_ms, float available_capacity, short image_status, short video_status, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.image_interval = image_interval;
+        this.recording_time_ms = recording_time_ms;
+        this.available_capacity = available_capacity;
+        this.image_status = image_status;
+        this.video_status = video_status;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_camera_capture_status extends MAVLinkMessage {
      *
      */
     public msg_camera_capture_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_capture_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.image_interval = (float)jo.optFloat("image_interval");
+        this.recording_time_ms = (long)jo.optLong("recording_time_ms");
+        this.available_capacity = (float)jo.optFloat("available_capacity");
+        this.image_status = (short)jo.optInt("image_status");
+        this.video_status = (short)jo.optInt("video_status");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("image_interval", image_interval);
+        jo.put("recording_time_ms", recording_time_ms);
+        jo.put("available_capacity", available_capacity);
+        jo.put("image_status", image_status);
+        jo.put("video_status", video_status);
+        
+        
+        return jo;
     }
 
                 

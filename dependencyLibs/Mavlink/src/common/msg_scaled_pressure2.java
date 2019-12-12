@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Barometer readings for 2nd barometer
@@ -18,7 +23,6 @@ public class msg_scaled_pressure2 extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SCALED_PRESSURE2 = 137;
     public static final int MAVLINK_MSG_LENGTH = 14;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SCALED_PRESSURE2;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_scaled_pressure2 extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(press_abs);
-        
         packet.payload.putFloat(press_diff);
-        
         packet.payload.putShort(temperature);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_scaled_pressure2 extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.press_abs = payload.getFloat();
-        
         this.press_diff = payload.getFloat();
-        
         this.temperature = payload.getShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_scaled_pressure2() {
-        msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_scaled_pressure2( long time_boot_ms, float press_abs, float press_diff, short temperature) {
+        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.press_abs = press_abs;
+        this.press_diff = press_diff;
+        this.temperature = temperature;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_scaled_pressure2( long time_boot_ms, float press_abs, float press_diff, short temperature, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.press_abs = press_abs;
+        this.press_diff = press_diff;
+        this.temperature = temperature;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_scaled_pressure2 extends MAVLinkMessage {
      *
      */
     public msg_scaled_pressure2(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_scaled_pressure2(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SCALED_PRESSURE2;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.press_abs = (float)jo.optFloat("press_abs");
+        this.press_diff = (float)jo.optFloat("press_diff");
+        this.temperature = (short)jo.optInt("temperature");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("press_abs", press_abs);
+        jo.put("press_diff", press_diff);
+        jo.put("temperature", temperature);
+        
+        
+        return jo;
     }
 
             

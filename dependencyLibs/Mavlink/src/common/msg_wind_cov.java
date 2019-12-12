@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Wind covariance estimate from vehicle.
@@ -18,7 +23,6 @@ public class msg_wind_cov extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_WIND_COV = 231;
     public static final int MAVLINK_MSG_LENGTH = 40;
     private static final long serialVersionUID = MAVLINK_MSG_ID_WIND_COV;
-
 
       
     /**
@@ -78,26 +82,16 @@ public class msg_wind_cov extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_WIND_COV;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(wind_x);
-        
         packet.payload.putFloat(wind_y);
-        
         packet.payload.putFloat(wind_z);
-        
         packet.payload.putFloat(var_horiz);
-        
         packet.payload.putFloat(var_vert);
-        
         packet.payload.putFloat(wind_alt);
-        
         packet.payload.putFloat(horiz_accuracy);
-        
         packet.payload.putFloat(vert_accuracy);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -110,33 +104,62 @@ public class msg_wind_cov extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.wind_x = payload.getFloat();
-        
         this.wind_y = payload.getFloat();
-        
         this.wind_z = payload.getFloat();
-        
         this.var_horiz = payload.getFloat();
-        
         this.var_vert = payload.getFloat();
-        
         this.wind_alt = payload.getFloat();
-        
         this.horiz_accuracy = payload.getFloat();
-        
         this.vert_accuracy = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_wind_cov() {
-        msgid = MAVLINK_MSG_ID_WIND_COV;
+        this.msgid = MAVLINK_MSG_ID_WIND_COV;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_wind_cov( long time_usec, float wind_x, float wind_y, float wind_z, float var_horiz, float var_vert, float wind_alt, float horiz_accuracy, float vert_accuracy) {
+        this.msgid = MAVLINK_MSG_ID_WIND_COV;
+
+        this.time_usec = time_usec;
+        this.wind_x = wind_x;
+        this.wind_y = wind_y;
+        this.wind_z = wind_z;
+        this.var_horiz = var_horiz;
+        this.var_vert = var_vert;
+        this.wind_alt = wind_alt;
+        this.horiz_accuracy = horiz_accuracy;
+        this.vert_accuracy = vert_accuracy;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_wind_cov( long time_usec, float wind_x, float wind_y, float wind_z, float var_horiz, float var_vert, float wind_alt, float horiz_accuracy, float vert_accuracy, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_WIND_COV;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.wind_x = wind_x;
+        this.wind_y = wind_y;
+        this.wind_z = wind_z;
+        this.var_horiz = var_horiz;
+        this.var_vert = var_vert;
+        this.wind_alt = wind_alt;
+        this.horiz_accuracy = horiz_accuracy;
+        this.vert_accuracy = vert_accuracy;
+        
     }
 
     /**
@@ -145,11 +168,54 @@ public class msg_wind_cov extends MAVLinkMessage {
      *
      */
     public msg_wind_cov(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_WIND_COV;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_WIND_COV;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_wind_cov(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_WIND_COV;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.wind_x = (float)jo.optFloat("wind_x");
+        this.wind_y = (float)jo.optFloat("wind_y");
+        this.wind_z = (float)jo.optFloat("wind_z");
+        this.var_horiz = (float)jo.optFloat("var_horiz");
+        this.var_vert = (float)jo.optFloat("var_vert");
+        this.wind_alt = (float)jo.optFloat("wind_alt");
+        this.horiz_accuracy = (float)jo.optFloat("horiz_accuracy");
+        this.vert_accuracy = (float)jo.optFloat("vert_accuracy");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("wind_x", wind_x);
+        jo.put("wind_y", wind_y);
+        jo.put("wind_z", wind_z);
+        jo.put("var_horiz", var_horiz);
+        jo.put("var_vert", var_vert);
+        jo.put("wind_alt", wind_alt);
+        jo.put("horiz_accuracy", horiz_accuracy);
+        jo.put("vert_accuracy", vert_accuracy);
+        
+        
+        return jo;
     }
 
                       

@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Camera Event.
@@ -18,7 +23,6 @@ public class msg_camera_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_STATUS = 179;
     public static final int MAVLINK_MSG_LENGTH = 29;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_STATUS;
-
 
       
     /**
@@ -78,26 +82,16 @@ public class msg_camera_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(p1);
-        
         packet.payload.putFloat(p2);
-        
         packet.payload.putFloat(p3);
-        
         packet.payload.putFloat(p4);
-        
         packet.payload.putUnsignedShort(img_idx);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(cam_idx);
-        
         packet.payload.putUnsignedByte(event_id);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -110,33 +104,62 @@ public class msg_camera_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.p1 = payload.getFloat();
-        
         this.p2 = payload.getFloat();
-        
         this.p3 = payload.getFloat();
-        
         this.p4 = payload.getFloat();
-        
         this.img_idx = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.cam_idx = payload.getUnsignedByte();
-        
         this.event_id = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_status() {
-        msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_status( long time_usec, float p1, float p2, float p3, float p4, int img_idx, short target_system, short cam_idx, short event_id) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+
+        this.time_usec = time_usec;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+        this.img_idx = img_idx;
+        this.target_system = target_system;
+        this.cam_idx = cam_idx;
+        this.event_id = event_id;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_status( long time_usec, float p1, float p2, float p3, float p4, int img_idx, short target_system, short cam_idx, short event_id, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+        this.img_idx = img_idx;
+        this.target_system = target_system;
+        this.cam_idx = cam_idx;
+        this.event_id = event_id;
+        
     }
 
     /**
@@ -145,11 +168,54 @@ public class msg_camera_status extends MAVLinkMessage {
      *
      */
     public msg_camera_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_STATUS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.p1 = (float)jo.optFloat("p1");
+        this.p2 = (float)jo.optFloat("p2");
+        this.p3 = (float)jo.optFloat("p3");
+        this.p4 = (float)jo.optFloat("p4");
+        this.img_idx = (int)jo.optInt("img_idx");
+        this.target_system = (short)jo.optInt("target_system");
+        this.cam_idx = (short)jo.optInt("cam_idx");
+        this.event_id = (short)jo.optInt("event_id");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("p1", p1);
+        jo.put("p2", p2);
+        jo.put("p3", p3);
+        jo.put("p4", p4);
+        jo.put("img_idx", img_idx);
+        jo.put("target_system", target_system);
+        jo.put("cam_idx", cam_idx);
+        jo.put("event_id", event_id);
+        
+        
+        return jo;
     }
 
                       

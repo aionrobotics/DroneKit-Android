@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * State of APM memory.
@@ -18,7 +23,6 @@ public class msg_meminfo extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MEMINFO = 152;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MEMINFO;
-
 
       
     /**
@@ -48,13 +52,11 @@ public class msg_meminfo extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MEMINFO;
         
         packet.payload.putUnsignedShort(brkval);
-        
         packet.payload.putUnsignedShort(freemem);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedInt(freemem32);
-            
         }
         return packet;
     }
@@ -68,13 +70,11 @@ public class msg_meminfo extends MAVLinkMessage {
         payload.resetIndex();
         
         this.brkval = payload.getUnsignedShort();
-        
         this.freemem = payload.getUnsignedShort();
         
+        
         if(isMavlink2) {
-            
             this.freemem32 = payload.getUnsignedInt();
-            
         }
     }
 
@@ -82,7 +82,34 @@ public class msg_meminfo extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_meminfo() {
-        msgid = MAVLINK_MSG_ID_MEMINFO;
+        this.msgid = MAVLINK_MSG_ID_MEMINFO;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_meminfo( int brkval, int freemem, long freemem32) {
+        this.msgid = MAVLINK_MSG_ID_MEMINFO;
+
+        this.brkval = brkval;
+        this.freemem = freemem;
+        this.freemem32 = freemem32;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_meminfo( int brkval, int freemem, long freemem32, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MEMINFO;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.brkval = brkval;
+        this.freemem = freemem;
+        this.freemem32 = freemem32;
+        
     }
 
     /**
@@ -91,11 +118,42 @@ public class msg_meminfo extends MAVLinkMessage {
      *
      */
     public msg_meminfo(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MEMINFO;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MEMINFO;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_meminfo(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MEMINFO;
+
+        readJSONheader(jo);
+        
+        this.brkval = (int)jo.optInt("brkval");
+        this.freemem = (int)jo.optInt("freemem");
+        
+        this.freemem32 = (long)jo.optLong("freemem32");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("brkval", brkval);
+        jo.put("freemem", freemem);
+        
+        jo.put("freemem32", freemem32);
+        
+        return jo;
     }
 
           

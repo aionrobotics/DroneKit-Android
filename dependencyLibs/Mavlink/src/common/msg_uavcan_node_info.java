@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * General information describing a particular UAVCAN node. Please refer to the definition of the UAVCAN service "uavcan.protocol.GetNodeInfo" for the background information. This message should be emitted by the system whenever a new node appears online, or an existing node reboots. Additionally, it can be emitted upon request from the other end of the MAVLink channel (see MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a low frequency. The UAVCAN specification is available at http://uavcan.org.
@@ -18,7 +23,6 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_UAVCAN_NODE_INFO = 311;
     public static final int MAVLINK_MSG_LENGTH = 116;
     private static final long serialVersionUID = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
-
 
       
     /**
@@ -78,34 +82,24 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(uptime_sec);
-        
         packet.payload.putUnsignedInt(sw_vcs_commit);
-        
         
         for (int i = 0; i < name.length; i++) {
             packet.payload.putByte(name[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(hw_version_major);
-        
         packet.payload.putUnsignedByte(hw_version_minor);
-        
         
         for (int i = 0; i < hw_unique_id.length; i++) {
             packet.payload.putUnsignedByte(hw_unique_id[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(sw_version_major);
-        
         packet.payload.putUnsignedByte(sw_version_minor);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -118,41 +112,70 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.uptime_sec = payload.getUnsignedInt();
-        
         this.sw_vcs_commit = payload.getUnsignedInt();
-        
          
         for (int i = 0; i < this.name.length; i++) {
             this.name[i] = payload.getByte();
         }
                 
-        
         this.hw_version_major = payload.getUnsignedByte();
-        
         this.hw_version_minor = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.hw_unique_id.length; i++) {
             this.hw_unique_id[i] = payload.getUnsignedByte();
         }
                 
-        
         this.sw_version_major = payload.getUnsignedByte();
-        
         this.sw_version_minor = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_uavcan_node_info() {
-        msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_uavcan_node_info( long time_usec, long uptime_sec, long sw_vcs_commit, byte[] name, short hw_version_major, short hw_version_minor, short[] hw_unique_id, short sw_version_major, short sw_version_minor) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+
+        this.time_usec = time_usec;
+        this.uptime_sec = uptime_sec;
+        this.sw_vcs_commit = sw_vcs_commit;
+        this.name = name;
+        this.hw_version_major = hw_version_major;
+        this.hw_version_minor = hw_version_minor;
+        this.hw_unique_id = hw_unique_id;
+        this.sw_version_major = sw_version_major;
+        this.sw_version_minor = sw_version_minor;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_uavcan_node_info( long time_usec, long uptime_sec, long sw_vcs_commit, byte[] name, short hw_version_major, short hw_version_minor, short[] hw_unique_id, short sw_version_major, short sw_version_minor, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.uptime_sec = uptime_sec;
+        this.sw_vcs_commit = sw_vcs_commit;
+        this.name = name;
+        this.hw_version_major = hw_version_major;
+        this.hw_version_minor = hw_version_minor;
+        this.hw_unique_id = hw_unique_id;
+        this.sw_version_major = sw_version_major;
+        this.sw_version_minor = sw_version_minor;
+        
     }
 
     /**
@@ -161,11 +184,76 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
      *
      */
     public msg_uavcan_node_info(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_uavcan_node_info(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_UAVCAN_NODE_INFO;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.uptime_sec = (long)jo.optLong("uptime_sec");
+        this.sw_vcs_commit = (long)jo.optLong("sw_vcs_commit");
+         
+        JSONArray ja_name = jo.optJSONArray("name");
+        for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
+            this.name[i] = (byte)ja_name.getInt(i);
+        }
+                
+        this.hw_version_major = (short)jo.optInt("hw_version_major");
+        this.hw_version_minor = (short)jo.optInt("hw_version_minor");
+         
+        JSONArray ja_hw_unique_id = jo.optJSONArray("hw_unique_id");
+        for (int i = 0; i < Math.min(this.hw_unique_id.length, ja_hw_unique_id.length()); i++) {
+            this.hw_unique_id[i] = (short)ja_hw_unique_id.getInt(i);
+        }
+                
+        this.sw_version_major = (short)jo.optInt("sw_version_major");
+        this.sw_version_minor = (short)jo.optInt("sw_version_minor");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("uptime_sec", uptime_sec);
+        jo.put("sw_vcs_commit", sw_vcs_commit);
+         
+        JSONArray ja_name = new JSONArray();
+        for (int i = 0; i < this.name.length; i++) {
+            ja_name.put(this.name[i]);
+        }
+        jo.put("name", (Object)ja_name);
+                
+        jo.put("hw_version_major", hw_version_major);
+        jo.put("hw_version_minor", hw_version_minor);
+         
+        JSONArray ja_hw_unique_id = new JSONArray();
+        for (int i = 0; i < this.hw_unique_id.length; i++) {
+            ja_hw_unique_id.put(this.hw_unique_id[i]);
+        }
+        jo.put("hw_unique_id", (Object)ja_hw_unique_id);
+                
+        jo.put("sw_version_major", sw_version_major);
+        jo.put("sw_version_minor", sw_version_minor);
+        
+        
+        return jo;
     }
 
            

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about flight since last arming.
@@ -18,7 +23,6 @@ public class msg_flight_information extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_FLIGHT_INFORMATION = 264;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_flight_information extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
         
         packet.payload.putUnsignedLong(arming_time_utc);
-        
         packet.payload.putUnsignedLong(takeoff_time_utc);
-        
         packet.payload.putUnsignedLong(flight_uuid);
-        
         packet.payload.putUnsignedInt(time_boot_ms);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_flight_information extends MAVLinkMessage {
         payload.resetIndex();
         
         this.arming_time_utc = payload.getUnsignedLong();
-        
         this.takeoff_time_utc = payload.getUnsignedLong();
-        
         this.flight_uuid = payload.getUnsignedLong();
-        
         this.time_boot_ms = payload.getUnsignedInt();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_flight_information() {
-        msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_flight_information( long arming_time_utc, long takeoff_time_utc, long flight_uuid, long time_boot_ms) {
+        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+
+        this.arming_time_utc = arming_time_utc;
+        this.takeoff_time_utc = takeoff_time_utc;
+        this.flight_uuid = flight_uuid;
+        this.time_boot_ms = time_boot_ms;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_flight_information( long arming_time_utc, long takeoff_time_utc, long flight_uuid, long time_boot_ms, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.arming_time_utc = arming_time_utc;
+        this.takeoff_time_utc = takeoff_time_utc;
+        this.flight_uuid = flight_uuid;
+        this.time_boot_ms = time_boot_ms;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_flight_information extends MAVLinkMessage {
      *
      */
     public msg_flight_information(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_flight_information(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_FLIGHT_INFORMATION;
+
+        readJSONheader(jo);
+        
+        this.arming_time_utc = (long)jo.optLong("arming_time_utc");
+        this.takeoff_time_utc = (long)jo.optLong("takeoff_time_utc");
+        this.flight_uuid = (long)jo.optLong("flight_uuid");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("arming_time_utc", arming_time_utc);
+        jo.put("takeoff_time_utc", takeoff_time_utc);
+        jo.put("flight_uuid", flight_uuid);
+        jo.put("time_boot_ms", time_boot_ms);
+        
+        
+        return jo;
     }
 
             

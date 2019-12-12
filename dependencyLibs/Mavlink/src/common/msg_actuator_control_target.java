@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Set the vehicle attitude and body angular rates.
@@ -18,7 +23,6 @@ public class msg_actuator_control_target extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET = 140;
     public static final int MAVLINK_MSG_LENGTH = 41;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
-
 
       
     /**
@@ -49,17 +53,13 @@ public class msg_actuator_control_target extends MAVLinkMessage {
         
         packet.payload.putUnsignedLong(time_usec);
         
-        
         for (int i = 0; i < controls.length; i++) {
             packet.payload.putFloat(controls[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(group_mlx);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -72,25 +72,48 @@ public class msg_actuator_control_target extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.controls.length; i++) {
             this.controls[i] = payload.getFloat();
         }
                 
-        
         this.group_mlx = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_actuator_control_target() {
-        msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_actuator_control_target( long time_usec, float[] controls, short group_mlx) {
+        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+
+        this.time_usec = time_usec;
+        this.controls = controls;
+        this.group_mlx = group_mlx;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_actuator_control_target( long time_usec, float[] controls, short group_mlx, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.controls = controls;
+        this.group_mlx = group_mlx;
+        
     }
 
     /**
@@ -99,11 +122,53 @@ public class msg_actuator_control_target extends MAVLinkMessage {
      *
      */
     public msg_actuator_control_target(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_actuator_control_target(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+         
+        JSONArray ja_controls = jo.optJSONArray("controls");
+        for (int i = 0; i < Math.min(this.controls.length, ja_controls.length()); i++) {
+            this.controls[i] = (float)ja_controls.getFloat(i);
+        }
+                
+        this.group_mlx = (short)jo.optInt("group_mlx");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+         
+        JSONArray ja_controls = new JSONArray();
+        for (int i = 0; i < this.controls.length; i++) {
+            ja_controls.put(this.controls[i]);
+        }
+        jo.put("controls", (Object)ja_controls);
+                
+        jo.put("group_mlx", group_mlx);
+        
+        
+        return jo;
     }
 
           

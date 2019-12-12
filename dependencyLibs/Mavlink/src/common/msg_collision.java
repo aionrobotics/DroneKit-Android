@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about a potential collision
@@ -18,7 +23,6 @@ public class msg_collision extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_COLLISION = 247;
     public static final int MAVLINK_MSG_LENGTH = 19;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COLLISION;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_collision extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_COLLISION;
         
         packet.payload.putUnsignedInt(id);
-        
         packet.payload.putFloat(time_to_minimum_delta);
-        
         packet.payload.putFloat(altitude_minimum_delta);
-        
         packet.payload.putFloat(horizontal_minimum_delta);
-        
         packet.payload.putUnsignedByte(src);
-        
         packet.payload.putUnsignedByte(action);
-        
         packet.payload.putUnsignedByte(threat_level);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_collision extends MAVLinkMessage {
         payload.resetIndex();
         
         this.id = payload.getUnsignedInt();
-        
         this.time_to_minimum_delta = payload.getFloat();
-        
         this.altitude_minimum_delta = payload.getFloat();
-        
         this.horizontal_minimum_delta = payload.getFloat();
-        
         this.src = payload.getUnsignedByte();
-        
         this.action = payload.getUnsignedByte();
-        
         this.threat_level = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_collision() {
-        msgid = MAVLINK_MSG_ID_COLLISION;
+        this.msgid = MAVLINK_MSG_ID_COLLISION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_collision( long id, float time_to_minimum_delta, float altitude_minimum_delta, float horizontal_minimum_delta, short src, short action, short threat_level) {
+        this.msgid = MAVLINK_MSG_ID_COLLISION;
+
+        this.id = id;
+        this.time_to_minimum_delta = time_to_minimum_delta;
+        this.altitude_minimum_delta = altitude_minimum_delta;
+        this.horizontal_minimum_delta = horizontal_minimum_delta;
+        this.src = src;
+        this.action = action;
+        this.threat_level = threat_level;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_collision( long id, float time_to_minimum_delta, float altitude_minimum_delta, float horizontal_minimum_delta, short src, short action, short threat_level, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_COLLISION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.id = id;
+        this.time_to_minimum_delta = time_to_minimum_delta;
+        this.altitude_minimum_delta = altitude_minimum_delta;
+        this.horizontal_minimum_delta = horizontal_minimum_delta;
+        this.src = src;
+        this.action = action;
+        this.threat_level = threat_level;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_collision extends MAVLinkMessage {
      *
      */
     public msg_collision(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_COLLISION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COLLISION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_collision(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_COLLISION;
+
+        readJSONheader(jo);
+        
+        this.id = (long)jo.optLong("id");
+        this.time_to_minimum_delta = (float)jo.optFloat("time_to_minimum_delta");
+        this.altitude_minimum_delta = (float)jo.optFloat("altitude_minimum_delta");
+        this.horizontal_minimum_delta = (float)jo.optFloat("horizontal_minimum_delta");
+        this.src = (short)jo.optInt("src");
+        this.action = (short)jo.optInt("action");
+        this.threat_level = (short)jo.optInt("threat_level");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("id", id);
+        jo.put("time_to_minimum_delta", time_to_minimum_delta);
+        jo.put("altitude_minimum_delta", altitude_minimum_delta);
+        jo.put("horizontal_minimum_delta", horizontal_minimum_delta);
+        jo.put("src", src);
+        jo.put("action", action);
+        jo.put("threat_level", threat_level);
+        
+        
+        return jo;
     }
 
                   

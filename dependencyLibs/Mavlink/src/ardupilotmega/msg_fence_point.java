@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV -> GCS.
@@ -18,7 +23,6 @@ public class msg_fence_point extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_FENCE_POINT = 160;
     public static final int MAVLINK_MSG_LENGTH = 12;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FENCE_POINT;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_fence_point extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_FENCE_POINT;
         
         packet.payload.putFloat(lat);
-        
         packet.payload.putFloat(lng);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(idx);
-        
         packet.payload.putUnsignedByte(count);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_fence_point extends MAVLinkMessage {
         payload.resetIndex();
         
         this.lat = payload.getFloat();
-        
         this.lng = payload.getFloat();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.idx = payload.getUnsignedByte();
-        
         this.count = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_fence_point() {
-        msgid = MAVLINK_MSG_ID_FENCE_POINT;
+        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_fence_point( float lat, float lng, short target_system, short target_component, short idx, short count) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
+
+        this.lat = lat;
+        this.lng = lng;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.idx = idx;
+        this.count = count;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_fence_point( float lat, float lng, short target_system, short target_component, short idx, short count, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.lat = lat;
+        this.lng = lng;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.idx = idx;
+        this.count = count;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_fence_point extends MAVLinkMessage {
      *
      */
     public msg_fence_point(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_fence_point(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_POINT;
+
+        readJSONheader(jo);
+        
+        this.lat = (float)jo.optFloat("lat");
+        this.lng = (float)jo.optFloat("lng");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.idx = (short)jo.optInt("idx");
+        this.count = (short)jo.optInt("count");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("lat", lat);
+        jo.put("lng", lng);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("idx", idx);
+        jo.put("count", count);
+        
+        
+        return jo;
     }
 
                 

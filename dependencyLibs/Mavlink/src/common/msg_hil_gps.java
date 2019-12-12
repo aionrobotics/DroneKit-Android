@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The global position, as returned by the Global Positioning System (GPS). This is
@@ -19,7 +24,6 @@ public class msg_hil_gps extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIL_GPS = 113;
     public static final int MAVLINK_MSG_LENGTH = 36;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIL_GPS;
-
 
       
     /**
@@ -99,34 +103,20 @@ public class msg_hil_gps extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIL_GPS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putUnsignedShort(eph);
-        
         packet.payload.putUnsignedShort(epv);
-        
         packet.payload.putUnsignedShort(vel);
-        
         packet.payload.putShort(vn);
-        
         packet.payload.putShort(ve);
-        
         packet.payload.putShort(vd);
-        
         packet.payload.putUnsignedShort(cog);
-        
         packet.payload.putUnsignedByte(fix_type);
-        
         packet.payload.putUnsignedByte(satellites_visible);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -139,41 +129,74 @@ public class msg_hil_gps extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.eph = payload.getUnsignedShort();
-        
         this.epv = payload.getUnsignedShort();
-        
         this.vel = payload.getUnsignedShort();
-        
         this.vn = payload.getShort();
-        
         this.ve = payload.getShort();
-        
         this.vd = payload.getShort();
-        
         this.cog = payload.getUnsignedShort();
-        
         this.fix_type = payload.getUnsignedByte();
-        
         this.satellites_visible = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_hil_gps() {
-        msgid = MAVLINK_MSG_ID_HIL_GPS;
+        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_hil_gps( long time_usec, int lat, int lon, int alt, int eph, int epv, int vel, short vn, short ve, short vd, int cog, short fix_type, short satellites_visible) {
+        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
+
+        this.time_usec = time_usec;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.eph = eph;
+        this.epv = epv;
+        this.vel = vel;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        this.cog = cog;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_hil_gps( long time_usec, int lat, int lon, int alt, int eph, int epv, int vel, short vn, short ve, short vd, int cog, short fix_type, short satellites_visible, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.eph = eph;
+        this.epv = epv;
+        this.vel = vel;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        this.cog = cog;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        
     }
 
     /**
@@ -182,11 +205,62 @@ public class msg_hil_gps extends MAVLinkMessage {
      *
      */
     public msg_hil_gps(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_hil_gps(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIL_GPS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.eph = (int)jo.optInt("eph");
+        this.epv = (int)jo.optInt("epv");
+        this.vel = (int)jo.optInt("vel");
+        this.vn = (short)jo.optInt("vn");
+        this.ve = (short)jo.optInt("ve");
+        this.vd = (short)jo.optInt("vd");
+        this.cog = (int)jo.optInt("cog");
+        this.fix_type = (short)jo.optInt("fix_type");
+        this.satellites_visible = (short)jo.optInt("satellites_visible");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("eph", eph);
+        jo.put("epv", epv);
+        jo.put("vel", vel);
+        jo.put("vn", vn);
+        jo.put("ve", ve);
+        jo.put("vd", vd);
+        jo.put("cog", cog);
+        jo.put("fix_type", fix_type);
+        jo.put("satellites_visible", satellites_visible);
+        
+        
+        return jo;
     }
 
                               

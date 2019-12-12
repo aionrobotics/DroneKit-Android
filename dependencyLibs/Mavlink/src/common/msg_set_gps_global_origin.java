@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * As local waypoints exist, the global waypoint reference allows to transform between the local coordinate frame and the global (GPS) coordinate frame. This can be necessary when e.g. in- and outdoor settings are connected and the MAV should move from in- to outdoor.
@@ -18,7 +23,6 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN = 48;
     public static final int MAVLINK_MSG_LENGTH = 21;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
-
 
       
     /**
@@ -58,17 +62,13 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
         
         packet.payload.putInt(latitude);
-        
         packet.payload.putInt(longitude);
-        
         packet.payload.putInt(altitude);
-        
         packet.payload.putUnsignedByte(target_system);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedLong(time_usec);
-            
         }
         return packet;
     }
@@ -82,17 +82,13 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
         payload.resetIndex();
         
         this.latitude = payload.getInt();
-        
         this.longitude = payload.getInt();
-        
         this.altitude = payload.getInt();
-        
         this.target_system = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.time_usec = payload.getUnsignedLong();
-            
         }
     }
 
@@ -100,7 +96,38 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_set_gps_global_origin() {
-        msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_set_gps_global_origin( int latitude, int longitude, int altitude, short target_system, long time_usec) {
+        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.target_system = target_system;
+        this.time_usec = time_usec;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_set_gps_global_origin( int latitude, int longitude, int altitude, short target_system, long time_usec, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.target_system = target_system;
+        this.time_usec = time_usec;
+        
     }
 
     /**
@@ -109,11 +136,46 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
      *
      */
     public msg_set_gps_global_origin(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_set_gps_global_origin(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN;
+
+        readJSONheader(jo);
+        
+        this.latitude = (int)jo.optInt("latitude");
+        this.longitude = (int)jo.optInt("longitude");
+        this.altitude = (int)jo.optInt("altitude");
+        this.target_system = (short)jo.optInt("target_system");
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("latitude", latitude);
+        jo.put("longitude", longitude);
+        jo.put("altitude", altitude);
+        jo.put("target_system", target_system);
+        
+        jo.put("time_usec", time_usec);
+        
+        return jo;
     }
 
               

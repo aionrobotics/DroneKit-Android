@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request to control this MAV
@@ -18,7 +23,6 @@ public class msg_change_operator_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL = 5;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_change_operator_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
         
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(control_request);
-        
         packet.payload.putUnsignedByte(version);
-        
         
         for (int i = 0; i < passkey.length; i++) {
             packet.payload.putByte(passkey[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_change_operator_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.target_system = payload.getUnsignedByte();
-        
         this.control_request = payload.getUnsignedByte();
-        
         this.version = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.passkey.length; i++) {
             this.passkey[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_change_operator_control() {
-        msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_change_operator_control( short target_system, short control_request, short version, byte[] passkey) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+
+        this.target_system = target_system;
+        this.control_request = control_request;
+        this.version = version;
+        this.passkey = passkey;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_change_operator_control( short target_system, short control_request, short version, byte[] passkey, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.target_system = target_system;
+        this.control_request = control_request;
+        this.version = version;
+        this.passkey = passkey;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_change_operator_control extends MAVLinkMessage {
      *
      */
     public msg_change_operator_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_change_operator_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.target_system = (short)jo.optInt("target_system");
+        this.control_request = (short)jo.optInt("control_request");
+        this.version = (short)jo.optInt("version");
+         
+        JSONArray ja_passkey = jo.optJSONArray("passkey");
+        for (int i = 0; i < Math.min(this.passkey.length, ja_passkey.length()); i++) {
+            this.passkey[i] = (byte)ja_passkey.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("target_system", target_system);
+        jo.put("control_request", control_request);
+        jo.put("version", version);
+         
+        JSONArray ja_passkey = new JSONArray();
+        for (int i = 0; i < this.passkey.length; i++) {
+            ja_passkey.put(this.passkey[i]);
+        }
+        jo.put("passkey", (Object)ja_passkey);
+                
+        
+        
+        return jo;
     }
 
            

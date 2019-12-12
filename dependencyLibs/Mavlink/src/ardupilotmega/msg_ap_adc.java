@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Raw ADC output.
@@ -18,7 +23,6 @@ public class msg_ap_adc extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AP_ADC = 153;
     public static final int MAVLINK_MSG_LENGTH = 12;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AP_ADC;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_ap_adc extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_AP_ADC;
         
         packet.payload.putUnsignedShort(adc1);
-        
         packet.payload.putUnsignedShort(adc2);
-        
         packet.payload.putUnsignedShort(adc3);
-        
         packet.payload.putUnsignedShort(adc4);
-        
         packet.payload.putUnsignedShort(adc5);
-        
         packet.payload.putUnsignedShort(adc6);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_ap_adc extends MAVLinkMessage {
         payload.resetIndex();
         
         this.adc1 = payload.getUnsignedShort();
-        
         this.adc2 = payload.getUnsignedShort();
-        
         this.adc3 = payload.getUnsignedShort();
-        
         this.adc4 = payload.getUnsignedShort();
-        
         this.adc5 = payload.getUnsignedShort();
-        
         this.adc6 = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_ap_adc() {
-        msgid = MAVLINK_MSG_ID_AP_ADC;
+        this.msgid = MAVLINK_MSG_ID_AP_ADC;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_ap_adc( int adc1, int adc2, int adc3, int adc4, int adc5, int adc6) {
+        this.msgid = MAVLINK_MSG_ID_AP_ADC;
+
+        this.adc1 = adc1;
+        this.adc2 = adc2;
+        this.adc3 = adc3;
+        this.adc4 = adc4;
+        this.adc5 = adc5;
+        this.adc6 = adc6;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_ap_adc( int adc1, int adc2, int adc3, int adc4, int adc5, int adc6, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AP_ADC;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.adc1 = adc1;
+        this.adc2 = adc2;
+        this.adc3 = adc3;
+        this.adc4 = adc4;
+        this.adc5 = adc5;
+        this.adc6 = adc6;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_ap_adc extends MAVLinkMessage {
      *
      */
     public msg_ap_adc(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AP_ADC;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AP_ADC;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_ap_adc(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AP_ADC;
+
+        readJSONheader(jo);
+        
+        this.adc1 = (int)jo.optInt("adc1");
+        this.adc2 = (int)jo.optInt("adc2");
+        this.adc3 = (int)jo.optInt("adc3");
+        this.adc4 = (int)jo.optInt("adc4");
+        this.adc5 = (int)jo.optInt("adc5");
+        this.adc6 = (int)jo.optInt("adc6");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("adc1", adc1);
+        jo.put("adc2", adc2);
+        jo.put("adc3", adc3);
+        jo.put("adc4", adc4);
+        jo.put("adc5", adc5);
+        jo.put("adc6", adc6);
+        
+        
+        return jo;
     }
 
                 

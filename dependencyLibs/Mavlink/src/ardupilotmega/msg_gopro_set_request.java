@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request to set a GOPRO_COMMAND with a desired.
@@ -18,7 +23,6 @@ public class msg_gopro_set_request extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GOPRO_SET_REQUEST = 218;
     public static final int MAVLINK_MSG_LENGTH = 7;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_gopro_set_request extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
         
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(cmd_id);
-        
         
         for (int i = 0; i < value.length; i++) {
             packet.payload.putUnsignedByte(value[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_gopro_set_request extends MAVLinkMessage {
         payload.resetIndex();
         
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.cmd_id = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.value.length; i++) {
             this.value[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gopro_set_request() {
-        msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gopro_set_request( short target_system, short target_component, short cmd_id, short[] value) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.cmd_id = cmd_id;
+        this.value = value;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gopro_set_request( short target_system, short target_component, short cmd_id, short[] value, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.cmd_id = cmd_id;
+        this.value = value;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_gopro_set_request extends MAVLinkMessage {
      *
      */
     public msg_gopro_set_request(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gopro_set_request(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_REQUEST;
+
+        readJSONheader(jo);
+        
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.cmd_id = (short)jo.optInt("cmd_id");
+         
+        JSONArray ja_value = jo.optJSONArray("value");
+        for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
+            this.value[i] = (short)ja_value.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("cmd_id", cmd_id);
+         
+        JSONArray ja_value = new JSONArray();
+        for (int i = 0; i < this.value.length; i++) {
+            ja_value.put(this.value[i]);
+        }
+        jo.put("value", (Object)ja_value);
+                
+        
+        
+        return jo;
     }
 
             

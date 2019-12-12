@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Configure AP SSID and Password.
@@ -18,7 +23,6 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_WIFI_CONFIG_AP = 299;
     public static final int MAVLINK_MSG_LENGTH = 96;
     private static final long serialVersionUID = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
-
 
       
     /**
@@ -48,15 +52,12 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
         }
                     
         
-        
         for (int i = 0; i < password.length; i++) {
             packet.payload.putByte(password[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -73,23 +74,45 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
             this.ssid[i] = payload.getByte();
         }
                 
-        
          
         for (int i = 0; i < this.password.length; i++) {
             this.password[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_wifi_config_ap() {
-        msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_wifi_config_ap( byte[] ssid, byte[] password) {
+        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+
+        this.ssid = ssid;
+        this.password = password;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_wifi_config_ap( byte[] ssid, byte[] password, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.ssid = ssid;
+        this.password = password;
+        
     }
 
     /**
@@ -98,11 +121,62 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
      *
      */
     public msg_wifi_config_ap(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_wifi_config_ap(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_WIFI_CONFIG_AP;
+
+        readJSONheader(jo);
+        
+         
+        JSONArray ja_ssid = jo.optJSONArray("ssid");
+        for (int i = 0; i < Math.min(this.ssid.length, ja_ssid.length()); i++) {
+            this.ssid[i] = (byte)ja_ssid.getInt(i);
+        }
+                
+         
+        JSONArray ja_password = jo.optJSONArray("password");
+        for (int i = 0; i < Math.min(this.password.length, ja_password.length()); i++) {
+            this.password[i] = (byte)ja_password.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+         
+        JSONArray ja_ssid = new JSONArray();
+        for (int i = 0; i < this.ssid.length; i++) {
+            ja_ssid.put(this.ssid[i]);
+        }
+        jo.put("ssid", (Object)ja_ssid);
+                
+         
+        JSONArray ja_password = new JSONArray();
+        for (int i = 0; i < this.password.length; i++) {
+            ja_password.put(this.password[i]);
+        }
+        jo.put("password", (Object)ja_password);
+                
+        
+        
+        return jo;
     }
 
      

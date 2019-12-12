@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but a quite efficient way for testing new messages and getting experimental debug output.
@@ -18,7 +23,6 @@ public class msg_named_value_int extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_NAMED_VALUE_INT = 252;
     public static final int MAVLINK_MSG_LENGTH = 18;
     private static final long serialVersionUID = MAVLINK_MSG_ID_NAMED_VALUE_INT;
-
 
       
     /**
@@ -48,18 +52,14 @@ public class msg_named_value_int extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putInt(value);
-        
         
         for (int i = 0; i < name.length; i++) {
             packet.payload.putByte(name[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -72,25 +72,48 @@ public class msg_named_value_int extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.value = payload.getInt();
-        
          
         for (int i = 0; i < this.name.length; i++) {
             this.name[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_named_value_int() {
-        msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_named_value_int( long time_boot_ms, int value, byte[] name) {
+        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+
+        this.time_boot_ms = time_boot_ms;
+        this.value = value;
+        this.name = name;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_named_value_int( long time_boot_ms, int value, byte[] name, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.value = value;
+        this.name = name;
+        
     }
 
     /**
@@ -99,11 +122,53 @@ public class msg_named_value_int extends MAVLinkMessage {
      *
      */
     public msg_named_value_int(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_named_value_int(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.value = (int)jo.optInt("value");
+         
+        JSONArray ja_name = jo.optJSONArray("name");
+        for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
+            this.name[i] = (byte)ja_name.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("value", value);
+         
+        JSONArray ja_name = new JSONArray();
+        for (int i = 0; i < this.name.length; i++) {
+            ja_name.put(this.name[i]);
+        }
+        jo.put("name", (Object)ja_name);
+                
+        
+        
+        return jo;
     }
 
          

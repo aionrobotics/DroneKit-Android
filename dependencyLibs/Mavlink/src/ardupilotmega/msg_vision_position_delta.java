@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Camera vision based attitude and position deltas.
@@ -18,7 +23,6 @@ public class msg_vision_position_delta extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_VISION_POSITION_DELTA = 11011;
     public static final int MAVLINK_MSG_LENGTH = 44;
     private static final long serialVersionUID = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
-
 
       
     /**
@@ -58,26 +62,20 @@ public class msg_vision_position_delta extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedLong(time_delta_usec);
-        
         
         for (int i = 0; i < angle_delta.length; i++) {
             packet.payload.putFloat(angle_delta[i]);
         }
                     
         
-        
         for (int i = 0; i < position_delta.length; i++) {
             packet.payload.putFloat(position_delta[i]);
         }
                     
-        
         packet.payload.putFloat(confidence);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -90,33 +88,58 @@ public class msg_vision_position_delta extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.time_delta_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.angle_delta.length; i++) {
             this.angle_delta[i] = payload.getFloat();
         }
                 
-        
          
         for (int i = 0; i < this.position_delta.length; i++) {
             this.position_delta[i] = payload.getFloat();
         }
                 
-        
         this.confidence = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_vision_position_delta() {
-        msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_vision_position_delta( long time_usec, long time_delta_usec, float[] angle_delta, float[] position_delta, float confidence) {
+        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+
+        this.time_usec = time_usec;
+        this.time_delta_usec = time_delta_usec;
+        this.angle_delta = angle_delta;
+        this.position_delta = position_delta;
+        this.confidence = confidence;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_vision_position_delta( long time_usec, long time_delta_usec, float[] angle_delta, float[] position_delta, float confidence, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.time_delta_usec = time_delta_usec;
+        this.angle_delta = angle_delta;
+        this.position_delta = position_delta;
+        this.confidence = confidence;
+        
     }
 
     /**
@@ -125,11 +148,68 @@ public class msg_vision_position_delta extends MAVLinkMessage {
      *
      */
     public msg_vision_position_delta(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_vision_position_delta(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_VISION_POSITION_DELTA;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_delta_usec = (long)jo.optLong("time_delta_usec");
+         
+        JSONArray ja_angle_delta = jo.optJSONArray("angle_delta");
+        for (int i = 0; i < Math.min(this.angle_delta.length, ja_angle_delta.length()); i++) {
+            this.angle_delta[i] = (float)ja_angle_delta.getFloat(i);
+        }
+                
+         
+        JSONArray ja_position_delta = jo.optJSONArray("position_delta");
+        for (int i = 0; i < Math.min(this.position_delta.length, ja_position_delta.length()); i++) {
+            this.position_delta[i] = (float)ja_position_delta.getFloat(i);
+        }
+                
+        this.confidence = (float)jo.optFloat("confidence");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("time_delta_usec", time_delta_usec);
+         
+        JSONArray ja_angle_delta = new JSONArray();
+        for (int i = 0; i < this.angle_delta.length; i++) {
+            ja_angle_delta.put(this.angle_delta[i]);
+        }
+        jo.put("angle_delta", (Object)ja_angle_delta);
+                
+         
+        JSONArray ja_position_delta = new JSONArray();
+        for (int i = 0; i < this.position_delta.length; i++) {
+            ja_position_delta.put(this.position_delta[i]);
+        }
+        jo.put("position_delta", (Object)ja_position_delta);
+                
+        jo.put("confidence", confidence);
+        
+        
+        return jo;
     }
 
               

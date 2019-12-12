@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
@@ -18,7 +23,6 @@ public class msg_param_map_rc extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_PARAM_MAP_RC = 50;
     public static final int MAVLINK_MSG_LENGTH = 37;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PARAM_MAP_RC;
-
 
       
     /**
@@ -78,30 +82,20 @@ public class msg_param_map_rc extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
         
         packet.payload.putFloat(param_value0);
-        
         packet.payload.putFloat(scale);
-        
         packet.payload.putFloat(param_value_min);
-        
         packet.payload.putFloat(param_value_max);
-        
         packet.payload.putShort(param_index);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         
         for (int i = 0; i < param_id.length; i++) {
             packet.payload.putByte(param_id[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(parameter_rc_channel_index);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -114,37 +108,66 @@ public class msg_param_map_rc extends MAVLinkMessage {
         payload.resetIndex();
         
         this.param_value0 = payload.getFloat();
-        
         this.scale = payload.getFloat();
-        
         this.param_value_min = payload.getFloat();
-        
         this.param_value_max = payload.getFloat();
-        
         this.param_index = payload.getShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.param_id.length; i++) {
             this.param_id[i] = payload.getByte();
         }
                 
-        
         this.parameter_rc_channel_index = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_param_map_rc() {
-        msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_param_map_rc( float param_value0, float scale, float param_value_min, float param_value_max, short param_index, short target_system, short target_component, byte[] param_id, short parameter_rc_channel_index) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+
+        this.param_value0 = param_value0;
+        this.scale = scale;
+        this.param_value_min = param_value_min;
+        this.param_value_max = param_value_max;
+        this.param_index = param_index;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.param_id = param_id;
+        this.parameter_rc_channel_index = parameter_rc_channel_index;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_param_map_rc( float param_value0, float scale, float param_value_min, float param_value_max, short param_index, short target_system, short target_component, byte[] param_id, short parameter_rc_channel_index, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.param_value0 = param_value0;
+        this.scale = scale;
+        this.param_value_min = param_value_min;
+        this.param_value_max = param_value_max;
+        this.param_index = param_index;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.param_id = param_id;
+        this.parameter_rc_channel_index = parameter_rc_channel_index;
+        
     }
 
     /**
@@ -153,11 +176,65 @@ public class msg_param_map_rc extends MAVLinkMessage {
      *
      */
     public msg_param_map_rc(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_param_map_rc(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_PARAM_MAP_RC;
+
+        readJSONheader(jo);
+        
+        this.param_value0 = (float)jo.optFloat("param_value0");
+        this.scale = (float)jo.optFloat("scale");
+        this.param_value_min = (float)jo.optFloat("param_value_min");
+        this.param_value_max = (float)jo.optFloat("param_value_max");
+        this.param_index = (short)jo.optInt("param_index");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+         
+        JSONArray ja_param_id = jo.optJSONArray("param_id");
+        for (int i = 0; i < Math.min(this.param_id.length, ja_param_id.length()); i++) {
+            this.param_id[i] = (byte)ja_param_id.getInt(i);
+        }
+                
+        this.parameter_rc_channel_index = (short)jo.optInt("parameter_rc_channel_index");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("param_value0", param_value0);
+        jo.put("scale", scale);
+        jo.put("param_value_min", param_value_min);
+        jo.put("param_value_max", param_value_max);
+        jo.put("param_index", param_index);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+         
+        JSONArray ja_param_id = new JSONArray();
+        for (int i = 0; i < this.param_id.length; i++) {
+            ja_param_id.put(this.param_id[i]);
+        }
+        jo.put("param_id", (Object)ja_param_id);
+                
+        jo.put("parameter_rc_channel_index", parameter_rc_channel_index);
+        
+        
+        return jo;
     }
 
                    

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The global position, as returned by the Global Positioning System (GPS). This is
@@ -19,7 +24,6 @@ public class msg_gps_raw_int extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GPS_RAW_INT = 24;
     public static final int MAVLINK_MSG_LENGTH = 50;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GPS_RAW_INT;
-
 
       
     /**
@@ -109,37 +113,31 @@ public class msg_gps_raw_int extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putUnsignedShort(eph);
-        
         packet.payload.putUnsignedShort(epv);
-        
         packet.payload.putUnsignedShort(vel);
-        
         packet.payload.putUnsignedShort(cog);
-        
         packet.payload.putUnsignedByte(fix_type);
-        
         packet.payload.putUnsignedByte(satellites_visible);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putInt(alt_ellipsoid);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedInt(h_acc);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedInt(v_acc);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedInt(vel_acc);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedInt(hdg_acc);
-            
         }
         return packet;
     }
@@ -153,37 +151,31 @@ public class msg_gps_raw_int extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.eph = payload.getUnsignedShort();
-        
         this.epv = payload.getUnsignedShort();
-        
         this.vel = payload.getUnsignedShort();
-        
         this.cog = payload.getUnsignedShort();
-        
         this.fix_type = payload.getUnsignedByte();
-        
         this.satellites_visible = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.alt_ellipsoid = payload.getInt();
-            
+        }
+        if(isMavlink2) {
             this.h_acc = payload.getUnsignedInt();
-            
+        }
+        if(isMavlink2) {
             this.v_acc = payload.getUnsignedInt();
-            
+        }
+        if(isMavlink2) {
             this.vel_acc = payload.getUnsignedInt();
-            
+        }
+        if(isMavlink2) {
             this.hdg_acc = payload.getUnsignedInt();
-            
         }
     }
 
@@ -191,7 +183,58 @@ public class msg_gps_raw_int extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gps_raw_int() {
-        msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gps_raw_int( long time_usec, int lat, int lon, int alt, int eph, int epv, int vel, int cog, short fix_type, short satellites_visible, int alt_ellipsoid, long h_acc, long v_acc, long vel_acc, long hdg_acc) {
+        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+
+        this.time_usec = time_usec;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.eph = eph;
+        this.epv = epv;
+        this.vel = vel;
+        this.cog = cog;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        this.alt_ellipsoid = alt_ellipsoid;
+        this.h_acc = h_acc;
+        this.v_acc = v_acc;
+        this.vel_acc = vel_acc;
+        this.hdg_acc = hdg_acc;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gps_raw_int( long time_usec, int lat, int lon, int alt, int eph, int epv, int vel, int cog, short fix_type, short satellites_visible, int alt_ellipsoid, long h_acc, long v_acc, long vel_acc, long hdg_acc, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.eph = eph;
+        this.epv = epv;
+        this.vel = vel;
+        this.cog = cog;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        this.alt_ellipsoid = alt_ellipsoid;
+        this.h_acc = h_acc;
+        this.v_acc = v_acc;
+        this.vel_acc = vel_acc;
+        this.hdg_acc = hdg_acc;
+        
     }
 
     /**
@@ -200,11 +243,66 @@ public class msg_gps_raw_int extends MAVLinkMessage {
      *
      */
     public msg_gps_raw_int(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gps_raw_int(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.eph = (int)jo.optInt("eph");
+        this.epv = (int)jo.optInt("epv");
+        this.vel = (int)jo.optInt("vel");
+        this.cog = (int)jo.optInt("cog");
+        this.fix_type = (short)jo.optInt("fix_type");
+        this.satellites_visible = (short)jo.optInt("satellites_visible");
+        
+        this.alt_ellipsoid = (int)jo.optInt("alt_ellipsoid");
+        this.h_acc = (long)jo.optLong("h_acc");
+        this.v_acc = (long)jo.optLong("v_acc");
+        this.vel_acc = (long)jo.optLong("vel_acc");
+        this.hdg_acc = (long)jo.optLong("hdg_acc");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("eph", eph);
+        jo.put("epv", epv);
+        jo.put("vel", vel);
+        jo.put("cog", cog);
+        jo.put("fix_type", fix_type);
+        jo.put("satellites_visible", satellites_visible);
+        
+        jo.put("alt_ellipsoid", alt_ellipsoid);
+        jo.put("h_acc", h_acc);
+        jo.put("v_acc", v_acc);
+        jo.put("vel_acc", vel_acc);
+        jo.put("hdg_acc", hdg_acc);
+        
+        return jo;
     }
 
                                   

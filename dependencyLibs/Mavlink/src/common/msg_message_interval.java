@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The interval between messages for a particular MAVLink message ID. This interface replaces DATA_STREAM
@@ -18,7 +23,6 @@ public class msg_message_interval extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MESSAGE_INTERVAL = 244;
     public static final int MAVLINK_MSG_LENGTH = 6;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_message_interval extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
         
         packet.payload.putInt(interval_us);
-        
         packet.payload.putUnsignedShort(message_id);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_message_interval extends MAVLinkMessage {
         payload.resetIndex();
         
         this.interval_us = payload.getInt();
-        
         this.message_id = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_message_interval() {
-        msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_message_interval( int interval_us, int message_id) {
+        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+
+        this.interval_us = interval_us;
+        this.message_id = message_id;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_message_interval( int interval_us, int message_id, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.interval_us = interval_us;
+        this.message_id = message_id;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_message_interval extends MAVLinkMessage {
      *
      */
     public msg_message_interval(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_message_interval(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MESSAGE_INTERVAL;
+
+        readJSONheader(jo);
+        
+        this.interval_us = (int)jo.optInt("interval_us");
+        this.message_id = (int)jo.optInt("message_id");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("interval_us", interval_us);
+        jo.put("message_id", message_id);
+        
+        
+        return jo;
     }
 
         

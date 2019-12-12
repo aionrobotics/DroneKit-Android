@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Large debug/prototyping array. The message uses the maximum available payload for data. The array_id and name fields are used to discriminate between messages in code and in user interfaces (respectively). Do not use in production code.
@@ -18,7 +23,6 @@ public class msg_debug_float_array extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY = 350;
     public static final int MAVLINK_MSG_LENGTH = 252;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
-
 
       
     /**
@@ -53,23 +57,20 @@ public class msg_debug_float_array extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedShort(array_id);
-        
         
         for (int i = 0; i < name.length; i++) {
             packet.payload.putByte(name[i]);
         }
                     
         
+        
         if(isMavlink2) {
-            
             
         for (int i = 0; i < data.length; i++) {
             packet.payload.putFloat(data[i]);
         }
                     
-            
         }
         return packet;
     }
@@ -83,23 +84,20 @@ public class msg_debug_float_array extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.array_id = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.name.length; i++) {
             this.name[i] = payload.getByte();
         }
                 
         
+        
         if(isMavlink2) {
-            
              
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getFloat();
         }
                 
-            
         }
     }
 
@@ -107,7 +105,36 @@ public class msg_debug_float_array extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_debug_float_array() {
-        msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_debug_float_array( long time_usec, int array_id, byte[] name, float[] data) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+
+        this.time_usec = time_usec;
+        this.array_id = array_id;
+        this.name = name;
+        this.data = data;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_debug_float_array( long time_usec, int array_id, byte[] name, float[] data, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.array_id = array_id;
+        this.name = name;
+        this.data = data;
+        
     }
 
     /**
@@ -116,11 +143,66 @@ public class msg_debug_float_array extends MAVLinkMessage {
      *
      */
     public msg_debug_float_array(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_debug_float_array(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.array_id = (int)jo.optInt("array_id");
+         
+        JSONArray ja_name = jo.optJSONArray("name");
+        for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
+            this.name[i] = (byte)ja_name.getInt(i);
+        }
+                
+        
+         
+        JSONArray ja_data = jo.optJSONArray("data");
+        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+            this.data[i] = (float)ja_data.getFloat(i);
+        }
+                
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("array_id", array_id);
+         
+        JSONArray ja_name = new JSONArray();
+        for (int i = 0; i < this.name.length; i++) {
+            ja_name.put(this.name[i]);
+        }
+        jo.put("name", (Object)ja_name);
+                
+        
+         
+        JSONArray ja_data = new JSONArray();
+        for (int i = 0; i < this.data.length; i++) {
+            ja_data.put(this.data[i]);
+        }
+        jo.put("data", (Object)ja_data);
+                
+        
+        return jo;
     }
 
          

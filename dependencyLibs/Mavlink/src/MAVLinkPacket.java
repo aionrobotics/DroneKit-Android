@@ -10,6 +10,7 @@ import java.io.Serializable;
 import com.mavlink.messages.MAVLinkPayload;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.ardupilotmega.CRC;
+import org.json.JSONObject;
 
 import com.mavlink.ardupilotmega.*;
 import com.mavlink.common.*;
@@ -275,7 +276,7 @@ public class MAVLinkPacket implements Serializable {
 
         return buffer;
     }
-
+        
     /**
      * Unpack the data in this packet and return a MAVLink message
      *
@@ -955,6 +956,698 @@ public class MAVLinkPacket implements Serializable {
         }
     }
 
-}
+    /**
+     * Unpack the data in this JSON Object and return a MAVLink message
+     *
+     * @return MAVLink message decoded from JSON
+     */
+    public static MAVLinkMessage fromJSON(JSONObject jo) {
+        final JSONObject json_header = (jo.has("header")) ? jo.getJSONObject("header") : jo;
+        final int json_msgid;
+
+        if (json_header.has("msgId")) {
+            json_msgid = json_header.optInt("msgId", -1);
+        } else if (json_header.has("msgid")) {
+            json_msgid = json_header.optInt("msgid", -1);
+        } else {
+            json_msgid = -1;
+        }
         
+        switch (json_msgid) {
+         
+            case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
+                return new msg_heartbeat(jo);
+             
+            case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
+                return new msg_sys_status(jo);
+             
+            case msg_system_time.MAVLINK_MSG_ID_SYSTEM_TIME:
+                return new msg_system_time(jo);
+             
+            case msg_ping.MAVLINK_MSG_ID_PING:
+                return new msg_ping(jo);
+             
+            case msg_change_operator_control.MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL:
+                return new msg_change_operator_control(jo);
+             
+            case msg_change_operator_control_ack.MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK:
+                return new msg_change_operator_control_ack(jo);
+             
+            case msg_auth_key.MAVLINK_MSG_ID_AUTH_KEY:
+                return new msg_auth_key(jo);
+             
+            case msg_set_mode.MAVLINK_MSG_ID_SET_MODE:
+                return new msg_set_mode(jo);
+             
+            case msg_param_request_read.MAVLINK_MSG_ID_PARAM_REQUEST_READ:
+                return new msg_param_request_read(jo);
+             
+            case msg_param_request_list.MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
+                return new msg_param_request_list(jo);
+             
+            case msg_param_value.MAVLINK_MSG_ID_PARAM_VALUE:
+                return new msg_param_value(jo);
+             
+            case msg_param_set.MAVLINK_MSG_ID_PARAM_SET:
+                return new msg_param_set(jo);
+             
+            case msg_gps_raw_int.MAVLINK_MSG_ID_GPS_RAW_INT:
+                return new msg_gps_raw_int(jo);
+             
+            case msg_gps_status.MAVLINK_MSG_ID_GPS_STATUS:
+                return new msg_gps_status(jo);
+             
+            case msg_scaled_imu.MAVLINK_MSG_ID_SCALED_IMU:
+                return new msg_scaled_imu(jo);
+             
+            case msg_raw_imu.MAVLINK_MSG_ID_RAW_IMU:
+                return new msg_raw_imu(jo);
+             
+            case msg_raw_pressure.MAVLINK_MSG_ID_RAW_PRESSURE:
+                return new msg_raw_pressure(jo);
+             
+            case msg_scaled_pressure.MAVLINK_MSG_ID_SCALED_PRESSURE:
+                return new msg_scaled_pressure(jo);
+             
+            case msg_attitude.MAVLINK_MSG_ID_ATTITUDE:
+                return new msg_attitude(jo);
+             
+            case msg_attitude_quaternion.MAVLINK_MSG_ID_ATTITUDE_QUATERNION:
+                return new msg_attitude_quaternion(jo);
+             
+            case msg_local_position_ned.MAVLINK_MSG_ID_LOCAL_POSITION_NED:
+                return new msg_local_position_ned(jo);
+             
+            case msg_global_position_int.MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
+                return new msg_global_position_int(jo);
+             
+            case msg_rc_channels_scaled.MAVLINK_MSG_ID_RC_CHANNELS_SCALED:
+                return new msg_rc_channels_scaled(jo);
+             
+            case msg_rc_channels_raw.MAVLINK_MSG_ID_RC_CHANNELS_RAW:
+                return new msg_rc_channels_raw(jo);
+             
+            case msg_servo_output_raw.MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
+                return new msg_servo_output_raw(jo);
+             
+            case msg_mission_request_partial_list.MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST:
+                return new msg_mission_request_partial_list(jo);
+             
+            case msg_mission_write_partial_list.MAVLINK_MSG_ID_MISSION_WRITE_PARTIAL_LIST:
+                return new msg_mission_write_partial_list(jo);
+             
+            case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
+                return new msg_mission_item(jo);
+             
+            case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
+                return new msg_mission_request(jo);
+             
+            case msg_mission_set_current.MAVLINK_MSG_ID_MISSION_SET_CURRENT:
+                return new msg_mission_set_current(jo);
+             
+            case msg_mission_current.MAVLINK_MSG_ID_MISSION_CURRENT:
+                return new msg_mission_current(jo);
+             
+            case msg_mission_request_list.MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
+                return new msg_mission_request_list(jo);
+             
+            case msg_mission_count.MAVLINK_MSG_ID_MISSION_COUNT:
+                return new msg_mission_count(jo);
+             
+            case msg_mission_clear_all.MAVLINK_MSG_ID_MISSION_CLEAR_ALL:
+                return new msg_mission_clear_all(jo);
+             
+            case msg_mission_item_reached.MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
+                return new msg_mission_item_reached(jo);
+             
+            case msg_mission_ack.MAVLINK_MSG_ID_MISSION_ACK:
+                return new msg_mission_ack(jo);
+             
+            case msg_set_gps_global_origin.MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN:
+                return new msg_set_gps_global_origin(jo);
+             
+            case msg_gps_global_origin.MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN:
+                return new msg_gps_global_origin(jo);
+             
+            case msg_param_map_rc.MAVLINK_MSG_ID_PARAM_MAP_RC:
+                return new msg_param_map_rc(jo);
+             
+            case msg_mission_request_int.MAVLINK_MSG_ID_MISSION_REQUEST_INT:
+                return new msg_mission_request_int(jo);
+             
+            case msg_safety_set_allowed_area.MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA:
+                return new msg_safety_set_allowed_area(jo);
+             
+            case msg_safety_allowed_area.MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA:
+                return new msg_safety_allowed_area(jo);
+             
+            case msg_attitude_quaternion_cov.MAVLINK_MSG_ID_ATTITUDE_QUATERNION_COV:
+                return new msg_attitude_quaternion_cov(jo);
+             
+            case msg_nav_controller_output.MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:
+                return new msg_nav_controller_output(jo);
+             
+            case msg_global_position_int_cov.MAVLINK_MSG_ID_GLOBAL_POSITION_INT_COV:
+                return new msg_global_position_int_cov(jo);
+             
+            case msg_local_position_ned_cov.MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV:
+                return new msg_local_position_ned_cov(jo);
+             
+            case msg_rc_channels.MAVLINK_MSG_ID_RC_CHANNELS:
+                return new msg_rc_channels(jo);
+             
+            case msg_request_data_stream.MAVLINK_MSG_ID_REQUEST_DATA_STREAM:
+                return new msg_request_data_stream(jo);
+             
+            case msg_data_stream.MAVLINK_MSG_ID_DATA_STREAM:
+                return new msg_data_stream(jo);
+             
+            case msg_manual_control.MAVLINK_MSG_ID_MANUAL_CONTROL:
+                return new msg_manual_control(jo);
+             
+            case msg_rc_channels_override.MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE:
+                return new msg_rc_channels_override(jo);
+             
+            case msg_mission_item_int.MAVLINK_MSG_ID_MISSION_ITEM_INT:
+                return new msg_mission_item_int(jo);
+             
+            case msg_vfr_hud.MAVLINK_MSG_ID_VFR_HUD:
+                return new msg_vfr_hud(jo);
+             
+            case msg_command_int.MAVLINK_MSG_ID_COMMAND_INT:
+                return new msg_command_int(jo);
+             
+            case msg_command_long.MAVLINK_MSG_ID_COMMAND_LONG:
+                return new msg_command_long(jo);
+             
+            case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
+                return new msg_command_ack(jo);
+             
+            case msg_manual_setpoint.MAVLINK_MSG_ID_MANUAL_SETPOINT:
+                return new msg_manual_setpoint(jo);
+             
+            case msg_set_attitude_target.MAVLINK_MSG_ID_SET_ATTITUDE_TARGET:
+                return new msg_set_attitude_target(jo);
+             
+            case msg_attitude_target.MAVLINK_MSG_ID_ATTITUDE_TARGET:
+                return new msg_attitude_target(jo);
+             
+            case msg_set_position_target_local_ned.MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED:
+                return new msg_set_position_target_local_ned(jo);
+             
+            case msg_position_target_local_ned.MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED:
+                return new msg_position_target_local_ned(jo);
+             
+            case msg_set_position_target_global_int.MAVLINK_MSG_ID_SET_POSITION_TARGET_GLOBAL_INT:
+                return new msg_set_position_target_global_int(jo);
+             
+            case msg_position_target_global_int.MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT:
+                return new msg_position_target_global_int(jo);
+             
+            case msg_local_position_ned_system_global_offset.MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET:
+                return new msg_local_position_ned_system_global_offset(jo);
+             
+            case msg_hil_state.MAVLINK_MSG_ID_HIL_STATE:
+                return new msg_hil_state(jo);
+             
+            case msg_hil_controls.MAVLINK_MSG_ID_HIL_CONTROLS:
+                return new msg_hil_controls(jo);
+             
+            case msg_hil_rc_inputs_raw.MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW:
+                return new msg_hil_rc_inputs_raw(jo);
+             
+            case msg_hil_actuator_controls.MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS:
+                return new msg_hil_actuator_controls(jo);
+             
+            case msg_optical_flow.MAVLINK_MSG_ID_OPTICAL_FLOW:
+                return new msg_optical_flow(jo);
+             
+            case msg_global_vision_position_estimate.MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE:
+                return new msg_global_vision_position_estimate(jo);
+             
+            case msg_vision_position_estimate.MAVLINK_MSG_ID_VISION_POSITION_ESTIMATE:
+                return new msg_vision_position_estimate(jo);
+             
+            case msg_vision_speed_estimate.MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE:
+                return new msg_vision_speed_estimate(jo);
+             
+            case msg_vicon_position_estimate.MAVLINK_MSG_ID_VICON_POSITION_ESTIMATE:
+                return new msg_vicon_position_estimate(jo);
+             
+            case msg_highres_imu.MAVLINK_MSG_ID_HIGHRES_IMU:
+                return new msg_highres_imu(jo);
+             
+            case msg_optical_flow_rad.MAVLINK_MSG_ID_OPTICAL_FLOW_RAD:
+                return new msg_optical_flow_rad(jo);
+             
+            case msg_hil_sensor.MAVLINK_MSG_ID_HIL_SENSOR:
+                return new msg_hil_sensor(jo);
+             
+            case msg_sim_state.MAVLINK_MSG_ID_SIM_STATE:
+                return new msg_sim_state(jo);
+             
+            case msg_radio_status.MAVLINK_MSG_ID_RADIO_STATUS:
+                return new msg_radio_status(jo);
+             
+            case msg_file_transfer_protocol.MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL:
+                return new msg_file_transfer_protocol(jo);
+             
+            case msg_timesync.MAVLINK_MSG_ID_TIMESYNC:
+                return new msg_timesync(jo);
+             
+            case msg_camera_trigger.MAVLINK_MSG_ID_CAMERA_TRIGGER:
+                return new msg_camera_trigger(jo);
+             
+            case msg_hil_gps.MAVLINK_MSG_ID_HIL_GPS:
+                return new msg_hil_gps(jo);
+             
+            case msg_hil_optical_flow.MAVLINK_MSG_ID_HIL_OPTICAL_FLOW:
+                return new msg_hil_optical_flow(jo);
+             
+            case msg_hil_state_quaternion.MAVLINK_MSG_ID_HIL_STATE_QUATERNION:
+                return new msg_hil_state_quaternion(jo);
+             
+            case msg_scaled_imu2.MAVLINK_MSG_ID_SCALED_IMU2:
+                return new msg_scaled_imu2(jo);
+             
+            case msg_log_request_list.MAVLINK_MSG_ID_LOG_REQUEST_LIST:
+                return new msg_log_request_list(jo);
+             
+            case msg_log_entry.MAVLINK_MSG_ID_LOG_ENTRY:
+                return new msg_log_entry(jo);
+             
+            case msg_log_request_data.MAVLINK_MSG_ID_LOG_REQUEST_DATA:
+                return new msg_log_request_data(jo);
+             
+            case msg_log_data.MAVLINK_MSG_ID_LOG_DATA:
+                return new msg_log_data(jo);
+             
+            case msg_log_erase.MAVLINK_MSG_ID_LOG_ERASE:
+                return new msg_log_erase(jo);
+             
+            case msg_log_request_end.MAVLINK_MSG_ID_LOG_REQUEST_END:
+                return new msg_log_request_end(jo);
+             
+            case msg_gps_inject_data.MAVLINK_MSG_ID_GPS_INJECT_DATA:
+                return new msg_gps_inject_data(jo);
+             
+            case msg_gps2_raw.MAVLINK_MSG_ID_GPS2_RAW:
+                return new msg_gps2_raw(jo);
+             
+            case msg_power_status.MAVLINK_MSG_ID_POWER_STATUS:
+                return new msg_power_status(jo);
+             
+            case msg_serial_control.MAVLINK_MSG_ID_SERIAL_CONTROL:
+                return new msg_serial_control(jo);
+             
+            case msg_gps_rtk.MAVLINK_MSG_ID_GPS_RTK:
+                return new msg_gps_rtk(jo);
+             
+            case msg_gps2_rtk.MAVLINK_MSG_ID_GPS2_RTK:
+                return new msg_gps2_rtk(jo);
+             
+            case msg_scaled_imu3.MAVLINK_MSG_ID_SCALED_IMU3:
+                return new msg_scaled_imu3(jo);
+             
+            case msg_data_transmission_handshake.MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE:
+                return new msg_data_transmission_handshake(jo);
+             
+            case msg_encapsulated_data.MAVLINK_MSG_ID_ENCAPSULATED_DATA:
+                return new msg_encapsulated_data(jo);
+             
+            case msg_distance_sensor.MAVLINK_MSG_ID_DISTANCE_SENSOR:
+                return new msg_distance_sensor(jo);
+             
+            case msg_terrain_request.MAVLINK_MSG_ID_TERRAIN_REQUEST:
+                return new msg_terrain_request(jo);
+             
+            case msg_terrain_data.MAVLINK_MSG_ID_TERRAIN_DATA:
+                return new msg_terrain_data(jo);
+             
+            case msg_terrain_check.MAVLINK_MSG_ID_TERRAIN_CHECK:
+                return new msg_terrain_check(jo);
+             
+            case msg_terrain_report.MAVLINK_MSG_ID_TERRAIN_REPORT:
+                return new msg_terrain_report(jo);
+             
+            case msg_scaled_pressure2.MAVLINK_MSG_ID_SCALED_PRESSURE2:
+                return new msg_scaled_pressure2(jo);
+             
+            case msg_att_pos_mocap.MAVLINK_MSG_ID_ATT_POS_MOCAP:
+                return new msg_att_pos_mocap(jo);
+             
+            case msg_set_actuator_control_target.MAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET:
+                return new msg_set_actuator_control_target(jo);
+             
+            case msg_actuator_control_target.MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET:
+                return new msg_actuator_control_target(jo);
+             
+            case msg_altitude.MAVLINK_MSG_ID_ALTITUDE:
+                return new msg_altitude(jo);
+             
+            case msg_resource_request.MAVLINK_MSG_ID_RESOURCE_REQUEST:
+                return new msg_resource_request(jo);
+             
+            case msg_scaled_pressure3.MAVLINK_MSG_ID_SCALED_PRESSURE3:
+                return new msg_scaled_pressure3(jo);
+             
+            case msg_follow_target.MAVLINK_MSG_ID_FOLLOW_TARGET:
+                return new msg_follow_target(jo);
+             
+            case msg_control_system_state.MAVLINK_MSG_ID_CONTROL_SYSTEM_STATE:
+                return new msg_control_system_state(jo);
+             
+            case msg_battery_status.MAVLINK_MSG_ID_BATTERY_STATUS:
+                return new msg_battery_status(jo);
+             
+            case msg_autopilot_version.MAVLINK_MSG_ID_AUTOPILOT_VERSION:
+                return new msg_autopilot_version(jo);
+             
+            case msg_landing_target.MAVLINK_MSG_ID_LANDING_TARGET:
+                return new msg_landing_target(jo);
+             
+            case msg_sensor_offsets.MAVLINK_MSG_ID_SENSOR_OFFSETS:
+                return new msg_sensor_offsets(jo);
+             
+            case msg_set_mag_offsets.MAVLINK_MSG_ID_SET_MAG_OFFSETS:
+                return new msg_set_mag_offsets(jo);
+             
+            case msg_meminfo.MAVLINK_MSG_ID_MEMINFO:
+                return new msg_meminfo(jo);
+             
+            case msg_ap_adc.MAVLINK_MSG_ID_AP_ADC:
+                return new msg_ap_adc(jo);
+             
+            case msg_digicam_configure.MAVLINK_MSG_ID_DIGICAM_CONFIGURE:
+                return new msg_digicam_configure(jo);
+             
+            case msg_digicam_control.MAVLINK_MSG_ID_DIGICAM_CONTROL:
+                return new msg_digicam_control(jo);
+             
+            case msg_mount_configure.MAVLINK_MSG_ID_MOUNT_CONFIGURE:
+                return new msg_mount_configure(jo);
+             
+            case msg_mount_control.MAVLINK_MSG_ID_MOUNT_CONTROL:
+                return new msg_mount_control(jo);
+             
+            case msg_mount_status.MAVLINK_MSG_ID_MOUNT_STATUS:
+                return new msg_mount_status(jo);
+             
+            case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
+                return new msg_fence_point(jo);
+             
+            case msg_fence_fetch_point.MAVLINK_MSG_ID_FENCE_FETCH_POINT:
+                return new msg_fence_fetch_point(jo);
+             
+            case msg_fence_status.MAVLINK_MSG_ID_FENCE_STATUS:
+                return new msg_fence_status(jo);
+             
+            case msg_ahrs.MAVLINK_MSG_ID_AHRS:
+                return new msg_ahrs(jo);
+             
+            case msg_simstate.MAVLINK_MSG_ID_SIMSTATE:
+                return new msg_simstate(jo);
+             
+            case msg_hwstatus.MAVLINK_MSG_ID_HWSTATUS:
+                return new msg_hwstatus(jo);
+             
+            case msg_radio.MAVLINK_MSG_ID_RADIO:
+                return new msg_radio(jo);
+             
+            case msg_limits_status.MAVLINK_MSG_ID_LIMITS_STATUS:
+                return new msg_limits_status(jo);
+             
+            case msg_wind.MAVLINK_MSG_ID_WIND:
+                return new msg_wind(jo);
+             
+            case msg_data16.MAVLINK_MSG_ID_DATA16:
+                return new msg_data16(jo);
+             
+            case msg_data32.MAVLINK_MSG_ID_DATA32:
+                return new msg_data32(jo);
+             
+            case msg_data64.MAVLINK_MSG_ID_DATA64:
+                return new msg_data64(jo);
+             
+            case msg_data96.MAVLINK_MSG_ID_DATA96:
+                return new msg_data96(jo);
+             
+            case msg_rangefinder.MAVLINK_MSG_ID_RANGEFINDER:
+                return new msg_rangefinder(jo);
+             
+            case msg_airspeed_autocal.MAVLINK_MSG_ID_AIRSPEED_AUTOCAL:
+                return new msg_airspeed_autocal(jo);
+             
+            case msg_rally_point.MAVLINK_MSG_ID_RALLY_POINT:
+                return new msg_rally_point(jo);
+             
+            case msg_rally_fetch_point.MAVLINK_MSG_ID_RALLY_FETCH_POINT:
+                return new msg_rally_fetch_point(jo);
+             
+            case msg_compassmot_status.MAVLINK_MSG_ID_COMPASSMOT_STATUS:
+                return new msg_compassmot_status(jo);
+             
+            case msg_ahrs2.MAVLINK_MSG_ID_AHRS2:
+                return new msg_ahrs2(jo);
+             
+            case msg_camera_status.MAVLINK_MSG_ID_CAMERA_STATUS:
+                return new msg_camera_status(jo);
+             
+            case msg_camera_feedback.MAVLINK_MSG_ID_CAMERA_FEEDBACK:
+                return new msg_camera_feedback(jo);
+             
+            case msg_battery2.MAVLINK_MSG_ID_BATTERY2:
+                return new msg_battery2(jo);
+             
+            case msg_ahrs3.MAVLINK_MSG_ID_AHRS3:
+                return new msg_ahrs3(jo);
+             
+            case msg_autopilot_version_request.MAVLINK_MSG_ID_AUTOPILOT_VERSION_REQUEST:
+                return new msg_autopilot_version_request(jo);
+             
+            case msg_remote_log_data_block.MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK:
+                return new msg_remote_log_data_block(jo);
+             
+            case msg_remote_log_block_status.MAVLINK_MSG_ID_REMOTE_LOG_BLOCK_STATUS:
+                return new msg_remote_log_block_status(jo);
+             
+            case msg_led_control.MAVLINK_MSG_ID_LED_CONTROL:
+                return new msg_led_control(jo);
+             
+            case msg_mag_cal_progress.MAVLINK_MSG_ID_MAG_CAL_PROGRESS:
+                return new msg_mag_cal_progress(jo);
+             
+            case msg_mag_cal_report.MAVLINK_MSG_ID_MAG_CAL_REPORT:
+                return new msg_mag_cal_report(jo);
+             
+            case msg_ekf_status_report.MAVLINK_MSG_ID_EKF_STATUS_REPORT:
+                return new msg_ekf_status_report(jo);
+             
+            case msg_pid_tuning.MAVLINK_MSG_ID_PID_TUNING:
+                return new msg_pid_tuning(jo);
+             
+            case msg_deepstall.MAVLINK_MSG_ID_DEEPSTALL:
+                return new msg_deepstall(jo);
+             
+            case msg_gimbal_report.MAVLINK_MSG_ID_GIMBAL_REPORT:
+                return new msg_gimbal_report(jo);
+             
+            case msg_gimbal_control.MAVLINK_MSG_ID_GIMBAL_CONTROL:
+                return new msg_gimbal_control(jo);
+             
+            case msg_gimbal_torque_cmd_report.MAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT:
+                return new msg_gimbal_torque_cmd_report(jo);
+             
+            case msg_gopro_heartbeat.MAVLINK_MSG_ID_GOPRO_HEARTBEAT:
+                return new msg_gopro_heartbeat(jo);
+             
+            case msg_gopro_get_request.MAVLINK_MSG_ID_GOPRO_GET_REQUEST:
+                return new msg_gopro_get_request(jo);
+             
+            case msg_gopro_get_response.MAVLINK_MSG_ID_GOPRO_GET_RESPONSE:
+                return new msg_gopro_get_response(jo);
+             
+            case msg_gopro_set_request.MAVLINK_MSG_ID_GOPRO_SET_REQUEST:
+                return new msg_gopro_set_request(jo);
+             
+            case msg_gopro_set_response.MAVLINK_MSG_ID_GOPRO_SET_RESPONSE:
+                return new msg_gopro_set_response(jo);
+             
+            case msg_rpm.MAVLINK_MSG_ID_RPM:
+                return new msg_rpm(jo);
+             
+            case msg_estimator_status.MAVLINK_MSG_ID_ESTIMATOR_STATUS:
+                return new msg_estimator_status(jo);
+             
+            case msg_wind_cov.MAVLINK_MSG_ID_WIND_COV:
+                return new msg_wind_cov(jo);
+             
+            case msg_gps_input.MAVLINK_MSG_ID_GPS_INPUT:
+                return new msg_gps_input(jo);
+             
+            case msg_gps_rtcm_data.MAVLINK_MSG_ID_GPS_RTCM_DATA:
+                return new msg_gps_rtcm_data(jo);
+             
+            case msg_high_latency.MAVLINK_MSG_ID_HIGH_LATENCY:
+                return new msg_high_latency(jo);
+             
+            case msg_vibration.MAVLINK_MSG_ID_VIBRATION:
+                return new msg_vibration(jo);
+             
+            case msg_home_position.MAVLINK_MSG_ID_HOME_POSITION:
+                return new msg_home_position(jo);
+             
+            case msg_set_home_position.MAVLINK_MSG_ID_SET_HOME_POSITION:
+                return new msg_set_home_position(jo);
+             
+            case msg_message_interval.MAVLINK_MSG_ID_MESSAGE_INTERVAL:
+                return new msg_message_interval(jo);
+             
+            case msg_extended_sys_state.MAVLINK_MSG_ID_EXTENDED_SYS_STATE:
+                return new msg_extended_sys_state(jo);
+             
+            case msg_adsb_vehicle.MAVLINK_MSG_ID_ADSB_VEHICLE:
+                return new msg_adsb_vehicle(jo);
+             
+            case msg_collision.MAVLINK_MSG_ID_COLLISION:
+                return new msg_collision(jo);
+             
+            case msg_v2_extension.MAVLINK_MSG_ID_V2_EXTENSION:
+                return new msg_v2_extension(jo);
+             
+            case msg_memory_vect.MAVLINK_MSG_ID_MEMORY_VECT:
+                return new msg_memory_vect(jo);
+             
+            case msg_debug_vect.MAVLINK_MSG_ID_DEBUG_VECT:
+                return new msg_debug_vect(jo);
+             
+            case msg_named_value_float.MAVLINK_MSG_ID_NAMED_VALUE_FLOAT:
+                return new msg_named_value_float(jo);
+             
+            case msg_named_value_int.MAVLINK_MSG_ID_NAMED_VALUE_INT:
+                return new msg_named_value_int(jo);
+             
+            case msg_statustext.MAVLINK_MSG_ID_STATUSTEXT:
+                return new msg_statustext(jo);
+             
+            case msg_debug.MAVLINK_MSG_ID_DEBUG:
+                return new msg_debug(jo);
+             
+            case msg_setup_signing.MAVLINK_MSG_ID_SETUP_SIGNING:
+                return new msg_setup_signing(jo);
+             
+            case msg_button_change.MAVLINK_MSG_ID_BUTTON_CHANGE:
+                return new msg_button_change(jo);
+             
+            case msg_play_tune.MAVLINK_MSG_ID_PLAY_TUNE:
+                return new msg_play_tune(jo);
+             
+            case msg_camera_information.MAVLINK_MSG_ID_CAMERA_INFORMATION:
+                return new msg_camera_information(jo);
+             
+            case msg_camera_settings.MAVLINK_MSG_ID_CAMERA_SETTINGS:
+                return new msg_camera_settings(jo);
+             
+            case msg_storage_information.MAVLINK_MSG_ID_STORAGE_INFORMATION:
+                return new msg_storage_information(jo);
+             
+            case msg_camera_capture_status.MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS:
+                return new msg_camera_capture_status(jo);
+             
+            case msg_camera_image_captured.MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED:
+                return new msg_camera_image_captured(jo);
+             
+            case msg_flight_information.MAVLINK_MSG_ID_FLIGHT_INFORMATION:
+                return new msg_flight_information(jo);
+             
+            case msg_mount_orientation.MAVLINK_MSG_ID_MOUNT_ORIENTATION:
+                return new msg_mount_orientation(jo);
+             
+            case msg_logging_data.MAVLINK_MSG_ID_LOGGING_DATA:
+                return new msg_logging_data(jo);
+             
+            case msg_logging_data_acked.MAVLINK_MSG_ID_LOGGING_DATA_ACKED:
+                return new msg_logging_data_acked(jo);
+             
+            case msg_logging_ack.MAVLINK_MSG_ID_LOGGING_ACK:
+                return new msg_logging_ack(jo);
+             
+            case msg_wifi_config_ap.MAVLINK_MSG_ID_WIFI_CONFIG_AP:
+                return new msg_wifi_config_ap(jo);
+             
+            case msg_uavcan_node_status.MAVLINK_MSG_ID_UAVCAN_NODE_STATUS:
+                return new msg_uavcan_node_status(jo);
+             
+            case msg_uavcan_node_info.MAVLINK_MSG_ID_UAVCAN_NODE_INFO:
+                return new msg_uavcan_node_info(jo);
+             
+            case msg_obstacle_distance.MAVLINK_MSG_ID_OBSTACLE_DISTANCE:
+                return new msg_obstacle_distance(jo);
+             
+            case msg_odometry.MAVLINK_MSG_ID_ODOMETRY:
+                return new msg_odometry(jo);
+             
+            case msg_debug_float_array.MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY:
+                return new msg_debug_float_array(jo);
+             
+            case msg_statustext_long.MAVLINK_MSG_ID_STATUSTEXT_LONG:
+                return new msg_statustext_long(jo);
+             
+            case msg_wheel_distance.MAVLINK_MSG_ID_WHEEL_DISTANCE:
+                return new msg_wheel_distance(jo);
+             
+            case msg_uavionix_adsb_out_cfg.MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG:
+                return new msg_uavionix_adsb_out_cfg(jo);
+             
+            case msg_uavionix_adsb_out_dynamic.MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC:
+                return new msg_uavionix_adsb_out_dynamic(jo);
+             
+            case msg_uavionix_adsb_transceiver_health_report.MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT:
+                return new msg_uavionix_adsb_transceiver_health_report(jo);
+             
+            case msg_device_op_read.MAVLINK_MSG_ID_DEVICE_OP_READ:
+                return new msg_device_op_read(jo);
+             
+            case msg_device_op_read_reply.MAVLINK_MSG_ID_DEVICE_OP_READ_REPLY:
+                return new msg_device_op_read_reply(jo);
+             
+            case msg_device_op_write.MAVLINK_MSG_ID_DEVICE_OP_WRITE:
+                return new msg_device_op_write(jo);
+             
+            case msg_device_op_write_reply.MAVLINK_MSG_ID_DEVICE_OP_WRITE_REPLY:
+                return new msg_device_op_write_reply(jo);
+             
+            case msg_adap_tuning.MAVLINK_MSG_ID_ADAP_TUNING:
+                return new msg_adap_tuning(jo);
+             
+            case msg_vision_position_delta.MAVLINK_MSG_ID_VISION_POSITION_DELTA:
+                return new msg_vision_position_delta(jo);
+             
+            case msg_aoa_ssa.MAVLINK_MSG_ID_AOA_SSA:
+                return new msg_aoa_ssa(jo);
+             
+            case msg_esc_telemetry_1_to_4.MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4:
+                return new msg_esc_telemetry_1_to_4(jo);
+             
+            case msg_esc_telemetry_5_to_8.MAVLINK_MSG_ID_ESC_TELEMETRY_5_TO_8:
+                return new msg_esc_telemetry_5_to_8(jo);
+             
+            case msg_esc_telemetry_9_to_12.MAVLINK_MSG_ID_ESC_TELEMETRY_9_TO_12:
+                return new msg_esc_telemetry_9_to_12(jo);
+             
+            case msg_icarous_heartbeat.MAVLINK_MSG_ID_ICAROUS_HEARTBEAT:
+                return new msg_icarous_heartbeat(jo);
+             
+            case msg_icarous_kinematic_bands.MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS:
+                return new msg_icarous_kinematic_bands(jo);
+            
+            default:
+            case -1:
+                return null;
+        }
+    }
+
+}
+
+
         

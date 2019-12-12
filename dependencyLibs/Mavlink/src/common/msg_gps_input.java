@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global position estimate of the system.
@@ -18,7 +23,6 @@ public class msg_gps_input extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_GPS_INPUT = 232;
     public static final int MAVLINK_MSG_LENGTH = 63;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GPS_INPUT;
-
 
       
     /**
@@ -123,44 +127,25 @@ public class msg_gps_input extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_GPS_INPUT;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(time_week_ms);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putFloat(alt);
-        
         packet.payload.putFloat(hdop);
-        
         packet.payload.putFloat(vdop);
-        
         packet.payload.putFloat(vn);
-        
         packet.payload.putFloat(ve);
-        
         packet.payload.putFloat(vd);
-        
         packet.payload.putFloat(speed_accuracy);
-        
         packet.payload.putFloat(horiz_accuracy);
-        
         packet.payload.putFloat(vert_accuracy);
-        
         packet.payload.putUnsignedShort(ignore_flags);
-        
         packet.payload.putUnsignedShort(time_week);
-        
         packet.payload.putUnsignedByte(gps_id);
-        
         packet.payload.putUnsignedByte(fix_type);
-        
         packet.payload.putUnsignedByte(satellites_visible);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -173,51 +158,89 @@ public class msg_gps_input extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.time_week_ms = payload.getUnsignedInt();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getFloat();
-        
         this.hdop = payload.getFloat();
-        
         this.vdop = payload.getFloat();
-        
         this.vn = payload.getFloat();
-        
         this.ve = payload.getFloat();
-        
         this.vd = payload.getFloat();
-        
         this.speed_accuracy = payload.getFloat();
-        
         this.horiz_accuracy = payload.getFloat();
-        
         this.vert_accuracy = payload.getFloat();
-        
         this.ignore_flags = payload.getUnsignedShort();
-        
         this.time_week = payload.getUnsignedShort();
-        
         this.gps_id = payload.getUnsignedByte();
-        
         this.fix_type = payload.getUnsignedByte();
-        
         this.satellites_visible = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_gps_input() {
-        msgid = MAVLINK_MSG_ID_GPS_INPUT;
+        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_gps_input( long time_usec, long time_week_ms, int lat, int lon, float alt, float hdop, float vdop, float vn, float ve, float vd, float speed_accuracy, float horiz_accuracy, float vert_accuracy, int ignore_flags, int time_week, short gps_id, short fix_type, short satellites_visible) {
+        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
+
+        this.time_usec = time_usec;
+        this.time_week_ms = time_week_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.hdop = hdop;
+        this.vdop = vdop;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        this.speed_accuracy = speed_accuracy;
+        this.horiz_accuracy = horiz_accuracy;
+        this.vert_accuracy = vert_accuracy;
+        this.ignore_flags = ignore_flags;
+        this.time_week = time_week;
+        this.gps_id = gps_id;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_gps_input( long time_usec, long time_week_ms, int lat, int lon, float alt, float hdop, float vdop, float vn, float ve, float vd, float speed_accuracy, float horiz_accuracy, float vert_accuracy, int ignore_flags, int time_week, short gps_id, short fix_type, short satellites_visible, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.time_week_ms = time_week_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.hdop = hdop;
+        this.vdop = vdop;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        this.speed_accuracy = speed_accuracy;
+        this.horiz_accuracy = horiz_accuracy;
+        this.vert_accuracy = vert_accuracy;
+        this.ignore_flags = ignore_flags;
+        this.time_week = time_week;
+        this.gps_id = gps_id;
+        this.fix_type = fix_type;
+        this.satellites_visible = satellites_visible;
+        
     }
 
     /**
@@ -226,11 +249,72 @@ public class msg_gps_input extends MAVLinkMessage {
      *
      */
     public msg_gps_input(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_gps_input(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_GPS_INPUT;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_week_ms = (long)jo.optLong("time_week_ms");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (float)jo.optFloat("alt");
+        this.hdop = (float)jo.optFloat("hdop");
+        this.vdop = (float)jo.optFloat("vdop");
+        this.vn = (float)jo.optFloat("vn");
+        this.ve = (float)jo.optFloat("ve");
+        this.vd = (float)jo.optFloat("vd");
+        this.speed_accuracy = (float)jo.optFloat("speed_accuracy");
+        this.horiz_accuracy = (float)jo.optFloat("horiz_accuracy");
+        this.vert_accuracy = (float)jo.optFloat("vert_accuracy");
+        this.ignore_flags = (int)jo.optInt("ignore_flags");
+        this.time_week = (int)jo.optInt("time_week");
+        this.gps_id = (short)jo.optInt("gps_id");
+        this.fix_type = (short)jo.optInt("fix_type");
+        this.satellites_visible = (short)jo.optInt("satellites_visible");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("time_week_ms", time_week_ms);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("hdop", hdop);
+        jo.put("vdop", vdop);
+        jo.put("vn", vn);
+        jo.put("ve", ve);
+        jo.put("vd", vd);
+        jo.put("speed_accuracy", speed_accuracy);
+        jo.put("horiz_accuracy", horiz_accuracy);
+        jo.put("vert_accuracy", vert_accuracy);
+        jo.put("ignore_flags", ignore_flags);
+        jo.put("time_week", time_week);
+        jo.put("gps_id", gps_id);
+        jo.put("fix_type", fix_type);
+        jo.put("satellites_visible", satellites_visible);
+        
+        
+        return jo;
     }
 
                                         

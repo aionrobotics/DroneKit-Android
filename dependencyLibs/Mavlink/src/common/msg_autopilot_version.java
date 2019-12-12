@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Version and capability of autopilot software
@@ -18,7 +23,6 @@ public class msg_autopilot_version extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AUTOPILOT_VERSION = 148;
     public static final int MAVLINK_MSG_LENGTH = 78;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
-
 
       
     /**
@@ -93,47 +97,36 @@ public class msg_autopilot_version extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
         
         packet.payload.putUnsignedLong(capabilities);
-        
         packet.payload.putUnsignedLong(uid);
-        
         packet.payload.putUnsignedInt(flight_sw_version);
-        
         packet.payload.putUnsignedInt(middleware_sw_version);
-        
         packet.payload.putUnsignedInt(os_sw_version);
-        
         packet.payload.putUnsignedInt(board_version);
-        
         packet.payload.putUnsignedShort(vendor_id);
-        
         packet.payload.putUnsignedShort(product_id);
-        
         
         for (int i = 0; i < flight_custom_version.length; i++) {
             packet.payload.putUnsignedByte(flight_custom_version[i]);
         }
                     
         
-        
         for (int i = 0; i < middleware_custom_version.length; i++) {
             packet.payload.putUnsignedByte(middleware_custom_version[i]);
         }
                     
-        
         
         for (int i = 0; i < os_custom_version.length; i++) {
             packet.payload.putUnsignedByte(os_custom_version[i]);
         }
                     
         
+        
         if(isMavlink2) {
-            
             
         for (int i = 0; i < uid2.length; i++) {
             packet.payload.putUnsignedByte(uid2[i]);
         }
                     
-            
         }
         return packet;
     }
@@ -147,47 +140,36 @@ public class msg_autopilot_version extends MAVLinkMessage {
         payload.resetIndex();
         
         this.capabilities = payload.getUnsignedLong();
-        
         this.uid = payload.getUnsignedLong();
-        
         this.flight_sw_version = payload.getUnsignedInt();
-        
         this.middleware_sw_version = payload.getUnsignedInt();
-        
         this.os_sw_version = payload.getUnsignedInt();
-        
         this.board_version = payload.getUnsignedInt();
-        
         this.vendor_id = payload.getUnsignedShort();
-        
         this.product_id = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.flight_custom_version.length; i++) {
             this.flight_custom_version[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.middleware_custom_version.length; i++) {
             this.middleware_custom_version[i] = payload.getUnsignedByte();
         }
                 
-        
          
         for (int i = 0; i < this.os_custom_version.length; i++) {
             this.os_custom_version[i] = payload.getUnsignedByte();
         }
                 
         
+        
         if(isMavlink2) {
-            
              
         for (int i = 0; i < this.uid2.length; i++) {
             this.uid2[i] = payload.getUnsignedByte();
         }
                 
-            
         }
     }
 
@@ -195,7 +177,52 @@ public class msg_autopilot_version extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_autopilot_version() {
-        msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_autopilot_version( long capabilities, long uid, long flight_sw_version, long middleware_sw_version, long os_sw_version, long board_version, int vendor_id, int product_id, short[] flight_custom_version, short[] middleware_custom_version, short[] os_custom_version, short[] uid2) {
+        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+
+        this.capabilities = capabilities;
+        this.uid = uid;
+        this.flight_sw_version = flight_sw_version;
+        this.middleware_sw_version = middleware_sw_version;
+        this.os_sw_version = os_sw_version;
+        this.board_version = board_version;
+        this.vendor_id = vendor_id;
+        this.product_id = product_id;
+        this.flight_custom_version = flight_custom_version;
+        this.middleware_custom_version = middleware_custom_version;
+        this.os_custom_version = os_custom_version;
+        this.uid2 = uid2;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_autopilot_version( long capabilities, long uid, long flight_sw_version, long middleware_sw_version, long os_sw_version, long board_version, int vendor_id, int product_id, short[] flight_custom_version, short[] middleware_custom_version, short[] os_custom_version, short[] uid2, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.capabilities = capabilities;
+        this.uid = uid;
+        this.flight_sw_version = flight_sw_version;
+        this.middleware_sw_version = middleware_sw_version;
+        this.os_sw_version = os_sw_version;
+        this.board_version = board_version;
+        this.vendor_id = vendor_id;
+        this.product_id = product_id;
+        this.flight_custom_version = flight_custom_version;
+        this.middleware_custom_version = middleware_custom_version;
+        this.os_custom_version = os_custom_version;
+        this.uid2 = uid2;
+        
     }
 
     /**
@@ -204,11 +231,104 @@ public class msg_autopilot_version extends MAVLinkMessage {
      *
      */
     public msg_autopilot_version(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_autopilot_version(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AUTOPILOT_VERSION;
+
+        readJSONheader(jo);
+        
+        this.capabilities = (long)jo.optLong("capabilities");
+        this.uid = (long)jo.optLong("uid");
+        this.flight_sw_version = (long)jo.optLong("flight_sw_version");
+        this.middleware_sw_version = (long)jo.optLong("middleware_sw_version");
+        this.os_sw_version = (long)jo.optLong("os_sw_version");
+        this.board_version = (long)jo.optLong("board_version");
+        this.vendor_id = (int)jo.optInt("vendor_id");
+        this.product_id = (int)jo.optInt("product_id");
+         
+        JSONArray ja_flight_custom_version = jo.optJSONArray("flight_custom_version");
+        for (int i = 0; i < Math.min(this.flight_custom_version.length, ja_flight_custom_version.length()); i++) {
+            this.flight_custom_version[i] = (short)ja_flight_custom_version.getInt(i);
+        }
+                
+         
+        JSONArray ja_middleware_custom_version = jo.optJSONArray("middleware_custom_version");
+        for (int i = 0; i < Math.min(this.middleware_custom_version.length, ja_middleware_custom_version.length()); i++) {
+            this.middleware_custom_version[i] = (short)ja_middleware_custom_version.getInt(i);
+        }
+                
+         
+        JSONArray ja_os_custom_version = jo.optJSONArray("os_custom_version");
+        for (int i = 0; i < Math.min(this.os_custom_version.length, ja_os_custom_version.length()); i++) {
+            this.os_custom_version[i] = (short)ja_os_custom_version.getInt(i);
+        }
+                
+        
+         
+        JSONArray ja_uid2 = jo.optJSONArray("uid2");
+        for (int i = 0; i < Math.min(this.uid2.length, ja_uid2.length()); i++) {
+            this.uid2[i] = (short)ja_uid2.getInt(i);
+        }
+                
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("capabilities", capabilities);
+        jo.put("uid", uid);
+        jo.put("flight_sw_version", flight_sw_version);
+        jo.put("middleware_sw_version", middleware_sw_version);
+        jo.put("os_sw_version", os_sw_version);
+        jo.put("board_version", board_version);
+        jo.put("vendor_id", vendor_id);
+        jo.put("product_id", product_id);
+         
+        JSONArray ja_flight_custom_version = new JSONArray();
+        for (int i = 0; i < this.flight_custom_version.length; i++) {
+            ja_flight_custom_version.put(this.flight_custom_version[i]);
+        }
+        jo.put("flight_custom_version", (Object)ja_flight_custom_version);
+                
+         
+        JSONArray ja_middleware_custom_version = new JSONArray();
+        for (int i = 0; i < this.middleware_custom_version.length; i++) {
+            ja_middleware_custom_version.put(this.middleware_custom_version[i]);
+        }
+        jo.put("middleware_custom_version", (Object)ja_middleware_custom_version);
+                
+         
+        JSONArray ja_os_custom_version = new JSONArray();
+        for (int i = 0; i < this.os_custom_version.length; i++) {
+            ja_os_custom_version.put(this.os_custom_version[i]);
+        }
+        jo.put("os_custom_version", (Object)ja_os_custom_version);
+                
+        
+         
+        JSONArray ja_uid2 = new JSONArray();
+        for (int i = 0; i < this.uid2.length; i++) {
+            ja_uid2.put(this.uid2[i]);
+        }
+        jo.put("uid2", (Object)ja_uid2);
+                
+        
+        return jo;
     }
 
                             

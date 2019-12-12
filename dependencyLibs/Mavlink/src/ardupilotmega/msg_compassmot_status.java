@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of compassmot calibration.
@@ -18,7 +23,6 @@ public class msg_compassmot_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_COMPASSMOT_STATUS = 177;
     public static final int MAVLINK_MSG_LENGTH = 20;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_compassmot_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
         
         packet.payload.putFloat(current);
-        
         packet.payload.putFloat(CompensationX);
-        
         packet.payload.putFloat(CompensationY);
-        
         packet.payload.putFloat(CompensationZ);
-        
         packet.payload.putUnsignedShort(throttle);
-        
         packet.payload.putUnsignedShort(interference);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_compassmot_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.current = payload.getFloat();
-        
         this.CompensationX = payload.getFloat();
-        
         this.CompensationY = payload.getFloat();
-        
         this.CompensationZ = payload.getFloat();
-        
         this.throttle = payload.getUnsignedShort();
-        
         this.interference = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_compassmot_status() {
-        msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_compassmot_status( float current, float CompensationX, float CompensationY, float CompensationZ, int throttle, int interference) {
+        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+
+        this.current = current;
+        this.CompensationX = CompensationX;
+        this.CompensationY = CompensationY;
+        this.CompensationZ = CompensationZ;
+        this.throttle = throttle;
+        this.interference = interference;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_compassmot_status( float current, float CompensationX, float CompensationY, float CompensationZ, int throttle, int interference, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.current = current;
+        this.CompensationX = CompensationX;
+        this.CompensationY = CompensationY;
+        this.CompensationZ = CompensationZ;
+        this.throttle = throttle;
+        this.interference = interference;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_compassmot_status extends MAVLinkMessage {
      *
      */
     public msg_compassmot_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_compassmot_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_COMPASSMOT_STATUS;
+
+        readJSONheader(jo);
+        
+        this.current = (float)jo.optFloat("current");
+        this.CompensationX = (float)jo.optFloat("CompensationX");
+        this.CompensationY = (float)jo.optFloat("CompensationY");
+        this.CompensationZ = (float)jo.optFloat("CompensationZ");
+        this.throttle = (int)jo.optInt("throttle");
+        this.interference = (int)jo.optInt("interference");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("current", current);
+        jo.put("CompensationX", CompensationX);
+        jo.put("CompensationY", CompensationY);
+        jo.put("CompensationZ", CompensationZ);
+        jo.put("throttle", throttle);
+        jo.put("interference", interference);
+        
+        
+        return jo;
     }
 
                 

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
@@ -18,7 +23,6 @@ public class msg_optical_flow extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_OPTICAL_FLOW = 100;
     public static final int MAVLINK_MSG_LENGTH = 34;
     private static final long serialVersionUID = MAVLINK_MSG_ID_OPTICAL_FLOW;
-
 
       
     /**
@@ -83,27 +87,20 @@ public class msg_optical_flow extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(flow_comp_m_x);
-        
         packet.payload.putFloat(flow_comp_m_y);
-        
         packet.payload.putFloat(ground_distance);
-        
         packet.payload.putShort(flow_x);
-        
         packet.payload.putShort(flow_y);
-        
         packet.payload.putUnsignedByte(sensor_id);
-        
         packet.payload.putUnsignedByte(quality);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(flow_rate_x);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putFloat(flow_rate_y);
-            
         }
         return packet;
     }
@@ -117,27 +114,20 @@ public class msg_optical_flow extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.flow_comp_m_x = payload.getFloat();
-        
         this.flow_comp_m_y = payload.getFloat();
-        
         this.ground_distance = payload.getFloat();
-        
         this.flow_x = payload.getShort();
-        
         this.flow_y = payload.getShort();
-        
         this.sensor_id = payload.getUnsignedByte();
-        
         this.quality = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.flow_rate_x = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
             this.flow_rate_y = payload.getFloat();
-            
         }
     }
 
@@ -145,7 +135,48 @@ public class msg_optical_flow extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_optical_flow() {
-        msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_optical_flow( long time_usec, float flow_comp_m_x, float flow_comp_m_y, float ground_distance, short flow_x, short flow_y, short sensor_id, short quality, float flow_rate_x, float flow_rate_y) {
+        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+
+        this.time_usec = time_usec;
+        this.flow_comp_m_x = flow_comp_m_x;
+        this.flow_comp_m_y = flow_comp_m_y;
+        this.ground_distance = ground_distance;
+        this.flow_x = flow_x;
+        this.flow_y = flow_y;
+        this.sensor_id = sensor_id;
+        this.quality = quality;
+        this.flow_rate_x = flow_rate_x;
+        this.flow_rate_y = flow_rate_y;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_optical_flow( long time_usec, float flow_comp_m_x, float flow_comp_m_y, float ground_distance, short flow_x, short flow_y, short sensor_id, short quality, float flow_rate_x, float flow_rate_y, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.flow_comp_m_x = flow_comp_m_x;
+        this.flow_comp_m_y = flow_comp_m_y;
+        this.ground_distance = ground_distance;
+        this.flow_x = flow_x;
+        this.flow_y = flow_y;
+        this.sensor_id = sensor_id;
+        this.quality = quality;
+        this.flow_rate_x = flow_rate_x;
+        this.flow_rate_y = flow_rate_y;
+        
     }
 
     /**
@@ -154,11 +185,56 @@ public class msg_optical_flow extends MAVLinkMessage {
      *
      */
     public msg_optical_flow(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_optical_flow(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.flow_comp_m_x = (float)jo.optFloat("flow_comp_m_x");
+        this.flow_comp_m_y = (float)jo.optFloat("flow_comp_m_y");
+        this.ground_distance = (float)jo.optFloat("ground_distance");
+        this.flow_x = (short)jo.optInt("flow_x");
+        this.flow_y = (short)jo.optInt("flow_y");
+        this.sensor_id = (short)jo.optInt("sensor_id");
+        this.quality = (short)jo.optInt("quality");
+        
+        this.flow_rate_x = (float)jo.optFloat("flow_rate_x");
+        this.flow_rate_y = (float)jo.optFloat("flow_rate_y");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("flow_comp_m_x", flow_comp_m_x);
+        jo.put("flow_comp_m_y", flow_comp_m_y);
+        jo.put("ground_distance", ground_distance);
+        jo.put("flow_x", flow_x);
+        jo.put("flow_y", flow_y);
+        jo.put("sensor_id", sensor_id);
+        jo.put("quality", quality);
+        
+        jo.put("flow_rate_x", flow_rate_x);
+        jo.put("flow_rate_y", flow_rate_y);
+        
+        return jo;
     }
 
                         

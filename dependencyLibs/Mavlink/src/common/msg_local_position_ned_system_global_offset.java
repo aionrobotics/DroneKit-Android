@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global coordinate frame in NED coordinates. Coordinate frame is right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
@@ -18,7 +23,6 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
     public static final int MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET = 89;
     public static final int MAVLINK_MSG_LENGTH = 28;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
         packet.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_local_position_ned_system_global_offset() {
-        msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_local_position_ned_system_global_offset( long time_boot_ms, float x, float y, float z, float roll, float pitch, float yaw) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+
+        this.time_boot_ms = time_boot_ms;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_local_position_ned_system_global_offset( long time_boot_ms, float x, float y, float z, float roll, float pitch, float yaw, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
      *
      */
     public msg_local_position_ned_system_global_offset(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_local_position_ned_system_global_offset(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        
+        
+        return jo;
     }
 
                   

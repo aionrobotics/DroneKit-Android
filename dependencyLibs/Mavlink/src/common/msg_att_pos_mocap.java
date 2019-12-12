@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Motion capture attitude and position
@@ -18,7 +23,6 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ATT_POS_MOCAP = 138;
     public static final int MAVLINK_MSG_LENGTH = 120;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ATT_POS_MOCAP;
-
 
       
     /**
@@ -64,26 +68,21 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
         
         packet.payload.putUnsignedLong(time_usec);
         
-        
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
         
+        
         if(isMavlink2) {
-            
             
         for (int i = 0; i < covariance.length; i++) {
             packet.payload.putFloat(covariance[i]);
         }
                     
-            
         }
         return packet;
     }
@@ -97,27 +96,22 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
         
+        
         if(isMavlink2) {
-            
              
         for (int i = 0; i < this.covariance.length; i++) {
             this.covariance[i] = payload.getFloat();
         }
                 
-            
         }
     }
 
@@ -125,7 +119,40 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_att_pos_mocap() {
-        msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_att_pos_mocap( long time_usec, float[] q, float x, float y, float z, float[] covariance) {
+        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+
+        this.time_usec = time_usec;
+        this.q = q;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.covariance = covariance;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_att_pos_mocap( long time_usec, float[] q, float x, float y, float z, float[] covariance, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.q = q;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.covariance = covariance;
+        
     }
 
     /**
@@ -134,11 +161,70 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
      *
      */
     public msg_att_pos_mocap(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_att_pos_mocap(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ATT_POS_MOCAP;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+        
+         
+        JSONArray ja_covariance = jo.optJSONArray("covariance");
+        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        }
+                
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        
+         
+        JSONArray ja_covariance = new JSONArray();
+        for (int i = 0; i < this.covariance.length; i++) {
+            ja_covariance.put(this.covariance[i]);
+        }
+        jo.put("covariance", (Object)ja_covariance);
+                
+        
+        return jo;
     }
 
                 

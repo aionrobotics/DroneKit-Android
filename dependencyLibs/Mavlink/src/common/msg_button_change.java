@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Report button state change.
@@ -18,7 +23,6 @@ public class msg_button_change extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_BUTTON_CHANGE = 257;
     public static final int MAVLINK_MSG_LENGTH = 9;
     private static final long serialVersionUID = MAVLINK_MSG_ID_BUTTON_CHANGE;
-
 
       
     /**
@@ -48,14 +52,10 @@ public class msg_button_change extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putUnsignedInt(last_change_ms);
-        
         packet.payload.putUnsignedByte(state);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -68,21 +68,44 @@ public class msg_button_change extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.last_change_ms = payload.getUnsignedInt();
-        
         this.state = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_button_change() {
-        msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_button_change( long time_boot_ms, long last_change_ms, short state) {
+        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+
+        this.time_boot_ms = time_boot_ms;
+        this.last_change_ms = last_change_ms;
+        this.state = state;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_button_change( long time_boot_ms, long last_change_ms, short state, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.last_change_ms = last_change_ms;
+        this.state = state;
+        
     }
 
     /**
@@ -91,11 +114,42 @@ public class msg_button_change extends MAVLinkMessage {
      *
      */
     public msg_button_change(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_button_change(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_BUTTON_CHANGE;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.last_change_ms = (long)jo.optLong("last_change_ms");
+        this.state = (short)jo.optInt("state");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("last_change_ms", last_change_ms);
+        jo.put("state", state);
+        
+        
+        return jo;
     }
 
           

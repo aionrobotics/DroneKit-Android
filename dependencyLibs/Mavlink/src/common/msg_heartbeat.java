@@ -9,6 +9,10 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
@@ -18,7 +22,6 @@ public class msg_heartbeat extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HEARTBEAT = 0;
     public static final int MAVLINK_MSG_LENGTH = 9;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HEARTBEAT;
-
 
       
     /**
@@ -63,20 +66,13 @@ public class msg_heartbeat extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HEARTBEAT;
         
         packet.payload.putUnsignedInt(custom_mode);
-        
         packet.payload.putUnsignedByte(type);
-        
         packet.payload.putUnsignedByte(autopilot);
-        
         packet.payload.putUnsignedByte(base_mode);
-        
         packet.payload.putUnsignedByte(system_status);
-        
         packet.payload.putUnsignedByte(mavlink_version);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +85,53 @@ public class msg_heartbeat extends MAVLinkMessage {
         payload.resetIndex();
         
         this.custom_mode = payload.getUnsignedInt();
-        
         this.type = payload.getUnsignedByte();
-        
         this.autopilot = payload.getUnsignedByte();
-        
         this.base_mode = payload.getUnsignedByte();
-        
         this.system_status = payload.getUnsignedByte();
-        
         this.mavlink_version = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_heartbeat() {
-        msgid = MAVLINK_MSG_ID_HEARTBEAT;
+        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_heartbeat( long custom_mode, short type, short autopilot, short base_mode, short system_status, short mavlink_version) {
+        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
+
+        this.custom_mode = custom_mode;
+        this.type = type;
+        this.autopilot = autopilot;
+        this.base_mode = base_mode;
+        this.system_status = system_status;
+        this.mavlink_version = mavlink_version;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_heartbeat( long custom_mode, short type, short autopilot, short base_mode, short system_status, short mavlink_version, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.custom_mode = custom_mode;
+        this.type = type;
+        this.autopilot = autopilot;
+        this.base_mode = base_mode;
+        this.system_status = system_status;
+        this.mavlink_version = mavlink_version;
+        
     }
 
     /**
@@ -118,11 +140,48 @@ public class msg_heartbeat extends MAVLinkMessage {
      *
      */
     public msg_heartbeat(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_heartbeat(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HEARTBEAT;
+
+        readJSONheader(jo);
+        
+        this.custom_mode = (long)jo.optLong("custom_mode");
+        this.type = (short)jo.optInt("type");
+        this.autopilot = (short)jo.optInt("autopilot");
+        this.base_mode = (short)jo.optInt("base_mode");
+        this.system_status = (short)jo.optInt("system_status");
+        this.mavlink_version = (short)jo.optInt("mavlink_version");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("custom_mode", custom_mode);
+        jo.put("type", type);
+        jo.put("autopilot", autopilot);
+        jo.put("base_mode", base_mode);
+        jo.put("system_status", system_status);
+        jo.put("mavlink_version", mavlink_version);
+        
+        
+        return jo;
     }
 
                 

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The state of the fixed wing navigation and position controller.
@@ -18,7 +23,6 @@ public class msg_nav_controller_output extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT = 62;
     public static final int MAVLINK_MSG_LENGTH = 26;
     private static final long serialVersionUID = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
-
 
       
     /**
@@ -73,24 +77,15 @@ public class msg_nav_controller_output extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
         
         packet.payload.putFloat(nav_roll);
-        
         packet.payload.putFloat(nav_pitch);
-        
         packet.payload.putFloat(alt_error);
-        
         packet.payload.putFloat(aspd_error);
-        
         packet.payload.putFloat(xtrack_error);
-        
         packet.payload.putShort(nav_bearing);
-        
         packet.payload.putShort(target_bearing);
-        
         packet.payload.putUnsignedShort(wp_dist);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -103,31 +98,59 @@ public class msg_nav_controller_output extends MAVLinkMessage {
         payload.resetIndex();
         
         this.nav_roll = payload.getFloat();
-        
         this.nav_pitch = payload.getFloat();
-        
         this.alt_error = payload.getFloat();
-        
         this.aspd_error = payload.getFloat();
-        
         this.xtrack_error = payload.getFloat();
-        
         this.nav_bearing = payload.getShort();
-        
         this.target_bearing = payload.getShort();
-        
         this.wp_dist = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_nav_controller_output() {
-        msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_nav_controller_output( float nav_roll, float nav_pitch, float alt_error, float aspd_error, float xtrack_error, short nav_bearing, short target_bearing, int wp_dist) {
+        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+
+        this.nav_roll = nav_roll;
+        this.nav_pitch = nav_pitch;
+        this.alt_error = alt_error;
+        this.aspd_error = aspd_error;
+        this.xtrack_error = xtrack_error;
+        this.nav_bearing = nav_bearing;
+        this.target_bearing = target_bearing;
+        this.wp_dist = wp_dist;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_nav_controller_output( float nav_roll, float nav_pitch, float alt_error, float aspd_error, float xtrack_error, short nav_bearing, short target_bearing, int wp_dist, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.nav_roll = nav_roll;
+        this.nav_pitch = nav_pitch;
+        this.alt_error = alt_error;
+        this.aspd_error = aspd_error;
+        this.xtrack_error = xtrack_error;
+        this.nav_bearing = nav_bearing;
+        this.target_bearing = target_bearing;
+        this.wp_dist = wp_dist;
+        
     }
 
     /**
@@ -136,11 +159,52 @@ public class msg_nav_controller_output extends MAVLinkMessage {
      *
      */
     public msg_nav_controller_output(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_nav_controller_output(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+
+        readJSONheader(jo);
+        
+        this.nav_roll = (float)jo.optFloat("nav_roll");
+        this.nav_pitch = (float)jo.optFloat("nav_pitch");
+        this.alt_error = (float)jo.optFloat("alt_error");
+        this.aspd_error = (float)jo.optFloat("aspd_error");
+        this.xtrack_error = (float)jo.optFloat("xtrack_error");
+        this.nav_bearing = (short)jo.optInt("nav_bearing");
+        this.target_bearing = (short)jo.optInt("target_bearing");
+        this.wp_dist = (int)jo.optInt("wp_dist");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("nav_roll", nav_roll);
+        jo.put("nav_pitch", nav_pitch);
+        jo.put("alt_error", alt_error);
+        jo.put("aspd_error", aspd_error);
+        jo.put("xtrack_error", xtrack_error);
+        jo.put("nav_bearing", nav_bearing);
+        jo.put("target_bearing", target_bearing);
+        jo.put("wp_dist", wp_dist);
+        
+        
+        return jo;
     }
 
                     

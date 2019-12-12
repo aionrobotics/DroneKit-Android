@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Response from a TERRAIN_CHECK request
@@ -18,7 +23,6 @@ public class msg_terrain_report extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_TERRAIN_REPORT = 136;
     public static final int MAVLINK_MSG_LENGTH = 22;
     private static final long serialVersionUID = MAVLINK_MSG_ID_TERRAIN_REPORT;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_terrain_report extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
         
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putFloat(terrain_height);
-        
         packet.payload.putFloat(current_height);
-        
         packet.payload.putUnsignedShort(spacing);
-        
         packet.payload.putUnsignedShort(pending);
-        
         packet.payload.putUnsignedShort(loaded);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_terrain_report extends MAVLinkMessage {
         payload.resetIndex();
         
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.terrain_height = payload.getFloat();
-        
         this.current_height = payload.getFloat();
-        
         this.spacing = payload.getUnsignedShort();
-        
         this.pending = payload.getUnsignedShort();
-        
         this.loaded = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_terrain_report() {
-        msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_terrain_report( int lat, int lon, float terrain_height, float current_height, int spacing, int pending, int loaded) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+
+        this.lat = lat;
+        this.lon = lon;
+        this.terrain_height = terrain_height;
+        this.current_height = current_height;
+        this.spacing = spacing;
+        this.pending = pending;
+        this.loaded = loaded;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_terrain_report( int lat, int lon, float terrain_height, float current_height, int spacing, int pending, int loaded, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.lat = lat;
+        this.lon = lon;
+        this.terrain_height = terrain_height;
+        this.current_height = current_height;
+        this.spacing = spacing;
+        this.pending = pending;
+        this.loaded = loaded;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_terrain_report extends MAVLinkMessage {
      *
      */
     public msg_terrain_report(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_terrain_report(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_TERRAIN_REPORT;
+
+        readJSONheader(jo);
+        
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.terrain_height = (float)jo.optFloat("terrain_height");
+        this.current_height = (float)jo.optFloat("current_height");
+        this.spacing = (int)jo.optInt("spacing");
+        this.pending = (int)jo.optInt("pending");
+        this.loaded = (int)jo.optInt("loaded");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("terrain_height", terrain_height);
+        jo.put("current_height", current_height);
+        jo.put("spacing", spacing);
+        jo.put("pending", pending);
+        jo.put("loaded", loaded);
+        
+        
+        return jo;
     }
 
                   

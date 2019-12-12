@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request the information of the mission item with the sequence number seq. The response of the system to this message should be a MISSION_ITEM_INT message. https://mavlink.io/en/services/mission.html
@@ -18,7 +23,6 @@ public class msg_mission_request_int extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MISSION_REQUEST_INT = 51;
     public static final int MAVLINK_MSG_LENGTH = 5;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
-
 
       
     /**
@@ -53,15 +57,12 @@ public class msg_mission_request_int extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
         
         packet.payload.putUnsignedShort(seq);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedByte(mission_type);
-            
         }
         return packet;
     }
@@ -75,15 +76,12 @@ public class msg_mission_request_int extends MAVLinkMessage {
         payload.resetIndex();
         
         this.seq = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.mission_type = payload.getUnsignedByte();
-            
         }
     }
 
@@ -91,7 +89,36 @@ public class msg_mission_request_int extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mission_request_int() {
-        msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mission_request_int( int seq, short target_system, short target_component, short mission_type) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+
+        this.seq = seq;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mission_type = mission_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mission_request_int( int seq, short target_system, short target_component, short mission_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.seq = seq;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mission_type = mission_type;
+        
     }
 
     /**
@@ -100,11 +127,44 @@ public class msg_mission_request_int extends MAVLinkMessage {
      *
      */
     public msg_mission_request_int(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mission_request_int(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_INT;
+
+        readJSONheader(jo);
+        
+        this.seq = (int)jo.optInt("seq");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        this.mission_type = (short)jo.optInt("mission_type");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("seq", seq);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        jo.put("mission_type", mission_type);
+        
+        return jo;
     }
 
             

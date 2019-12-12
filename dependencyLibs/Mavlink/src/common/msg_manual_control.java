@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * This message provides an API for manually controlling the vehicle using standard joystick axes nomenclature, along with a joystick-like input device. Unused axes can be disabled an buttons are also transmit as boolean values of their 
@@ -18,7 +23,6 @@ public class msg_manual_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MANUAL_CONTROL = 69;
     public static final int MAVLINK_MSG_LENGTH = 11;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MANUAL_CONTROL;
-
 
       
     /**
@@ -63,20 +67,13 @@ public class msg_manual_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
         
         packet.payload.putShort(x);
-        
         packet.payload.putShort(y);
-        
         packet.payload.putShort(z);
-        
         packet.payload.putShort(r);
-        
         packet.payload.putUnsignedShort(buttons);
-        
         packet.payload.putUnsignedByte(target);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -89,27 +86,53 @@ public class msg_manual_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.x = payload.getShort();
-        
         this.y = payload.getShort();
-        
         this.z = payload.getShort();
-        
         this.r = payload.getShort();
-        
         this.buttons = payload.getUnsignedShort();
-        
         this.target = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_manual_control() {
-        msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_manual_control( short x, short y, short z, short r, int buttons, short target) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+        this.buttons = buttons;
+        this.target = target;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_manual_control( short x, short y, short z, short r, int buttons, short target, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+        this.buttons = buttons;
+        this.target = target;
+        
     }
 
     /**
@@ -118,11 +141,48 @@ public class msg_manual_control extends MAVLinkMessage {
      *
      */
     public msg_manual_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_manual_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.x = (short)jo.optInt("x");
+        this.y = (short)jo.optInt("y");
+        this.z = (short)jo.optInt("z");
+        this.r = (short)jo.optInt("r");
+        this.buttons = (int)jo.optInt("buttons");
+        this.target = (short)jo.optInt("target");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        jo.put("r", r);
+        jo.put("buttons", buttons);
+        jo.put("target", target);
+        
+        
+        return jo;
     }
 
                 

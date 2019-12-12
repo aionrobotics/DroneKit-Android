@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * File transfer message
@@ -18,7 +23,6 @@ public class msg_file_transfer_protocol extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL = 110;
     public static final int MAVLINK_MSG_LENGTH = 254;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_file_transfer_protocol extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
         
         packet.payload.putUnsignedByte(target_network);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         
         for (int i = 0; i < payload.length; i++) {
             packet.payload.putUnsignedByte(payload[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_file_transfer_protocol extends MAVLinkMessage {
         payload.resetIndex();
         
         this.target_network = payload.getUnsignedByte();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.payload.length; i++) {
             this.payload[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_file_transfer_protocol() {
-        msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_file_transfer_protocol( short target_network, short target_system, short target_component, short[] payload) {
+        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+
+        this.target_network = target_network;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.payload = payload;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_file_transfer_protocol( short target_network, short target_system, short target_component, short[] payload, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.target_network = target_network;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.payload = payload;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_file_transfer_protocol extends MAVLinkMessage {
      *
      */
     public msg_file_transfer_protocol(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_file_transfer_protocol(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL;
+
+        readJSONheader(jo);
+        
+        this.target_network = (short)jo.optInt("target_network");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+         
+        JSONArray ja_payload = jo.optJSONArray("payload");
+        for (int i = 0; i < Math.min(this.payload.length, ja_payload.length()); i++) {
+            this.payload[i] = (short)ja_payload.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("target_network", target_network);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+         
+        JSONArray ja_payload = new JSONArray();
+        for (int i = 0; i < this.payload.length; i++) {
+            ja_payload.put(this.payload[i]);
+        }
+        jo.put("payload", (Object)ja_payload);
+                
+        
+        
+        return jo;
     }
 
             

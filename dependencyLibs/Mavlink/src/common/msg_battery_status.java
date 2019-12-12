@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Battery information
@@ -18,7 +23,6 @@ public class msg_battery_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_BATTERY_STATUS = 147;
     public static final int MAVLINK_MSG_LENGTH = 41;
     private static final long serialVersionUID = MAVLINK_MSG_ID_BATTERY_STATUS;
-
 
       
     /**
@@ -88,33 +92,25 @@ public class msg_battery_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
         
         packet.payload.putInt(current_consumed);
-        
         packet.payload.putInt(energy_consumed);
-        
         packet.payload.putShort(temperature);
-        
         
         for (int i = 0; i < voltages.length; i++) {
             packet.payload.putUnsignedShort(voltages[i]);
         }
                     
-        
         packet.payload.putShort(current_battery);
-        
         packet.payload.putUnsignedByte(id);
-        
         packet.payload.putUnsignedByte(battery_function);
-        
         packet.payload.putUnsignedByte(type);
-        
         packet.payload.putByte(battery_remaining);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putInt(time_remaining);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putUnsignedByte(charge_state);
-            
         }
         return packet;
     }
@@ -128,33 +124,25 @@ public class msg_battery_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.current_consumed = payload.getInt();
-        
         this.energy_consumed = payload.getInt();
-        
         this.temperature = payload.getShort();
-        
          
         for (int i = 0; i < this.voltages.length; i++) {
             this.voltages[i] = payload.getUnsignedShort();
         }
                 
-        
         this.current_battery = payload.getShort();
-        
         this.id = payload.getUnsignedByte();
-        
         this.battery_function = payload.getUnsignedByte();
-        
         this.type = payload.getUnsignedByte();
-        
         this.battery_remaining = payload.getByte();
         
+        
         if(isMavlink2) {
-            
             this.time_remaining = payload.getInt();
-            
+        }
+        if(isMavlink2) {
             this.charge_state = payload.getUnsignedByte();
-            
         }
     }
 
@@ -162,7 +150,50 @@ public class msg_battery_status extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_battery_status() {
-        msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_battery_status( int current_consumed, int energy_consumed, short temperature, int[] voltages, short current_battery, short id, short battery_function, short type, byte battery_remaining, int time_remaining, short charge_state) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+
+        this.current_consumed = current_consumed;
+        this.energy_consumed = energy_consumed;
+        this.temperature = temperature;
+        this.voltages = voltages;
+        this.current_battery = current_battery;
+        this.id = id;
+        this.battery_function = battery_function;
+        this.type = type;
+        this.battery_remaining = battery_remaining;
+        this.time_remaining = time_remaining;
+        this.charge_state = charge_state;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_battery_status( int current_consumed, int energy_consumed, short temperature, int[] voltages, short current_battery, short id, short battery_function, short type, byte battery_remaining, int time_remaining, short charge_state, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.current_consumed = current_consumed;
+        this.energy_consumed = energy_consumed;
+        this.temperature = temperature;
+        this.voltages = voltages;
+        this.current_battery = current_battery;
+        this.id = id;
+        this.battery_function = battery_function;
+        this.type = type;
+        this.battery_remaining = battery_remaining;
+        this.time_remaining = time_remaining;
+        this.charge_state = charge_state;
+        
     }
 
     /**
@@ -171,11 +202,69 @@ public class msg_battery_status extends MAVLinkMessage {
      *
      */
     public msg_battery_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_battery_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_BATTERY_STATUS;
+
+        readJSONheader(jo);
+        
+        this.current_consumed = (int)jo.optInt("current_consumed");
+        this.energy_consumed = (int)jo.optInt("energy_consumed");
+        this.temperature = (short)jo.optInt("temperature");
+         
+        JSONArray ja_voltages = jo.optJSONArray("voltages");
+        for (int i = 0; i < Math.min(this.voltages.length, ja_voltages.length()); i++) {
+            this.voltages[i] = (int)ja_voltages.getInt(i);
+        }
+                
+        this.current_battery = (short)jo.optInt("current_battery");
+        this.id = (short)jo.optInt("id");
+        this.battery_function = (short)jo.optInt("battery_function");
+        this.type = (short)jo.optInt("type");
+        this.battery_remaining = (byte)jo.optInt("battery_remaining");
+        
+        this.time_remaining = (int)jo.optInt("time_remaining");
+        this.charge_state = (short)jo.optInt("charge_state");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("current_consumed", current_consumed);
+        jo.put("energy_consumed", energy_consumed);
+        jo.put("temperature", temperature);
+         
+        JSONArray ja_voltages = new JSONArray();
+        for (int i = 0; i < this.voltages.length; i++) {
+            ja_voltages.put(this.voltages[i]);
+        }
+        jo.put("voltages", (Object)ja_voltages);
+                
+        jo.put("current_battery", current_battery);
+        jo.put("id", id);
+        jo.put("battery_function", battery_function);
+        jo.put("type", type);
+        jo.put("battery_remaining", battery_remaining);
+        
+        jo.put("time_remaining", time_remaining);
+        jo.put("charge_state", charge_state);
+        
+        return jo;
     }
 
                           

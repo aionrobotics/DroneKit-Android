@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * A certain mission item has been reached. The system will either hold this position (or circle on the orbit) or (if the autocontinue on the WP was set) continue to the next waypoint.
@@ -18,7 +23,6 @@ public class msg_mission_item_reached extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MISSION_ITEM_REACHED = 46;
     public static final int MAVLINK_MSG_LENGTH = 2;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
-
 
       
     /**
@@ -39,9 +43,7 @@ public class msg_mission_item_reached extends MAVLinkMessage {
         
         packet.payload.putUnsignedShort(seq);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -55,16 +57,37 @@ public class msg_mission_item_reached extends MAVLinkMessage {
         
         this.seq = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mission_item_reached() {
-        msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mission_item_reached( int seq) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+
+        this.seq = seq;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mission_item_reached( int seq, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.seq = seq;
+        
     }
 
     /**
@@ -73,11 +96,38 @@ public class msg_mission_item_reached extends MAVLinkMessage {
      *
      */
     public msg_mission_item_reached(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mission_item_reached(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_ITEM_REACHED;
+
+        readJSONheader(jo);
+        
+        this.seq = (int)jo.optInt("seq");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("seq", seq);
+        
+        
+        return jo;
     }
 
       

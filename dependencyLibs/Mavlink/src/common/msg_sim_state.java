@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of simulation environment, if used
@@ -18,7 +23,6 @@ public class msg_sim_state extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SIM_STATE = 108;
     public static final int MAVLINK_MSG_LENGTH = 84;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SIM_STATE;
-
 
       
     /**
@@ -138,50 +142,28 @@ public class msg_sim_state extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SIM_STATE;
         
         packet.payload.putFloat(q1);
-        
         packet.payload.putFloat(q2);
-        
         packet.payload.putFloat(q3);
-        
         packet.payload.putFloat(q4);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(xacc);
-        
         packet.payload.putFloat(yacc);
-        
         packet.payload.putFloat(zacc);
-        
         packet.payload.putFloat(xgyro);
-        
         packet.payload.putFloat(ygyro);
-        
         packet.payload.putFloat(zgyro);
-        
         packet.payload.putFloat(lat);
-        
         packet.payload.putFloat(lon);
-        
         packet.payload.putFloat(alt);
-        
         packet.payload.putFloat(std_dev_horz);
-        
         packet.payload.putFloat(std_dev_vert);
-        
         packet.payload.putFloat(vn);
-        
         packet.payload.putFloat(ve);
-        
         packet.payload.putFloat(vd);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -194,57 +176,98 @@ public class msg_sim_state extends MAVLinkMessage {
         payload.resetIndex();
         
         this.q1 = payload.getFloat();
-        
         this.q2 = payload.getFloat();
-        
         this.q3 = payload.getFloat();
-        
         this.q4 = payload.getFloat();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.xacc = payload.getFloat();
-        
         this.yacc = payload.getFloat();
-        
         this.zacc = payload.getFloat();
-        
         this.xgyro = payload.getFloat();
-        
         this.ygyro = payload.getFloat();
-        
         this.zgyro = payload.getFloat();
-        
         this.lat = payload.getFloat();
-        
         this.lon = payload.getFloat();
-        
         this.alt = payload.getFloat();
-        
         this.std_dev_horz = payload.getFloat();
-        
         this.std_dev_vert = payload.getFloat();
-        
         this.vn = payload.getFloat();
-        
         this.ve = payload.getFloat();
-        
         this.vd = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_sim_state() {
-        msgid = MAVLINK_MSG_ID_SIM_STATE;
+        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_sim_state( float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd) {
+        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
+
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.std_dev_horz = std_dev_horz;
+        this.std_dev_vert = std_dev_vert;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_sim_state( float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.xacc = xacc;
+        this.yacc = yacc;
+        this.zacc = zacc;
+        this.xgyro = xgyro;
+        this.ygyro = ygyro;
+        this.zgyro = zgyro;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.std_dev_horz = std_dev_horz;
+        this.std_dev_vert = std_dev_vert;
+        this.vn = vn;
+        this.ve = ve;
+        this.vd = vd;
+        
     }
 
     /**
@@ -253,11 +276,78 @@ public class msg_sim_state extends MAVLinkMessage {
      *
      */
     public msg_sim_state(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_sim_state(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SIM_STATE;
+
+        readJSONheader(jo);
+        
+        this.q1 = (float)jo.optFloat("q1");
+        this.q2 = (float)jo.optFloat("q2");
+        this.q3 = (float)jo.optFloat("q3");
+        this.q4 = (float)jo.optFloat("q4");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.xacc = (float)jo.optFloat("xacc");
+        this.yacc = (float)jo.optFloat("yacc");
+        this.zacc = (float)jo.optFloat("zacc");
+        this.xgyro = (float)jo.optFloat("xgyro");
+        this.ygyro = (float)jo.optFloat("ygyro");
+        this.zgyro = (float)jo.optFloat("zgyro");
+        this.lat = (float)jo.optFloat("lat");
+        this.lon = (float)jo.optFloat("lon");
+        this.alt = (float)jo.optFloat("alt");
+        this.std_dev_horz = (float)jo.optFloat("std_dev_horz");
+        this.std_dev_vert = (float)jo.optFloat("std_dev_vert");
+        this.vn = (float)jo.optFloat("vn");
+        this.ve = (float)jo.optFloat("ve");
+        this.vd = (float)jo.optFloat("vd");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("q1", q1);
+        jo.put("q2", q2);
+        jo.put("q3", q3);
+        jo.put("q4", q4);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        jo.put("xacc", xacc);
+        jo.put("yacc", yacc);
+        jo.put("zacc", zacc);
+        jo.put("xgyro", xgyro);
+        jo.put("ygyro", ygyro);
+        jo.put("zgyro", zgyro);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("std_dev_horz", std_dev_horz);
+        jo.put("std_dev_vert", std_dev_vert);
+        jo.put("vn", vn);
+        jo.put("ve", ve);
+        jo.put("vd", vd);
+        
+        
+        return jo;
     }
 
                                               

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is by definition for the overall aircraft, not only for one component.
@@ -18,7 +23,6 @@ public class msg_set_mode extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SET_MODE = 11;
     public static final int MAVLINK_MSG_LENGTH = 6;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SET_MODE;
-
 
       
     /**
@@ -48,14 +52,10 @@ public class msg_set_mode extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SET_MODE;
         
         packet.payload.putUnsignedInt(custom_mode);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(base_mode);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -68,21 +68,44 @@ public class msg_set_mode extends MAVLinkMessage {
         payload.resetIndex();
         
         this.custom_mode = payload.getUnsignedInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.base_mode = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_set_mode() {
-        msgid = MAVLINK_MSG_ID_SET_MODE;
+        this.msgid = MAVLINK_MSG_ID_SET_MODE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_set_mode( long custom_mode, short target_system, short base_mode) {
+        this.msgid = MAVLINK_MSG_ID_SET_MODE;
+
+        this.custom_mode = custom_mode;
+        this.target_system = target_system;
+        this.base_mode = base_mode;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_set_mode( long custom_mode, short target_system, short base_mode, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SET_MODE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.custom_mode = custom_mode;
+        this.target_system = target_system;
+        this.base_mode = base_mode;
+        
     }
 
     /**
@@ -91,11 +114,42 @@ public class msg_set_mode extends MAVLinkMessage {
      *
      */
     public msg_set_mode(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SET_MODE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SET_MODE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_set_mode(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SET_MODE;
+
+        readJSONheader(jo);
+        
+        this.custom_mode = (long)jo.optLong("custom_mode");
+        this.target_system = (short)jo.optInt("target_system");
+        this.base_mode = (short)jo.optInt("base_mode");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("custom_mode", custom_mode);
+        jo.put("target_system", target_system);
+        jo.put("base_mode", base_mode);
+        
+        
+        return jo;
     }
 
           

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Reply to LOG_REQUEST_DATA
@@ -18,7 +23,6 @@ public class msg_log_data extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LOG_DATA = 120;
     public static final int MAVLINK_MSG_LENGTH = 97;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOG_DATA;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_log_data extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LOG_DATA;
         
         packet.payload.putUnsignedInt(ofs);
-        
         packet.payload.putUnsignedShort(id);
-        
         packet.payload.putUnsignedByte(count);
-        
         
         for (int i = 0; i < data.length; i++) {
             packet.payload.putUnsignedByte(data[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_log_data extends MAVLinkMessage {
         payload.resetIndex();
         
         this.ofs = payload.getUnsignedInt();
-        
         this.id = payload.getUnsignedShort();
-        
         this.count = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_log_data() {
-        msgid = MAVLINK_MSG_ID_LOG_DATA;
+        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_log_data( long ofs, int id, short count, short[] data) {
+        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
+
+        this.ofs = ofs;
+        this.id = id;
+        this.count = count;
+        this.data = data;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_log_data( long ofs, int id, short count, short[] data, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.ofs = ofs;
+        this.id = id;
+        this.count = count;
+        this.data = data;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_log_data extends MAVLinkMessage {
      *
      */
     public msg_log_data(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_log_data(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOG_DATA;
+
+        readJSONheader(jo);
+        
+        this.ofs = (long)jo.optLong("ofs");
+        this.id = (int)jo.optInt("id");
+        this.count = (short)jo.optInt("count");
+         
+        JSONArray ja_data = jo.optJSONArray("data");
+        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+            this.data[i] = (short)ja_data.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("ofs", ofs);
+        jo.put("id", id);
+        jo.put("count", count);
+         
+        JSONArray ja_data = new JSONArray();
+        for (int i = 0; i < this.data.length; i++) {
+            ja_data.put(this.data[i]);
+        }
+        jo.put("data", (Object)ja_data);
+                
+        
+        
+        return jo;
     }
 
             

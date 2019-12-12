@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Message appropriate for high latency connections like Iridium
@@ -18,7 +23,6 @@ public class msg_high_latency extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_HIGH_LATENCY = 234;
     public static final int MAVLINK_MSG_LENGTH = 40;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HIGH_LATENCY;
-
 
       
     /**
@@ -153,56 +157,31 @@ public class msg_high_latency extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
         
         packet.payload.putUnsignedInt(custom_mode);
-        
         packet.payload.putInt(latitude);
-        
         packet.payload.putInt(longitude);
-        
         packet.payload.putShort(roll);
-        
         packet.payload.putShort(pitch);
-        
         packet.payload.putUnsignedShort(heading);
-        
         packet.payload.putShort(heading_sp);
-        
         packet.payload.putShort(altitude_amsl);
-        
         packet.payload.putShort(altitude_sp);
-        
         packet.payload.putUnsignedShort(wp_distance);
-        
         packet.payload.putUnsignedByte(base_mode);
-        
         packet.payload.putUnsignedByte(landed_state);
-        
         packet.payload.putByte(throttle);
-        
         packet.payload.putUnsignedByte(airspeed);
-        
         packet.payload.putUnsignedByte(airspeed_sp);
-        
         packet.payload.putUnsignedByte(groundspeed);
-        
         packet.payload.putByte(climb_rate);
-        
         packet.payload.putUnsignedByte(gps_nsat);
-        
         packet.payload.putUnsignedByte(gps_fix_type);
-        
         packet.payload.putUnsignedByte(battery_remaining);
-        
         packet.payload.putByte(temperature);
-        
         packet.payload.putByte(temperature_air);
-        
         packet.payload.putUnsignedByte(failsafe);
-        
         packet.payload.putUnsignedByte(wp_num);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -215,63 +194,107 @@ public class msg_high_latency extends MAVLinkMessage {
         payload.resetIndex();
         
         this.custom_mode = payload.getUnsignedInt();
-        
         this.latitude = payload.getInt();
-        
         this.longitude = payload.getInt();
-        
         this.roll = payload.getShort();
-        
         this.pitch = payload.getShort();
-        
         this.heading = payload.getUnsignedShort();
-        
         this.heading_sp = payload.getShort();
-        
         this.altitude_amsl = payload.getShort();
-        
         this.altitude_sp = payload.getShort();
-        
         this.wp_distance = payload.getUnsignedShort();
-        
         this.base_mode = payload.getUnsignedByte();
-        
         this.landed_state = payload.getUnsignedByte();
-        
         this.throttle = payload.getByte();
-        
         this.airspeed = payload.getUnsignedByte();
-        
         this.airspeed_sp = payload.getUnsignedByte();
-        
         this.groundspeed = payload.getUnsignedByte();
-        
         this.climb_rate = payload.getByte();
-        
         this.gps_nsat = payload.getUnsignedByte();
-        
         this.gps_fix_type = payload.getUnsignedByte();
-        
         this.battery_remaining = payload.getUnsignedByte();
-        
         this.temperature = payload.getByte();
-        
         this.temperature_air = payload.getByte();
-        
         this.failsafe = payload.getUnsignedByte();
-        
         this.wp_num = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_high_latency() {
-        msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_high_latency( long custom_mode, int latitude, int longitude, short roll, short pitch, int heading, short heading_sp, short altitude_amsl, short altitude_sp, int wp_distance, short base_mode, short landed_state, byte throttle, short airspeed, short airspeed_sp, short groundspeed, byte climb_rate, short gps_nsat, short gps_fix_type, short battery_remaining, byte temperature, byte temperature_air, short failsafe, short wp_num) {
+        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+
+        this.custom_mode = custom_mode;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.heading = heading;
+        this.heading_sp = heading_sp;
+        this.altitude_amsl = altitude_amsl;
+        this.altitude_sp = altitude_sp;
+        this.wp_distance = wp_distance;
+        this.base_mode = base_mode;
+        this.landed_state = landed_state;
+        this.throttle = throttle;
+        this.airspeed = airspeed;
+        this.airspeed_sp = airspeed_sp;
+        this.groundspeed = groundspeed;
+        this.climb_rate = climb_rate;
+        this.gps_nsat = gps_nsat;
+        this.gps_fix_type = gps_fix_type;
+        this.battery_remaining = battery_remaining;
+        this.temperature = temperature;
+        this.temperature_air = temperature_air;
+        this.failsafe = failsafe;
+        this.wp_num = wp_num;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_high_latency( long custom_mode, int latitude, int longitude, short roll, short pitch, int heading, short heading_sp, short altitude_amsl, short altitude_sp, int wp_distance, short base_mode, short landed_state, byte throttle, short airspeed, short airspeed_sp, short groundspeed, byte climb_rate, short gps_nsat, short gps_fix_type, short battery_remaining, byte temperature, byte temperature_air, short failsafe, short wp_num, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.custom_mode = custom_mode;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.heading = heading;
+        this.heading_sp = heading_sp;
+        this.altitude_amsl = altitude_amsl;
+        this.altitude_sp = altitude_sp;
+        this.wp_distance = wp_distance;
+        this.base_mode = base_mode;
+        this.landed_state = landed_state;
+        this.throttle = throttle;
+        this.airspeed = airspeed;
+        this.airspeed_sp = airspeed_sp;
+        this.groundspeed = groundspeed;
+        this.climb_rate = climb_rate;
+        this.gps_nsat = gps_nsat;
+        this.gps_fix_type = gps_fix_type;
+        this.battery_remaining = battery_remaining;
+        this.temperature = temperature;
+        this.temperature_air = temperature_air;
+        this.failsafe = failsafe;
+        this.wp_num = wp_num;
+        
     }
 
     /**
@@ -280,11 +303,84 @@ public class msg_high_latency extends MAVLinkMessage {
      *
      */
     public msg_high_latency(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_high_latency(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_HIGH_LATENCY;
+
+        readJSONheader(jo);
+        
+        this.custom_mode = (long)jo.optLong("custom_mode");
+        this.latitude = (int)jo.optInt("latitude");
+        this.longitude = (int)jo.optInt("longitude");
+        this.roll = (short)jo.optInt("roll");
+        this.pitch = (short)jo.optInt("pitch");
+        this.heading = (int)jo.optInt("heading");
+        this.heading_sp = (short)jo.optInt("heading_sp");
+        this.altitude_amsl = (short)jo.optInt("altitude_amsl");
+        this.altitude_sp = (short)jo.optInt("altitude_sp");
+        this.wp_distance = (int)jo.optInt("wp_distance");
+        this.base_mode = (short)jo.optInt("base_mode");
+        this.landed_state = (short)jo.optInt("landed_state");
+        this.throttle = (byte)jo.optInt("throttle");
+        this.airspeed = (short)jo.optInt("airspeed");
+        this.airspeed_sp = (short)jo.optInt("airspeed_sp");
+        this.groundspeed = (short)jo.optInt("groundspeed");
+        this.climb_rate = (byte)jo.optInt("climb_rate");
+        this.gps_nsat = (short)jo.optInt("gps_nsat");
+        this.gps_fix_type = (short)jo.optInt("gps_fix_type");
+        this.battery_remaining = (short)jo.optInt("battery_remaining");
+        this.temperature = (byte)jo.optInt("temperature");
+        this.temperature_air = (byte)jo.optInt("temperature_air");
+        this.failsafe = (short)jo.optInt("failsafe");
+        this.wp_num = (short)jo.optInt("wp_num");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("custom_mode", custom_mode);
+        jo.put("latitude", latitude);
+        jo.put("longitude", longitude);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("heading", heading);
+        jo.put("heading_sp", heading_sp);
+        jo.put("altitude_amsl", altitude_amsl);
+        jo.put("altitude_sp", altitude_sp);
+        jo.put("wp_distance", wp_distance);
+        jo.put("base_mode", base_mode);
+        jo.put("landed_state", landed_state);
+        jo.put("throttle", throttle);
+        jo.put("airspeed", airspeed);
+        jo.put("airspeed_sp", airspeed_sp);
+        jo.put("groundspeed", groundspeed);
+        jo.put("climb_rate", climb_rate);
+        jo.put("gps_nsat", gps_nsat);
+        jo.put("gps_fix_type", gps_fix_type);
+        jo.put("battery_remaining", battery_remaining);
+        jo.put("temperature", temperature);
+        jo.put("temperature_air", temperature_air);
+        jo.put("failsafe", failsafe);
+        jo.put("wp_num", wp_num);
+        
+        
+        return jo;
     }
 
                                                     

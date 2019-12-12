@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about a storage medium. This message is sent in response to a request and whenever the status of the storage changes (STORAGE_STATUS).
@@ -18,7 +23,6 @@ public class msg_storage_information extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_STORAGE_INFORMATION = 261;
     public static final int MAVLINK_MSG_LENGTH = 27;
     private static final long serialVersionUID = MAVLINK_MSG_ID_STORAGE_INFORMATION;
-
 
       
     /**
@@ -78,26 +82,16 @@ public class msg_storage_information extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(total_capacity);
-        
         packet.payload.putFloat(used_capacity);
-        
         packet.payload.putFloat(available_capacity);
-        
         packet.payload.putFloat(read_speed);
-        
         packet.payload.putFloat(write_speed);
-        
         packet.payload.putUnsignedByte(storage_id);
-        
         packet.payload.putUnsignedByte(storage_count);
-        
         packet.payload.putUnsignedByte(status);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -110,33 +104,62 @@ public class msg_storage_information extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.total_capacity = payload.getFloat();
-        
         this.used_capacity = payload.getFloat();
-        
         this.available_capacity = payload.getFloat();
-        
         this.read_speed = payload.getFloat();
-        
         this.write_speed = payload.getFloat();
-        
         this.storage_id = payload.getUnsignedByte();
-        
         this.storage_count = payload.getUnsignedByte();
-        
         this.status = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_storage_information() {
-        msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_storage_information( long time_boot_ms, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, short storage_id, short storage_count, short status) {
+        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+
+        this.time_boot_ms = time_boot_ms;
+        this.total_capacity = total_capacity;
+        this.used_capacity = used_capacity;
+        this.available_capacity = available_capacity;
+        this.read_speed = read_speed;
+        this.write_speed = write_speed;
+        this.storage_id = storage_id;
+        this.storage_count = storage_count;
+        this.status = status;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_storage_information( long time_boot_ms, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, short storage_id, short storage_count, short status, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.total_capacity = total_capacity;
+        this.used_capacity = used_capacity;
+        this.available_capacity = available_capacity;
+        this.read_speed = read_speed;
+        this.write_speed = write_speed;
+        this.storage_id = storage_id;
+        this.storage_count = storage_count;
+        this.status = status;
+        
     }
 
     /**
@@ -145,11 +168,54 @@ public class msg_storage_information extends MAVLinkMessage {
      *
      */
     public msg_storage_information(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_storage_information(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_STORAGE_INFORMATION;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.total_capacity = (float)jo.optFloat("total_capacity");
+        this.used_capacity = (float)jo.optFloat("used_capacity");
+        this.available_capacity = (float)jo.optFloat("available_capacity");
+        this.read_speed = (float)jo.optFloat("read_speed");
+        this.write_speed = (float)jo.optFloat("write_speed");
+        this.storage_id = (short)jo.optInt("storage_id");
+        this.storage_count = (short)jo.optInt("storage_count");
+        this.status = (short)jo.optInt("status");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("total_capacity", total_capacity);
+        jo.put("used_capacity", used_capacity);
+        jo.put("available_capacity", available_capacity);
+        jo.put("read_speed", read_speed);
+        jo.put("write_speed", write_speed);
+        jo.put("storage_id", storage_id);
+        jo.put("storage_count", storage_count);
+        jo.put("status", status);
+        
+        
+        return jo;
     }
 
                       

@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * ESC Telemetry Data for ESCs 1 to 4, matching data sent by BLHeli ESCs.
@@ -18,7 +23,6 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4 = 11030;
     public static final int MAVLINK_MSG_LENGTH = 44;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
-
 
       
     /**
@@ -68,39 +72,32 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
         }
                     
         
-        
         for (int i = 0; i < current.length; i++) {
             packet.payload.putUnsignedShort(current[i]);
         }
                     
-        
         
         for (int i = 0; i < totalcurrent.length; i++) {
             packet.payload.putUnsignedShort(totalcurrent[i]);
         }
                     
         
-        
         for (int i = 0; i < rpm.length; i++) {
             packet.payload.putUnsignedShort(rpm[i]);
         }
                     
-        
         
         for (int i = 0; i < count.length; i++) {
             packet.payload.putUnsignedShort(count[i]);
         }
                     
         
-        
         for (int i = 0; i < temperature.length; i++) {
             packet.payload.putUnsignedByte(temperature[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -117,47 +114,73 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
             this.voltage[i] = payload.getUnsignedShort();
         }
                 
-        
          
         for (int i = 0; i < this.current.length; i++) {
             this.current[i] = payload.getUnsignedShort();
         }
                 
-        
          
         for (int i = 0; i < this.totalcurrent.length; i++) {
             this.totalcurrent[i] = payload.getUnsignedShort();
         }
                 
-        
          
         for (int i = 0; i < this.rpm.length; i++) {
             this.rpm[i] = payload.getUnsignedShort();
         }
                 
-        
          
         for (int i = 0; i < this.count.length; i++) {
             this.count[i] = payload.getUnsignedShort();
         }
                 
-        
          
         for (int i = 0; i < this.temperature.length; i++) {
             this.temperature[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_esc_telemetry_1_to_4() {
-        msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_esc_telemetry_1_to_4( int[] voltage, int[] current, int[] totalcurrent, int[] rpm, int[] count, short[] temperature) {
+        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+
+        this.voltage = voltage;
+        this.current = current;
+        this.totalcurrent = totalcurrent;
+        this.rpm = rpm;
+        this.count = count;
+        this.temperature = temperature;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_esc_telemetry_1_to_4( int[] voltage, int[] current, int[] totalcurrent, int[] rpm, int[] count, short[] temperature, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.voltage = voltage;
+        this.current = current;
+        this.totalcurrent = totalcurrent;
+        this.rpm = rpm;
+        this.count = count;
+        this.temperature = temperature;
+        
     }
 
     /**
@@ -166,11 +189,114 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
      *
      */
     public msg_esc_telemetry_1_to_4(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_esc_telemetry_1_to_4(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4;
+
+        readJSONheader(jo);
+        
+         
+        JSONArray ja_voltage = jo.optJSONArray("voltage");
+        for (int i = 0; i < Math.min(this.voltage.length, ja_voltage.length()); i++) {
+            this.voltage[i] = (int)ja_voltage.getInt(i);
+        }
+                
+         
+        JSONArray ja_current = jo.optJSONArray("current");
+        for (int i = 0; i < Math.min(this.current.length, ja_current.length()); i++) {
+            this.current[i] = (int)ja_current.getInt(i);
+        }
+                
+         
+        JSONArray ja_totalcurrent = jo.optJSONArray("totalcurrent");
+        for (int i = 0; i < Math.min(this.totalcurrent.length, ja_totalcurrent.length()); i++) {
+            this.totalcurrent[i] = (int)ja_totalcurrent.getInt(i);
+        }
+                
+         
+        JSONArray ja_rpm = jo.optJSONArray("rpm");
+        for (int i = 0; i < Math.min(this.rpm.length, ja_rpm.length()); i++) {
+            this.rpm[i] = (int)ja_rpm.getInt(i);
+        }
+                
+         
+        JSONArray ja_count = jo.optJSONArray("count");
+        for (int i = 0; i < Math.min(this.count.length, ja_count.length()); i++) {
+            this.count[i] = (int)ja_count.getInt(i);
+        }
+                
+         
+        JSONArray ja_temperature = jo.optJSONArray("temperature");
+        for (int i = 0; i < Math.min(this.temperature.length, ja_temperature.length()); i++) {
+            this.temperature[i] = (short)ja_temperature.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+         
+        JSONArray ja_voltage = new JSONArray();
+        for (int i = 0; i < this.voltage.length; i++) {
+            ja_voltage.put(this.voltage[i]);
+        }
+        jo.put("voltage", (Object)ja_voltage);
+                
+         
+        JSONArray ja_current = new JSONArray();
+        for (int i = 0; i < this.current.length; i++) {
+            ja_current.put(this.current[i]);
+        }
+        jo.put("current", (Object)ja_current);
+                
+         
+        JSONArray ja_totalcurrent = new JSONArray();
+        for (int i = 0; i < this.totalcurrent.length; i++) {
+            ja_totalcurrent.put(this.totalcurrent[i]);
+        }
+        jo.put("totalcurrent", (Object)ja_totalcurrent);
+                
+         
+        JSONArray ja_rpm = new JSONArray();
+        for (int i = 0; i < this.rpm.length; i++) {
+            ja_rpm.put(this.rpm[i]);
+        }
+        jo.put("rpm", (Object)ja_rpm);
+                
+         
+        JSONArray ja_count = new JSONArray();
+        for (int i = 0; i < this.count.length; i++) {
+            ja_count.put(this.count[i]);
+        }
+        jo.put("count", (Object)ja_count);
+                
+         
+        JSONArray ja_temperature = new JSONArray();
+        for (int i = 0; i < this.temperature.length; i++) {
+            ja_temperature.put(this.temperature[i]);
+        }
+        jo.put("temperature", (Object)ja_temperature);
+                
+        
+        
+        return jo;
     }
 
                 

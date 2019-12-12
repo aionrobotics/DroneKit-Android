@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp will disable signing
@@ -18,7 +23,6 @@ public class msg_setup_signing extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SETUP_SIGNING = 256;
     public static final int MAVLINK_MSG_LENGTH = 42;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SETUP_SIGNING;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_setup_signing extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
         
         packet.payload.putUnsignedLong(initial_timestamp);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         
         for (int i = 0; i < secret_key.length; i++) {
             packet.payload.putUnsignedByte(secret_key[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_setup_signing extends MAVLinkMessage {
         payload.resetIndex();
         
         this.initial_timestamp = payload.getUnsignedLong();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.secret_key.length; i++) {
             this.secret_key[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_setup_signing() {
-        msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_setup_signing( long initial_timestamp, short target_system, short target_component, short[] secret_key) {
+        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+
+        this.initial_timestamp = initial_timestamp;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.secret_key = secret_key;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_setup_signing( long initial_timestamp, short target_system, short target_component, short[] secret_key, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.initial_timestamp = initial_timestamp;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.secret_key = secret_key;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_setup_signing extends MAVLinkMessage {
      *
      */
     public msg_setup_signing(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_setup_signing(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SETUP_SIGNING;
+
+        readJSONheader(jo);
+        
+        this.initial_timestamp = (long)jo.optLong("initial_timestamp");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+         
+        JSONArray ja_secret_key = jo.optJSONArray("secret_key");
+        for (int i = 0; i < Math.min(this.secret_key.length, ja_secret_key.length()); i++) {
+            this.secret_key[i] = (short)ja_secret_key.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("initial_timestamp", initial_timestamp);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+         
+        JSONArray ja_secret_key = new JSONArray();
+        for (int i = 0; i < this.secret_key.length; i++) {
+            ja_secret_key.put(this.secret_key[i]);
+        }
+        jo.put("secret_key", (Object)ja_secret_key);
+                
+        
+        
+        return jo;
     }
 
             

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * A ping message either requesting or responding to a ping. This allows to measure the system latencies, including serial port, radio modem and UDP connections. The ping microservice is documented at https://mavlink.io/en/services/ping.html
@@ -18,7 +23,6 @@ public class msg_ping extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_PING = 4;
     public static final int MAVLINK_MSG_LENGTH = 14;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PING;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_ping extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_PING;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putUnsignedInt(seq);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_ping extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.seq = payload.getUnsignedInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_ping() {
-        msgid = MAVLINK_MSG_ID_PING;
+        this.msgid = MAVLINK_MSG_ID_PING;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_ping( long time_usec, long seq, short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_PING;
+
+        this.time_usec = time_usec;
+        this.seq = seq;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_ping( long time_usec, long seq, short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_PING;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.seq = seq;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_ping extends MAVLinkMessage {
      *
      */
     public msg_ping(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_PING;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PING;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_ping(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_PING;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.seq = (long)jo.optLong("seq");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("seq", seq);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
             

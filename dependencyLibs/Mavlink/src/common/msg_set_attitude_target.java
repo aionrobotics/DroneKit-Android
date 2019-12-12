@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Sets a desired vehicle attitude. Used by an external controller to command the vehicle (manual controller or other system).
@@ -18,7 +23,6 @@ public class msg_set_attitude_target extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_SET_ATTITUDE_TARGET = 82;
     public static final int MAVLINK_MSG_LENGTH = 39;
     private static final long serialVersionUID = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
-
 
       
     /**
@@ -79,29 +83,19 @@ public class msg_set_attitude_target extends MAVLinkMessage {
         
         packet.payload.putUnsignedInt(time_boot_ms);
         
-        
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-        
         packet.payload.putFloat(body_roll_rate);
-        
         packet.payload.putFloat(body_pitch_rate);
-        
         packet.payload.putFloat(body_yaw_rate);
-        
         packet.payload.putFloat(thrust);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(type_mask);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -114,37 +108,66 @@ public class msg_set_attitude_target extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
          
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-        
         this.body_roll_rate = payload.getFloat();
-        
         this.body_pitch_rate = payload.getFloat();
-        
         this.body_yaw_rate = payload.getFloat();
-        
         this.thrust = payload.getFloat();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.type_mask = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_set_attitude_target() {
-        msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_set_attitude_target( long time_boot_ms, float[] q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, short target_system, short target_component, short type_mask) {
+        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+
+        this.time_boot_ms = time_boot_ms;
+        this.q = q;
+        this.body_roll_rate = body_roll_rate;
+        this.body_pitch_rate = body_pitch_rate;
+        this.body_yaw_rate = body_yaw_rate;
+        this.thrust = thrust;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.type_mask = type_mask;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_set_attitude_target( long time_boot_ms, float[] q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, short target_system, short target_component, short type_mask, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.q = q;
+        this.body_roll_rate = body_roll_rate;
+        this.body_pitch_rate = body_pitch_rate;
+        this.body_yaw_rate = body_yaw_rate;
+        this.thrust = thrust;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.type_mask = type_mask;
+        
     }
 
     /**
@@ -153,11 +176,65 @@ public class msg_set_attitude_target extends MAVLinkMessage {
      *
      */
     public msg_set_attitude_target(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_set_attitude_target(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_SET_ATTITUDE_TARGET;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.body_roll_rate = (float)jo.optFloat("body_roll_rate");
+        this.body_pitch_rate = (float)jo.optFloat("body_pitch_rate");
+        this.body_yaw_rate = (float)jo.optFloat("body_yaw_rate");
+        this.thrust = (float)jo.optFloat("thrust");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.type_mask = (short)jo.optInt("type_mask");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("body_roll_rate", body_roll_rate);
+        jo.put("body_pitch_rate", body_pitch_rate);
+        jo.put("body_yaw_rate", body_yaw_rate);
+        jo.put("thrust", thrust);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("type_mask", type_mask);
+        
+        
+        return jo;
     }
 
                       

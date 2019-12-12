@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Control on-board Camera Control System to take shots.
@@ -18,7 +23,6 @@ public class msg_digicam_control extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_DIGICAM_CONTROL = 155;
     public static final int MAVLINK_MSG_LENGTH = 13;
     private static final long serialVersionUID = MAVLINK_MSG_ID_DIGICAM_CONTROL;
-
 
       
     /**
@@ -83,28 +87,17 @@ public class msg_digicam_control extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
         
         packet.payload.putFloat(extra_value);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(session);
-        
         packet.payload.putUnsignedByte(zoom_pos);
-        
         packet.payload.putByte(zoom_step);
-        
         packet.payload.putUnsignedByte(focus_lock);
-        
         packet.payload.putUnsignedByte(shot);
-        
         packet.payload.putUnsignedByte(command_id);
-        
         packet.payload.putUnsignedByte(extra_param);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -117,35 +110,65 @@ public class msg_digicam_control extends MAVLinkMessage {
         payload.resetIndex();
         
         this.extra_value = payload.getFloat();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.session = payload.getUnsignedByte();
-        
         this.zoom_pos = payload.getUnsignedByte();
-        
         this.zoom_step = payload.getByte();
-        
         this.focus_lock = payload.getUnsignedByte();
-        
         this.shot = payload.getUnsignedByte();
-        
         this.command_id = payload.getUnsignedByte();
-        
         this.extra_param = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_digicam_control() {
-        msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_digicam_control( float extra_value, short target_system, short target_component, short session, short zoom_pos, byte zoom_step, short focus_lock, short shot, short command_id, short extra_param) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+
+        this.extra_value = extra_value;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.session = session;
+        this.zoom_pos = zoom_pos;
+        this.zoom_step = zoom_step;
+        this.focus_lock = focus_lock;
+        this.shot = shot;
+        this.command_id = command_id;
+        this.extra_param = extra_param;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_digicam_control( float extra_value, short target_system, short target_component, short session, short zoom_pos, byte zoom_step, short focus_lock, short shot, short command_id, short extra_param, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.extra_value = extra_value;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.session = session;
+        this.zoom_pos = zoom_pos;
+        this.zoom_step = zoom_step;
+        this.focus_lock = focus_lock;
+        this.shot = shot;
+        this.command_id = command_id;
+        this.extra_param = extra_param;
+        
     }
 
     /**
@@ -154,11 +177,56 @@ public class msg_digicam_control extends MAVLinkMessage {
      *
      */
     public msg_digicam_control(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_digicam_control(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_DIGICAM_CONTROL;
+
+        readJSONheader(jo);
+        
+        this.extra_value = (float)jo.optFloat("extra_value");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.session = (short)jo.optInt("session");
+        this.zoom_pos = (short)jo.optInt("zoom_pos");
+        this.zoom_step = (byte)jo.optInt("zoom_step");
+        this.focus_lock = (short)jo.optInt("focus_lock");
+        this.shot = (short)jo.optInt("shot");
+        this.command_id = (short)jo.optInt("command_id");
+        this.extra_param = (short)jo.optInt("extra_param");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("extra_value", extra_value);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("session", session);
+        jo.put("zoom_pos", zoom_pos);
+        jo.put("zoom_step", zoom_step);
+        jo.put("focus_lock", focus_lock);
+        jo.put("shot", shot);
+        jo.put("command_id", command_id);
+        jo.put("extra_param", extra_param);
+        
+        
+        return jo;
     }
 
                         

@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * EKF Status message including flags and variances.
@@ -18,7 +23,6 @@ public class msg_ekf_status_report extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_EKF_STATUS_REPORT = 193;
     public static final int MAVLINK_MSG_LENGTH = 26;
     private static final long serialVersionUID = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
-
 
       
     /**
@@ -68,21 +72,15 @@ public class msg_ekf_status_report extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
         
         packet.payload.putFloat(velocity_variance);
-        
         packet.payload.putFloat(pos_horiz_variance);
-        
         packet.payload.putFloat(pos_vert_variance);
-        
         packet.payload.putFloat(compass_variance);
-        
         packet.payload.putFloat(terrain_alt_variance);
-        
         packet.payload.putUnsignedShort(flags);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(airspeed_variance);
-            
         }
         return packet;
     }
@@ -96,21 +94,15 @@ public class msg_ekf_status_report extends MAVLinkMessage {
         payload.resetIndex();
         
         this.velocity_variance = payload.getFloat();
-        
         this.pos_horiz_variance = payload.getFloat();
-        
         this.pos_vert_variance = payload.getFloat();
-        
         this.compass_variance = payload.getFloat();
-        
         this.terrain_alt_variance = payload.getFloat();
-        
         this.flags = payload.getUnsignedShort();
         
+        
         if(isMavlink2) {
-            
             this.airspeed_variance = payload.getFloat();
-            
         }
     }
 
@@ -118,7 +110,42 @@ public class msg_ekf_status_report extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_ekf_status_report() {
-        msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_ekf_status_report( float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, int flags, float airspeed_variance) {
+        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+
+        this.velocity_variance = velocity_variance;
+        this.pos_horiz_variance = pos_horiz_variance;
+        this.pos_vert_variance = pos_vert_variance;
+        this.compass_variance = compass_variance;
+        this.terrain_alt_variance = terrain_alt_variance;
+        this.flags = flags;
+        this.airspeed_variance = airspeed_variance;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_ekf_status_report( float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, int flags, float airspeed_variance, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.velocity_variance = velocity_variance;
+        this.pos_horiz_variance = pos_horiz_variance;
+        this.pos_vert_variance = pos_vert_variance;
+        this.compass_variance = compass_variance;
+        this.terrain_alt_variance = terrain_alt_variance;
+        this.flags = flags;
+        this.airspeed_variance = airspeed_variance;
+        
     }
 
     /**
@@ -127,11 +154,50 @@ public class msg_ekf_status_report extends MAVLinkMessage {
      *
      */
     public msg_ekf_status_report(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_ekf_status_report(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_EKF_STATUS_REPORT;
+
+        readJSONheader(jo);
+        
+        this.velocity_variance = (float)jo.optFloat("velocity_variance");
+        this.pos_horiz_variance = (float)jo.optFloat("pos_horiz_variance");
+        this.pos_vert_variance = (float)jo.optFloat("pos_vert_variance");
+        this.compass_variance = (float)jo.optFloat("compass_variance");
+        this.terrain_alt_variance = (float)jo.optFloat("terrain_alt_variance");
+        this.flags = (int)jo.optInt("flags");
+        
+        this.airspeed_variance = (float)jo.optFloat("airspeed_variance");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("velocity_variance", velocity_variance);
+        jo.put("pos_horiz_variance", pos_horiz_variance);
+        jo.put("pos_vert_variance", pos_vert_variance);
+        jo.put("compass_variance", compass_variance);
+        jo.put("terrain_alt_variance", terrain_alt_variance);
+        jo.put("flags", flags);
+        
+        jo.put("airspeed_variance", airspeed_variance);
+        
+        return jo;
     }
 
                   

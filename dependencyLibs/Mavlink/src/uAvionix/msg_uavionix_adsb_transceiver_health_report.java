@@ -9,6 +9,11 @@ package com.mavlink.uAvionix;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Transceiver heartbeat with health report (updated every 10s)
@@ -18,7 +23,6 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
     public static final int MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT = 10003;
     public static final int MAVLINK_MSG_LENGTH = 1;
     private static final long serialVersionUID = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
-
 
       
     /**
@@ -39,9 +43,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
         
         packet.payload.putUnsignedByte(rfHealth);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -55,16 +57,37 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
         
         this.rfHealth = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_uavionix_adsb_transceiver_health_report() {
-        msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_uavionix_adsb_transceiver_health_report( short rfHealth) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+
+        this.rfHealth = rfHealth;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_uavionix_adsb_transceiver_health_report( short rfHealth, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.rfHealth = rfHealth;
+        
     }
 
     /**
@@ -73,11 +96,38 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
      *
      */
     public msg_uavionix_adsb_transceiver_health_report(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_uavionix_adsb_transceiver_health_report(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT;
+
+        readJSONheader(jo);
+        
+        this.rfHealth = (short)jo.optInt("rfHealth");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("rfHealth", rfHealth);
+        
+        
+        return jo;
     }
 
       

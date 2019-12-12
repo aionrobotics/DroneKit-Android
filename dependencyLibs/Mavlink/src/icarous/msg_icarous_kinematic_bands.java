@@ -9,6 +9,11 @@ package com.mavlink.icarous;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Kinematic multi bands (track) output from Daidalus
@@ -18,7 +23,6 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS = 42001;
     public static final int MAVLINK_MSG_LENGTH = 46;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
-
 
       
     /**
@@ -113,40 +117,23 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
         
         packet.payload.putFloat(min1);
-        
         packet.payload.putFloat(max1);
-        
         packet.payload.putFloat(min2);
-        
         packet.payload.putFloat(max2);
-        
         packet.payload.putFloat(min3);
-        
         packet.payload.putFloat(max3);
-        
         packet.payload.putFloat(min4);
-        
         packet.payload.putFloat(max4);
-        
         packet.payload.putFloat(min5);
-        
         packet.payload.putFloat(max5);
-        
         packet.payload.putByte(numBands);
-        
         packet.payload.putUnsignedByte(type1);
-        
         packet.payload.putUnsignedByte(type2);
-        
         packet.payload.putUnsignedByte(type3);
-        
         packet.payload.putUnsignedByte(type4);
-        
         packet.payload.putUnsignedByte(type5);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -159,47 +146,83 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
         payload.resetIndex();
         
         this.min1 = payload.getFloat();
-        
         this.max1 = payload.getFloat();
-        
         this.min2 = payload.getFloat();
-        
         this.max2 = payload.getFloat();
-        
         this.min3 = payload.getFloat();
-        
         this.max3 = payload.getFloat();
-        
         this.min4 = payload.getFloat();
-        
         this.max4 = payload.getFloat();
-        
         this.min5 = payload.getFloat();
-        
         this.max5 = payload.getFloat();
-        
         this.numBands = payload.getByte();
-        
         this.type1 = payload.getUnsignedByte();
-        
         this.type2 = payload.getUnsignedByte();
-        
         this.type3 = payload.getUnsignedByte();
-        
         this.type4 = payload.getUnsignedByte();
-        
         this.type5 = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_icarous_kinematic_bands() {
-        msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_icarous_kinematic_bands( float min1, float max1, float min2, float max2, float min3, float max3, float min4, float max4, float min5, float max5, byte numBands, short type1, short type2, short type3, short type4, short type5) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+
+        this.min1 = min1;
+        this.max1 = max1;
+        this.min2 = min2;
+        this.max2 = max2;
+        this.min3 = min3;
+        this.max3 = max3;
+        this.min4 = min4;
+        this.max4 = max4;
+        this.min5 = min5;
+        this.max5 = max5;
+        this.numBands = numBands;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.type3 = type3;
+        this.type4 = type4;
+        this.type5 = type5;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_icarous_kinematic_bands( float min1, float max1, float min2, float max2, float min3, float max3, float min4, float max4, float min5, float max5, byte numBands, short type1, short type2, short type3, short type4, short type5, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.min1 = min1;
+        this.max1 = max1;
+        this.min2 = min2;
+        this.max2 = max2;
+        this.min3 = min3;
+        this.max3 = max3;
+        this.min4 = min4;
+        this.max4 = max4;
+        this.min5 = min5;
+        this.max5 = max5;
+        this.numBands = numBands;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.type3 = type3;
+        this.type4 = type4;
+        this.type5 = type5;
+        
     }
 
     /**
@@ -208,11 +231,68 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
      *
      */
     public msg_icarous_kinematic_bands(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_icarous_kinematic_bands(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS;
+
+        readJSONheader(jo);
+        
+        this.min1 = (float)jo.optFloat("min1");
+        this.max1 = (float)jo.optFloat("max1");
+        this.min2 = (float)jo.optFloat("min2");
+        this.max2 = (float)jo.optFloat("max2");
+        this.min3 = (float)jo.optFloat("min3");
+        this.max3 = (float)jo.optFloat("max3");
+        this.min4 = (float)jo.optFloat("min4");
+        this.max4 = (float)jo.optFloat("max4");
+        this.min5 = (float)jo.optFloat("min5");
+        this.max5 = (float)jo.optFloat("max5");
+        this.numBands = (byte)jo.optInt("numBands");
+        this.type1 = (short)jo.optInt("type1");
+        this.type2 = (short)jo.optInt("type2");
+        this.type3 = (short)jo.optInt("type3");
+        this.type4 = (short)jo.optInt("type4");
+        this.type5 = (short)jo.optInt("type5");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("min1", min1);
+        jo.put("max1", max1);
+        jo.put("min2", min2);
+        jo.put("max2", max2);
+        jo.put("min3", min3);
+        jo.put("max3", max3);
+        jo.put("min4", min4);
+        jo.put("max4", max4);
+        jo.put("min5", min5);
+        jo.put("max5", max5);
+        jo.put("numBands", numBands);
+        jo.put("type1", type1);
+        jo.put("type2", type2);
+        jo.put("type3", type3);
+        jo.put("type4", type4);
+        jo.put("type5", type5);
+        
+        
+        return jo;
     }
 
                                     

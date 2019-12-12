@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been kept simple, so transmitting the key requires an encrypted channel for true safety.
@@ -18,7 +23,6 @@ public class msg_auth_key extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AUTH_KEY = 7;
     public static final int MAVLINK_MSG_LENGTH = 32;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AUTH_KEY;
-
 
       
     /**
@@ -43,9 +47,7 @@ public class msg_auth_key extends MAVLinkMessage {
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -63,16 +65,37 @@ public class msg_auth_key extends MAVLinkMessage {
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_auth_key() {
-        msgid = MAVLINK_MSG_ID_AUTH_KEY;
+        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_auth_key( byte[] key) {
+        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
+
+        this.key = key;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_auth_key( byte[] key, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.key = key;
+        
     }
 
     /**
@@ -81,11 +104,49 @@ public class msg_auth_key extends MAVLinkMessage {
      *
      */
     public msg_auth_key(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_auth_key(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AUTH_KEY;
+
+        readJSONheader(jo);
+        
+         
+        JSONArray ja_key = jo.optJSONArray("key");
+        for (int i = 0; i < Math.min(this.key.length, ja_key.length()); i++) {
+            this.key[i] = (byte)ja_key.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+         
+        JSONArray ja_key = new JSONArray();
+        for (int i = 0; i < this.key.length; i++) {
+            ja_key.put(this.key[i]);
+        }
+        jo.put("key", (Object)ja_key);
+                
+        
+        
+        return jo;
     }
 
      

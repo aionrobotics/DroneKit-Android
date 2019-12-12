@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Obstacle distances in front of the sensor, starting from the left in increment degrees to the right
@@ -18,7 +23,6 @@ public class msg_obstacle_distance extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_OBSTACLE_DISTANCE = 330;
     public static final int MAVLINK_MSG_LENGTH = 166;
     private static final long serialVersionUID = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
-
 
       
     /**
@@ -74,26 +78,21 @@ public class msg_obstacle_distance extends MAVLinkMessage {
         
         packet.payload.putUnsignedLong(time_usec);
         
-        
         for (int i = 0; i < distances.length; i++) {
             packet.payload.putUnsignedShort(distances[i]);
         }
                     
-        
         packet.payload.putUnsignedShort(min_distance);
-        
         packet.payload.putUnsignedShort(max_distance);
-        
         packet.payload.putUnsignedByte(sensor_type);
-        
         packet.payload.putUnsignedByte(increment);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(increment_f);
-            
+        }
+        if(isMavlink2) {
             packet.payload.putFloat(angle_offset);
-            
         }
         return packet;
     }
@@ -107,27 +106,22 @@ public class msg_obstacle_distance extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
          
         for (int i = 0; i < this.distances.length; i++) {
             this.distances[i] = payload.getUnsignedShort();
         }
                 
-        
         this.min_distance = payload.getUnsignedShort();
-        
         this.max_distance = payload.getUnsignedShort();
-        
         this.sensor_type = payload.getUnsignedByte();
-        
         this.increment = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.increment_f = payload.getFloat();
-            
+        }
+        if(isMavlink2) {
             this.angle_offset = payload.getFloat();
-            
         }
     }
 
@@ -135,7 +129,44 @@ public class msg_obstacle_distance extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_obstacle_distance() {
-        msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_obstacle_distance( long time_usec, int[] distances, int min_distance, int max_distance, short sensor_type, short increment, float increment_f, float angle_offset) {
+        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+
+        this.time_usec = time_usec;
+        this.distances = distances;
+        this.min_distance = min_distance;
+        this.max_distance = max_distance;
+        this.sensor_type = sensor_type;
+        this.increment = increment;
+        this.increment_f = increment_f;
+        this.angle_offset = angle_offset;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_obstacle_distance( long time_usec, int[] distances, int min_distance, int max_distance, short sensor_type, short increment, float increment_f, float angle_offset, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.distances = distances;
+        this.min_distance = min_distance;
+        this.max_distance = max_distance;
+        this.sensor_type = sensor_type;
+        this.increment = increment;
+        this.increment_f = increment_f;
+        this.angle_offset = angle_offset;
+        
     }
 
     /**
@@ -144,11 +175,63 @@ public class msg_obstacle_distance extends MAVLinkMessage {
      *
      */
     public msg_obstacle_distance(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_obstacle_distance(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+         
+        JSONArray ja_distances = jo.optJSONArray("distances");
+        for (int i = 0; i < Math.min(this.distances.length, ja_distances.length()); i++) {
+            this.distances[i] = (int)ja_distances.getInt(i);
+        }
+                
+        this.min_distance = (int)jo.optInt("min_distance");
+        this.max_distance = (int)jo.optInt("max_distance");
+        this.sensor_type = (short)jo.optInt("sensor_type");
+        this.increment = (short)jo.optInt("increment");
+        
+        this.increment_f = (float)jo.optFloat("increment_f");
+        this.angle_offset = (float)jo.optFloat("angle_offset");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+         
+        JSONArray ja_distances = new JSONArray();
+        for (int i = 0; i < this.distances.length; i++) {
+            ja_distances.put(this.distances[i]);
+        }
+        jo.put("distances", (Object)ja_distances);
+                
+        jo.put("min_distance", min_distance);
+        jo.put("max_distance", max_distance);
+        jo.put("sensor_type", sensor_type);
+        jo.put("increment", increment);
+        
+        jo.put("increment_f", increment_f);
+        jo.put("angle_offset", angle_offset);
+        
+        return jo;
     }
 
                     

@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Orientation of a mount
@@ -18,7 +23,6 @@ public class msg_mount_orientation extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MOUNT_ORIENTATION = 265;
     public static final int MAVLINK_MSG_LENGTH = 20;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
-
 
       
     /**
@@ -58,17 +62,13 @@ public class msg_mount_orientation extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putFloat(yaw_absolute);
-            
         }
         return packet;
     }
@@ -82,17 +82,13 @@ public class msg_mount_orientation extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
         
+        
         if(isMavlink2) {
-            
             this.yaw_absolute = payload.getFloat();
-            
         }
     }
 
@@ -100,7 +96,38 @@ public class msg_mount_orientation extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mount_orientation() {
-        msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mount_orientation( long time_boot_ms, float roll, float pitch, float yaw, float yaw_absolute) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.yaw_absolute = yaw_absolute;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mount_orientation( long time_boot_ms, float roll, float pitch, float yaw, float yaw_absolute, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.yaw_absolute = yaw_absolute;
+        
     }
 
     /**
@@ -109,11 +136,46 @@ public class msg_mount_orientation extends MAVLinkMessage {
      *
      */
     public msg_mount_orientation(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mount_orientation(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MOUNT_ORIENTATION;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        
+        this.yaw_absolute = (float)jo.optFloat("yaw_absolute");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        
+        jo.put("yaw_absolute", yaw_absolute);
+        
+        return jo;
     }
 
               

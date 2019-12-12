@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Power supply status
@@ -18,7 +23,6 @@ public class msg_power_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_POWER_STATUS = 125;
     public static final int MAVLINK_MSG_LENGTH = 6;
     private static final long serialVersionUID = MAVLINK_MSG_ID_POWER_STATUS;
-
 
       
     /**
@@ -48,14 +52,10 @@ public class msg_power_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_POWER_STATUS;
         
         packet.payload.putUnsignedShort(Vcc);
-        
         packet.payload.putUnsignedShort(Vservo);
-        
         packet.payload.putUnsignedShort(flags);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -68,21 +68,44 @@ public class msg_power_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.Vcc = payload.getUnsignedShort();
-        
         this.Vservo = payload.getUnsignedShort();
-        
         this.flags = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_power_status() {
-        msgid = MAVLINK_MSG_ID_POWER_STATUS;
+        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_power_status( int Vcc, int Vservo, int flags) {
+        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
+
+        this.Vcc = Vcc;
+        this.Vservo = Vservo;
+        this.flags = flags;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_power_status( int Vcc, int Vservo, int flags, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.Vcc = Vcc;
+        this.Vservo = Vservo;
+        this.flags = flags;
+        
     }
 
     /**
@@ -91,11 +114,42 @@ public class msg_power_status extends MAVLinkMessage {
      *
      */
     public msg_power_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_power_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_POWER_STATUS;
+
+        readJSONheader(jo);
+        
+        this.Vcc = (int)jo.optInt("Vcc");
+        this.Vservo = (int)jo.optInt("Vservo");
+        this.flags = (int)jo.optInt("flags");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("Vcc", Vcc);
+        jo.put("Vservo", Vservo);
+        jo.put("flags", flags);
+        
+        
+        return jo;
     }
 
           

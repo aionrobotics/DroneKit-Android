@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Estimator status message including flags, innovation test ratios and estimated accuracies. The flags message is an integer bitmask containing information on which EKF outputs are valid. See the ESTIMATOR_STATUS_FLAGS enum definition for further information. The innovation test ratios show the magnitude of the sensor innovation divided by the innovation check threshold. Under normal operation the innovation test ratios should be below 0.5 with occasional values up to 1.0. Values greater than 1.0 should be rare under normal operation and indicate that a measurement has been rejected by the filter. The user should be notified if an innovation test ratio greater than 1.0 is recorded. Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the user.
@@ -18,7 +23,6 @@ public class msg_estimator_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ESTIMATOR_STATUS = 230;
     public static final int MAVLINK_MSG_LENGTH = 42;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
-
 
       
     /**
@@ -83,28 +87,17 @@ public class msg_estimator_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(vel_ratio);
-        
         packet.payload.putFloat(pos_horiz_ratio);
-        
         packet.payload.putFloat(pos_vert_ratio);
-        
         packet.payload.putFloat(mag_ratio);
-        
         packet.payload.putFloat(hagl_ratio);
-        
         packet.payload.putFloat(tas_ratio);
-        
         packet.payload.putFloat(pos_horiz_accuracy);
-        
         packet.payload.putFloat(pos_vert_accuracy);
-        
         packet.payload.putUnsignedShort(flags);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -117,35 +110,65 @@ public class msg_estimator_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.vel_ratio = payload.getFloat();
-        
         this.pos_horiz_ratio = payload.getFloat();
-        
         this.pos_vert_ratio = payload.getFloat();
-        
         this.mag_ratio = payload.getFloat();
-        
         this.hagl_ratio = payload.getFloat();
-        
         this.tas_ratio = payload.getFloat();
-        
         this.pos_horiz_accuracy = payload.getFloat();
-        
         this.pos_vert_accuracy = payload.getFloat();
-        
         this.flags = payload.getUnsignedShort();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_estimator_status() {
-        msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_estimator_status( long time_usec, float vel_ratio, float pos_horiz_ratio, float pos_vert_ratio, float mag_ratio, float hagl_ratio, float tas_ratio, float pos_horiz_accuracy, float pos_vert_accuracy, int flags) {
+        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+
+        this.time_usec = time_usec;
+        this.vel_ratio = vel_ratio;
+        this.pos_horiz_ratio = pos_horiz_ratio;
+        this.pos_vert_ratio = pos_vert_ratio;
+        this.mag_ratio = mag_ratio;
+        this.hagl_ratio = hagl_ratio;
+        this.tas_ratio = tas_ratio;
+        this.pos_horiz_accuracy = pos_horiz_accuracy;
+        this.pos_vert_accuracy = pos_vert_accuracy;
+        this.flags = flags;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_estimator_status( long time_usec, float vel_ratio, float pos_horiz_ratio, float pos_vert_ratio, float mag_ratio, float hagl_ratio, float tas_ratio, float pos_horiz_accuracy, float pos_vert_accuracy, int flags, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.vel_ratio = vel_ratio;
+        this.pos_horiz_ratio = pos_horiz_ratio;
+        this.pos_vert_ratio = pos_vert_ratio;
+        this.mag_ratio = mag_ratio;
+        this.hagl_ratio = hagl_ratio;
+        this.tas_ratio = tas_ratio;
+        this.pos_horiz_accuracy = pos_horiz_accuracy;
+        this.pos_vert_accuracy = pos_vert_accuracy;
+        this.flags = flags;
+        
     }
 
     /**
@@ -154,11 +177,56 @@ public class msg_estimator_status extends MAVLinkMessage {
      *
      */
     public msg_estimator_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_estimator_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ESTIMATOR_STATUS;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.vel_ratio = (float)jo.optFloat("vel_ratio");
+        this.pos_horiz_ratio = (float)jo.optFloat("pos_horiz_ratio");
+        this.pos_vert_ratio = (float)jo.optFloat("pos_vert_ratio");
+        this.mag_ratio = (float)jo.optFloat("mag_ratio");
+        this.hagl_ratio = (float)jo.optFloat("hagl_ratio");
+        this.tas_ratio = (float)jo.optFloat("tas_ratio");
+        this.pos_horiz_accuracy = (float)jo.optFloat("pos_horiz_accuracy");
+        this.pos_vert_accuracy = (float)jo.optFloat("pos_vert_accuracy");
+        this.flags = (int)jo.optInt("flags");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("vel_ratio", vel_ratio);
+        jo.put("pos_horiz_ratio", pos_horiz_ratio);
+        jo.put("pos_vert_ratio", pos_vert_ratio);
+        jo.put("mag_ratio", mag_ratio);
+        jo.put("hagl_ratio", hagl_ratio);
+        jo.put("tas_ratio", tas_ratio);
+        jo.put("pos_horiz_accuracy", pos_horiz_accuracy);
+        jo.put("pos_vert_accuracy", pos_vert_accuracy);
+        jo.put("flags", flags);
+        
+        
+        return jo;
     }
 
                         

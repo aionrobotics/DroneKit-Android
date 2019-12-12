@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Send raw controller memory. The use of this message is discouraged for normal packets, but a quite efficient way for testing new messages and getting experimental debug output.
@@ -18,7 +23,6 @@ public class msg_memory_vect extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MEMORY_VECT = 249;
     public static final int MAVLINK_MSG_LENGTH = 36;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MEMORY_VECT;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_memory_vect extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
         
         packet.payload.putUnsignedShort(address);
-        
         packet.payload.putUnsignedByte(ver);
-        
         packet.payload.putUnsignedByte(type);
-        
         
         for (int i = 0; i < value.length; i++) {
             packet.payload.putByte(value[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_memory_vect extends MAVLinkMessage {
         payload.resetIndex();
         
         this.address = payload.getUnsignedShort();
-        
         this.ver = payload.getUnsignedByte();
-        
         this.type = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.value.length; i++) {
             this.value[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_memory_vect() {
-        msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_memory_vect( int address, short ver, short type, byte[] value) {
+        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+
+        this.address = address;
+        this.ver = ver;
+        this.type = type;
+        this.value = value;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_memory_vect( int address, short ver, short type, byte[] value, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.address = address;
+        this.ver = ver;
+        this.type = type;
+        this.value = value;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_memory_vect extends MAVLinkMessage {
      *
      */
     public msg_memory_vect(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_memory_vect(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MEMORY_VECT;
+
+        readJSONheader(jo);
+        
+        this.address = (int)jo.optInt("address");
+        this.ver = (short)jo.optInt("ver");
+        this.type = (short)jo.optInt("type");
+         
+        JSONArray ja_value = jo.optJSONArray("value");
+        for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
+            this.value[i] = (byte)ja_value.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("address", address);
+        jo.put("ver", ver);
+        jo.put("type", type);
+         
+        JSONArray ja_value = new JSONArray();
+        for (int i = 0; i < this.value.length; i++) {
+            ja_value.put(this.value[i]);
+        }
+        jo.put("value", (Object)ja_value);
+                
+        
+        
+        return jo;
     }
 
             

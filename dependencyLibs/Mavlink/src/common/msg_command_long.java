@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Send a command with up to seven parameters to the MAV. The command microservice is documented at https://mavlink.io/en/services/command.html
@@ -18,7 +23,6 @@ public class msg_command_long extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_COMMAND_LONG = 76;
     public static final int MAVLINK_MSG_LENGTH = 33;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COMMAND_LONG;
-
 
       
     /**
@@ -88,30 +92,18 @@ public class msg_command_long extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
         
         packet.payload.putFloat(param1);
-        
         packet.payload.putFloat(param2);
-        
         packet.payload.putFloat(param3);
-        
         packet.payload.putFloat(param4);
-        
         packet.payload.putFloat(param5);
-        
         packet.payload.putFloat(param6);
-        
         packet.payload.putFloat(param7);
-        
         packet.payload.putUnsignedShort(command);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(confirmation);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -124,37 +116,68 @@ public class msg_command_long extends MAVLinkMessage {
         payload.resetIndex();
         
         this.param1 = payload.getFloat();
-        
         this.param2 = payload.getFloat();
-        
         this.param3 = payload.getFloat();
-        
         this.param4 = payload.getFloat();
-        
         this.param5 = payload.getFloat();
-        
         this.param6 = payload.getFloat();
-        
         this.param7 = payload.getFloat();
-        
         this.command = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.confirmation = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_command_long() {
-        msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_command_long( float param1, float param2, float param3, float param4, float param5, float param6, float param7, int command, short target_system, short target_component, short confirmation) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+
+        this.param1 = param1;
+        this.param2 = param2;
+        this.param3 = param3;
+        this.param4 = param4;
+        this.param5 = param5;
+        this.param6 = param6;
+        this.param7 = param7;
+        this.command = command;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.confirmation = confirmation;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_command_long( float param1, float param2, float param3, float param4, float param5, float param6, float param7, int command, short target_system, short target_component, short confirmation, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.param1 = param1;
+        this.param2 = param2;
+        this.param3 = param3;
+        this.param4 = param4;
+        this.param5 = param5;
+        this.param6 = param6;
+        this.param7 = param7;
+        this.command = command;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.confirmation = confirmation;
+        
     }
 
     /**
@@ -163,11 +186,58 @@ public class msg_command_long extends MAVLinkMessage {
      *
      */
     public msg_command_long(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_command_long(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_LONG;
+
+        readJSONheader(jo);
+        
+        this.param1 = (float)jo.optFloat("param1");
+        this.param2 = (float)jo.optFloat("param2");
+        this.param3 = (float)jo.optFloat("param3");
+        this.param4 = (float)jo.optFloat("param4");
+        this.param5 = (float)jo.optFloat("param5");
+        this.param6 = (float)jo.optFloat("param6");
+        this.param7 = (float)jo.optFloat("param7");
+        this.command = (int)jo.optInt("command");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.confirmation = (short)jo.optInt("confirmation");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("param1", param1);
+        jo.put("param2", param2);
+        jo.put("param3", param3);
+        jo.put("param4", param4);
+        jo.put("param5", param5);
+        jo.put("param6", param6);
+        jo.put("param7", param7);
+        jo.put("command", command);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("confirmation", confirmation);
+        
+        
+        return jo;
     }
 
                           

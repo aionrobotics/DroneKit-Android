@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request a partial list of mission items from the system/component. https://mavlink.io/en/services/mission.html. If start and end index are the same, just send one waypoint.
@@ -18,7 +23,6 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST = 37;
     public static final int MAVLINK_MSG_LENGTH = 7;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
-
 
       
     /**
@@ -58,17 +62,13 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
         
         packet.payload.putShort(start_index);
-        
         packet.payload.putShort(end_index);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
+        
         if(isMavlink2) {
-            
             packet.payload.putUnsignedByte(mission_type);
-            
         }
         return packet;
     }
@@ -82,17 +82,13 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
         payload.resetIndex();
         
         this.start_index = payload.getShort();
-        
         this.end_index = payload.getShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
+        
         if(isMavlink2) {
-            
             this.mission_type = payload.getUnsignedByte();
-            
         }
     }
 
@@ -100,7 +96,38 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mission_request_partial_list() {
-        msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mission_request_partial_list( short start_index, short end_index, short target_system, short target_component, short mission_type) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+
+        this.start_index = start_index;
+        this.end_index = end_index;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mission_type = mission_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mission_request_partial_list( short start_index, short end_index, short target_system, short target_component, short mission_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.start_index = start_index;
+        this.end_index = end_index;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.mission_type = mission_type;
+        
     }
 
     /**
@@ -109,11 +136,46 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
      *
      */
     public msg_mission_request_partial_list(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mission_request_partial_list(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MISSION_REQUEST_PARTIAL_LIST;
+
+        readJSONheader(jo);
+        
+        this.start_index = (short)jo.optInt("start_index");
+        this.end_index = (short)jo.optInt("end_index");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        this.mission_type = (short)jo.optInt("mission_type");
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("start_index", start_index);
+        jo.put("end_index", end_index);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        jo.put("mission_type", mission_type);
+        
+        return jo;
     }
 
               

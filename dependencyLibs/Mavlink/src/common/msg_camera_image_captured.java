@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Information about a captured image
@@ -18,7 +23,6 @@ public class msg_camera_image_captured extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED = 263;
     public static final int MAVLINK_MSG_LENGTH = 255;
     private static final long serialVersionUID = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
-
 
       
     /**
@@ -88,38 +92,26 @@ public class msg_camera_image_captured extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
         
         packet.payload.putUnsignedLong(time_utc);
-        
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putInt(lat);
-        
         packet.payload.putInt(lon);
-        
         packet.payload.putInt(alt);
-        
         packet.payload.putInt(relative_alt);
-        
         
         for (int i = 0; i < q.length; i++) {
             packet.payload.putFloat(q[i]);
         }
                     
-        
         packet.payload.putInt(image_index);
-        
         packet.payload.putUnsignedByte(camera_id);
-        
         packet.payload.putByte(capture_result);
-        
         
         for (int i = 0; i < file_url.length; i++) {
             packet.payload.putByte(file_url[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -132,45 +124,76 @@ public class msg_camera_image_captured extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_utc = payload.getUnsignedLong();
-        
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.lat = payload.getInt();
-        
         this.lon = payload.getInt();
-        
         this.alt = payload.getInt();
-        
         this.relative_alt = payload.getInt();
-        
          
         for (int i = 0; i < this.q.length; i++) {
             this.q[i] = payload.getFloat();
         }
                 
-        
         this.image_index = payload.getInt();
-        
         this.camera_id = payload.getUnsignedByte();
-        
         this.capture_result = payload.getByte();
-        
          
         for (int i = 0; i < this.file_url.length; i++) {
             this.file_url[i] = payload.getByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_camera_image_captured() {
-        msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_camera_image_captured( long time_utc, long time_boot_ms, int lat, int lon, int alt, int relative_alt, float[] q, int image_index, short camera_id, byte capture_result, byte[] file_url) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+
+        this.time_utc = time_utc;
+        this.time_boot_ms = time_boot_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.relative_alt = relative_alt;
+        this.q = q;
+        this.image_index = image_index;
+        this.camera_id = camera_id;
+        this.capture_result = capture_result;
+        this.file_url = file_url;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_camera_image_captured( long time_utc, long time_boot_ms, int lat, int lon, int alt, int relative_alt, float[] q, int image_index, short camera_id, byte capture_result, byte[] file_url, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_utc = time_utc;
+        this.time_boot_ms = time_boot_ms;
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+        this.relative_alt = relative_alt;
+        this.q = q;
+        this.image_index = image_index;
+        this.camera_id = camera_id;
+        this.capture_result = capture_result;
+        this.file_url = file_url;
+        
     }
 
     /**
@@ -179,11 +202,80 @@ public class msg_camera_image_captured extends MAVLinkMessage {
      *
      */
     public msg_camera_image_captured(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_camera_image_captured(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+
+        readJSONheader(jo);
+        
+        this.time_utc = (long)jo.optLong("time_utc");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.lat = (int)jo.optInt("lat");
+        this.lon = (int)jo.optInt("lon");
+        this.alt = (int)jo.optInt("alt");
+        this.relative_alt = (int)jo.optInt("relative_alt");
+         
+        JSONArray ja_q = jo.optJSONArray("q");
+        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+            this.q[i] = (float)ja_q.getFloat(i);
+        }
+                
+        this.image_index = (int)jo.optInt("image_index");
+        this.camera_id = (short)jo.optInt("camera_id");
+        this.capture_result = (byte)jo.optInt("capture_result");
+         
+        JSONArray ja_file_url = jo.optJSONArray("file_url");
+        for (int i = 0; i < Math.min(this.file_url.length, ja_file_url.length()); i++) {
+            this.file_url[i] = (byte)ja_file_url.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_utc", time_utc);
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("lat", lat);
+        jo.put("lon", lon);
+        jo.put("alt", alt);
+        jo.put("relative_alt", relative_alt);
+         
+        JSONArray ja_q = new JSONArray();
+        for (int i = 0; i < this.q.length; i++) {
+            ja_q.put(this.q[i]);
+        }
+        jo.put("q", (Object)ja_q);
+                
+        jo.put("image_index", image_index);
+        jo.put("camera_id", camera_id);
+        jo.put("capture_result", capture_result);
+         
+        JSONArray ja_file_url = new JSONArray();
+        for (int i = 0; i < this.file_url.length; i++) {
+            ja_file_url.put(this.file_url[i]);
+        }
+        jo.put("file_url", (Object)ja_file_url);
+                
+        
+        
+        return jo;
     }
 
                          

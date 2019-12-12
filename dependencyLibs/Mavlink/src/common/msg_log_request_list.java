@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request a list of available logs. On some systems calling this may stop on-board logging until LOG_REQUEST_END is called.
@@ -18,7 +23,6 @@ public class msg_log_request_list extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LOG_REQUEST_LIST = 117;
     public static final int MAVLINK_MSG_LENGTH = 6;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_log_request_list extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
         
         packet.payload.putUnsignedShort(start);
-        
         packet.payload.putUnsignedShort(end);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_log_request_list extends MAVLinkMessage {
         payload.resetIndex();
         
         this.start = payload.getUnsignedShort();
-        
         this.end = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_log_request_list() {
-        msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_log_request_list( int start, int end, short target_system, short target_component) {
+        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+
+        this.start = start;
+        this.end = end;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_log_request_list( int start, int end, short target_system, short target_component, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.start = start;
+        this.end = end;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_log_request_list extends MAVLinkMessage {
      *
      */
     public msg_log_request_list(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_log_request_list(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOG_REQUEST_LIST;
+
+        readJSONheader(jo);
+        
+        this.start = (int)jo.optInt("start");
+        this.end = (int)jo.optInt("end");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("start", start);
+        jo.put("end", end);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        
+        
+        return jo;
     }
 
             

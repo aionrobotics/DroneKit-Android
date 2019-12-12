@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Airspeed auto-calibration.
@@ -18,7 +23,6 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_AIRSPEED_AUTOCAL = 174;
     public static final int MAVLINK_MSG_LENGTH = 48;
     private static final long serialVersionUID = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
-
 
       
     /**
@@ -93,32 +97,19 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
         
         packet.payload.putFloat(vx);
-        
         packet.payload.putFloat(vy);
-        
         packet.payload.putFloat(vz);
-        
         packet.payload.putFloat(diff_pressure);
-        
         packet.payload.putFloat(EAS2TAS);
-        
         packet.payload.putFloat(ratio);
-        
         packet.payload.putFloat(state_x);
-        
         packet.payload.putFloat(state_y);
-        
         packet.payload.putFloat(state_z);
-        
         packet.payload.putFloat(Pax);
-        
         packet.payload.putFloat(Pby);
-        
         packet.payload.putFloat(Pcz);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -131,39 +122,71 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
         payload.resetIndex();
         
         this.vx = payload.getFloat();
-        
         this.vy = payload.getFloat();
-        
         this.vz = payload.getFloat();
-        
         this.diff_pressure = payload.getFloat();
-        
         this.EAS2TAS = payload.getFloat();
-        
         this.ratio = payload.getFloat();
-        
         this.state_x = payload.getFloat();
-        
         this.state_y = payload.getFloat();
-        
         this.state_z = payload.getFloat();
-        
         this.Pax = payload.getFloat();
-        
         this.Pby = payload.getFloat();
-        
         this.Pcz = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_airspeed_autocal() {
-        msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_airspeed_autocal( float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz) {
+        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.diff_pressure = diff_pressure;
+        this.EAS2TAS = EAS2TAS;
+        this.ratio = ratio;
+        this.state_x = state_x;
+        this.state_y = state_y;
+        this.state_z = state_z;
+        this.Pax = Pax;
+        this.Pby = Pby;
+        this.Pcz = Pcz;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_airspeed_autocal( float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.diff_pressure = diff_pressure;
+        this.EAS2TAS = EAS2TAS;
+        this.ratio = ratio;
+        this.state_x = state_x;
+        this.state_y = state_y;
+        this.state_z = state_z;
+        this.Pax = Pax;
+        this.Pby = Pby;
+        this.Pcz = Pcz;
+        
     }
 
     /**
@@ -172,11 +195,60 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
      *
      */
     public msg_airspeed_autocal(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_airspeed_autocal(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+
+        readJSONheader(jo);
+        
+        this.vx = (float)jo.optFloat("vx");
+        this.vy = (float)jo.optFloat("vy");
+        this.vz = (float)jo.optFloat("vz");
+        this.diff_pressure = (float)jo.optFloat("diff_pressure");
+        this.EAS2TAS = (float)jo.optFloat("EAS2TAS");
+        this.ratio = (float)jo.optFloat("ratio");
+        this.state_x = (float)jo.optFloat("state_x");
+        this.state_y = (float)jo.optFloat("state_y");
+        this.state_z = (float)jo.optFloat("state_z");
+        this.Pax = (float)jo.optFloat("Pax");
+        this.Pby = (float)jo.optFloat("Pby");
+        this.Pcz = (float)jo.optFloat("Pcz");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("diff_pressure", diff_pressure);
+        jo.put("EAS2TAS", EAS2TAS);
+        jo.put("ratio", ratio);
+        jo.put("state_x", state_x);
+        jo.put("state_y", state_y);
+        jo.put("state_z", state_z);
+        jo.put("Pax", Pax);
+        jo.put("Pby", Pby);
+        jo.put("Pcz", Pcz);
+        
+        
+        return jo;
     }
 
                             

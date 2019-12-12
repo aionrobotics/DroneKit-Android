@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
@@ -18,7 +23,6 @@ public class msg_local_position_ned_cov extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV = 64;
     public static final int MAVLINK_MSG_LENGTH = 225;
     private static final long serialVersionUID = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
-
 
       
     /**
@@ -93,36 +97,23 @@ public class msg_local_position_ned_cov extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
         
         packet.payload.putUnsignedLong(time_usec);
-        
         packet.payload.putFloat(x);
-        
         packet.payload.putFloat(y);
-        
         packet.payload.putFloat(z);
-        
         packet.payload.putFloat(vx);
-        
         packet.payload.putFloat(vy);
-        
         packet.payload.putFloat(vz);
-        
         packet.payload.putFloat(ax);
-        
         packet.payload.putFloat(ay);
-        
         packet.payload.putFloat(az);
-        
         
         for (int i = 0; i < covariance.length; i++) {
             packet.payload.putFloat(covariance[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(estimator_type);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -135,43 +126,75 @@ public class msg_local_position_ned_cov extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
-        
         this.x = payload.getFloat();
-        
         this.y = payload.getFloat();
-        
         this.z = payload.getFloat();
-        
         this.vx = payload.getFloat();
-        
         this.vy = payload.getFloat();
-        
         this.vz = payload.getFloat();
-        
         this.ax = payload.getFloat();
-        
         this.ay = payload.getFloat();
-        
         this.az = payload.getFloat();
-        
          
         for (int i = 0; i < this.covariance.length; i++) {
             this.covariance[i] = payload.getFloat();
         }
                 
-        
         this.estimator_type = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_local_position_ned_cov() {
-        msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_local_position_ned_cov( long time_usec, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, float[] covariance, short estimator_type) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.ax = ax;
+        this.ay = ay;
+        this.az = az;
+        this.covariance = covariance;
+        this.estimator_type = estimator_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_local_position_ned_cov( long time_usec, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, float[] covariance, short estimator_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_usec = time_usec;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
+        this.ax = ax;
+        this.ay = ay;
+        this.az = az;
+        this.covariance = covariance;
+        this.estimator_type = estimator_type;
+        
     }
 
     /**
@@ -180,11 +203,71 @@ public class msg_local_position_ned_cov extends MAVLinkMessage {
      *
      */
     public msg_local_position_ned_cov(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_local_position_ned_cov(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+
+        readJSONheader(jo);
+        
+        this.time_usec = (long)jo.optLong("time_usec");
+        this.x = (float)jo.optFloat("x");
+        this.y = (float)jo.optFloat("y");
+        this.z = (float)jo.optFloat("z");
+        this.vx = (float)jo.optFloat("vx");
+        this.vy = (float)jo.optFloat("vy");
+        this.vz = (float)jo.optFloat("vz");
+        this.ax = (float)jo.optFloat("ax");
+        this.ay = (float)jo.optFloat("ay");
+        this.az = (float)jo.optFloat("az");
+         
+        JSONArray ja_covariance = jo.optJSONArray("covariance");
+        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        }
+                
+        this.estimator_type = (short)jo.optInt("estimator_type");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_usec", time_usec);
+        jo.put("x", x);
+        jo.put("y", y);
+        jo.put("z", z);
+        jo.put("vx", vx);
+        jo.put("vy", vy);
+        jo.put("vz", vz);
+        jo.put("ax", ax);
+        jo.put("ay", ay);
+        jo.put("az", az);
+         
+        JSONArray ja_covariance = new JSONArray();
+        for (int i = 0; i < this.covariance.length; i++) {
+            ja_covariance.put(this.covariance[i]);
+        }
+        jo.put("covariance", (Object)ja_covariance);
+                
+        jo.put("estimator_type", estimator_type);
+        
+        
+        return jo;
     }
 
                             

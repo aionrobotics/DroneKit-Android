@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
@@ -18,7 +23,6 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_ATTITUDE_QUATERNION = 31;
     public static final int MAVLINK_MSG_LENGTH = 32;
     private static final long serialVersionUID = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
-
 
       
     /**
@@ -73,24 +77,15 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(q1);
-        
         packet.payload.putFloat(q2);
-        
         packet.payload.putFloat(q3);
-        
         packet.payload.putFloat(q4);
-        
         packet.payload.putFloat(rollspeed);
-        
         packet.payload.putFloat(pitchspeed);
-        
         packet.payload.putFloat(yawspeed);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -103,31 +98,59 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.q1 = payload.getFloat();
-        
         this.q2 = payload.getFloat();
-        
         this.q3 = payload.getFloat();
-        
         this.q4 = payload.getFloat();
-        
         this.rollspeed = payload.getFloat();
-        
         this.pitchspeed = payload.getFloat();
-        
         this.yawspeed = payload.getFloat();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_attitude_quaternion() {
-        msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_attitude_quaternion( long time_boot_ms, float q1, float q2, float q3, float q4, float rollspeed, float pitchspeed, float yawspeed) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+
+        this.time_boot_ms = time_boot_ms;
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_attitude_quaternion( long time_boot_ms, float q1, float q2, float q3, float q4, float rollspeed, float pitchspeed, float yawspeed, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        this.rollspeed = rollspeed;
+        this.pitchspeed = pitchspeed;
+        this.yawspeed = yawspeed;
+        
     }
 
     /**
@@ -136,11 +159,52 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
      *
      */
     public msg_attitude_quaternion(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_attitude_quaternion(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_ATTITUDE_QUATERNION;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.q1 = (float)jo.optFloat("q1");
+        this.q2 = (float)jo.optFloat("q2");
+        this.q3 = (float)jo.optFloat("q3");
+        this.q4 = (float)jo.optFloat("q4");
+        this.rollspeed = (float)jo.optFloat("rollspeed");
+        this.pitchspeed = (float)jo.optFloat("pitchspeed");
+        this.yawspeed = (float)jo.optFloat("yawspeed");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("q1", q1);
+        jo.put("q2", q2);
+        jo.put("q3", q3);
+        jo.put("q4", q4);
+        jo.put("rollspeed", rollspeed);
+        jo.put("pitchspeed", pitchspeed);
+        jo.put("yawspeed", yawspeed);
+        
+        
+        return jo;
     }
 
                     

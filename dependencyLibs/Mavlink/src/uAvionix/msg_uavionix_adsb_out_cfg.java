@@ -9,6 +9,11 @@ package com.mavlink.uAvionix;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec thereafter)
@@ -18,7 +23,6 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG = 10001;
     public static final int MAVLINK_MSG_LENGTH = 20;
     private static final long serialVersionUID = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
-
 
       
     /**
@@ -73,28 +77,19 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
         
         packet.payload.putUnsignedInt(ICAO);
-        
         packet.payload.putUnsignedShort(stallSpeed);
-        
         
         for (int i = 0; i < callsign.length; i++) {
             packet.payload.putByte(callsign[i]);
         }
                     
-        
         packet.payload.putUnsignedByte(emitterType);
-        
         packet.payload.putUnsignedByte(aircraftSize);
-        
         packet.payload.putUnsignedByte(gpsOffsetLat);
-        
         packet.payload.putUnsignedByte(gpsOffsetLon);
-        
         packet.payload.putUnsignedByte(rfSelect);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -107,35 +102,63 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
         payload.resetIndex();
         
         this.ICAO = payload.getUnsignedInt();
-        
         this.stallSpeed = payload.getUnsignedShort();
-        
          
         for (int i = 0; i < this.callsign.length; i++) {
             this.callsign[i] = payload.getByte();
         }
                 
-        
         this.emitterType = payload.getUnsignedByte();
-        
         this.aircraftSize = payload.getUnsignedByte();
-        
         this.gpsOffsetLat = payload.getUnsignedByte();
-        
         this.gpsOffsetLon = payload.getUnsignedByte();
-        
         this.rfSelect = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_uavionix_adsb_out_cfg() {
-        msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_uavionix_adsb_out_cfg( long ICAO, int stallSpeed, byte[] callsign, short emitterType, short aircraftSize, short gpsOffsetLat, short gpsOffsetLon, short rfSelect) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+
+        this.ICAO = ICAO;
+        this.stallSpeed = stallSpeed;
+        this.callsign = callsign;
+        this.emitterType = emitterType;
+        this.aircraftSize = aircraftSize;
+        this.gpsOffsetLat = gpsOffsetLat;
+        this.gpsOffsetLon = gpsOffsetLon;
+        this.rfSelect = rfSelect;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_uavionix_adsb_out_cfg( long ICAO, int stallSpeed, byte[] callsign, short emitterType, short aircraftSize, short gpsOffsetLat, short gpsOffsetLon, short rfSelect, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.ICAO = ICAO;
+        this.stallSpeed = stallSpeed;
+        this.callsign = callsign;
+        this.emitterType = emitterType;
+        this.aircraftSize = aircraftSize;
+        this.gpsOffsetLat = gpsOffsetLat;
+        this.gpsOffsetLon = gpsOffsetLon;
+        this.rfSelect = rfSelect;
+        
     }
 
     /**
@@ -144,11 +167,63 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
      *
      */
     public msg_uavionix_adsb_out_cfg(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_uavionix_adsb_out_cfg(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
+
+        readJSONheader(jo);
+        
+        this.ICAO = (long)jo.optLong("ICAO");
+        this.stallSpeed = (int)jo.optInt("stallSpeed");
+         
+        JSONArray ja_callsign = jo.optJSONArray("callsign");
+        for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
+            this.callsign[i] = (byte)ja_callsign.getInt(i);
+        }
+                
+        this.emitterType = (short)jo.optInt("emitterType");
+        this.aircraftSize = (short)jo.optInt("aircraftSize");
+        this.gpsOffsetLat = (short)jo.optInt("gpsOffsetLat");
+        this.gpsOffsetLon = (short)jo.optInt("gpsOffsetLon");
+        this.rfSelect = (short)jo.optInt("rfSelect");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("ICAO", ICAO);
+        jo.put("stallSpeed", stallSpeed);
+         
+        JSONArray ja_callsign = new JSONArray();
+        for (int i = 0; i < this.callsign.length; i++) {
+            ja_callsign.put(this.callsign[i]);
+        }
+        jo.put("callsign", (Object)ja_callsign);
+                
+        jo.put("emitterType", emitterType);
+        jo.put("aircraftSize", aircraftSize);
+        jo.put("gpsOffsetLat", gpsOffsetLat);
+        jo.put("gpsOffsetLon", gpsOffsetLon);
+        jo.put("rfSelect", rfSelect);
+        
+        
+        return jo;
     }
 
          

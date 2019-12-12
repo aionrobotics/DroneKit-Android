@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
@@ -18,7 +23,6 @@ public class msg_fence_status extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_FENCE_STATUS = 162;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FENCE_STATUS;
-
 
       
     /**
@@ -53,16 +57,11 @@ public class msg_fence_status extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
         
         packet.payload.putUnsignedInt(breach_time);
-        
         packet.payload.putUnsignedShort(breach_count);
-        
         packet.payload.putUnsignedByte(breach_status);
-        
         packet.payload.putUnsignedByte(breach_type);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -75,23 +74,47 @@ public class msg_fence_status extends MAVLinkMessage {
         payload.resetIndex();
         
         this.breach_time = payload.getUnsignedInt();
-        
         this.breach_count = payload.getUnsignedShort();
-        
         this.breach_status = payload.getUnsignedByte();
-        
         this.breach_type = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_fence_status() {
-        msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_fence_status( long breach_time, int breach_count, short breach_status, short breach_type) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+
+        this.breach_time = breach_time;
+        this.breach_count = breach_count;
+        this.breach_status = breach_status;
+        this.breach_type = breach_type;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_fence_status( long breach_time, int breach_count, short breach_status, short breach_type, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.breach_time = breach_time;
+        this.breach_count = breach_count;
+        this.breach_status = breach_status;
+        this.breach_type = breach_type;
+        
     }
 
     /**
@@ -100,11 +123,44 @@ public class msg_fence_status extends MAVLinkMessage {
      *
      */
     public msg_fence_status(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_fence_status(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_FENCE_STATUS;
+
+        readJSONheader(jo);
+        
+        this.breach_time = (long)jo.optLong("breach_time");
+        this.breach_count = (int)jo.optInt("breach_count");
+        this.breach_status = (short)jo.optInt("breach_status");
+        this.breach_type = (short)jo.optInt("breach_type");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("breach_time", breach_time);
+        jo.put("breach_count", breach_count);
+        jo.put("breach_status", breach_status);
+        jo.put("breach_type", breach_type);
+        
+        
+        return jo;
     }
 
             

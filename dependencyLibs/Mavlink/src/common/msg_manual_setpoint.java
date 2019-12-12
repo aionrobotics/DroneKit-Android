@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Setpoint in roll, pitch, yaw and thrust from the operator
@@ -18,7 +23,6 @@ public class msg_manual_setpoint extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MANUAL_SETPOINT = 81;
     public static final int MAVLINK_MSG_LENGTH = 22;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MANUAL_SETPOINT;
-
 
       
     /**
@@ -68,22 +72,14 @@ public class msg_manual_setpoint extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
         
         packet.payload.putUnsignedInt(time_boot_ms);
-        
         packet.payload.putFloat(roll);
-        
         packet.payload.putFloat(pitch);
-        
         packet.payload.putFloat(yaw);
-        
         packet.payload.putFloat(thrust);
-        
         packet.payload.putUnsignedByte(mode_switch);
-        
         packet.payload.putUnsignedByte(manual_override_switch);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -96,29 +92,56 @@ public class msg_manual_setpoint extends MAVLinkMessage {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
-        
         this.roll = payload.getFloat();
-        
         this.pitch = payload.getFloat();
-        
         this.yaw = payload.getFloat();
-        
         this.thrust = payload.getFloat();
-        
         this.mode_switch = payload.getUnsignedByte();
-        
         this.manual_override_switch = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_manual_setpoint() {
-        msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_manual_setpoint( long time_boot_ms, float roll, float pitch, float yaw, float thrust, short mode_switch, short manual_override_switch) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.thrust = thrust;
+        this.mode_switch = mode_switch;
+        this.manual_override_switch = manual_override_switch;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_manual_setpoint( long time_boot_ms, float roll, float pitch, float yaw, float thrust, short mode_switch, short manual_override_switch, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.time_boot_ms = time_boot_ms;
+        this.roll = roll;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.thrust = thrust;
+        this.mode_switch = mode_switch;
+        this.manual_override_switch = manual_override_switch;
+        
     }
 
     /**
@@ -127,11 +150,50 @@ public class msg_manual_setpoint extends MAVLinkMessage {
      *
      */
     public msg_manual_setpoint(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_manual_setpoint(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MANUAL_SETPOINT;
+
+        readJSONheader(jo);
+        
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.roll = (float)jo.optFloat("roll");
+        this.pitch = (float)jo.optFloat("pitch");
+        this.yaw = (float)jo.optFloat("yaw");
+        this.thrust = (float)jo.optFloat("thrust");
+        this.mode_switch = (short)jo.optInt("mode_switch");
+        this.manual_override_switch = (short)jo.optInt("manual_override_switch");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("roll", roll);
+        jo.put("pitch", pitch);
+        jo.put("yaw", yaw);
+        jo.put("thrust", thrust);
+        jo.put("mode_switch", mode_switch);
+        jo.put("manual_override_switch", manual_override_switch);
+        
+        
+        return jo;
     }
 
                   

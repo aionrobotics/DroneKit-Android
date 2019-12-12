@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Send a block of log data to remote location.
@@ -18,7 +23,6 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK = 184;
     public static final int MAVLINK_MSG_LENGTH = 206;
     private static final long serialVersionUID = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
-
 
       
     /**
@@ -53,20 +57,15 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
         
         packet.payload.putUnsignedInt(seqno);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         
         for (int i = 0; i < data.length; i++) {
             packet.payload.putUnsignedByte(data[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -79,27 +78,51 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
         payload.resetIndex();
         
         this.seqno = payload.getUnsignedInt();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.data.length; i++) {
             this.data[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_remote_log_data_block() {
-        msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_remote_log_data_block( long seqno, short target_system, short target_component, short[] data) {
+        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+
+        this.seqno = seqno;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.data = data;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_remote_log_data_block( long seqno, short target_system, short target_component, short[] data, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.seqno = seqno;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.data = data;
+        
     }
 
     /**
@@ -108,11 +131,55 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
      *
      */
     public msg_remote_log_data_block(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_remote_log_data_block(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK;
+
+        readJSONheader(jo);
+        
+        this.seqno = (long)jo.optLong("seqno");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+         
+        JSONArray ja_data = jo.optJSONArray("data");
+        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+            this.data[i] = (short)ja_data.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("seqno", seqno);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+         
+        JSONArray ja_data = new JSONArray();
+        for (int i = 0; i < this.data.length; i++) {
+            ja_data.put(this.data[i]);
+        }
+        jo.put("data", (Object)ja_data);
+                
+        
+        
+        return jo;
     }
 
             

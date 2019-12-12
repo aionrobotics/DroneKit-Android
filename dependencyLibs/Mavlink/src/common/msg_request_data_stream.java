@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Request a data stream.
@@ -18,7 +23,6 @@ public class msg_request_data_stream extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_REQUEST_DATA_STREAM = 66;
     public static final int MAVLINK_MSG_LENGTH = 6;
     private static final long serialVersionUID = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
-
 
       
     /**
@@ -58,18 +62,12 @@ public class msg_request_data_stream extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
         
         packet.payload.putUnsignedShort(req_message_rate);
-        
         packet.payload.putUnsignedByte(target_system);
-        
         packet.payload.putUnsignedByte(target_component);
-        
         packet.payload.putUnsignedByte(req_stream_id);
-        
         packet.payload.putUnsignedByte(start_stop);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -82,25 +80,50 @@ public class msg_request_data_stream extends MAVLinkMessage {
         payload.resetIndex();
         
         this.req_message_rate = payload.getUnsignedShort();
-        
         this.target_system = payload.getUnsignedByte();
-        
         this.target_component = payload.getUnsignedByte();
-        
         this.req_stream_id = payload.getUnsignedByte();
-        
         this.start_stop = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_request_data_stream() {
-        msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_request_data_stream( int req_message_rate, short target_system, short target_component, short req_stream_id, short start_stop) {
+        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+
+        this.req_message_rate = req_message_rate;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.req_stream_id = req_stream_id;
+        this.start_stop = start_stop;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_request_data_stream( int req_message_rate, short target_system, short target_component, short req_stream_id, short start_stop, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.req_message_rate = req_message_rate;
+        this.target_system = target_system;
+        this.target_component = target_component;
+        this.req_stream_id = req_stream_id;
+        this.start_stop = start_stop;
+        
     }
 
     /**
@@ -109,11 +132,46 @@ public class msg_request_data_stream extends MAVLinkMessage {
      *
      */
     public msg_request_data_stream(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_request_data_stream(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+
+        readJSONheader(jo);
+        
+        this.req_message_rate = (int)jo.optInt("req_message_rate");
+        this.target_system = (short)jo.optInt("target_system");
+        this.target_component = (short)jo.optInt("target_component");
+        this.req_stream_id = (short)jo.optInt("req_stream_id");
+        this.start_stop = (short)jo.optInt("start_stop");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("req_message_rate", req_message_rate);
+        jo.put("target_system", target_system);
+        jo.put("target_component", target_component);
+        jo.put("req_stream_id", req_stream_id);
+        jo.put("start_stop", start_stop);
+        
+        
+        return jo;
     }
 
               

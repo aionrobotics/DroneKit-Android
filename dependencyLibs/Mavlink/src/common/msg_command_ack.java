@@ -9,6 +9,11 @@ package com.mavlink.common;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Report status of a command. Includes feedback whether the command was executed. The command microservice is documented at https://mavlink.io/en/services/command.html
@@ -18,7 +23,6 @@ public class msg_command_ack extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_COMMAND_ACK = 77;
     public static final int MAVLINK_MSG_LENGTH = 3;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COMMAND_ACK;
-
 
       
     /**
@@ -43,12 +47,9 @@ public class msg_command_ack extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
         
         packet.payload.putUnsignedShort(command);
-        
         packet.payload.putUnsignedByte(result);
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -61,19 +62,41 @@ public class msg_command_ack extends MAVLinkMessage {
         payload.resetIndex();
         
         this.command = payload.getUnsignedShort();
-        
         this.result = payload.getUnsignedByte();
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_command_ack() {
-        msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_command_ack( int command, short result) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+
+        this.command = command;
+        this.result = result;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_command_ack( int command, short result, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.command = command;
+        this.result = result;
+        
     }
 
     /**
@@ -82,11 +105,40 @@ public class msg_command_ack extends MAVLinkMessage {
      *
      */
     public msg_command_ack(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_command_ack(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACK;
+
+        readJSONheader(jo);
+        
+        this.command = (int)jo.optInt("command");
+        this.result = (short)jo.optInt("result");
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("command", command);
+        jo.put("result", result);
+        
+        
+        return jo;
     }
 
         

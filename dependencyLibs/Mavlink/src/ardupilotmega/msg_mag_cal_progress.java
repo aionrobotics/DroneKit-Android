@@ -9,6 +9,11 @@ package com.mavlink.ardupilotmega;
 import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
         
 /**
  * Reports progress of compass calibration.
@@ -18,7 +23,6 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
     public static final int MAVLINK_MSG_ID_MAG_CAL_PROGRESS = 191;
     public static final int MAVLINK_MSG_LENGTH = 27;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
-
 
       
     /**
@@ -78,30 +82,20 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
         packet.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
         
         packet.payload.putFloat(direction_x);
-        
         packet.payload.putFloat(direction_y);
-        
         packet.payload.putFloat(direction_z);
-        
         packet.payload.putUnsignedByte(compass_id);
-        
         packet.payload.putUnsignedByte(cal_mask);
-        
         packet.payload.putUnsignedByte(cal_status);
-        
         packet.payload.putUnsignedByte(attempt);
-        
         packet.payload.putUnsignedByte(completion_pct);
-        
         
         for (int i = 0; i < completion_mask.length; i++) {
             packet.payload.putUnsignedByte(completion_mask[i]);
         }
                     
         
-        if(isMavlink2) {
-            
-        }
+        
         return packet;
     }
 
@@ -114,37 +108,66 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
         payload.resetIndex();
         
         this.direction_x = payload.getFloat();
-        
         this.direction_y = payload.getFloat();
-        
         this.direction_z = payload.getFloat();
-        
         this.compass_id = payload.getUnsignedByte();
-        
         this.cal_mask = payload.getUnsignedByte();
-        
         this.cal_status = payload.getUnsignedByte();
-        
         this.attempt = payload.getUnsignedByte();
-        
         this.completion_pct = payload.getUnsignedByte();
-        
          
         for (int i = 0; i < this.completion_mask.length; i++) {
             this.completion_mask[i] = payload.getUnsignedByte();
         }
                 
         
-        if(isMavlink2) {
-            
-        }
+        
     }
 
     /**
      * Constructor for a new message, just initializes the msgid
      */
     public msg_mag_cal_progress() {
-        msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+    }
+    
+    /**
+     * Constructor for a new message, initializes msgid and all payload variables
+     */
+    public msg_mag_cal_progress( float direction_x, float direction_y, float direction_z, short compass_id, short cal_mask, short cal_status, short attempt, short completion_pct, short[] completion_mask) {
+        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+
+        this.direction_x = direction_x;
+        this.direction_y = direction_y;
+        this.direction_z = direction_z;
+        this.compass_id = compass_id;
+        this.cal_mask = cal_mask;
+        this.cal_status = cal_status;
+        this.attempt = attempt;
+        this.completion_pct = completion_pct;
+        this.completion_mask = completion_mask;
+        
+    }
+    
+    /**
+     * Constructor for a new message, initializes everything
+     */
+    public msg_mag_cal_progress( float direction_x, float direction_y, float direction_z, short compass_id, short cal_mask, short cal_status, short attempt, short completion_pct, short[] completion_mask, int sysid, int compid, boolean isMavlink2) {
+        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+        this.sysid = sysid;
+        this.compid = compid;
+        this.isMavlink2 = isMavlink2;
+
+        this.direction_x = direction_x;
+        this.direction_y = direction_y;
+        this.direction_z = direction_z;
+        this.compass_id = compass_id;
+        this.cal_mask = cal_mask;
+        this.cal_status = cal_status;
+        this.attempt = attempt;
+        this.completion_pct = completion_pct;
+        this.completion_mask = completion_mask;
+        
     }
 
     /**
@@ -153,11 +176,65 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
      *
      */
     public msg_mag_cal_progress(MAVLinkPacket mavLinkPacket) {
+        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+        
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
         this.isMavlink2 = mavLinkPacket.isMavlink2;
-        unpack(mavLinkPacket.payload);        
+        unpack(mavLinkPacket.payload);
+    }
+
+    /**
+     * Constructor for a new message, initializes the message with the payload
+     * from JSON Object
+     */
+    public msg_mag_cal_progress(JSONObject jo) {
+        this.msgid = MAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+
+        readJSONheader(jo);
+        
+        this.direction_x = (float)jo.optFloat("direction_x");
+        this.direction_y = (float)jo.optFloat("direction_y");
+        this.direction_z = (float)jo.optFloat("direction_z");
+        this.compass_id = (short)jo.optInt("compass_id");
+        this.cal_mask = (short)jo.optInt("cal_mask");
+        this.cal_status = (short)jo.optInt("cal_status");
+        this.attempt = (short)jo.optInt("attempt");
+        this.completion_pct = (short)jo.optInt("completion_pct");
+         
+        JSONArray ja_completion_mask = jo.optJSONArray("completion_mask");
+        for (int i = 0; i < Math.min(this.completion_mask.length, ja_completion_mask.length()); i++) {
+            this.completion_mask[i] = (short)ja_completion_mask.getInt(i);
+        }
+                
+        
+        
+    }
+    
+    /**
+     * Convert this class to a JSON Object
+     */
+    public JSONObject toJSON() throws JSONException {
+        final JSONObject jo = getJSONheader();
+        
+        jo.put("direction_x", direction_x);
+        jo.put("direction_y", direction_y);
+        jo.put("direction_z", direction_z);
+        jo.put("compass_id", compass_id);
+        jo.put("cal_mask", cal_mask);
+        jo.put("cal_status", cal_status);
+        jo.put("attempt", attempt);
+        jo.put("completion_pct", completion_pct);
+         
+        JSONArray ja_completion_mask = new JSONArray();
+        for (int i = 0; i < this.completion_mask.length; i++) {
+            ja_completion_mask.put(this.completion_mask[i]);
+        }
+        jo.put("completion_mask", (Object)ja_completion_mask);
+                
+        
+        
+        return jo;
     }
 
                       
