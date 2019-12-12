@@ -191,13 +191,13 @@ public class msg_collision extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("id", id);
-        jo.put("time_to_minimum_delta", time_to_minimum_delta);
-        jo.put("altitude_minimum_delta", altitude_minimum_delta);
-        jo.put("horizontal_minimum_delta", horizontal_minimum_delta);
-        jo.put("src", src);
-        jo.put("action", action);
-        jo.put("threat_level", threat_level);
+        jo.put("id", (long)id);
+        jo.put("time_to_minimum_delta", (double)time_to_minimum_delta);
+        jo.put("altitude_minimum_delta", (double)altitude_minimum_delta);
+        jo.put("horizontal_minimum_delta", (double)horizontal_minimum_delta);
+        jo.put("src", (int)src);
+        jo.put("action", (int)action);
+        jo.put("threat_level", (int)threat_level);
         
         
         return jo;

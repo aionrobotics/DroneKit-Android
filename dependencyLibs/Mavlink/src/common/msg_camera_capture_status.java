@@ -181,12 +181,12 @@ public class msg_camera_capture_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("image_interval", image_interval);
-        jo.put("recording_time_ms", recording_time_ms);
-        jo.put("available_capacity", available_capacity);
-        jo.put("image_status", image_status);
-        jo.put("video_status", video_status);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("image_interval", (double)image_interval);
+        jo.put("recording_time_ms", (long)recording_time_ms);
+        jo.put("available_capacity", (double)available_capacity);
+        jo.put("image_status", (int)image_status);
+        jo.put("video_status", (int)video_status);
         
         
         return jo;

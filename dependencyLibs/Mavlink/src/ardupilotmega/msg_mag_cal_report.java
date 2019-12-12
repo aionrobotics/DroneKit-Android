@@ -291,24 +291,24 @@ public class msg_mag_cal_report extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("fitness", fitness);
-        jo.put("ofs_x", ofs_x);
-        jo.put("ofs_y", ofs_y);
-        jo.put("ofs_z", ofs_z);
-        jo.put("diag_x", diag_x);
-        jo.put("diag_y", diag_y);
-        jo.put("diag_z", diag_z);
-        jo.put("offdiag_x", offdiag_x);
-        jo.put("offdiag_y", offdiag_y);
-        jo.put("offdiag_z", offdiag_z);
-        jo.put("compass_id", compass_id);
-        jo.put("cal_mask", cal_mask);
-        jo.put("cal_status", cal_status);
-        jo.put("autosaved", autosaved);
+        jo.put("fitness", (double)fitness);
+        jo.put("ofs_x", (double)ofs_x);
+        jo.put("ofs_y", (double)ofs_y);
+        jo.put("ofs_z", (double)ofs_z);
+        jo.put("diag_x", (double)diag_x);
+        jo.put("diag_y", (double)diag_y);
+        jo.put("diag_z", (double)diag_z);
+        jo.put("offdiag_x", (double)offdiag_x);
+        jo.put("offdiag_y", (double)offdiag_y);
+        jo.put("offdiag_z", (double)offdiag_z);
+        jo.put("compass_id", (int)compass_id);
+        jo.put("cal_mask", (int)cal_mask);
+        jo.put("cal_status", (int)cal_status);
+        jo.put("autosaved", (int)autosaved);
         
-        jo.put("orientation_confidence", orientation_confidence);
-        jo.put("old_orientation", old_orientation);
-        jo.put("new_orientation", new_orientation);
+        jo.put("orientation_confidence", (double)orientation_confidence);
+        jo.put("old_orientation", (int)old_orientation);
+        jo.put("new_orientation", (int)new_orientation);
         
         return jo;
     }

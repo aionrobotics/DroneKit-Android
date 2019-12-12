@@ -281,22 +281,22 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("utcTime", utcTime);
-        jo.put("gpsLat", gpsLat);
-        jo.put("gpsLon", gpsLon);
-        jo.put("gpsAlt", gpsAlt);
-        jo.put("baroAltMSL", baroAltMSL);
-        jo.put("accuracyHor", accuracyHor);
-        jo.put("accuracyVert", accuracyVert);
-        jo.put("accuracyVel", accuracyVel);
-        jo.put("velVert", velVert);
-        jo.put("velNS", velNS);
-        jo.put("VelEW", VelEW);
-        jo.put("state", state);
-        jo.put("squawk", squawk);
-        jo.put("gpsFix", gpsFix);
-        jo.put("numSats", numSats);
-        jo.put("emergencyStatus", emergencyStatus);
+        jo.put("utcTime", (long)utcTime);
+        jo.put("gpsLat", (int)gpsLat);
+        jo.put("gpsLon", (int)gpsLon);
+        jo.put("gpsAlt", (int)gpsAlt);
+        jo.put("baroAltMSL", (int)baroAltMSL);
+        jo.put("accuracyHor", (long)accuracyHor);
+        jo.put("accuracyVert", (int)accuracyVert);
+        jo.put("accuracyVel", (int)accuracyVel);
+        jo.put("velVert", (int)velVert);
+        jo.put("velNS", (int)velNS);
+        jo.put("VelEW", (int)VelEW);
+        jo.put("state", (int)state);
+        jo.put("squawk", (int)squawk);
+        jo.put("gpsFix", (int)gpsFix);
+        jo.put("numSats", (int)numSats);
+        jo.put("emergencyStatus", (int)emergencyStatus);
         
         
         return jo;

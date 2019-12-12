@@ -301,25 +301,25 @@ public class msg_servo_output_raw extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("servo1_raw", servo1_raw);
-        jo.put("servo2_raw", servo2_raw);
-        jo.put("servo3_raw", servo3_raw);
-        jo.put("servo4_raw", servo4_raw);
-        jo.put("servo5_raw", servo5_raw);
-        jo.put("servo6_raw", servo6_raw);
-        jo.put("servo7_raw", servo7_raw);
-        jo.put("servo8_raw", servo8_raw);
-        jo.put("port", port);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("servo1_raw", (int)servo1_raw);
+        jo.put("servo2_raw", (int)servo2_raw);
+        jo.put("servo3_raw", (int)servo3_raw);
+        jo.put("servo4_raw", (int)servo4_raw);
+        jo.put("servo5_raw", (int)servo5_raw);
+        jo.put("servo6_raw", (int)servo6_raw);
+        jo.put("servo7_raw", (int)servo7_raw);
+        jo.put("servo8_raw", (int)servo8_raw);
+        jo.put("port", (int)port);
         
-        jo.put("servo9_raw", servo9_raw);
-        jo.put("servo10_raw", servo10_raw);
-        jo.put("servo11_raw", servo11_raw);
-        jo.put("servo12_raw", servo12_raw);
-        jo.put("servo13_raw", servo13_raw);
-        jo.put("servo14_raw", servo14_raw);
-        jo.put("servo15_raw", servo15_raw);
-        jo.put("servo16_raw", servo16_raw);
+        jo.put("servo9_raw", (int)servo9_raw);
+        jo.put("servo10_raw", (int)servo10_raw);
+        jo.put("servo11_raw", (int)servo11_raw);
+        jo.put("servo12_raw", (int)servo12_raw);
+        jo.put("servo13_raw", (int)servo13_raw);
+        jo.put("servo14_raw", (int)servo14_raw);
+        jo.put("servo15_raw", (int)servo15_raw);
+        jo.put("servo16_raw", (int)servo16_raw);
         
         return jo;
     }

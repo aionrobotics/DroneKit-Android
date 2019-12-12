@@ -151,9 +151,9 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("gcs_system_id", gcs_system_id);
-        jo.put("control_request", control_request);
-        jo.put("ack", ack);
+        jo.put("gcs_system_id", (int)gcs_system_id);
+        jo.put("control_request", (int)control_request);
+        jo.put("ack", (int)ack);
         
         
         return jo;

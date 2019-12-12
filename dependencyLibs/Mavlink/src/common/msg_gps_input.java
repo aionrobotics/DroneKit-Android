@@ -310,24 +310,24 @@ public class msg_gps_input extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("time_week_ms", time_week_ms);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("hdop", hdop);
-        jo.put("vdop", vdop);
-        jo.put("vn", vn);
-        jo.put("ve", ve);
-        jo.put("vd", vd);
-        jo.put("speed_accuracy", speed_accuracy);
-        jo.put("horiz_accuracy", horiz_accuracy);
-        jo.put("vert_accuracy", vert_accuracy);
-        jo.put("ignore_flags", ignore_flags);
-        jo.put("time_week", time_week);
-        jo.put("gps_id", gps_id);
-        jo.put("fix_type", fix_type);
-        jo.put("satellites_visible", satellites_visible);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("time_week_ms", (long)time_week_ms);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (double)alt);
+        jo.put("hdop", (double)hdop);
+        jo.put("vdop", (double)vdop);
+        jo.put("vn", (double)vn);
+        jo.put("ve", (double)ve);
+        jo.put("vd", (double)vd);
+        jo.put("speed_accuracy", (double)speed_accuracy);
+        jo.put("horiz_accuracy", (double)horiz_accuracy);
+        jo.put("vert_accuracy", (double)vert_accuracy);
+        jo.put("ignore_flags", (int)ignore_flags);
+        jo.put("time_week", (int)time_week);
+        jo.put("gps_id", (int)gps_id);
+        jo.put("fix_type", (int)fix_type);
+        jo.put("satellites_visible", (int)satellites_visible);
         
         
         return jo;

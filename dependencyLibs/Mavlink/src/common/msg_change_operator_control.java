@@ -182,15 +182,15 @@ public class msg_change_operator_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("target_system", target_system);
-        jo.put("control_request", control_request);
-        jo.put("version", version);
+        jo.put("target_system", (int)target_system);
+        jo.put("control_request", (int)control_request);
+        jo.put("version", (int)version);
          
         JSONArray ja_passkey = new JSONArray();
         for (int i = 0; i < this.passkey.length; i++) {
             ja_passkey.put(this.passkey[i]);
         }
-        jo.put("passkey", (Object)ja_passkey);
+        jo.putOpt("passkey", (Object)ja_passkey);
                 
         
         

@@ -191,13 +191,13 @@ public class msg_ahrs extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("omegaIx", omegaIx);
-        jo.put("omegaIy", omegaIy);
-        jo.put("omegaIz", omegaIz);
-        jo.put("accel_weight", accel_weight);
-        jo.put("renorm_val", renorm_val);
-        jo.put("error_rp", error_rp);
-        jo.put("error_yaw", error_yaw);
+        jo.put("omegaIx", (double)omegaIx);
+        jo.put("omegaIy", (double)omegaIy);
+        jo.put("omegaIz", (double)omegaIz);
+        jo.put("accel_weight", (double)accel_weight);
+        jo.put("renorm_val", (double)renorm_val);
+        jo.put("error_rp", (double)error_rp);
+        jo.put("error_yaw", (double)error_yaw);
         
         
         return jo;

@@ -222,20 +222,20 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("ICAO", ICAO);
-        jo.put("stallSpeed", stallSpeed);
+        jo.put("ICAO", (long)ICAO);
+        jo.put("stallSpeed", (int)stallSpeed);
          
         JSONArray ja_callsign = new JSONArray();
         for (int i = 0; i < this.callsign.length; i++) {
             ja_callsign.put(this.callsign[i]);
         }
-        jo.put("callsign", (Object)ja_callsign);
+        jo.putOpt("callsign", (Object)ja_callsign);
                 
-        jo.put("emitterType", emitterType);
-        jo.put("aircraftSize", aircraftSize);
-        jo.put("gpsOffsetLat", gpsOffsetLat);
-        jo.put("gpsOffsetLon", gpsOffsetLon);
-        jo.put("rfSelect", rfSelect);
+        jo.put("emitterType", (int)emitterType);
+        jo.put("aircraftSize", (int)aircraftSize);
+        jo.put("gpsOffsetLat", (int)gpsOffsetLat);
+        jo.put("gpsOffsetLon", (int)gpsOffsetLon);
+        jo.put("rfSelect", (int)rfSelect);
         
         
         return jo;

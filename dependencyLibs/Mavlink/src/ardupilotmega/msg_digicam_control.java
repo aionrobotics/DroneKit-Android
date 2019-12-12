@@ -221,16 +221,16 @@ public class msg_digicam_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("extra_value", extra_value);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("session", session);
-        jo.put("zoom_pos", zoom_pos);
-        jo.put("zoom_step", zoom_step);
-        jo.put("focus_lock", focus_lock);
-        jo.put("shot", shot);
-        jo.put("command_id", command_id);
-        jo.put("extra_param", extra_param);
+        jo.put("extra_value", (double)extra_value);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("session", (int)session);
+        jo.put("zoom_pos", (int)zoom_pos);
+        jo.put("zoom_step", (int)zoom_step);
+        jo.put("focus_lock", (int)focus_lock);
+        jo.put("shot", (int)shot);
+        jo.put("command_id", (int)command_id);
+        jo.put("extra_param", (int)extra_param);
         
         
         return jo;

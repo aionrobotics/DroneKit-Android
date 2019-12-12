@@ -231,17 +231,17 @@ public class msg_simstate extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("xacc", xacc);
-        jo.put("yacc", yacc);
-        jo.put("zacc", zacc);
-        jo.put("xgyro", xgyro);
-        jo.put("ygyro", ygyro);
-        jo.put("zgyro", zgyro);
-        jo.put("lat", lat);
-        jo.put("lng", lng);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("xacc", (double)xacc);
+        jo.put("yacc", (double)yacc);
+        jo.put("zacc", (double)zacc);
+        jo.put("xgyro", (double)xgyro);
+        jo.put("ygyro", (double)ygyro);
+        jo.put("zgyro", (double)zgyro);
+        jo.put("lat", (int)lat);
+        jo.put("lng", (int)lng);
         
         
         return jo;

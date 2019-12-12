@@ -250,24 +250,24 @@ public class msg_battery_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("current_consumed", current_consumed);
-        jo.put("energy_consumed", energy_consumed);
-        jo.put("temperature", temperature);
+        jo.put("current_consumed", (int)current_consumed);
+        jo.put("energy_consumed", (int)energy_consumed);
+        jo.put("temperature", (int)temperature);
          
         JSONArray ja_voltages = new JSONArray();
         for (int i = 0; i < this.voltages.length; i++) {
             ja_voltages.put(this.voltages[i]);
         }
-        jo.put("voltages", (Object)ja_voltages);
+        jo.putOpt("voltages", (Object)ja_voltages);
                 
-        jo.put("current_battery", current_battery);
-        jo.put("id", id);
-        jo.put("battery_function", battery_function);
-        jo.put("type", type);
-        jo.put("battery_remaining", battery_remaining);
+        jo.put("current_battery", (int)current_battery);
+        jo.put("id", (int)id);
+        jo.put("battery_function", (int)battery_function);
+        jo.put("type", (int)type);
+        jo.put("battery_remaining", (int)battery_remaining);
         
-        jo.put("time_remaining", time_remaining);
-        jo.put("charge_state", charge_state);
+        jo.put("time_remaining", (int)time_remaining);
+        jo.put("charge_state", (int)charge_state);
         
         return jo;
     }

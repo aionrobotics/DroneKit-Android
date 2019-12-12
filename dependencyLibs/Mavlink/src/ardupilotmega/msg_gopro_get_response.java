@@ -170,14 +170,14 @@ public class msg_gopro_get_response extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("cmd_id", cmd_id);
-        jo.put("status", status);
+        jo.put("cmd_id", (int)cmd_id);
+        jo.put("status", (int)status);
          
         JSONArray ja_value = new JSONArray();
         for (int i = 0; i < this.value.length; i++) {
             ja_value.put(this.value[i]);
         }
-        jo.put("value", (Object)ja_value);
+        jo.putOpt("value", (Object)ja_value);
                 
         
         

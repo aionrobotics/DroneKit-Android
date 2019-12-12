@@ -141,8 +141,8 @@ public class msg_command_ack extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("command", command);
-        jo.put("result", result);
+        jo.put("command", (int)command);
+        jo.put("result", (int)result);
         
         
         return jo;

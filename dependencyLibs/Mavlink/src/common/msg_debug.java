@@ -151,9 +151,9 @@ public class msg_debug extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("value", value);
-        jo.put("ind", ind);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("value", (double)value);
+        jo.put("ind", (int)ind);
         
         
         return jo;

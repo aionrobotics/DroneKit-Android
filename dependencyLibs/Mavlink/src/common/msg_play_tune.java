@@ -203,14 +203,14 @@ public class msg_play_tune extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_tune = new JSONArray();
         for (int i = 0; i < this.tune.length; i++) {
             ja_tune.put(this.tune[i]);
         }
-        jo.put("tune", (Object)ja_tune);
+        jo.putOpt("tune", (Object)ja_tune);
                 
         
          
@@ -218,7 +218,7 @@ public class msg_play_tune extends MAVLinkMessage {
         for (int i = 0; i < this.tune2.length; i++) {
             ja_tune2.put(this.tune2[i]);
         }
-        jo.put("tune2", (Object)ja_tune2);
+        jo.putOpt("tune2", (Object)ja_tune2);
                 
         
         return jo;

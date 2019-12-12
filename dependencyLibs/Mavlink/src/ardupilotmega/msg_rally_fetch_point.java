@@ -151,9 +151,9 @@ public class msg_rally_fetch_point extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("idx", idx);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("idx", (int)idx);
         
         
         return jo;

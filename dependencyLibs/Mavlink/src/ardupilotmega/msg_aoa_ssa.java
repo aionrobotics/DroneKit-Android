@@ -160,9 +160,9 @@ public class msg_aoa_ssa extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("AOA", AOA);
-        jo.put("SSA", SSA);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("AOA", (double)AOA);
+        jo.put("SSA", (double)SSA);
         
         
         return jo;

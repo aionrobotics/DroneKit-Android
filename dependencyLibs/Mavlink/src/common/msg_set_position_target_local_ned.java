@@ -281,22 +281,22 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("afx", afx);
-        jo.put("afy", afy);
-        jo.put("afz", afz);
-        jo.put("yaw", yaw);
-        jo.put("yaw_rate", yaw_rate);
-        jo.put("type_mask", type_mask);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("coordinate_frame", coordinate_frame);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
+        jo.put("afx", (double)afx);
+        jo.put("afy", (double)afy);
+        jo.put("afz", (double)afz);
+        jo.put("yaw", (double)yaw);
+        jo.put("yaw_rate", (double)yaw_rate);
+        jo.put("type_mask", (int)type_mask);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("coordinate_frame", (int)coordinate_frame);
         
         
         return jo;

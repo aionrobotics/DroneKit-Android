@@ -261,27 +261,27 @@ public class msg_device_op_write extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("request_id", request_id);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("bustype", bustype);
-        jo.put("bus", bus);
-        jo.put("address", address);
+        jo.put("request_id", (long)request_id);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("bustype", (int)bustype);
+        jo.put("bus", (int)bus);
+        jo.put("address", (int)address);
          
         JSONArray ja_busname = new JSONArray();
         for (int i = 0; i < this.busname.length; i++) {
             ja_busname.put(this.busname[i]);
         }
-        jo.put("busname", (Object)ja_busname);
+        jo.putOpt("busname", (Object)ja_busname);
                 
-        jo.put("regstart", regstart);
-        jo.put("count", count);
+        jo.put("regstart", (int)regstart);
+        jo.put("count", (int)count);
          
         JSONArray ja_data = new JSONArray();
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
         
         

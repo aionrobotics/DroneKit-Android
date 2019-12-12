@@ -260,27 +260,27 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("uptime_sec", uptime_sec);
-        jo.put("sw_vcs_commit", sw_vcs_commit);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("uptime_sec", (long)uptime_sec);
+        jo.put("sw_vcs_commit", (long)sw_vcs_commit);
          
         JSONArray ja_name = new JSONArray();
         for (int i = 0; i < this.name.length; i++) {
             ja_name.put(this.name[i]);
         }
-        jo.put("name", (Object)ja_name);
+        jo.putOpt("name", (Object)ja_name);
                 
-        jo.put("hw_version_major", hw_version_major);
-        jo.put("hw_version_minor", hw_version_minor);
+        jo.put("hw_version_major", (int)hw_version_major);
+        jo.put("hw_version_minor", (int)hw_version_minor);
          
         JSONArray ja_hw_unique_id = new JSONArray();
         for (int i = 0; i < this.hw_unique_id.length; i++) {
             ja_hw_unique_id.put(this.hw_unique_id[i]);
         }
-        jo.put("hw_unique_id", (Object)ja_hw_unique_id);
+        jo.putOpt("hw_unique_id", (Object)ja_hw_unique_id);
                 
-        jo.put("sw_version_major", sw_version_major);
-        jo.put("sw_version_minor", sw_version_minor);
+        jo.put("sw_version_major", (int)sw_version_major);
+        jo.put("sw_version_minor", (int)sw_version_minor);
         
         
         return jo;

@@ -191,13 +191,13 @@ public class msg_terrain_report extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("terrain_height", terrain_height);
-        jo.put("current_height", current_height);
-        jo.put("spacing", spacing);
-        jo.put("pending", pending);
-        jo.put("loaded", loaded);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("terrain_height", (double)terrain_height);
+        jo.put("current_height", (double)current_height);
+        jo.put("spacing", (int)spacing);
+        jo.put("pending", (int)pending);
+        jo.put("loaded", (int)loaded);
         
         
         return jo;

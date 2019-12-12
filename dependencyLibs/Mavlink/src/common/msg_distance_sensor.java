@@ -250,23 +250,23 @@ public class msg_distance_sensor extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("min_distance", min_distance);
-        jo.put("max_distance", max_distance);
-        jo.put("current_distance", current_distance);
-        jo.put("type", type);
-        jo.put("id", id);
-        jo.put("orientation", orientation);
-        jo.put("covariance", covariance);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("min_distance", (int)min_distance);
+        jo.put("max_distance", (int)max_distance);
+        jo.put("current_distance", (int)current_distance);
+        jo.put("type", (int)type);
+        jo.put("id", (int)id);
+        jo.put("orientation", (int)orientation);
+        jo.put("covariance", (int)covariance);
         
-        jo.put("horizontal_fov", horizontal_fov);
-        jo.put("vertical_fov", vertical_fov);
+        jo.put("horizontal_fov", (double)horizontal_fov);
+        jo.put("vertical_fov", (double)vertical_fov);
          
         JSONArray ja_quaternion = new JSONArray();
         for (int i = 0; i < this.quaternion.length; i++) {
             ja_quaternion.put(this.quaternion[i]);
         }
-        jo.put("quaternion", (Object)ja_quaternion);
+        jo.putOpt("quaternion", (Object)ja_quaternion);
                 
         
         return jo;

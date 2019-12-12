@@ -151,9 +151,9 @@ public class msg_wind extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("direction", direction);
-        jo.put("speed", speed);
-        jo.put("speed_z", speed_z);
+        jo.put("direction", (double)direction);
+        jo.put("speed", (double)speed);
+        jo.put("speed_z", (double)speed_z);
         
         
         return jo;

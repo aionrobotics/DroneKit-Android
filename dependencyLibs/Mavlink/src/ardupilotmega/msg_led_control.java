@@ -200,17 +200,17 @@ public class msg_led_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("instance", instance);
-        jo.put("pattern", pattern);
-        jo.put("custom_len", custom_len);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("instance", (int)instance);
+        jo.put("pattern", (int)pattern);
+        jo.put("custom_len", (int)custom_len);
          
         JSONArray ja_custom_bytes = new JSONArray();
         for (int i = 0; i < this.custom_bytes.length; i++) {
             ja_custom_bytes.put(this.custom_bytes[i]);
         }
-        jo.put("custom_bytes", (Object)ja_custom_bytes);
+        jo.putOpt("custom_bytes", (Object)ja_custom_bytes);
                 
         
         

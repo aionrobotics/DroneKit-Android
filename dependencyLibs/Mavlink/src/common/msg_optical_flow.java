@@ -230,17 +230,17 @@ public class msg_optical_flow extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("flow_comp_m_x", flow_comp_m_x);
-        jo.put("flow_comp_m_y", flow_comp_m_y);
-        jo.put("ground_distance", ground_distance);
-        jo.put("flow_x", flow_x);
-        jo.put("flow_y", flow_y);
-        jo.put("sensor_id", sensor_id);
-        jo.put("quality", quality);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("flow_comp_m_x", (double)flow_comp_m_x);
+        jo.put("flow_comp_m_y", (double)flow_comp_m_y);
+        jo.put("ground_distance", (double)ground_distance);
+        jo.put("flow_x", (int)flow_x);
+        jo.put("flow_y", (int)flow_y);
+        jo.put("sensor_id", (int)sensor_id);
+        jo.put("quality", (int)quality);
         
-        jo.put("flow_rate_x", flow_rate_x);
-        jo.put("flow_rate_y", flow_rate_y);
+        jo.put("flow_rate_x", (double)flow_rate_x);
+        jo.put("flow_rate_y", (double)flow_rate_y);
         
         return jo;
     }

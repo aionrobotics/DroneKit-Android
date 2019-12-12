@@ -171,12 +171,12 @@ public class msg_mount_orientation extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
         
-        jo.put("yaw_absolute", yaw_absolute);
+        jo.put("yaw_absolute", (double)yaw_absolute);
         
         return jo;
     }

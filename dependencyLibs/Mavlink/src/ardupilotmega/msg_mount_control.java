@@ -181,12 +181,12 @@ public class msg_mount_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("input_a", input_a);
-        jo.put("input_b", input_b);
-        jo.put("input_c", input_c);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("save_position", save_position);
+        jo.put("input_a", (int)input_a);
+        jo.put("input_b", (int)input_b);
+        jo.put("input_c", (int)input_c);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("save_position", (int)save_position);
         
         
         return jo;

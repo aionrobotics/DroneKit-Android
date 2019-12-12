@@ -251,19 +251,19 @@ public class msg_sys_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("onboard_control_sensors_present", onboard_control_sensors_present);
-        jo.put("onboard_control_sensors_enabled", onboard_control_sensors_enabled);
-        jo.put("onboard_control_sensors_health", onboard_control_sensors_health);
-        jo.put("load", load);
-        jo.put("voltage_battery", voltage_battery);
-        jo.put("current_battery", current_battery);
-        jo.put("drop_rate_comm", drop_rate_comm);
-        jo.put("errors_comm", errors_comm);
-        jo.put("errors_count1", errors_count1);
-        jo.put("errors_count2", errors_count2);
-        jo.put("errors_count3", errors_count3);
-        jo.put("errors_count4", errors_count4);
-        jo.put("battery_remaining", battery_remaining);
+        jo.put("onboard_control_sensors_present", (long)onboard_control_sensors_present);
+        jo.put("onboard_control_sensors_enabled", (long)onboard_control_sensors_enabled);
+        jo.put("onboard_control_sensors_health", (long)onboard_control_sensors_health);
+        jo.put("load", (int)load);
+        jo.put("voltage_battery", (int)voltage_battery);
+        jo.put("current_battery", (int)current_battery);
+        jo.put("drop_rate_comm", (int)drop_rate_comm);
+        jo.put("errors_comm", (int)errors_comm);
+        jo.put("errors_count1", (int)errors_count1);
+        jo.put("errors_count2", (int)errors_count2);
+        jo.put("errors_count3", (int)errors_count3);
+        jo.put("errors_count4", (int)errors_count4);
+        jo.put("battery_remaining", (int)battery_remaining);
         
         
         return jo;

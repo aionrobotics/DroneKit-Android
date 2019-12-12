@@ -241,18 +241,18 @@ public class msg_sensor_offsets extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("mag_declination", mag_declination);
-        jo.put("raw_press", raw_press);
-        jo.put("raw_temp", raw_temp);
-        jo.put("gyro_cal_x", gyro_cal_x);
-        jo.put("gyro_cal_y", gyro_cal_y);
-        jo.put("gyro_cal_z", gyro_cal_z);
-        jo.put("accel_cal_x", accel_cal_x);
-        jo.put("accel_cal_y", accel_cal_y);
-        jo.put("accel_cal_z", accel_cal_z);
-        jo.put("mag_ofs_x", mag_ofs_x);
-        jo.put("mag_ofs_y", mag_ofs_y);
-        jo.put("mag_ofs_z", mag_ofs_z);
+        jo.put("mag_declination", (double)mag_declination);
+        jo.put("raw_press", (int)raw_press);
+        jo.put("raw_temp", (int)raw_temp);
+        jo.put("gyro_cal_x", (double)gyro_cal_x);
+        jo.put("gyro_cal_y", (double)gyro_cal_y);
+        jo.put("gyro_cal_z", (double)gyro_cal_z);
+        jo.put("accel_cal_x", (double)accel_cal_x);
+        jo.put("accel_cal_y", (double)accel_cal_y);
+        jo.put("accel_cal_z", (double)accel_cal_z);
+        jo.put("mag_ofs_x", (int)mag_ofs_x);
+        jo.put("mag_ofs_y", (int)mag_ofs_y);
+        jo.put("mag_ofs_z", (int)mag_ofs_z);
         
         
         return jo;

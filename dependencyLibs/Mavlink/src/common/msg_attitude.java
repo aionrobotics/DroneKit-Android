@@ -191,13 +191,13 @@ public class msg_attitude extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("rollspeed", rollspeed);
-        jo.put("pitchspeed", pitchspeed);
-        jo.put("yawspeed", yawspeed);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("rollspeed", (double)rollspeed);
+        jo.put("pitchspeed", (double)pitchspeed);
+        jo.put("yawspeed", (double)yawspeed);
         
         
         return jo;

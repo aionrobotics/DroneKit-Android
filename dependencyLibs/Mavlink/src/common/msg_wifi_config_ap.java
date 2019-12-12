@@ -188,14 +188,14 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
         for (int i = 0; i < this.ssid.length; i++) {
             ja_ssid.put(this.ssid[i]);
         }
-        jo.put("ssid", (Object)ja_ssid);
+        jo.putOpt("ssid", (Object)ja_ssid);
                 
          
         JSONArray ja_password = new JSONArray();
         for (int i = 0; i < this.password.length; i++) {
             ja_password.put(this.password[i]);
         }
-        jo.put("password", (Object)ja_password);
+        jo.putOpt("password", (Object)ja_password);
                 
         
         

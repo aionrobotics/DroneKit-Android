@@ -172,14 +172,14 @@ public class msg_named_value_float extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("value", value);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("value", (double)value);
          
         JSONArray ja_name = new JSONArray();
         for (int i = 0; i < this.name.length; i++) {
             ja_name.put(this.name[i]);
         }
-        jo.put("name", (Object)ja_name);
+        jo.putOpt("name", (Object)ja_name);
                 
         
         

@@ -220,15 +220,15 @@ public class msg_camera_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("p1", p1);
-        jo.put("p2", p2);
-        jo.put("p3", p3);
-        jo.put("p4", p4);
-        jo.put("img_idx", img_idx);
-        jo.put("target_system", target_system);
-        jo.put("cam_idx", cam_idx);
-        jo.put("event_id", event_id);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("p1", (double)p1);
+        jo.put("p2", (double)p2);
+        jo.put("p3", (double)p3);
+        jo.put("p4", (double)p4);
+        jo.put("img_idx", (int)img_idx);
+        jo.put("target_system", (int)target_system);
+        jo.put("cam_idx", (int)cam_idx);
+        jo.put("event_id", (int)event_id);
         
         
         return jo;

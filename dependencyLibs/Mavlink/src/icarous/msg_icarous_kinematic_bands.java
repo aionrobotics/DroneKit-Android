@@ -281,22 +281,22 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("min1", min1);
-        jo.put("max1", max1);
-        jo.put("min2", min2);
-        jo.put("max2", max2);
-        jo.put("min3", min3);
-        jo.put("max3", max3);
-        jo.put("min4", min4);
-        jo.put("max4", max4);
-        jo.put("min5", min5);
-        jo.put("max5", max5);
-        jo.put("numBands", numBands);
-        jo.put("type1", type1);
-        jo.put("type2", type2);
-        jo.put("type3", type3);
-        jo.put("type4", type4);
-        jo.put("type5", type5);
+        jo.put("min1", (double)min1);
+        jo.put("max1", (double)max1);
+        jo.put("min2", (double)min2);
+        jo.put("max2", (double)max2);
+        jo.put("min3", (double)min3);
+        jo.put("max3", (double)max3);
+        jo.put("min4", (double)min4);
+        jo.put("max4", (double)max4);
+        jo.put("min5", (double)min5);
+        jo.put("max5", (double)max5);
+        jo.put("numBands", (int)numBands);
+        jo.put("type1", (int)type1);
+        jo.put("type2", (int)type2);
+        jo.put("type3", (int)type3);
+        jo.put("type4", (int)type4);
+        jo.put("type5", (int)type5);
         
         
         return jo;

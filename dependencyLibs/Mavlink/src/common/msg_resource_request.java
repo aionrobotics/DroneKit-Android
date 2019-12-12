@@ -209,22 +209,22 @@ public class msg_resource_request extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("request_id", request_id);
-        jo.put("uri_type", uri_type);
+        jo.put("request_id", (int)request_id);
+        jo.put("uri_type", (int)uri_type);
          
         JSONArray ja_uri = new JSONArray();
         for (int i = 0; i < this.uri.length; i++) {
             ja_uri.put(this.uri[i]);
         }
-        jo.put("uri", (Object)ja_uri);
+        jo.putOpt("uri", (Object)ja_uri);
                 
-        jo.put("transfer_type", transfer_type);
+        jo.put("transfer_type", (int)transfer_type);
          
         JSONArray ja_storage = new JSONArray();
         for (int i = 0; i < this.storage.length; i++) {
             ja_storage.put(this.storage[i]);
         }
-        jo.put("storage", (Object)ja_storage);
+        jo.putOpt("storage", (Object)ja_storage);
                 
         
         

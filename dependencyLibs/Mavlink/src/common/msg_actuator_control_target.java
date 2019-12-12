@@ -179,15 +179,15 @@ public class msg_actuator_control_target extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
          
         JSONArray ja_controls = new JSONArray();
         for (int i = 0; i < this.controls.length; i++) {
             ja_controls.put(this.controls[i]);
         }
-        jo.put("controls", (Object)ja_controls);
+        jo.putOpt("controls", (Object)ja_controls);
                 
-        jo.put("group_mlx", group_mlx);
+        jo.put("group_mlx", (int)group_mlx);
         
         
         return jo;

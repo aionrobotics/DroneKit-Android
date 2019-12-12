@@ -290,22 +290,22 @@ public class msg_hil_state extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("rollspeed", rollspeed);
-        jo.put("pitchspeed", pitchspeed);
-        jo.put("yawspeed", yawspeed);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("xacc", xacc);
-        jo.put("yacc", yacc);
-        jo.put("zacc", zacc);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("rollspeed", (double)rollspeed);
+        jo.put("pitchspeed", (double)pitchspeed);
+        jo.put("yawspeed", (double)yawspeed);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("vx", (int)vx);
+        jo.put("vy", (int)vy);
+        jo.put("vz", (int)vz);
+        jo.put("xacc", (int)xacc);
+        jo.put("yacc", (int)yacc);
+        jo.put("zacc", (int)zacc);
         
         
         return jo;

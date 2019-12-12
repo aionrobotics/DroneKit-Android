@@ -232,21 +232,21 @@ public class msg_param_map_rc extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("param_value0", param_value0);
-        jo.put("scale", scale);
-        jo.put("param_value_min", param_value_min);
-        jo.put("param_value_max", param_value_max);
-        jo.put("param_index", param_index);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("param_value0", (double)param_value0);
+        jo.put("scale", (double)scale);
+        jo.put("param_value_min", (double)param_value_min);
+        jo.put("param_value_max", (double)param_value_max);
+        jo.put("param_index", (int)param_index);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_param_id = new JSONArray();
         for (int i = 0; i < this.param_id.length; i++) {
             ja_param_id.put(this.param_id[i]);
         }
-        jo.put("param_id", (Object)ja_param_id);
+        jo.putOpt("param_id", (Object)ja_param_id);
                 
-        jo.put("parameter_rc_channel_index", parameter_rc_channel_index);
+        jo.put("parameter_rc_channel_index", (int)parameter_rc_channel_index);
         
         
         return jo;

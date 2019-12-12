@@ -191,13 +191,13 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
         
         
         return jo;

@@ -281,22 +281,22 @@ public class msg_gps_raw_int extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("eph", eph);
-        jo.put("epv", epv);
-        jo.put("vel", vel);
-        jo.put("cog", cog);
-        jo.put("fix_type", fix_type);
-        jo.put("satellites_visible", satellites_visible);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("eph", (int)eph);
+        jo.put("epv", (int)epv);
+        jo.put("vel", (int)vel);
+        jo.put("cog", (int)cog);
+        jo.put("fix_type", (int)fix_type);
+        jo.put("satellites_visible", (int)satellites_visible);
         
-        jo.put("alt_ellipsoid", alt_ellipsoid);
-        jo.put("h_acc", h_acc);
-        jo.put("v_acc", v_acc);
-        jo.put("vel_acc", vel_acc);
-        jo.put("hdg_acc", hdg_acc);
+        jo.put("alt_ellipsoid", (int)alt_ellipsoid);
+        jo.put("h_acc", (long)h_acc);
+        jo.put("v_acc", (long)v_acc);
+        jo.put("vel_acc", (long)vel_acc);
+        jo.put("hdg_acc", (long)hdg_acc);
         
         return jo;
     }

@@ -335,34 +335,34 @@ public class msg_autopilot_version extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("capabilities", capabilities);
-        jo.put("uid", uid);
-        jo.put("flight_sw_version", flight_sw_version);
-        jo.put("middleware_sw_version", middleware_sw_version);
-        jo.put("os_sw_version", os_sw_version);
-        jo.put("board_version", board_version);
-        jo.put("vendor_id", vendor_id);
-        jo.put("product_id", product_id);
+        jo.put("capabilities", (long)capabilities);
+        jo.put("uid", (long)uid);
+        jo.put("flight_sw_version", (long)flight_sw_version);
+        jo.put("middleware_sw_version", (long)middleware_sw_version);
+        jo.put("os_sw_version", (long)os_sw_version);
+        jo.put("board_version", (long)board_version);
+        jo.put("vendor_id", (int)vendor_id);
+        jo.put("product_id", (int)product_id);
          
         JSONArray ja_flight_custom_version = new JSONArray();
         for (int i = 0; i < this.flight_custom_version.length; i++) {
             ja_flight_custom_version.put(this.flight_custom_version[i]);
         }
-        jo.put("flight_custom_version", (Object)ja_flight_custom_version);
+        jo.putOpt("flight_custom_version", (Object)ja_flight_custom_version);
                 
          
         JSONArray ja_middleware_custom_version = new JSONArray();
         for (int i = 0; i < this.middleware_custom_version.length; i++) {
             ja_middleware_custom_version.put(this.middleware_custom_version[i]);
         }
-        jo.put("middleware_custom_version", (Object)ja_middleware_custom_version);
+        jo.putOpt("middleware_custom_version", (Object)ja_middleware_custom_version);
                 
          
         JSONArray ja_os_custom_version = new JSONArray();
         for (int i = 0; i < this.os_custom_version.length; i++) {
             ja_os_custom_version.put(this.os_custom_version[i]);
         }
-        jo.put("os_custom_version", (Object)ja_os_custom_version);
+        jo.putOpt("os_custom_version", (Object)ja_os_custom_version);
                 
         
          
@@ -370,7 +370,7 @@ public class msg_autopilot_version extends MAVLinkMessage {
         for (int i = 0; i < this.uid2.length; i++) {
             ja_uid2.put(this.uid2[i]);
         }
-        jo.put("uid2", (Object)ja_uid2);
+        jo.putOpt("uid2", (Object)ja_uid2);
                 
         
         return jo;

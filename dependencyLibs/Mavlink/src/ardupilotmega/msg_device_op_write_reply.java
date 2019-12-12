@@ -141,8 +141,8 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("request_id", request_id);
-        jo.put("result", result);
+        jo.put("request_id", (long)request_id);
+        jo.put("result", (int)result);
         
         
         return jo;

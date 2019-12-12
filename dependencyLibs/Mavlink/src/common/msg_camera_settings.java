@@ -161,11 +161,11 @@ public class msg_camera_settings extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("mode_id", mode_id);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("mode_id", (int)mode_id);
         
-        jo.put("zoomLevel", zoomLevel);
-        jo.put("focusLevel", focusLevel);
+        jo.put("zoomLevel", (double)zoomLevel);
+        jo.put("focusLevel", (double)focusLevel);
         
         return jo;
     }

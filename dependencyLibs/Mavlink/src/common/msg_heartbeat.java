@@ -181,12 +181,12 @@ public class msg_heartbeat extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("custom_mode", custom_mode);
-        jo.put("type", type);
-        jo.put("autopilot", autopilot);
-        jo.put("base_mode", base_mode);
-        jo.put("system_status", system_status);
-        jo.put("mavlink_version", mavlink_version);
+        jo.put("custom_mode", (long)custom_mode);
+        jo.put("type", (int)type);
+        jo.put("autopilot", (int)autopilot);
+        jo.put("base_mode", (int)base_mode);
+        jo.put("system_status", (int)system_status);
+        jo.put("mavlink_version", (int)mavlink_version);
         
         
         return jo;

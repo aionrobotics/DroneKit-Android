@@ -251,19 +251,19 @@ public class msg_command_int extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("param1", param1);
-        jo.put("param2", param2);
-        jo.put("param3", param3);
-        jo.put("param4", param4);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("command", command);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("frame", frame);
-        jo.put("current", current);
-        jo.put("autocontinue", autocontinue);
+        jo.put("param1", (double)param1);
+        jo.put("param2", (double)param2);
+        jo.put("param3", (double)param3);
+        jo.put("param4", (double)param4);
+        jo.put("x", (int)x);
+        jo.put("y", (int)y);
+        jo.put("z", (double)z);
+        jo.put("command", (int)command);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("frame", (int)frame);
+        jo.put("current", (int)current);
+        jo.put("autocontinue", (int)autocontinue);
         
         
         return jo;

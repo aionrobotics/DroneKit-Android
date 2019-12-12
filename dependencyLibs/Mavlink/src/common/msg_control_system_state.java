@@ -357,41 +357,41 @@ public class msg_control_system_state extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("x_acc", x_acc);
-        jo.put("y_acc", y_acc);
-        jo.put("z_acc", z_acc);
-        jo.put("x_vel", x_vel);
-        jo.put("y_vel", y_vel);
-        jo.put("z_vel", z_vel);
-        jo.put("x_pos", x_pos);
-        jo.put("y_pos", y_pos);
-        jo.put("z_pos", z_pos);
-        jo.put("airspeed", airspeed);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("x_acc", (double)x_acc);
+        jo.put("y_acc", (double)y_acc);
+        jo.put("z_acc", (double)z_acc);
+        jo.put("x_vel", (double)x_vel);
+        jo.put("y_vel", (double)y_vel);
+        jo.put("z_vel", (double)z_vel);
+        jo.put("x_pos", (double)x_pos);
+        jo.put("y_pos", (double)y_pos);
+        jo.put("z_pos", (double)z_pos);
+        jo.put("airspeed", (double)airspeed);
          
         JSONArray ja_vel_variance = new JSONArray();
         for (int i = 0; i < this.vel_variance.length; i++) {
             ja_vel_variance.put(this.vel_variance[i]);
         }
-        jo.put("vel_variance", (Object)ja_vel_variance);
+        jo.putOpt("vel_variance", (Object)ja_vel_variance);
                 
          
         JSONArray ja_pos_variance = new JSONArray();
         for (int i = 0; i < this.pos_variance.length; i++) {
             ja_pos_variance.put(this.pos_variance[i]);
         }
-        jo.put("pos_variance", (Object)ja_pos_variance);
+        jo.putOpt("pos_variance", (Object)ja_pos_variance);
                 
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("roll_rate", roll_rate);
-        jo.put("pitch_rate", pitch_rate);
-        jo.put("yaw_rate", yaw_rate);
+        jo.put("roll_rate", (double)roll_rate);
+        jo.put("pitch_rate", (double)pitch_rate);
+        jo.put("yaw_rate", (double)yaw_rate);
         
         
         return jo;

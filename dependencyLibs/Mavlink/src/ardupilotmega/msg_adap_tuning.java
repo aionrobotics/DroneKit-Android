@@ -251,19 +251,19 @@ public class msg_adap_tuning extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("desired", desired);
-        jo.put("achieved", achieved);
-        jo.put("error", error);
-        jo.put("theta", theta);
-        jo.put("omega", omega);
-        jo.put("sigma", sigma);
-        jo.put("theta_dot", theta_dot);
-        jo.put("omega_dot", omega_dot);
-        jo.put("sigma_dot", sigma_dot);
-        jo.put("f", f);
-        jo.put("f_dot", f_dot);
-        jo.put("u", u);
-        jo.put("axis", axis);
+        jo.put("desired", (double)desired);
+        jo.put("achieved", (double)achieved);
+        jo.put("error", (double)error);
+        jo.put("theta", (double)theta);
+        jo.put("omega", (double)omega);
+        jo.put("sigma", (double)sigma);
+        jo.put("theta_dot", (double)theta_dot);
+        jo.put("omega_dot", (double)omega_dot);
+        jo.put("sigma_dot", (double)sigma_dot);
+        jo.put("f", (double)f);
+        jo.put("f_dot", (double)f_dot);
+        jo.put("u", (double)u);
+        jo.put("axis", (int)axis);
         
         
         return jo;

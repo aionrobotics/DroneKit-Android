@@ -190,16 +190,16 @@ public class msg_device_op_read_reply extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("request_id", request_id);
-        jo.put("result", result);
-        jo.put("regstart", regstart);
-        jo.put("count", count);
+        jo.put("request_id", (long)request_id);
+        jo.put("result", (int)result);
+        jo.put("regstart", (int)regstart);
+        jo.put("count", (int)count);
          
         JSONArray ja_data = new JSONArray();
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
         
         

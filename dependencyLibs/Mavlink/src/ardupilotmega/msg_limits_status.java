@@ -211,15 +211,15 @@ public class msg_limits_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("last_trigger", last_trigger);
-        jo.put("last_action", last_action);
-        jo.put("last_recovery", last_recovery);
-        jo.put("last_clear", last_clear);
-        jo.put("breach_count", breach_count);
-        jo.put("limits_state", limits_state);
-        jo.put("mods_enabled", mods_enabled);
-        jo.put("mods_required", mods_required);
-        jo.put("mods_triggered", mods_triggered);
+        jo.put("last_trigger", (long)last_trigger);
+        jo.put("last_action", (long)last_action);
+        jo.put("last_recovery", (long)last_recovery);
+        jo.put("last_clear", (long)last_clear);
+        jo.put("breach_count", (int)breach_count);
+        jo.put("limits_state", (int)limits_state);
+        jo.put("mods_enabled", (int)mods_enabled);
+        jo.put("mods_required", (int)mods_required);
+        jo.put("mods_triggered", (int)mods_triggered);
         
         
         return jo;

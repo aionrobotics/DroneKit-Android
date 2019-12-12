@@ -270,21 +270,21 @@ public class msg_camera_feedback extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("lat", lat);
-        jo.put("lng", lng);
-        jo.put("alt_msl", alt_msl);
-        jo.put("alt_rel", alt_rel);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("foc_len", foc_len);
-        jo.put("img_idx", img_idx);
-        jo.put("target_system", target_system);
-        jo.put("cam_idx", cam_idx);
-        jo.put("flags", flags);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("lat", (int)lat);
+        jo.put("lng", (int)lng);
+        jo.put("alt_msl", (double)alt_msl);
+        jo.put("alt_rel", (double)alt_rel);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("foc_len", (double)foc_len);
+        jo.put("img_idx", (int)img_idx);
+        jo.put("target_system", (int)target_system);
+        jo.put("cam_idx", (int)cam_idx);
+        jo.put("flags", (int)flags);
         
-        jo.put("completed_captures", completed_captures);
+        jo.put("completed_captures", (int)completed_captures);
         
         return jo;
     }

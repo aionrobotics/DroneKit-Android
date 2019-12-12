@@ -171,11 +171,11 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("rl_torque_cmd", rl_torque_cmd);
-        jo.put("el_torque_cmd", el_torque_cmd);
-        jo.put("az_torque_cmd", az_torque_cmd);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("rl_torque_cmd", (int)rl_torque_cmd);
+        jo.put("el_torque_cmd", (int)el_torque_cmd);
+        jo.put("az_torque_cmd", (int)az_torque_cmd);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

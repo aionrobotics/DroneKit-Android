@@ -251,19 +251,19 @@ public class msg_gps2_rtk extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_last_baseline_ms", time_last_baseline_ms);
-        jo.put("tow", tow);
-        jo.put("baseline_a_mm", baseline_a_mm);
-        jo.put("baseline_b_mm", baseline_b_mm);
-        jo.put("baseline_c_mm", baseline_c_mm);
-        jo.put("accuracy", accuracy);
-        jo.put("iar_num_hypotheses", iar_num_hypotheses);
-        jo.put("wn", wn);
-        jo.put("rtk_receiver_id", rtk_receiver_id);
-        jo.put("rtk_health", rtk_health);
-        jo.put("rtk_rate", rtk_rate);
-        jo.put("nsats", nsats);
-        jo.put("baseline_coords_type", baseline_coords_type);
+        jo.put("time_last_baseline_ms", (long)time_last_baseline_ms);
+        jo.put("tow", (long)tow);
+        jo.put("baseline_a_mm", (int)baseline_a_mm);
+        jo.put("baseline_b_mm", (int)baseline_b_mm);
+        jo.put("baseline_c_mm", (int)baseline_c_mm);
+        jo.put("accuracy", (long)accuracy);
+        jo.put("iar_num_hypotheses", (int)iar_num_hypotheses);
+        jo.put("wn", (int)wn);
+        jo.put("rtk_receiver_id", (int)rtk_receiver_id);
+        jo.put("rtk_health", (int)rtk_health);
+        jo.put("rtk_rate", (int)rtk_rate);
+        jo.put("nsats", (int)nsats);
+        jo.put("baseline_coords_type", (int)baseline_coords_type);
         
         
         return jo;

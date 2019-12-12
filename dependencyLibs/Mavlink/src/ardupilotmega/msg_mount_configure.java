@@ -181,12 +181,12 @@ public class msg_mount_configure extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("mount_mode", mount_mode);
-        jo.put("stab_roll", stab_roll);
-        jo.put("stab_pitch", stab_pitch);
-        jo.put("stab_yaw", stab_yaw);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("mount_mode", (int)mount_mode);
+        jo.put("stab_roll", (int)stab_roll);
+        jo.put("stab_pitch", (int)stab_pitch);
+        jo.put("stab_yaw", (int)stab_yaw);
         
         
         return jo;

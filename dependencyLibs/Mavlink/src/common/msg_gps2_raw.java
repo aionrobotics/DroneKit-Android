@@ -250,18 +250,18 @@ public class msg_gps2_raw extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("dgps_age", dgps_age);
-        jo.put("eph", eph);
-        jo.put("epv", epv);
-        jo.put("vel", vel);
-        jo.put("cog", cog);
-        jo.put("fix_type", fix_type);
-        jo.put("satellites_visible", satellites_visible);
-        jo.put("dgps_numch", dgps_numch);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("dgps_age", (long)dgps_age);
+        jo.put("eph", (int)eph);
+        jo.put("epv", (int)epv);
+        jo.put("vel", (int)vel);
+        jo.put("cog", (int)cog);
+        jo.put("fix_type", (int)fix_type);
+        jo.put("satellites_visible", (int)satellites_visible);
+        jo.put("dgps_numch", (int)dgps_numch);
         
         
         return jo;

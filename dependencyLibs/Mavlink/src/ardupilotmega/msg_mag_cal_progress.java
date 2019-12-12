@@ -230,20 +230,20 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("direction_x", direction_x);
-        jo.put("direction_y", direction_y);
-        jo.put("direction_z", direction_z);
-        jo.put("compass_id", compass_id);
-        jo.put("cal_mask", cal_mask);
-        jo.put("cal_status", cal_status);
-        jo.put("attempt", attempt);
-        jo.put("completion_pct", completion_pct);
+        jo.put("direction_x", (double)direction_x);
+        jo.put("direction_y", (double)direction_y);
+        jo.put("direction_z", (double)direction_z);
+        jo.put("compass_id", (int)compass_id);
+        jo.put("cal_mask", (int)cal_mask);
+        jo.put("cal_status", (int)cal_status);
+        jo.put("attempt", (int)attempt);
+        jo.put("completion_pct", (int)completion_pct);
          
         JSONArray ja_completion_mask = new JSONArray();
         for (int i = 0; i < this.completion_mask.length; i++) {
             ja_completion_mask.put(this.completion_mask[i]);
         }
-        jo.put("completion_mask", (Object)ja_completion_mask);
+        jo.putOpt("completion_mask", (Object)ja_completion_mask);
                 
         
         

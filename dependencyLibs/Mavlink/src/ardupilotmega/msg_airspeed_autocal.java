@@ -241,18 +241,18 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("diff_pressure", diff_pressure);
-        jo.put("EAS2TAS", EAS2TAS);
-        jo.put("ratio", ratio);
-        jo.put("state_x", state_x);
-        jo.put("state_y", state_y);
-        jo.put("state_z", state_z);
-        jo.put("Pax", Pax);
-        jo.put("Pby", Pby);
-        jo.put("Pcz", Pcz);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
+        jo.put("diff_pressure", (double)diff_pressure);
+        jo.put("EAS2TAS", (double)EAS2TAS);
+        jo.put("ratio", (double)ratio);
+        jo.put("state_x", (double)state_x);
+        jo.put("state_y", (double)state_y);
+        jo.put("state_z", (double)state_z);
+        jo.put("Pax", (double)Pax);
+        jo.put("Pby", (double)Pby);
+        jo.put("Pcz", (double)Pcz);
         
         
         return jo;

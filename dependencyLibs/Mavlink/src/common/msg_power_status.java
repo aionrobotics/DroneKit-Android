@@ -151,9 +151,9 @@ public class msg_power_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("Vcc", Vcc);
-        jo.put("Vservo", Vservo);
-        jo.put("flags", flags);
+        jo.put("Vcc", (int)Vcc);
+        jo.put("Vservo", (int)Vservo);
+        jo.put("flags", (int)flags);
         
         
         return jo;

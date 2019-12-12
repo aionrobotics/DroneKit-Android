@@ -231,17 +231,17 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("chan1_scaled", chan1_scaled);
-        jo.put("chan2_scaled", chan2_scaled);
-        jo.put("chan3_scaled", chan3_scaled);
-        jo.put("chan4_scaled", chan4_scaled);
-        jo.put("chan5_scaled", chan5_scaled);
-        jo.put("chan6_scaled", chan6_scaled);
-        jo.put("chan7_scaled", chan7_scaled);
-        jo.put("chan8_scaled", chan8_scaled);
-        jo.put("port", port);
-        jo.put("rssi", rssi);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("chan1_scaled", (int)chan1_scaled);
+        jo.put("chan2_scaled", (int)chan2_scaled);
+        jo.put("chan3_scaled", (int)chan3_scaled);
+        jo.put("chan4_scaled", (int)chan4_scaled);
+        jo.put("chan5_scaled", (int)chan5_scaled);
+        jo.put("chan6_scaled", (int)chan6_scaled);
+        jo.put("chan7_scaled", (int)chan7_scaled);
+        jo.put("chan8_scaled", (int)chan8_scaled);
+        jo.put("port", (int)port);
+        jo.put("rssi", (int)rssi);
         
         
         return jo;

@@ -141,8 +141,8 @@ public class msg_terrain_check extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("lat", lat);
-        jo.put("lon", lon);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
         
         
         return jo;

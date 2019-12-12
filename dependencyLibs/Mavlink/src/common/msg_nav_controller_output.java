@@ -201,14 +201,14 @@ public class msg_nav_controller_output extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("nav_roll", nav_roll);
-        jo.put("nav_pitch", nav_pitch);
-        jo.put("alt_error", alt_error);
-        jo.put("aspd_error", aspd_error);
-        jo.put("xtrack_error", xtrack_error);
-        jo.put("nav_bearing", nav_bearing);
-        jo.put("target_bearing", target_bearing);
-        jo.put("wp_dist", wp_dist);
+        jo.put("nav_roll", (double)nav_roll);
+        jo.put("nav_pitch", (double)nav_pitch);
+        jo.put("alt_error", (double)alt_error);
+        jo.put("aspd_error", (double)aspd_error);
+        jo.put("xtrack_error", (double)xtrack_error);
+        jo.put("nav_bearing", (int)nav_bearing);
+        jo.put("target_bearing", (int)target_bearing);
+        jo.put("wp_dist", (int)wp_dist);
         
         
         return jo;

@@ -210,14 +210,14 @@ public class msg_debug_float_array extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("array_id", array_id);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("array_id", (int)array_id);
          
         JSONArray ja_name = new JSONArray();
         for (int i = 0; i < this.name.length; i++) {
             ja_name.put(this.name[i]);
         }
-        jo.put("name", (Object)ja_name);
+        jo.putOpt("name", (Object)ja_name);
                 
         
          
@@ -225,7 +225,7 @@ public class msg_debug_float_array extends MAVLinkMessage {
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
         
         return jo;

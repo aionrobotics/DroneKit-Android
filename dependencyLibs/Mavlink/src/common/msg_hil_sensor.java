@@ -280,21 +280,21 @@ public class msg_hil_sensor extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("xacc", xacc);
-        jo.put("yacc", yacc);
-        jo.put("zacc", zacc);
-        jo.put("xgyro", xgyro);
-        jo.put("ygyro", ygyro);
-        jo.put("zgyro", zgyro);
-        jo.put("xmag", xmag);
-        jo.put("ymag", ymag);
-        jo.put("zmag", zmag);
-        jo.put("abs_pressure", abs_pressure);
-        jo.put("diff_pressure", diff_pressure);
-        jo.put("pressure_alt", pressure_alt);
-        jo.put("temperature", temperature);
-        jo.put("fields_updated", fields_updated);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("xacc", (double)xacc);
+        jo.put("yacc", (double)yacc);
+        jo.put("zacc", (double)zacc);
+        jo.put("xgyro", (double)xgyro);
+        jo.put("ygyro", (double)ygyro);
+        jo.put("zgyro", (double)zgyro);
+        jo.put("xmag", (double)xmag);
+        jo.put("ymag", (double)ymag);
+        jo.put("zmag", (double)zmag);
+        jo.put("abs_pressure", (double)abs_pressure);
+        jo.put("diff_pressure", (double)diff_pressure);
+        jo.put("pressure_alt", (double)pressure_alt);
+        jo.put("temperature", (double)temperature);
+        jo.put("fields_updated", (long)fields_updated);
         
         
         return jo;

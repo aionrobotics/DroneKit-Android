@@ -151,9 +151,9 @@ public class msg_gopro_heartbeat extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("status", status);
-        jo.put("capture_mode", capture_mode);
-        jo.put("flags", flags);
+        jo.put("status", (int)status);
+        jo.put("capture_mode", (int)capture_mode);
+        jo.put("flags", (int)flags);
         
         
         return jo;

@@ -181,12 +181,12 @@ public class msg_ap_adc extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("adc1", adc1);
-        jo.put("adc2", adc2);
-        jo.put("adc3", adc3);
-        jo.put("adc4", adc4);
-        jo.put("adc5", adc5);
-        jo.put("adc6", adc6);
+        jo.put("adc1", (int)adc1);
+        jo.put("adc2", (int)adc2);
+        jo.put("adc3", (int)adc3);
+        jo.put("adc4", (int)adc4);
+        jo.put("adc5", (int)adc5);
+        jo.put("adc6", (int)adc6);
         
         
         return jo;

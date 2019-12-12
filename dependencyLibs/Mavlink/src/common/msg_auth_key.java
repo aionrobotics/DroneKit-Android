@@ -157,7 +157,7 @@ public class msg_auth_key extends MAVLinkMessage {
         for (int i = 0; i < this.key.length; i++) {
             ja_key.put(this.key[i]);
         }
-        jo.put("key", (Object)ja_key);
+        jo.putOpt("key", (Object)ja_key);
                 
         
         

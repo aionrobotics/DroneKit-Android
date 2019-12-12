@@ -261,19 +261,19 @@ public class msg_hil_gps extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("eph", eph);
-        jo.put("epv", epv);
-        jo.put("vel", vel);
-        jo.put("vn", vn);
-        jo.put("ve", ve);
-        jo.put("vd", vd);
-        jo.put("cog", cog);
-        jo.put("fix_type", fix_type);
-        jo.put("satellites_visible", satellites_visible);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("eph", (int)eph);
+        jo.put("epv", (int)epv);
+        jo.put("vel", (int)vel);
+        jo.put("vn", (int)vn);
+        jo.put("ve", (int)ve);
+        jo.put("vd", (int)vd);
+        jo.put("cog", (int)cog);
+        jo.put("fix_type", (int)fix_type);
+        jo.put("satellites_visible", (int)satellites_visible);
         
         
         return jo;

@@ -200,13 +200,13 @@ public class msg_vibration extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("vibration_x", vibration_x);
-        jo.put("vibration_y", vibration_y);
-        jo.put("vibration_z", vibration_z);
-        jo.put("clipping_0", clipping_0);
-        jo.put("clipping_1", clipping_1);
-        jo.put("clipping_2", clipping_2);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("vibration_x", (double)vibration_x);
+        jo.put("vibration_y", (double)vibration_y);
+        jo.put("vibration_z", (double)vibration_z);
+        jo.put("clipping_0", (long)clipping_0);
+        jo.put("clipping_1", (long)clipping_1);
+        jo.put("clipping_2", (long)clipping_2);
         
         
         return jo;

@@ -231,17 +231,17 @@ public class msg_rc_channels_raw extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("chan1_raw", chan1_raw);
-        jo.put("chan2_raw", chan2_raw);
-        jo.put("chan3_raw", chan3_raw);
-        jo.put("chan4_raw", chan4_raw);
-        jo.put("chan5_raw", chan5_raw);
-        jo.put("chan6_raw", chan6_raw);
-        jo.put("chan7_raw", chan7_raw);
-        jo.put("chan8_raw", chan8_raw);
-        jo.put("port", port);
-        jo.put("rssi", rssi);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("chan1_raw", (int)chan1_raw);
+        jo.put("chan2_raw", (int)chan2_raw);
+        jo.put("chan3_raw", (int)chan3_raw);
+        jo.put("chan4_raw", (int)chan4_raw);
+        jo.put("chan5_raw", (int)chan5_raw);
+        jo.put("chan6_raw", (int)chan6_raw);
+        jo.put("chan7_raw", (int)chan7_raw);
+        jo.put("chan8_raw", (int)chan8_raw);
+        jo.put("port", (int)port);
+        jo.put("rssi", (int)rssi);
         
         
         return jo;

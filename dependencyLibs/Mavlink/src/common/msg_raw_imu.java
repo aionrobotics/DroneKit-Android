@@ -230,16 +230,16 @@ public class msg_raw_imu extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("xacc", xacc);
-        jo.put("yacc", yacc);
-        jo.put("zacc", zacc);
-        jo.put("xgyro", xgyro);
-        jo.put("ygyro", ygyro);
-        jo.put("zgyro", zgyro);
-        jo.put("xmag", xmag);
-        jo.put("ymag", ymag);
-        jo.put("zmag", zmag);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("xacc", (int)xacc);
+        jo.put("yacc", (int)yacc);
+        jo.put("zacc", (int)zacc);
+        jo.put("xgyro", (int)xgyro);
+        jo.put("ygyro", (int)ygyro);
+        jo.put("zgyro", (int)zgyro);
+        jo.put("xmag", (int)xmag);
+        jo.put("ymag", (int)ymag);
+        jo.put("zmag", (int)zmag);
         
         
         return jo;

@@ -141,8 +141,8 @@ public class msg_rpm extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("rpm1", rpm1);
-        jo.put("rpm2", rpm2);
+        jo.put("rpm1", (double)rpm1);
+        jo.put("rpm2", (double)rpm2);
         
         
         return jo;

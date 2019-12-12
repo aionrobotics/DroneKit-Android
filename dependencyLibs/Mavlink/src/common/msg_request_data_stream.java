@@ -171,11 +171,11 @@ public class msg_request_data_stream extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("req_message_rate", req_message_rate);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("req_stream_id", req_stream_id);
-        jo.put("start_stop", start_stop);
+        jo.put("req_message_rate", (int)req_message_rate);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("req_stream_id", (int)req_stream_id);
+        jo.put("start_stop", (int)start_stop);
         
         
         return jo;

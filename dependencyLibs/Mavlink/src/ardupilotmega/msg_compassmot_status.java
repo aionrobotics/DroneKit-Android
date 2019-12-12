@@ -181,12 +181,12 @@ public class msg_compassmot_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("current", current);
-        jo.put("CompensationX", CompensationX);
-        jo.put("CompensationY", CompensationY);
-        jo.put("CompensationZ", CompensationZ);
-        jo.put("throttle", throttle);
-        jo.put("interference", interference);
+        jo.put("current", (double)current);
+        jo.put("CompensationX", (double)CompensationX);
+        jo.put("CompensationY", (double)CompensationY);
+        jo.put("CompensationZ", (double)CompensationZ);
+        jo.put("throttle", (int)throttle);
+        jo.put("interference", (int)interference);
         
         
         return jo;

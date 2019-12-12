@@ -191,13 +191,13 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("size", size);
-        jo.put("width", width);
-        jo.put("height", height);
-        jo.put("packets", packets);
-        jo.put("type", type);
-        jo.put("payload", payload);
-        jo.put("jpg_quality", jpg_quality);
+        jo.put("size", (long)size);
+        jo.put("width", (int)width);
+        jo.put("height", (int)height);
+        jo.put("packets", (int)packets);
+        jo.put("type", (int)type);
+        jo.put("payload", (int)payload);
+        jo.put("jpg_quality", (int)jpg_quality);
         
         
         return jo;

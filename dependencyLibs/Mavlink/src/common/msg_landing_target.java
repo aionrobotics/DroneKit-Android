@@ -289,27 +289,27 @@ public class msg_landing_target extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("angle_x", angle_x);
-        jo.put("angle_y", angle_y);
-        jo.put("distance", distance);
-        jo.put("size_x", size_x);
-        jo.put("size_y", size_y);
-        jo.put("target_num", target_num);
-        jo.put("frame", frame);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("angle_x", (double)angle_x);
+        jo.put("angle_y", (double)angle_y);
+        jo.put("distance", (double)distance);
+        jo.put("size_x", (double)size_x);
+        jo.put("size_y", (double)size_y);
+        jo.put("target_num", (int)target_num);
+        jo.put("frame", (int)frame);
         
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("type", type);
-        jo.put("position_valid", position_valid);
+        jo.put("type", (int)type);
+        jo.put("position_valid", (int)position_valid);
         
         return jo;
     }

@@ -141,8 +141,8 @@ public class msg_battery2 extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("voltage", voltage);
-        jo.put("current_battery", current_battery);
+        jo.put("voltage", (int)voltage);
+        jo.put("current_battery", (int)current_battery);
         
         
         return jo;

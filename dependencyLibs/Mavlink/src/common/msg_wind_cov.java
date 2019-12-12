@@ -220,15 +220,15 @@ public class msg_wind_cov extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("wind_x", wind_x);
-        jo.put("wind_y", wind_y);
-        jo.put("wind_z", wind_z);
-        jo.put("var_horiz", var_horiz);
-        jo.put("var_vert", var_vert);
-        jo.put("wind_alt", wind_alt);
-        jo.put("horiz_accuracy", horiz_accuracy);
-        jo.put("vert_accuracy", vert_accuracy);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("wind_x", (double)wind_x);
+        jo.put("wind_y", (double)wind_y);
+        jo.put("wind_z", (double)wind_z);
+        jo.put("var_horiz", (double)var_horiz);
+        jo.put("var_vert", (double)var_vert);
+        jo.put("wind_alt", (double)wind_alt);
+        jo.put("horiz_accuracy", (double)horiz_accuracy);
+        jo.put("vert_accuracy", (double)vert_accuracy);
         
         
         return jo;

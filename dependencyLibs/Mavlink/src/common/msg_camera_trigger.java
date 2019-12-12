@@ -150,8 +150,8 @@ public class msg_camera_trigger extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("seq", seq);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("seq", (long)seq);
         
         
         return jo;

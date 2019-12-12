@@ -180,15 +180,15 @@ public class msg_memory_vect extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("address", address);
-        jo.put("ver", ver);
-        jo.put("type", type);
+        jo.put("address", (int)address);
+        jo.put("ver", (int)ver);
+        jo.put("type", (int)type);
          
         JSONArray ja_value = new JSONArray();
         for (int i = 0; i < this.value.length; i++) {
             ja_value.put(this.value[i]);
         }
-        jo.put("value", (Object)ja_value);
+        jo.putOpt("value", (Object)ja_value);
                 
         
         

@@ -171,11 +171,11 @@ public class msg_log_request_data extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("ofs", ofs);
-        jo.put("count", count);
-        jo.put("id", id);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("ofs", (long)ofs);
+        jo.put("count", (long)count);
+        jo.put("id", (int)id);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

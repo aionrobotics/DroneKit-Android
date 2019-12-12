@@ -212,15 +212,15 @@ public class msg_global_position_int extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("relative_alt", relative_alt);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("hdg", hdg);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("relative_alt", (int)relative_alt);
+        jo.put("vx", (int)vx);
+        jo.put("vy", (int)vy);
+        jo.put("vz", (int)vz);
+        jo.put("hdg", (int)hdg);
         
         
         return jo;

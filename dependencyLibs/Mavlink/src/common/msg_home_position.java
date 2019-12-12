@@ -259,24 +259,24 @@ public class msg_home_position extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("latitude", latitude);
-        jo.put("longitude", longitude);
-        jo.put("altitude", altitude);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
+        jo.put("latitude", (int)latitude);
+        jo.put("longitude", (int)longitude);
+        jo.put("altitude", (int)altitude);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("approach_x", approach_x);
-        jo.put("approach_y", approach_y);
-        jo.put("approach_z", approach_z);
+        jo.put("approach_x", (double)approach_x);
+        jo.put("approach_y", (double)approach_y);
+        jo.put("approach_z", (double)approach_z);
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
         
         return jo;
     }

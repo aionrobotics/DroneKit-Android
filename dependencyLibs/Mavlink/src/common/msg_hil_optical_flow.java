@@ -250,18 +250,18 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("integration_time_us", integration_time_us);
-        jo.put("integrated_x", integrated_x);
-        jo.put("integrated_y", integrated_y);
-        jo.put("integrated_xgyro", integrated_xgyro);
-        jo.put("integrated_ygyro", integrated_ygyro);
-        jo.put("integrated_zgyro", integrated_zgyro);
-        jo.put("time_delta_distance_us", time_delta_distance_us);
-        jo.put("distance", distance);
-        jo.put("temperature", temperature);
-        jo.put("sensor_id", sensor_id);
-        jo.put("quality", quality);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("integration_time_us", (long)integration_time_us);
+        jo.put("integrated_x", (double)integrated_x);
+        jo.put("integrated_y", (double)integrated_y);
+        jo.put("integrated_xgyro", (double)integrated_xgyro);
+        jo.put("integrated_ygyro", (double)integrated_ygyro);
+        jo.put("integrated_zgyro", (double)integrated_zgyro);
+        jo.put("time_delta_distance_us", (long)time_delta_distance_us);
+        jo.put("distance", (double)distance);
+        jo.put("temperature", (int)temperature);
+        jo.put("sensor_id", (int)sensor_id);
+        jo.put("quality", (int)quality);
         
         
         return jo;

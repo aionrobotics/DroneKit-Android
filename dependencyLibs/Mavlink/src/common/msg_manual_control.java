@@ -181,12 +181,12 @@ public class msg_manual_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("r", r);
-        jo.put("buttons", buttons);
-        jo.put("target", target);
+        jo.put("x", (int)x);
+        jo.put("y", (int)y);
+        jo.put("z", (int)z);
+        jo.put("r", (int)r);
+        jo.put("buttons", (int)buttons);
+        jo.put("target", (int)target);
         
         
         return jo;

@@ -151,9 +151,9 @@ public class msg_data_stream extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("message_rate", message_rate);
-        jo.put("stream_id", stream_id);
-        jo.put("on_off", on_off);
+        jo.put("message_rate", (int)message_rate);
+        jo.put("stream_id", (int)stream_id);
+        jo.put("on_off", (int)on_off);
         
         
         return jo;

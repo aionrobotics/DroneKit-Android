@@ -170,10 +170,10 @@ public class msg_terrain_request extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("mask", mask);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("grid_spacing", grid_spacing);
+        jo.put("mask", (long)mask);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("grid_spacing", (int)grid_spacing);
         
         
         return jo;

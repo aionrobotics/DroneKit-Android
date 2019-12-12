@@ -151,9 +151,9 @@ public class msg_mission_set_current extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("seq", seq);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("seq", (int)seq);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

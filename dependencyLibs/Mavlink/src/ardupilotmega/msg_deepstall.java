@@ -221,16 +221,16 @@ public class msg_deepstall extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("landing_lat", landing_lat);
-        jo.put("landing_lon", landing_lon);
-        jo.put("path_lat", path_lat);
-        jo.put("path_lon", path_lon);
-        jo.put("arc_entry_lat", arc_entry_lat);
-        jo.put("arc_entry_lon", arc_entry_lon);
-        jo.put("altitude", altitude);
-        jo.put("expected_travel_distance", expected_travel_distance);
-        jo.put("cross_track_error", cross_track_error);
-        jo.put("stage", stage);
+        jo.put("landing_lat", (int)landing_lat);
+        jo.put("landing_lon", (int)landing_lon);
+        jo.put("path_lat", (int)path_lat);
+        jo.put("path_lon", (int)path_lon);
+        jo.put("arc_entry_lat", (int)arc_entry_lat);
+        jo.put("arc_entry_lon", (int)arc_entry_lon);
+        jo.put("altitude", (double)altitude);
+        jo.put("expected_travel_distance", (double)expected_travel_distance);
+        jo.put("cross_track_error", (double)cross_track_error);
+        jo.put("stage", (int)stage);
         
         
         return jo;

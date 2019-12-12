@@ -269,24 +269,24 @@ public class msg_local_position_ned_cov extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("ax", ax);
-        jo.put("ay", ay);
-        jo.put("az", az);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
+        jo.put("ax", (double)ax);
+        jo.put("ay", (double)ay);
+        jo.put("az", (double)az);
          
         JSONArray ja_covariance = new JSONArray();
         for (int i = 0; i < this.covariance.length; i++) {
             ja_covariance.put(this.covariance[i]);
         }
-        jo.put("covariance", (Object)ja_covariance);
+        jo.putOpt("covariance", (Object)ja_covariance);
                 
-        jo.put("estimator_type", estimator_type);
+        jo.put("estimator_type", (int)estimator_type);
         
         
         return jo;

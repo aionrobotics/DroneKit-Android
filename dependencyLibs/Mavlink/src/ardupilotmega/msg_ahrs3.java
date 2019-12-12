@@ -221,16 +221,16 @@ public class msg_ahrs3 extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("altitude", altitude);
-        jo.put("lat", lat);
-        jo.put("lng", lng);
-        jo.put("v1", v1);
-        jo.put("v2", v2);
-        jo.put("v3", v3);
-        jo.put("v4", v4);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("altitude", (double)altitude);
+        jo.put("lat", (int)lat);
+        jo.put("lng", (int)lng);
+        jo.put("v1", (double)v1);
+        jo.put("v2", (double)v2);
+        jo.put("v3", (double)v3);
+        jo.put("v4", (double)v4);
         
         
         return jo;

@@ -241,18 +241,18 @@ public class msg_gimbal_report extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("delta_time", delta_time);
-        jo.put("delta_angle_x", delta_angle_x);
-        jo.put("delta_angle_y", delta_angle_y);
-        jo.put("delta_angle_z", delta_angle_z);
-        jo.put("delta_velocity_x", delta_velocity_x);
-        jo.put("delta_velocity_y", delta_velocity_y);
-        jo.put("delta_velocity_z", delta_velocity_z);
-        jo.put("joint_roll", joint_roll);
-        jo.put("joint_el", joint_el);
-        jo.put("joint_az", joint_az);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("delta_time", (double)delta_time);
+        jo.put("delta_angle_x", (double)delta_angle_x);
+        jo.put("delta_angle_y", (double)delta_angle_y);
+        jo.put("delta_angle_z", (double)delta_angle_z);
+        jo.put("delta_velocity_x", (double)delta_velocity_x);
+        jo.put("delta_velocity_y", (double)delta_velocity_y);
+        jo.put("delta_velocity_z", (double)delta_velocity_z);
+        jo.put("joint_roll", (double)joint_roll);
+        jo.put("joint_el", (double)joint_el);
+        jo.put("joint_az", (double)joint_az);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

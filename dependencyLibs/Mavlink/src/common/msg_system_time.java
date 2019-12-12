@@ -150,8 +150,8 @@ public class msg_system_time extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_unix_usec", time_unix_usec);
-        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("time_unix_usec", (long)time_unix_usec);
+        jo.put("time_boot_ms", (long)time_boot_ms);
         
         
         return jo;

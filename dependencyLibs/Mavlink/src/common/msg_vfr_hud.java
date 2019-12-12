@@ -181,12 +181,12 @@ public class msg_vfr_hud extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("airspeed", airspeed);
-        jo.put("groundspeed", groundspeed);
-        jo.put("alt", alt);
-        jo.put("climb", climb);
-        jo.put("heading", heading);
-        jo.put("throttle", throttle);
+        jo.put("airspeed", (double)airspeed);
+        jo.put("groundspeed", (double)groundspeed);
+        jo.put("alt", (double)alt);
+        jo.put("climb", (double)climb);
+        jo.put("heading", (int)heading);
+        jo.put("throttle", (int)throttle);
         
         
         return jo;

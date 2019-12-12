@@ -347,41 +347,41 @@ public class msg_odometry extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("rollspeed", rollspeed);
-        jo.put("pitchspeed", pitchspeed);
-        jo.put("yawspeed", yawspeed);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
+        jo.put("rollspeed", (double)rollspeed);
+        jo.put("pitchspeed", (double)pitchspeed);
+        jo.put("yawspeed", (double)yawspeed);
          
         JSONArray ja_pose_covariance = new JSONArray();
         for (int i = 0; i < this.pose_covariance.length; i++) {
             ja_pose_covariance.put(this.pose_covariance[i]);
         }
-        jo.put("pose_covariance", (Object)ja_pose_covariance);
+        jo.putOpt("pose_covariance", (Object)ja_pose_covariance);
                 
          
         JSONArray ja_velocity_covariance = new JSONArray();
         for (int i = 0; i < this.velocity_covariance.length; i++) {
             ja_velocity_covariance.put(this.velocity_covariance[i]);
         }
-        jo.put("velocity_covariance", (Object)ja_velocity_covariance);
+        jo.putOpt("velocity_covariance", (Object)ja_velocity_covariance);
                 
-        jo.put("frame_id", frame_id);
-        jo.put("child_frame_id", child_frame_id);
+        jo.put("frame_id", (int)frame_id);
+        jo.put("child_frame_id", (int)child_frame_id);
         
-        jo.put("reset_counter", reset_counter);
+        jo.put("reset_counter", (int)reset_counter);
         
         return jo;
     }

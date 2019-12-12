@@ -191,13 +191,13 @@ public class msg_manual_setpoint extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("thrust", thrust);
-        jo.put("mode_switch", mode_switch);
-        jo.put("manual_override_switch", manual_override_switch);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("thrust", (double)thrust);
+        jo.put("mode_switch", (int)mode_switch);
+        jo.put("manual_override_switch", (int)manual_override_switch);
         
         
         return jo;

@@ -141,8 +141,8 @@ public class msg_extended_sys_state extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("vtol_state", vtol_state);
-        jo.put("landed_state", landed_state);
+        jo.put("vtol_state", (int)vtol_state);
+        jo.put("landed_state", (int)landed_state);
         
         
         return jo;

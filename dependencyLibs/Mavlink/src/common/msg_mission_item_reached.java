@@ -131,7 +131,7 @@ public class msg_mission_item_reached extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("seq", seq);
+        jo.put("seq", (int)seq);
         
         
         return jo;

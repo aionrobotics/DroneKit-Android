@@ -171,11 +171,11 @@ public class msg_mount_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("pointing_a", pointing_a);
-        jo.put("pointing_b", pointing_b);
-        jo.put("pointing_c", pointing_c);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("pointing_a", (int)pointing_a);
+        jo.put("pointing_b", (int)pointing_b);
+        jo.put("pointing_c", (int)pointing_c);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

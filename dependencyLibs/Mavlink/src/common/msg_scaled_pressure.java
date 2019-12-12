@@ -161,10 +161,10 @@ public class msg_scaled_pressure extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("press_abs", press_abs);
-        jo.put("press_diff", press_diff);
-        jo.put("temperature", temperature);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("press_abs", (double)press_abs);
+        jo.put("press_diff", (double)press_diff);
+        jo.put("temperature", (int)temperature);
         
         
         return jo;

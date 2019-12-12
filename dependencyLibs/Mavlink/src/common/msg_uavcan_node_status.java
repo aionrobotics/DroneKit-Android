@@ -190,12 +190,12 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("uptime_sec", uptime_sec);
-        jo.put("vendor_specific_status_code", vendor_specific_status_code);
-        jo.put("health", health);
-        jo.put("mode", mode);
-        jo.put("sub_mode", sub_mode);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("uptime_sec", (long)uptime_sec);
+        jo.put("vendor_specific_status_code", (int)vendor_specific_status_code);
+        jo.put("health", (int)health);
+        jo.put("mode", (int)mode);
+        jo.put("sub_mode", (int)sub_mode);
         
         
         return jo;

@@ -191,14 +191,14 @@ public class msg_ekf_status_report extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("velocity_variance", velocity_variance);
-        jo.put("pos_horiz_variance", pos_horiz_variance);
-        jo.put("pos_vert_variance", pos_vert_variance);
-        jo.put("compass_variance", compass_variance);
-        jo.put("terrain_alt_variance", terrain_alt_variance);
-        jo.put("flags", flags);
+        jo.put("velocity_variance", (double)velocity_variance);
+        jo.put("pos_horiz_variance", (double)pos_horiz_variance);
+        jo.put("pos_vert_variance", (double)pos_vert_variance);
+        jo.put("compass_variance", (double)compass_variance);
+        jo.put("terrain_alt_variance", (double)terrain_alt_variance);
+        jo.put("flags", (int)flags);
         
-        jo.put("airspeed_variance", airspeed_variance);
+        jo.put("airspeed_variance", (double)airspeed_variance);
         
         return jo;
     }

@@ -261,20 +261,20 @@ public class msg_position_target_global_int extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("lat_int", lat_int);
-        jo.put("lon_int", lon_int);
-        jo.put("alt", alt);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
-        jo.put("afx", afx);
-        jo.put("afy", afy);
-        jo.put("afz", afz);
-        jo.put("yaw", yaw);
-        jo.put("yaw_rate", yaw_rate);
-        jo.put("type_mask", type_mask);
-        jo.put("coordinate_frame", coordinate_frame);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("lat_int", (int)lat_int);
+        jo.put("lon_int", (int)lon_int);
+        jo.put("alt", (double)alt);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
+        jo.put("afx", (double)afx);
+        jo.put("afy", (double)afy);
+        jo.put("afz", (double)afz);
+        jo.put("yaw", (double)yaw);
+        jo.put("yaw_rate", (double)yaw_rate);
+        jo.put("type_mask", (int)type_mask);
+        jo.put("coordinate_frame", (int)coordinate_frame);
         
         
         return jo;

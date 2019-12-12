@@ -201,14 +201,14 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("q1", q1);
-        jo.put("q2", q2);
-        jo.put("q3", q3);
-        jo.put("q4", q4);
-        jo.put("rollspeed", rollspeed);
-        jo.put("pitchspeed", pitchspeed);
-        jo.put("yawspeed", yawspeed);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("q1", (double)q1);
+        jo.put("q2", (double)q2);
+        jo.put("q3", (double)q3);
+        jo.put("q4", (double)q4);
+        jo.put("rollspeed", (double)rollspeed);
+        jo.put("pitchspeed", (double)pitchspeed);
+        jo.put("yawspeed", (double)yawspeed);
         
         
         return jo;

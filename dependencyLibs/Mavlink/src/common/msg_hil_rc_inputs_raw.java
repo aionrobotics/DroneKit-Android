@@ -270,20 +270,20 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("chan1_raw", chan1_raw);
-        jo.put("chan2_raw", chan2_raw);
-        jo.put("chan3_raw", chan3_raw);
-        jo.put("chan4_raw", chan4_raw);
-        jo.put("chan5_raw", chan5_raw);
-        jo.put("chan6_raw", chan6_raw);
-        jo.put("chan7_raw", chan7_raw);
-        jo.put("chan8_raw", chan8_raw);
-        jo.put("chan9_raw", chan9_raw);
-        jo.put("chan10_raw", chan10_raw);
-        jo.put("chan11_raw", chan11_raw);
-        jo.put("chan12_raw", chan12_raw);
-        jo.put("rssi", rssi);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("chan1_raw", (int)chan1_raw);
+        jo.put("chan2_raw", (int)chan2_raw);
+        jo.put("chan3_raw", (int)chan3_raw);
+        jo.put("chan4_raw", (int)chan4_raw);
+        jo.put("chan5_raw", (int)chan5_raw);
+        jo.put("chan6_raw", (int)chan6_raw);
+        jo.put("chan7_raw", (int)chan7_raw);
+        jo.put("chan8_raw", (int)chan8_raw);
+        jo.put("chan9_raw", (int)chan9_raw);
+        jo.put("chan10_raw", (int)chan10_raw);
+        jo.put("chan11_raw", (int)chan11_raw);
+        jo.put("chan12_raw", (int)chan12_raw);
+        jo.put("rssi", (int)rssi);
         
         
         return jo;

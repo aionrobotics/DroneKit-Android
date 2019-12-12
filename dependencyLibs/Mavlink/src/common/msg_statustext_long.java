@@ -162,13 +162,13 @@ public class msg_statustext_long extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("severity", severity);
+        jo.put("severity", (int)severity);
          
         JSONArray ja_text = new JSONArray();
         for (int i = 0; i < this.text.length; i++) {
             ja_text.put(this.text[i]);
         }
-        jo.put("text", (Object)ja_text);
+        jo.putOpt("text", (Object)ja_text);
                 
         
         

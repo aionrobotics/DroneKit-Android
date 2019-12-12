@@ -180,15 +180,15 @@ public class msg_log_data extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("ofs", ofs);
-        jo.put("id", id);
-        jo.put("count", count);
+        jo.put("ofs", (long)ofs);
+        jo.put("id", (int)id);
+        jo.put("count", (int)count);
          
         JSONArray ja_data = new JSONArray();
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
         
         

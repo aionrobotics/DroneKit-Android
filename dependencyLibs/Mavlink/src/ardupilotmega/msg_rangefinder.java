@@ -141,8 +141,8 @@ public class msg_rangefinder extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("distance", distance);
-        jo.put("voltage", voltage);
+        jo.put("distance", (double)distance);
+        jo.put("voltage", (double)voltage);
         
         
         return jo;

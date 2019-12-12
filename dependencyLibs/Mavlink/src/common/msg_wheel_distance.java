@@ -179,15 +179,15 @@ public class msg_wheel_distance extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
          
         JSONArray ja_distance = new JSONArray();
         for (int i = 0; i < this.distance.length; i++) {
             ja_distance.put(this.distance[i]);
         }
-        jo.put("distance", (Object)ja_distance);
+        jo.putOpt("distance", (Object)ja_distance);
                 
-        jo.put("count", count);
+        jo.put("count", (int)count);
         
         
         return jo;

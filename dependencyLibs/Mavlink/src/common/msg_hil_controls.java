@@ -240,17 +240,17 @@ public class msg_hil_controls extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("roll_ailerons", roll_ailerons);
-        jo.put("pitch_elevator", pitch_elevator);
-        jo.put("yaw_rudder", yaw_rudder);
-        jo.put("throttle", throttle);
-        jo.put("aux1", aux1);
-        jo.put("aux2", aux2);
-        jo.put("aux3", aux3);
-        jo.put("aux4", aux4);
-        jo.put("mode", mode);
-        jo.put("nav_mode", nav_mode);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("roll_ailerons", (double)roll_ailerons);
+        jo.put("pitch_elevator", (double)pitch_elevator);
+        jo.put("yaw_rudder", (double)yaw_rudder);
+        jo.put("throttle", (double)throttle);
+        jo.put("aux1", (double)aux1);
+        jo.put("aux2", (double)aux2);
+        jo.put("aux3", (double)aux3);
+        jo.put("aux4", (double)aux4);
+        jo.put("mode", (int)mode);
+        jo.put("nav_mode", (int)nav_mode);
         
         
         return jo;

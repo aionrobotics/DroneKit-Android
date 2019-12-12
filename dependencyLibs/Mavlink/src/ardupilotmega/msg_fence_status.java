@@ -161,10 +161,10 @@ public class msg_fence_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("breach_time", breach_time);
-        jo.put("breach_count", breach_count);
-        jo.put("breach_status", breach_status);
-        jo.put("breach_type", breach_type);
+        jo.put("breach_time", (long)breach_time);
+        jo.put("breach_count", (int)breach_count);
+        jo.put("breach_status", (int)breach_status);
+        jo.put("breach_type", (int)breach_type);
         
         
         return jo;

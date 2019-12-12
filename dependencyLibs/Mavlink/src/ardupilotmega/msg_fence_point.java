@@ -181,12 +181,12 @@ public class msg_fence_point extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("lat", lat);
-        jo.put("lng", lng);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("idx", idx);
-        jo.put("count", count);
+        jo.put("lat", (double)lat);
+        jo.put("lng", (double)lng);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("idx", (int)idx);
+        jo.put("count", (int)count);
         
         
         return jo;

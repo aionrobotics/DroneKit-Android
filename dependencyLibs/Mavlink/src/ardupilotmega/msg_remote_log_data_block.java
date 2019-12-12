@@ -180,15 +180,15 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("seqno", seqno);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("seqno", (long)seqno);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_data = new JSONArray();
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
         
         

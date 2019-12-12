@@ -131,7 +131,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("rfHealth", rfHealth);
+        jo.put("rfHealth", (int)rfHealth);
         
         
         return jo;

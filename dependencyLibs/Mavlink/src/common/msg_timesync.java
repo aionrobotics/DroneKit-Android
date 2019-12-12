@@ -159,8 +159,8 @@ public class msg_timesync extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("tc1", tc1);
-        jo.put("ts1", ts1);
+        jo.put("tc1", (long)tc1);
+        jo.put("ts1", (long)ts1);
         
         
         return jo;

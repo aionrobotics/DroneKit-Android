@@ -192,17 +192,17 @@ public class msg_param_set extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("param_value", param_value);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("param_value", (double)param_value);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_param_id = new JSONArray();
         for (int i = 0; i < this.param_id.length; i++) {
             ja_param_id.put(this.param_id[i]);
         }
-        jo.put("param_id", (Object)ja_param_id);
+        jo.putOpt("param_id", (Object)ja_param_id);
                 
-        jo.put("param_type", param_type);
+        jo.put("param_type", (int)param_type);
         
         
         return jo;

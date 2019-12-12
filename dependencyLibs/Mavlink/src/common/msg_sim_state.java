@@ -331,27 +331,27 @@ public class msg_sim_state extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("q1", q1);
-        jo.put("q2", q2);
-        jo.put("q3", q3);
-        jo.put("q4", q4);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
-        jo.put("xacc", xacc);
-        jo.put("yacc", yacc);
-        jo.put("zacc", zacc);
-        jo.put("xgyro", xgyro);
-        jo.put("ygyro", ygyro);
-        jo.put("zgyro", zgyro);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("std_dev_horz", std_dev_horz);
-        jo.put("std_dev_vert", std_dev_vert);
-        jo.put("vn", vn);
-        jo.put("ve", ve);
-        jo.put("vd", vd);
+        jo.put("q1", (double)q1);
+        jo.put("q2", (double)q2);
+        jo.put("q3", (double)q3);
+        jo.put("q4", (double)q4);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
+        jo.put("xacc", (double)xacc);
+        jo.put("yacc", (double)yacc);
+        jo.put("zacc", (double)zacc);
+        jo.put("xgyro", (double)xgyro);
+        jo.put("ygyro", (double)ygyro);
+        jo.put("zgyro", (double)zgyro);
+        jo.put("lat", (double)lat);
+        jo.put("lon", (double)lon);
+        jo.put("alt", (double)alt);
+        jo.put("std_dev_horz", (double)std_dev_horz);
+        jo.put("std_dev_vert", (double)std_dev_vert);
+        jo.put("vn", (double)vn);
+        jo.put("ve", (double)ve);
+        jo.put("vd", (double)vd);
         
         
         return jo;

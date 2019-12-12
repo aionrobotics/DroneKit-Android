@@ -230,21 +230,21 @@ public class msg_set_attitude_target extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("time_boot_ms", (long)time_boot_ms);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("body_roll_rate", body_roll_rate);
-        jo.put("body_pitch_rate", body_pitch_rate);
-        jo.put("body_yaw_rate", body_yaw_rate);
-        jo.put("thrust", thrust);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("type_mask", type_mask);
+        jo.put("body_roll_rate", (double)body_roll_rate);
+        jo.put("body_pitch_rate", (double)body_pitch_rate);
+        jo.put("body_yaw_rate", (double)body_yaw_rate);
+        jo.put("thrust", (double)thrust);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("type_mask", (int)type_mask);
         
         
         return jo;

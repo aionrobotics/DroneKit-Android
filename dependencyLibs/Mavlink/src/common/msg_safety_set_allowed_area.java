@@ -211,15 +211,15 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("p1x", p1x);
-        jo.put("p1y", p1y);
-        jo.put("p1z", p1z);
-        jo.put("p2x", p2x);
-        jo.put("p2y", p2y);
-        jo.put("p2z", p2z);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
-        jo.put("frame", frame);
+        jo.put("p1x", (double)p1x);
+        jo.put("p1y", (double)p1y);
+        jo.put("p1z", (double)p1z);
+        jo.put("p2x", (double)p2x);
+        jo.put("p2y", (double)p2y);
+        jo.put("p2z", (double)p2z);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
+        jo.put("frame", (int)frame);
         
         
         return jo;

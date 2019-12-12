@@ -211,15 +211,15 @@ public class msg_storage_information extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("total_capacity", total_capacity);
-        jo.put("used_capacity", used_capacity);
-        jo.put("available_capacity", available_capacity);
-        jo.put("read_speed", read_speed);
-        jo.put("write_speed", write_speed);
-        jo.put("storage_id", storage_id);
-        jo.put("storage_count", storage_count);
-        jo.put("status", status);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("total_capacity", (double)total_capacity);
+        jo.put("used_capacity", (double)used_capacity);
+        jo.put("available_capacity", (double)available_capacity);
+        jo.put("read_speed", (double)read_speed);
+        jo.put("write_speed", (double)write_speed);
+        jo.put("storage_id", (int)storage_id);
+        jo.put("storage_count", (int)storage_count);
+        jo.put("status", (int)status);
         
         
         return jo;

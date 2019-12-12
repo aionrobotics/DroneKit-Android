@@ -171,11 +171,11 @@ public class msg_log_entry extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_utc", time_utc);
-        jo.put("size", size);
-        jo.put("id", id);
-        jo.put("num_logs", num_logs);
-        jo.put("last_log_num", last_log_num);
+        jo.put("time_utc", (long)time_utc);
+        jo.put("size", (long)size);
+        jo.put("id", (int)id);
+        jo.put("num_logs", (int)num_logs);
+        jo.put("last_log_num", (int)last_log_num);
         
         
         return jo;

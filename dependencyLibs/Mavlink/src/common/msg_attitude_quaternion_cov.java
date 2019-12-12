@@ -228,23 +228,23 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("rollspeed", rollspeed);
-        jo.put("pitchspeed", pitchspeed);
-        jo.put("yawspeed", yawspeed);
+        jo.put("rollspeed", (double)rollspeed);
+        jo.put("pitchspeed", (double)pitchspeed);
+        jo.put("yawspeed", (double)yawspeed);
          
         JSONArray ja_covariance = new JSONArray();
         for (int i = 0; i < this.covariance.length; i++) {
             ja_covariance.put(this.covariance[i]);
         }
-        jo.put("covariance", (Object)ja_covariance);
+        jo.putOpt("covariance", (Object)ja_covariance);
                 
         
         

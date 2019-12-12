@@ -189,15 +189,15 @@ public class msg_setup_signing extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("initial_timestamp", initial_timestamp);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("initial_timestamp", (long)initial_timestamp);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_secret_key = new JSONArray();
         for (int i = 0; i < this.secret_key.length; i++) {
             ja_secret_key.put(this.secret_key[i]);
         }
-        jo.put("secret_key", (Object)ja_secret_key);
+        jo.putOpt("secret_key", (Object)ja_secret_key);
                 
         
         

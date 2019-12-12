@@ -191,13 +191,13 @@ public class msg_radio_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("rxerrors", rxerrors);
-        jo.put("fixed", fixed);
-        jo.put("rssi", rssi);
-        jo.put("remrssi", remrssi);
-        jo.put("txbuf", txbuf);
-        jo.put("noise", noise);
-        jo.put("remnoise", remnoise);
+        jo.put("rxerrors", (int)rxerrors);
+        jo.put("fixed", (int)fixed);
+        jo.put("rssi", (int)rssi);
+        jo.put("remrssi", (int)remrssi);
+        jo.put("txbuf", (int)txbuf);
+        jo.put("noise", (int)noise);
+        jo.put("remnoise", (int)remnoise);
         
         
         return jo;

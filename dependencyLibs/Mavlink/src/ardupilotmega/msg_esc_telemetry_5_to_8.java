@@ -300,42 +300,42 @@ public class msg_esc_telemetry_5_to_8 extends MAVLinkMessage {
         for (int i = 0; i < this.voltage.length; i++) {
             ja_voltage.put(this.voltage[i]);
         }
-        jo.put("voltage", (Object)ja_voltage);
+        jo.putOpt("voltage", (Object)ja_voltage);
                 
          
         JSONArray ja_current = new JSONArray();
         for (int i = 0; i < this.current.length; i++) {
             ja_current.put(this.current[i]);
         }
-        jo.put("current", (Object)ja_current);
+        jo.putOpt("current", (Object)ja_current);
                 
          
         JSONArray ja_totalcurrent = new JSONArray();
         for (int i = 0; i < this.totalcurrent.length; i++) {
             ja_totalcurrent.put(this.totalcurrent[i]);
         }
-        jo.put("totalcurrent", (Object)ja_totalcurrent);
+        jo.putOpt("totalcurrent", (Object)ja_totalcurrent);
                 
          
         JSONArray ja_rpm = new JSONArray();
         for (int i = 0; i < this.rpm.length; i++) {
             ja_rpm.put(this.rpm[i]);
         }
-        jo.put("rpm", (Object)ja_rpm);
+        jo.putOpt("rpm", (Object)ja_rpm);
                 
          
         JSONArray ja_count = new JSONArray();
         for (int i = 0; i < this.count.length; i++) {
             ja_count.put(this.count[i]);
         }
-        jo.put("count", (Object)ja_count);
+        jo.putOpt("count", (Object)ja_count);
                 
          
         JSONArray ja_temperature = new JSONArray();
         for (int i = 0; i < this.temperature.length; i++) {
             ja_temperature.put(this.temperature[i]);
         }
-        jo.put("temperature", (Object)ja_temperature);
+        jo.putOpt("temperature", (Object)ja_temperature);
                 
         
         

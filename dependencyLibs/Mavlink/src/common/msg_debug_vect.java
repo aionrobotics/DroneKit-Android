@@ -201,16 +201,16 @@ public class msg_debug_vect extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
          
         JSONArray ja_name = new JSONArray();
         for (int i = 0; i < this.name.length; i++) {
             ja_name.put(this.name[i]);
         }
-        jo.put("name", (Object)ja_name);
+        jo.putOpt("name", (Object)ja_name);
                 
         
         

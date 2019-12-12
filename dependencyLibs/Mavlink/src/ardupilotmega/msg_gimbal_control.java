@@ -171,11 +171,11 @@ public class msg_gimbal_control extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("demanded_rate_x", demanded_rate_x);
-        jo.put("demanded_rate_y", demanded_rate_y);
-        jo.put("demanded_rate_z", demanded_rate_z);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("demanded_rate_x", (double)demanded_rate_x);
+        jo.put("demanded_rate_y", (double)demanded_rate_y);
+        jo.put("demanded_rate_z", (double)demanded_rate_z);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

@@ -272,25 +272,25 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("ICAO_address", ICAO_address);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("altitude", altitude);
-        jo.put("heading", heading);
-        jo.put("hor_velocity", hor_velocity);
-        jo.put("ver_velocity", ver_velocity);
-        jo.put("flags", flags);
-        jo.put("squawk", squawk);
-        jo.put("altitude_type", altitude_type);
+        jo.put("ICAO_address", (long)ICAO_address);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("altitude", (int)altitude);
+        jo.put("heading", (int)heading);
+        jo.put("hor_velocity", (int)hor_velocity);
+        jo.put("ver_velocity", (int)ver_velocity);
+        jo.put("flags", (int)flags);
+        jo.put("squawk", (int)squawk);
+        jo.put("altitude_type", (int)altitude_type);
          
         JSONArray ja_callsign = new JSONArray();
         for (int i = 0; i < this.callsign.length; i++) {
             ja_callsign.put(this.callsign[i]);
         }
-        jo.put("callsign", (Object)ja_callsign);
+        jo.putOpt("callsign", (Object)ja_callsign);
                 
-        jo.put("emitter_type", emitter_type);
-        jo.put("tslc", tslc);
+        jo.put("emitter_type", (int)emitter_type);
+        jo.put("tslc", (int)tslc);
         
         
         return jo;

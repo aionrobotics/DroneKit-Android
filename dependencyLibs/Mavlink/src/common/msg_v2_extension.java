@@ -190,16 +190,16 @@ public class msg_v2_extension extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("message_type", message_type);
-        jo.put("target_network", target_network);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("message_type", (int)message_type);
+        jo.put("target_network", (int)target_network);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
          
         JSONArray ja_payload = new JSONArray();
         for (int i = 0; i < this.payload.length; i++) {
             ja_payload.put(this.payload[i]);
         }
-        jo.put("payload", (Object)ja_payload);
+        jo.putOpt("payload", (Object)ja_payload);
                 
         
         

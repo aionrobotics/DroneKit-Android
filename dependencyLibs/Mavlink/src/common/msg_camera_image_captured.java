@@ -280,28 +280,28 @@ public class msg_camera_image_captured extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_utc", time_utc);
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("relative_alt", relative_alt);
+        jo.put("time_utc", (long)time_utc);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("relative_alt", (int)relative_alt);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("image_index", image_index);
-        jo.put("camera_id", camera_id);
-        jo.put("capture_result", capture_result);
+        jo.put("image_index", (int)image_index);
+        jo.put("camera_id", (int)camera_id);
+        jo.put("capture_result", (int)capture_result);
          
         JSONArray ja_file_url = new JSONArray();
         for (int i = 0; i < this.file_url.length; i++) {
             ja_file_url.put(this.file_url[i]);
         }
-        jo.put("file_url", (Object)ja_file_url);
+        jo.putOpt("file_url", (Object)ja_file_url);
                 
         
         

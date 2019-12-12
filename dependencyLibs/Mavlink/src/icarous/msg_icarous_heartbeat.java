@@ -131,7 +131,7 @@ public class msg_icarous_heartbeat extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("status", status);
+        jo.put("status", (int)status);
         
         
         return jo;

@@ -239,22 +239,22 @@ public class msg_vision_position_estimate extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("usec", usec);
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("yaw", yaw);
+        jo.put("usec", (long)usec);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
+        jo.put("roll", (double)roll);
+        jo.put("pitch", (double)pitch);
+        jo.put("yaw", (double)yaw);
         
          
         JSONArray ja_covariance = new JSONArray();
         for (int i = 0; i < this.covariance.length; i++) {
             ja_covariance.put(this.covariance[i]);
         }
-        jo.put("covariance", (Object)ja_covariance);
+        jo.putOpt("covariance", (Object)ja_covariance);
                 
-        jo.put("reset_counter", reset_counter);
+        jo.put("reset_counter", (int)reset_counter);
         
         return jo;
     }

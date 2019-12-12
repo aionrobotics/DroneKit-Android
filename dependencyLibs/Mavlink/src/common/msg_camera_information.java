@@ -310,36 +310,36 @@ public class msg_camera_information extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("firmware_version", firmware_version);
-        jo.put("focal_length", focal_length);
-        jo.put("sensor_size_h", sensor_size_h);
-        jo.put("sensor_size_v", sensor_size_v);
-        jo.put("flags", flags);
-        jo.put("resolution_h", resolution_h);
-        jo.put("resolution_v", resolution_v);
-        jo.put("cam_definition_version", cam_definition_version);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("firmware_version", (long)firmware_version);
+        jo.put("focal_length", (double)focal_length);
+        jo.put("sensor_size_h", (double)sensor_size_h);
+        jo.put("sensor_size_v", (double)sensor_size_v);
+        jo.put("flags", (long)flags);
+        jo.put("resolution_h", (int)resolution_h);
+        jo.put("resolution_v", (int)resolution_v);
+        jo.put("cam_definition_version", (int)cam_definition_version);
          
         JSONArray ja_vendor_name = new JSONArray();
         for (int i = 0; i < this.vendor_name.length; i++) {
             ja_vendor_name.put(this.vendor_name[i]);
         }
-        jo.put("vendor_name", (Object)ja_vendor_name);
+        jo.putOpt("vendor_name", (Object)ja_vendor_name);
                 
          
         JSONArray ja_model_name = new JSONArray();
         for (int i = 0; i < this.model_name.length; i++) {
             ja_model_name.put(this.model_name[i]);
         }
-        jo.put("model_name", (Object)ja_model_name);
+        jo.putOpt("model_name", (Object)ja_model_name);
                 
-        jo.put("lens_id", lens_id);
+        jo.put("lens_id", (int)lens_id);
          
         JSONArray ja_cam_definition_uri = new JSONArray();
         for (int i = 0; i < this.cam_definition_uri.length; i++) {
             ja_cam_definition_uri.put(this.cam_definition_uri[i]);
         }
-        jo.put("cam_definition_uri", (Object)ja_cam_definition_uri);
+        jo.putOpt("cam_definition_uri", (Object)ja_cam_definition_uri);
                 
         
         

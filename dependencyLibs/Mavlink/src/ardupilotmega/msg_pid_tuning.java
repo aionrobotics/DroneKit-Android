@@ -191,13 +191,13 @@ public class msg_pid_tuning extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("desired", desired);
-        jo.put("achieved", achieved);
-        jo.put("FF", FF);
-        jo.put("P", P);
-        jo.put("I", I);
-        jo.put("D", D);
-        jo.put("axis", axis);
+        jo.put("desired", (double)desired);
+        jo.put("achieved", (double)achieved);
+        jo.put("FF", (double)FF);
+        jo.put("P", (double)P);
+        jo.put("I", (double)I);
+        jo.put("D", (double)D);
+        jo.put("axis", (int)axis);
         
         
         return jo;

@@ -331,27 +331,27 @@ public class msg_rc_channels extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("chan1_raw", chan1_raw);
-        jo.put("chan2_raw", chan2_raw);
-        jo.put("chan3_raw", chan3_raw);
-        jo.put("chan4_raw", chan4_raw);
-        jo.put("chan5_raw", chan5_raw);
-        jo.put("chan6_raw", chan6_raw);
-        jo.put("chan7_raw", chan7_raw);
-        jo.put("chan8_raw", chan8_raw);
-        jo.put("chan9_raw", chan9_raw);
-        jo.put("chan10_raw", chan10_raw);
-        jo.put("chan11_raw", chan11_raw);
-        jo.put("chan12_raw", chan12_raw);
-        jo.put("chan13_raw", chan13_raw);
-        jo.put("chan14_raw", chan14_raw);
-        jo.put("chan15_raw", chan15_raw);
-        jo.put("chan16_raw", chan16_raw);
-        jo.put("chan17_raw", chan17_raw);
-        jo.put("chan18_raw", chan18_raw);
-        jo.put("chancount", chancount);
-        jo.put("rssi", rssi);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("chan1_raw", (int)chan1_raw);
+        jo.put("chan2_raw", (int)chan2_raw);
+        jo.put("chan3_raw", (int)chan3_raw);
+        jo.put("chan4_raw", (int)chan4_raw);
+        jo.put("chan5_raw", (int)chan5_raw);
+        jo.put("chan6_raw", (int)chan6_raw);
+        jo.put("chan7_raw", (int)chan7_raw);
+        jo.put("chan8_raw", (int)chan8_raw);
+        jo.put("chan9_raw", (int)chan9_raw);
+        jo.put("chan10_raw", (int)chan10_raw);
+        jo.put("chan11_raw", (int)chan11_raw);
+        jo.put("chan12_raw", (int)chan12_raw);
+        jo.put("chan13_raw", (int)chan13_raw);
+        jo.put("chan14_raw", (int)chan14_raw);
+        jo.put("chan15_raw", (int)chan15_raw);
+        jo.put("chan16_raw", (int)chan16_raw);
+        jo.put("chan17_raw", (int)chan17_raw);
+        jo.put("chan18_raw", (int)chan18_raw);
+        jo.put("chancount", (int)chancount);
+        jo.put("rssi", (int)rssi);
         
         
         return jo;

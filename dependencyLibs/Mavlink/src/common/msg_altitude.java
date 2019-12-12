@@ -200,13 +200,13 @@ public class msg_altitude extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("altitude_monotonic", altitude_monotonic);
-        jo.put("altitude_amsl", altitude_amsl);
-        jo.put("altitude_local", altitude_local);
-        jo.put("altitude_relative", altitude_relative);
-        jo.put("altitude_terrain", altitude_terrain);
-        jo.put("bottom_clearance", bottom_clearance);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("altitude_monotonic", (double)altitude_monotonic);
+        jo.put("altitude_amsl", (double)altitude_amsl);
+        jo.put("altitude_local", (double)altitude_local);
+        jo.put("altitude_relative", (double)altitude_relative);
+        jo.put("altitude_terrain", (double)altitude_terrain);
+        jo.put("bottom_clearance", (double)bottom_clearance);
         
         
         return jo;

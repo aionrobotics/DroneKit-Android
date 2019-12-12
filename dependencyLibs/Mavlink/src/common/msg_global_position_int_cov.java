@@ -249,22 +249,22 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
-        jo.put("relative_alt", relative_alt);
-        jo.put("vx", vx);
-        jo.put("vy", vy);
-        jo.put("vz", vz);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (int)alt);
+        jo.put("relative_alt", (int)relative_alt);
+        jo.put("vx", (double)vx);
+        jo.put("vy", (double)vy);
+        jo.put("vz", (double)vz);
          
         JSONArray ja_covariance = new JSONArray();
         for (int i = 0; i < this.covariance.length; i++) {
             ja_covariance.put(this.covariance[i]);
         }
-        jo.put("covariance", (Object)ja_covariance);
+        jo.putOpt("covariance", (Object)ja_covariance);
                 
-        jo.put("estimator_type", estimator_type);
+        jo.put("estimator_type", (int)estimator_type);
         
         
         return jo;

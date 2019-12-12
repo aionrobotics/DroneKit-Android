@@ -188,10 +188,10 @@ public class msg_flight_information extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("arming_time_utc", arming_time_utc);
-        jo.put("takeoff_time_utc", takeoff_time_utc);
-        jo.put("flight_uuid", flight_uuid);
-        jo.put("time_boot_ms", time_boot_ms);
+        jo.put("arming_time_utc", (long)arming_time_utc);
+        jo.put("takeoff_time_utc", (long)takeoff_time_utc);
+        jo.put("flight_uuid", (long)flight_uuid);
+        jo.put("time_boot_ms", (long)time_boot_ms);
         
         
         return jo;

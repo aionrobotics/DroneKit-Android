@@ -230,16 +230,16 @@ public class msg_estimator_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("vel_ratio", vel_ratio);
-        jo.put("pos_horiz_ratio", pos_horiz_ratio);
-        jo.put("pos_vert_ratio", pos_vert_ratio);
-        jo.put("mag_ratio", mag_ratio);
-        jo.put("hagl_ratio", hagl_ratio);
-        jo.put("tas_ratio", tas_ratio);
-        jo.put("pos_horiz_accuracy", pos_horiz_accuracy);
-        jo.put("pos_vert_accuracy", pos_vert_accuracy);
-        jo.put("flags", flags);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("vel_ratio", (double)vel_ratio);
+        jo.put("pos_horiz_ratio", (double)pos_horiz_ratio);
+        jo.put("pos_vert_ratio", (double)pos_vert_ratio);
+        jo.put("mag_ratio", (double)mag_ratio);
+        jo.put("hagl_ratio", (double)hagl_ratio);
+        jo.put("tas_ratio", (double)tas_ratio);
+        jo.put("pos_horiz_accuracy", (double)pos_horiz_accuracy);
+        jo.put("pos_vert_accuracy", (double)pos_vert_accuracy);
+        jo.put("flags", (int)flags);
         
         
         return jo;

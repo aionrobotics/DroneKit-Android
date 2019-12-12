@@ -344,47 +344,47 @@ public class msg_follow_target extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("timestamp", timestamp);
-        jo.put("custom_state", custom_state);
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("alt", alt);
+        jo.put("timestamp", (long)timestamp);
+        jo.put("custom_state", (long)custom_state);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("alt", (double)alt);
          
         JSONArray ja_vel = new JSONArray();
         for (int i = 0; i < this.vel.length; i++) {
             ja_vel.put(this.vel[i]);
         }
-        jo.put("vel", (Object)ja_vel);
+        jo.putOpt("vel", (Object)ja_vel);
                 
          
         JSONArray ja_acc = new JSONArray();
         for (int i = 0; i < this.acc.length; i++) {
             ja_acc.put(this.acc[i]);
         }
-        jo.put("acc", (Object)ja_acc);
+        jo.putOpt("acc", (Object)ja_acc);
                 
          
         JSONArray ja_attitude_q = new JSONArray();
         for (int i = 0; i < this.attitude_q.length; i++) {
             ja_attitude_q.put(this.attitude_q[i]);
         }
-        jo.put("attitude_q", (Object)ja_attitude_q);
+        jo.putOpt("attitude_q", (Object)ja_attitude_q);
                 
          
         JSONArray ja_rates = new JSONArray();
         for (int i = 0; i < this.rates.length; i++) {
             ja_rates.put(this.rates[i]);
         }
-        jo.put("rates", (Object)ja_rates);
+        jo.putOpt("rates", (Object)ja_rates);
                 
          
         JSONArray ja_position_cov = new JSONArray();
         for (int i = 0; i < this.position_cov.length; i++) {
             ja_position_cov.put(this.position_cov[i]);
         }
-        jo.put("position_cov", (Object)ja_position_cov);
+        jo.putOpt("position_cov", (Object)ja_position_cov);
                 
-        jo.put("est_capabilities", est_capabilities);
+        jo.put("est_capabilities", (int)est_capabilities);
         
         
         return jo;

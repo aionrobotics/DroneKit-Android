@@ -190,17 +190,17 @@ public class msg_terrain_data extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("lat", lat);
-        jo.put("lon", lon);
-        jo.put("grid_spacing", grid_spacing);
+        jo.put("lat", (int)lat);
+        jo.put("lon", (int)lon);
+        jo.put("grid_spacing", (int)grid_spacing);
          
         JSONArray ja_data = new JSONArray();
         for (int i = 0; i < this.data.length; i++) {
             ja_data.put(this.data[i]);
         }
-        jo.put("data", (Object)ja_data);
+        jo.putOpt("data", (Object)ja_data);
                 
-        jo.put("gridbit", gridbit);
+        jo.put("gridbit", (int)gridbit);
         
         
         return jo;

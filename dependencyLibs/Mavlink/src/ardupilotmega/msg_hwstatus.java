@@ -141,8 +141,8 @@ public class msg_hwstatus extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("Vcc", Vcc);
-        jo.put("I2Cerr", I2Cerr);
+        jo.put("Vcc", (int)Vcc);
+        jo.put("I2Cerr", (int)I2Cerr);
         
         
         return jo;

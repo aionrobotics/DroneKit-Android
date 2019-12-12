@@ -227,23 +227,23 @@ public class msg_vision_position_delta extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("time_delta_usec", time_delta_usec);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("time_delta_usec", (long)time_delta_usec);
          
         JSONArray ja_angle_delta = new JSONArray();
         for (int i = 0; i < this.angle_delta.length; i++) {
             ja_angle_delta.put(this.angle_delta[i]);
         }
-        jo.put("angle_delta", (Object)ja_angle_delta);
+        jo.putOpt("angle_delta", (Object)ja_angle_delta);
                 
          
         JSONArray ja_position_delta = new JSONArray();
         for (int i = 0; i < this.position_delta.length; i++) {
             ja_position_delta.put(this.position_delta[i]);
         }
-        jo.put("position_delta", (Object)ja_position_delta);
+        jo.putOpt("position_delta", (Object)ja_position_delta);
                 
-        jo.put("confidence", confidence);
+        jo.put("confidence", (double)confidence);
         
         
         return jo;

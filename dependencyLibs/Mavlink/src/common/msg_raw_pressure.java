@@ -180,11 +180,11 @@ public class msg_raw_pressure extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
-        jo.put("press_abs", press_abs);
-        jo.put("press_diff1", press_diff1);
-        jo.put("press_diff2", press_diff2);
-        jo.put("temperature", temperature);
+        jo.put("time_usec", (long)time_usec);
+        jo.put("press_abs", (int)press_abs);
+        jo.put("press_diff1", (int)press_diff1);
+        jo.put("press_diff2", (int)press_diff2);
+        jo.put("temperature", (int)temperature);
         
         
         return jo;

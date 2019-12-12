@@ -171,11 +171,11 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("mag_ofs_x", mag_ofs_x);
-        jo.put("mag_ofs_y", mag_ofs_y);
-        jo.put("mag_ofs_z", mag_ofs_z);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("mag_ofs_x", (int)mag_ofs_x);
+        jo.put("mag_ofs_y", (int)mag_ofs_y);
+        jo.put("mag_ofs_z", (int)mag_ofs_z);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

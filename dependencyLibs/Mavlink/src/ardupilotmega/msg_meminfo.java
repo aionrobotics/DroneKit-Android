@@ -151,10 +151,10 @@ public class msg_meminfo extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("brkval", brkval);
-        jo.put("freemem", freemem);
+        jo.put("brkval", (int)brkval);
+        jo.put("freemem", (int)freemem);
         
-        jo.put("freemem32", freemem32);
+        jo.put("freemem32", (long)freemem32);
         
         return jo;
     }

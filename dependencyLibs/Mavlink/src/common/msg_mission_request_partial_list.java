@@ -171,12 +171,12 @@ public class msg_mission_request_partial_list extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("start_index", start_index);
-        jo.put("end_index", end_index);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("start_index", (int)start_index);
+        jo.put("end_index", (int)end_index);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
-        jo.put("mission_type", mission_type);
+        jo.put("mission_type", (int)mission_type);
         
         return jo;
     }

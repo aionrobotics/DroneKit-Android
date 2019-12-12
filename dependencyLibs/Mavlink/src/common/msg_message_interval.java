@@ -141,8 +141,8 @@ public class msg_message_interval extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("interval_us", interval_us);
-        jo.put("message_id", message_id);
+        jo.put("interval_us", (int)interval_us);
+        jo.put("message_id", (int)message_id);
         
         
         return jo;

@@ -170,11 +170,11 @@ public class msg_gps_global_origin extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("latitude", latitude);
-        jo.put("longitude", longitude);
-        jo.put("altitude", altitude);
+        jo.put("latitude", (int)latitude);
+        jo.put("longitude", (int)longitude);
+        jo.put("altitude", (int)altitude);
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
         
         return jo;
     }

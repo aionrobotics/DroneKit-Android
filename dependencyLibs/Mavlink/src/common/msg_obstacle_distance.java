@@ -229,21 +229,21 @@ public class msg_obstacle_distance extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
          
         JSONArray ja_distances = new JSONArray();
         for (int i = 0; i < this.distances.length; i++) {
             ja_distances.put(this.distances[i]);
         }
-        jo.put("distances", (Object)ja_distances);
+        jo.putOpt("distances", (Object)ja_distances);
                 
-        jo.put("min_distance", min_distance);
-        jo.put("max_distance", max_distance);
-        jo.put("sensor_type", sensor_type);
-        jo.put("increment", increment);
+        jo.put("min_distance", (int)min_distance);
+        jo.put("max_distance", (int)max_distance);
+        jo.put("sensor_type", (int)sensor_type);
+        jo.put("increment", (int)increment);
         
-        jo.put("increment_f", increment_f);
-        jo.put("angle_offset", angle_offset);
+        jo.put("increment_f", (double)increment_f);
+        jo.put("angle_offset", (double)angle_offset);
         
         return jo;
     }

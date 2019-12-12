@@ -276,41 +276,41 @@ public class msg_gps_status extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("satellites_visible", satellites_visible);
+        jo.put("satellites_visible", (int)satellites_visible);
          
         JSONArray ja_satellite_prn = new JSONArray();
         for (int i = 0; i < this.satellite_prn.length; i++) {
             ja_satellite_prn.put(this.satellite_prn[i]);
         }
-        jo.put("satellite_prn", (Object)ja_satellite_prn);
+        jo.putOpt("satellite_prn", (Object)ja_satellite_prn);
                 
          
         JSONArray ja_satellite_used = new JSONArray();
         for (int i = 0; i < this.satellite_used.length; i++) {
             ja_satellite_used.put(this.satellite_used[i]);
         }
-        jo.put("satellite_used", (Object)ja_satellite_used);
+        jo.putOpt("satellite_used", (Object)ja_satellite_used);
                 
          
         JSONArray ja_satellite_elevation = new JSONArray();
         for (int i = 0; i < this.satellite_elevation.length; i++) {
             ja_satellite_elevation.put(this.satellite_elevation[i]);
         }
-        jo.put("satellite_elevation", (Object)ja_satellite_elevation);
+        jo.putOpt("satellite_elevation", (Object)ja_satellite_elevation);
                 
          
         JSONArray ja_satellite_azimuth = new JSONArray();
         for (int i = 0; i < this.satellite_azimuth.length; i++) {
             ja_satellite_azimuth.put(this.satellite_azimuth[i]);
         }
-        jo.put("satellite_azimuth", (Object)ja_satellite_azimuth);
+        jo.putOpt("satellite_azimuth", (Object)ja_satellite_azimuth);
                 
          
         JSONArray ja_satellite_snr = new JSONArray();
         for (int i = 0; i < this.satellite_snr.length; i++) {
             ja_satellite_snr.put(this.satellite_snr[i]);
         }
-        jo.put("satellite_snr", (Object)ja_satellite_snr);
+        jo.putOpt("satellite_snr", (Object)ja_satellite_snr);
                 
         
         

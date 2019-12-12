@@ -151,9 +151,9 @@ public class msg_button_change extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_boot_ms", time_boot_ms);
-        jo.put("last_change_ms", last_change_ms);
-        jo.put("state", state);
+        jo.put("time_boot_ms", (long)time_boot_ms);
+        jo.put("last_change_ms", (long)last_change_ms);
+        jo.put("state", (int)state);
         
         
         return jo;

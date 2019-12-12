@@ -228,24 +228,24 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("time_usec", time_usec);
+        jo.put("time_usec", (long)time_usec);
          
         JSONArray ja_q = new JSONArray();
         for (int i = 0; i < this.q.length; i++) {
             ja_q.put(this.q[i]);
         }
-        jo.put("q", (Object)ja_q);
+        jo.putOpt("q", (Object)ja_q);
                 
-        jo.put("x", x);
-        jo.put("y", y);
-        jo.put("z", z);
+        jo.put("x", (double)x);
+        jo.put("y", (double)y);
+        jo.put("z", (double)z);
         
          
         JSONArray ja_covariance = new JSONArray();
         for (int i = 0; i < this.covariance.length; i++) {
             ja_covariance.put(this.covariance[i]);
         }
-        jo.put("covariance", (Object)ja_covariance);
+        jo.putOpt("covariance", (Object)ja_covariance);
                 
         
         return jo;

@@ -161,10 +161,10 @@ public class msg_log_request_list extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("start", start);
-        jo.put("end", end);
-        jo.put("target_system", target_system);
-        jo.put("target_component", target_component);
+        jo.put("start", (int)start);
+        jo.put("end", (int)end);
+        jo.put("target_system", (int)target_system);
+        jo.put("target_component", (int)target_component);
         
         
         return jo;

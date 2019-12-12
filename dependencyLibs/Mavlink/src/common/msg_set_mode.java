@@ -151,9 +151,9 @@ public class msg_set_mode extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("custom_mode", custom_mode);
-        jo.put("target_system", target_system);
-        jo.put("base_mode", base_mode);
+        jo.put("custom_mode", (long)custom_mode);
+        jo.put("target_system", (int)target_system);
+        jo.put("base_mode", (int)base_mode);
         
         
         return jo;

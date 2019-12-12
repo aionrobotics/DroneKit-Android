@@ -361,30 +361,30 @@ public class msg_high_latency extends MAVLinkMessage {
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
-        jo.put("custom_mode", custom_mode);
-        jo.put("latitude", latitude);
-        jo.put("longitude", longitude);
-        jo.put("roll", roll);
-        jo.put("pitch", pitch);
-        jo.put("heading", heading);
-        jo.put("heading_sp", heading_sp);
-        jo.put("altitude_amsl", altitude_amsl);
-        jo.put("altitude_sp", altitude_sp);
-        jo.put("wp_distance", wp_distance);
-        jo.put("base_mode", base_mode);
-        jo.put("landed_state", landed_state);
-        jo.put("throttle", throttle);
-        jo.put("airspeed", airspeed);
-        jo.put("airspeed_sp", airspeed_sp);
-        jo.put("groundspeed", groundspeed);
-        jo.put("climb_rate", climb_rate);
-        jo.put("gps_nsat", gps_nsat);
-        jo.put("gps_fix_type", gps_fix_type);
-        jo.put("battery_remaining", battery_remaining);
-        jo.put("temperature", temperature);
-        jo.put("temperature_air", temperature_air);
-        jo.put("failsafe", failsafe);
-        jo.put("wp_num", wp_num);
+        jo.put("custom_mode", (long)custom_mode);
+        jo.put("latitude", (int)latitude);
+        jo.put("longitude", (int)longitude);
+        jo.put("roll", (int)roll);
+        jo.put("pitch", (int)pitch);
+        jo.put("heading", (int)heading);
+        jo.put("heading_sp", (int)heading_sp);
+        jo.put("altitude_amsl", (int)altitude_amsl);
+        jo.put("altitude_sp", (int)altitude_sp);
+        jo.put("wp_distance", (int)wp_distance);
+        jo.put("base_mode", (int)base_mode);
+        jo.put("landed_state", (int)landed_state);
+        jo.put("throttle", (int)throttle);
+        jo.put("airspeed", (int)airspeed);
+        jo.put("airspeed_sp", (int)airspeed_sp);
+        jo.put("groundspeed", (int)groundspeed);
+        jo.put("climb_rate", (int)climb_rate);
+        jo.put("gps_nsat", (int)gps_nsat);
+        jo.put("gps_fix_type", (int)gps_fix_type);
+        jo.put("battery_remaining", (int)battery_remaining);
+        jo.put("temperature", (int)temperature);
+        jo.put("temperature_air", (int)temperature_air);
+        jo.put("failsafe", (int)failsafe);
+        jo.put("wp_num", (int)wp_num);
         
         
         return jo;
