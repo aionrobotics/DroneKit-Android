@@ -160,7 +160,16 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
         this.altitude = (int)jo.optInt("altitude",0);
         this.target_system = (short)jo.optInt("target_system",0);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         
     }
     

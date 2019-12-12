@@ -249,8 +249,26 @@ public class msg_follow_target extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.timestamp = (long)jo.optLong("timestamp",0);
-        this.custom_state = (long)jo.optLong("custom_state",0);
+         
+        if (jo.has("timestamp")) {
+            final JSONArray ja_timestamp = jo.optJSONArray("timestamp");
+            if (ja_timestamp == null) {
+                this.timestamp = (long)jo.optLong("timestamp", 0);
+            } else if (ja_timestamp.length() > 0) {
+                this.timestamp = (long)ja_timestamp.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("custom_state")) {
+            final JSONArray ja_custom_state = jo.optJSONArray("custom_state");
+            if (ja_custom_state == null) {
+                this.custom_state = (long)jo.optLong("custom_state", 0);
+            } else if (ja_custom_state.length() > 0) {
+                this.custom_state = (long)ja_custom_state.optLong(0, 0);
+            }
+        }
+                    
         this.lat = (int)jo.optInt("lat",0);
         this.lon = (int)jo.optInt("lon",0);
         this.alt = (float)jo.optDouble("alt",0);

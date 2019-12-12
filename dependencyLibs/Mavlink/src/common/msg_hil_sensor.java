@@ -245,7 +245,16 @@ public class msg_hil_sensor extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.xacc = (float)jo.optDouble("xacc",0);
         this.yacc = (float)jo.optDouble("yacc",0);
         this.zacc = (float)jo.optDouble("zacc",0);

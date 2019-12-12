@@ -236,7 +236,16 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.chan1_raw = (int)jo.optInt("chan1_raw",0);
         this.chan2_raw = (int)jo.optInt("chan2_raw",0);
         this.chan3_raw = (int)jo.optInt("chan3_raw",0);

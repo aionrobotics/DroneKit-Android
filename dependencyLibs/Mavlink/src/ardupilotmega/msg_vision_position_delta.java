@@ -171,8 +171,26 @@ public class msg_vision_position_delta extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
-        this.time_delta_usec = (long)jo.optLong("time_delta_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("time_delta_usec")) {
+            final JSONArray ja_time_delta_usec = jo.optJSONArray("time_delta_usec");
+            if (ja_time_delta_usec == null) {
+                this.time_delta_usec = (long)jo.optLong("time_delta_usec", 0);
+            } else if (ja_time_delta_usec.length() > 0) {
+                this.time_delta_usec = (long)ja_time_delta_usec.optLong(0, 0);
+            }
+        }
+                    
          
         if (jo.has("angle_delta")) {
             JSONArray ja_angle_delta = jo.optJSONArray("angle_delta");

@@ -209,7 +209,16 @@ public class msg_hil_controls extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.roll_ailerons = (float)jo.optDouble("roll_ailerons",0);
         this.pitch_elevator = (float)jo.optDouble("pitch_elevator",0);
         this.yaw_rudder = (float)jo.optDouble("yaw_rudder",0);

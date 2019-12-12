@@ -287,7 +287,16 @@ public class msg_control_system_state extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.x_acc = (float)jo.optDouble("x_acc",0);
         this.y_acc = (float)jo.optDouble("y_acc",0);
         this.z_acc = (float)jo.optDouble("z_acc",0);

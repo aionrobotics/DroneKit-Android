@@ -146,9 +146,36 @@ public class msg_flight_information extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.arming_time_utc = (long)jo.optLong("arming_time_utc",0);
-        this.takeoff_time_utc = (long)jo.optLong("takeoff_time_utc",0);
-        this.flight_uuid = (long)jo.optLong("flight_uuid",0);
+         
+        if (jo.has("arming_time_utc")) {
+            final JSONArray ja_arming_time_utc = jo.optJSONArray("arming_time_utc");
+            if (ja_arming_time_utc == null) {
+                this.arming_time_utc = (long)jo.optLong("arming_time_utc", 0);
+            } else if (ja_arming_time_utc.length() > 0) {
+                this.arming_time_utc = (long)ja_arming_time_utc.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("takeoff_time_utc")) {
+            final JSONArray ja_takeoff_time_utc = jo.optJSONArray("takeoff_time_utc");
+            if (ja_takeoff_time_utc == null) {
+                this.takeoff_time_utc = (long)jo.optLong("takeoff_time_utc", 0);
+            } else if (ja_takeoff_time_utc.length() > 0) {
+                this.takeoff_time_utc = (long)ja_takeoff_time_utc.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("flight_uuid")) {
+            final JSONArray ja_flight_uuid = jo.optJSONArray("flight_uuid");
+            if (ja_flight_uuid == null) {
+                this.flight_uuid = (long)jo.optLong("flight_uuid", 0);
+            } else if (ja_flight_uuid.length() > 0) {
+                this.flight_uuid = (long)ja_flight_uuid.optLong(0, 0);
+            }
+        }
+                    
         this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
         
         

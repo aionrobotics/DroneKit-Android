@@ -154,7 +154,16 @@ public class msg_setup_signing extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.initial_timestamp = (long)jo.optLong("initial_timestamp",0);
+         
+        if (jo.has("initial_timestamp")) {
+            final JSONArray ja_initial_timestamp = jo.optJSONArray("initial_timestamp");
+            if (ja_initial_timestamp == null) {
+                this.initial_timestamp = (long)jo.optLong("initial_timestamp", 0);
+            } else if (ja_initial_timestamp.length() > 0) {
+                this.initial_timestamp = (long)ja_initial_timestamp.optLong(0, 0);
+            }
+        }
+                    
         this.target_system = (short)jo.optInt("target_system",0);
         this.target_component = (short)jo.optInt("target_component",0);
          

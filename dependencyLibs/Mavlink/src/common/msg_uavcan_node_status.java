@@ -164,7 +164,16 @@ public class msg_uavcan_node_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.uptime_sec = (long)jo.optLong("uptime_sec",0);
         this.vendor_specific_status_code = (int)jo.optInt("vendor_specific_status_code",0);
         this.health = (short)jo.optInt("health",0);

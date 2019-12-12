@@ -172,7 +172,16 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.usec = (long)jo.optLong("usec",0);
+         
+        if (jo.has("usec")) {
+            final JSONArray ja_usec = jo.optJSONArray("usec");
+            if (ja_usec == null) {
+                this.usec = (long)jo.optLong("usec", 0);
+            } else if (ja_usec.length() > 0) {
+                this.usec = (long)ja_usec.optLong(0, 0);
+            }
+        }
+                    
         this.x = (float)jo.optDouble("x",0);
         this.y = (float)jo.optDouble("y",0);
         this.z = (float)jo.optDouble("z",0);

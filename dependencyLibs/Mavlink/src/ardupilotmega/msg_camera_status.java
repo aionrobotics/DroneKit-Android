@@ -191,7 +191,16 @@ public class msg_camera_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.p1 = (float)jo.optDouble("p1",0);
         this.p2 = (float)jo.optDouble("p2",0);
         this.p3 = (float)jo.optDouble("p3",0);

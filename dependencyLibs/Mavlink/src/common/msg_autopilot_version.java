@@ -250,8 +250,26 @@ public class msg_autopilot_version extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.capabilities = (long)jo.optLong("capabilities",0);
-        this.uid = (long)jo.optLong("uid",0);
+         
+        if (jo.has("capabilities")) {
+            final JSONArray ja_capabilities = jo.optJSONArray("capabilities");
+            if (ja_capabilities == null) {
+                this.capabilities = (long)jo.optLong("capabilities", 0);
+            } else if (ja_capabilities.length() > 0) {
+                this.capabilities = (long)ja_capabilities.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("uid")) {
+            final JSONArray ja_uid = jo.optJSONArray("uid");
+            if (ja_uid == null) {
+                this.uid = (long)jo.optLong("uid", 0);
+            } else if (ja_uid.length() > 0) {
+                this.uid = (long)ja_uid.optLong(0, 0);
+            }
+        }
+                    
         this.flight_sw_version = (long)jo.optLong("flight_sw_version",0);
         this.middleware_sw_version = (long)jo.optLong("middleware_sw_version",0);
         this.os_sw_version = (long)jo.optLong("os_sw_version",0);

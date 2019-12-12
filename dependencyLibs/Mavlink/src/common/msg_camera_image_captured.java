@@ -225,7 +225,16 @@ public class msg_camera_image_captured extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_utc = (long)jo.optLong("time_utc",0);
+         
+        if (jo.has("time_utc")) {
+            final JSONArray ja_time_utc = jo.optJSONArray("time_utc");
+            if (ja_time_utc == null) {
+                this.time_utc = (long)jo.optLong("time_utc", 0);
+            } else if (ja_time_utc.length() > 0) {
+                this.time_utc = (long)ja_time_utc.optLong(0, 0);
+            }
+        }
+                    
         this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
         this.lat = (int)jo.optInt("lat",0);
         this.lon = (int)jo.optInt("lon",0);

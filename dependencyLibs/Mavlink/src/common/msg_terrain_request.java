@@ -146,7 +146,16 @@ public class msg_terrain_request extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.mask = (long)jo.optLong("mask",0);
+         
+        if (jo.has("mask")) {
+            final JSONArray ja_mask = jo.optJSONArray("mask");
+            if (ja_mask == null) {
+                this.mask = (long)jo.optLong("mask", 0);
+            } else if (ja_mask.length() > 0) {
+                this.mask = (long)ja_mask.optLong(0, 0);
+            }
+        }
+                    
         this.lat = (int)jo.optInt("lat",0);
         this.lon = (int)jo.optInt("lon",0);
         this.grid_spacing = (int)jo.optInt("grid_spacing",0);

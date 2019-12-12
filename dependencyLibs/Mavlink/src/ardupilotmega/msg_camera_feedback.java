@@ -236,7 +236,16 @@ public class msg_camera_feedback extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec",0);
+         
+        if (jo.has("time_usec")) {
+            final JSONArray ja_time_usec = jo.optJSONArray("time_usec");
+            if (ja_time_usec == null) {
+                this.time_usec = (long)jo.optLong("time_usec", 0);
+            } else if (ja_time_usec.length() > 0) {
+                this.time_usec = (long)ja_time_usec.optLong(0, 0);
+            }
+        }
+                    
         this.lat = (int)jo.optInt("lat",0);
         this.lng = (int)jo.optInt("lng",0);
         this.alt_msl = (float)jo.optDouble("alt_msl",0);

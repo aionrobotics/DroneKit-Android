@@ -128,8 +128,26 @@ public class msg_timesync extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.tc1 = (long)jo.optLong("tc1",0);
-        this.ts1 = (long)jo.optLong("ts1",0);
+         
+        if (jo.has("tc1")) {
+            final JSONArray ja_tc1 = jo.optJSONArray("tc1");
+            if (ja_tc1 == null) {
+                this.tc1 = (long)jo.optLong("tc1", 0);
+            } else if (ja_tc1.length() > 0) {
+                this.tc1 = (long)ja_tc1.optLong(0, 0);
+            }
+        }
+                    
+         
+        if (jo.has("ts1")) {
+            final JSONArray ja_ts1 = jo.optJSONArray("ts1");
+            if (ja_ts1 == null) {
+                this.ts1 = (long)jo.optLong("ts1", 0);
+            } else if (ja_ts1.length() > 0) {
+                this.ts1 = (long)ja_ts1.optLong(0, 0);
+            }
+        }
+                    
         
         
     }

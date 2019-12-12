@@ -128,7 +128,16 @@ public class msg_system_time extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_unix_usec = (long)jo.optLong("time_unix_usec",0);
+         
+        if (jo.has("time_unix_usec")) {
+            final JSONArray ja_time_unix_usec = jo.optJSONArray("time_unix_usec");
+            if (ja_time_unix_usec == null) {
+                this.time_unix_usec = (long)jo.optLong("time_unix_usec", 0);
+            } else if (ja_time_unix_usec.length() > 0) {
+                this.time_unix_usec = (long)ja_time_unix_usec.optLong(0, 0);
+            }
+        }
+                    
         this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
         
         
