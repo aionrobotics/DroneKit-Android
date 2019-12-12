@@ -156,5 +156,13 @@ public class msg_battery2 extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_BATTERY2 - sysid:"+sysid+" compid:"+compid+" voltage:"+voltage+" current_battery:"+current_battery+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_BATTERY2";
+    }
 }
         

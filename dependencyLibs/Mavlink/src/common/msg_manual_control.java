@@ -200,5 +200,13 @@ public class msg_manual_control extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MANUAL_CONTROL - sysid:"+sysid+" compid:"+compid+" x:"+x+" y:"+y+" z:"+z+" r:"+r+" buttons:"+buttons+" target:"+target+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MANUAL_CONTROL";
+    }
 }
         

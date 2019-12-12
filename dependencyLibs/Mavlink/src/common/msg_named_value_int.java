@@ -223,5 +223,13 @@ public class msg_named_value_int extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_NAMED_VALUE_INT - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" value:"+value+" name:"+name+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_NAMED_VALUE_INT";
+    }
 }
         

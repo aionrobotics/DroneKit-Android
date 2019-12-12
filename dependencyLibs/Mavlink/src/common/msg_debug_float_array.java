@@ -268,5 +268,13 @@ public class msg_debug_float_array extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" array_id:"+array_id+" name:"+name+" data:"+data+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY";
+    }
 }
         

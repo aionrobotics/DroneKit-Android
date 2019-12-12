@@ -244,5 +244,13 @@ public class msg_scaled_imu2 extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SCALED_IMU2 - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" xmag:"+xmag+" ymag:"+ymag+" zmag:"+zmag+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SCALED_IMU2";
+    }
 }
         

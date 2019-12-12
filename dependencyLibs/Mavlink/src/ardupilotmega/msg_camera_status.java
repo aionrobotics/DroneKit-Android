@@ -242,5 +242,13 @@ public class msg_camera_status extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_STATUS - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" p1:"+p1+" p2:"+p2+" p3:"+p3+" p4:"+p4+" img_idx:"+img_idx+" target_system:"+target_system+" cam_idx:"+cam_idx+" event_id:"+event_id+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CAMERA_STATUS";
+    }
 }
         

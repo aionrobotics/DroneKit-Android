@@ -211,5 +211,13 @@ public class msg_collision extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_COLLISION - sysid:"+sysid+" compid:"+compid+" id:"+id+" time_to_minimum_delta:"+time_to_minimum_delta+" altitude_minimum_delta:"+altitude_minimum_delta+" horizontal_minimum_delta:"+horizontal_minimum_delta+" src:"+src+" action:"+action+" threat_level:"+threat_level+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_COLLISION";
+    }
 }
         

@@ -201,5 +201,13 @@ public class msg_actuator_control_target extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" controls:"+controls+" group_mlx:"+group_mlx+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET";
+    }
 }
         

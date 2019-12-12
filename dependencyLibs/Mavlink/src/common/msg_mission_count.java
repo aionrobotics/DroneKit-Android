@@ -178,5 +178,13 @@ public class msg_mission_count extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MISSION_COUNT - sysid:"+sysid+" compid:"+compid+" count:"+count+" target_system:"+target_system+" target_component:"+target_component+" mission_type:"+mission_type+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MISSION_COUNT";
+    }
 }
         

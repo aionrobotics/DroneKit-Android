@@ -225,5 +225,13 @@ public class msg_led_control extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_LED_CONTROL - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" instance:"+instance+" pattern:"+pattern+" custom_len:"+custom_len+" custom_bytes:"+custom_bytes+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_LED_CONTROL";
+    }
 }
         

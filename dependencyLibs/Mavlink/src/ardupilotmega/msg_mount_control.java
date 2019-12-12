@@ -200,5 +200,13 @@ public class msg_mount_control extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MOUNT_CONTROL - sysid:"+sysid+" compid:"+compid+" input_a:"+input_a+" input_b:"+input_b+" input_c:"+input_c+" target_system:"+target_system+" target_component:"+target_component+" save_position:"+save_position+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MOUNT_CONTROL";
+    }
 }
         

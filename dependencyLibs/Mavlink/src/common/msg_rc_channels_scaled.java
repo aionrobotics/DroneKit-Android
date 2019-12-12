@@ -255,5 +255,13 @@ public class msg_rc_channels_scaled extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_RC_CHANNELS_SCALED - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" chan1_scaled:"+chan1_scaled+" chan2_scaled:"+chan2_scaled+" chan3_scaled:"+chan3_scaled+" chan4_scaled:"+chan4_scaled+" chan5_scaled:"+chan5_scaled+" chan6_scaled:"+chan6_scaled+" chan7_scaled:"+chan7_scaled+" chan8_scaled:"+chan8_scaled+" port:"+port+" rssi:"+rssi+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_RC_CHANNELS_SCALED";
+    }
 }
         

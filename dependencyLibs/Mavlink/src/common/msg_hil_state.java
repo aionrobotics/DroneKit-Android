@@ -319,5 +319,13 @@ public class msg_hil_state extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_STATE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" lat:"+lat+" lon:"+lon+" alt:"+alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HIL_STATE";
+    }
 }
         

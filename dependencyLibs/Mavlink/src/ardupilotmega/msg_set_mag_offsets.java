@@ -189,5 +189,13 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SET_MAG_OFFSETS - sysid:"+sysid+" compid:"+compid+" mag_ofs_x:"+mag_ofs_x+" mag_ofs_y:"+mag_ofs_y+" mag_ofs_z:"+mag_ofs_z+" target_system:"+target_system+" target_component:"+target_component+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SET_MAG_OFFSETS";
+    }
 }
         

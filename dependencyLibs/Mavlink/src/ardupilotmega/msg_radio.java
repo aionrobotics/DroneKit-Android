@@ -211,5 +211,13 @@ public class msg_radio extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_RADIO - sysid:"+sysid+" compid:"+compid+" rxerrors:"+rxerrors+" fixed:"+fixed+" rssi:"+rssi+" remrssi:"+remrssi+" txbuf:"+txbuf+" noise:"+noise+" remnoise:"+remnoise+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_RADIO";
+    }
 }
         

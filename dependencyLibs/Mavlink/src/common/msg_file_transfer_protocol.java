@@ -203,5 +203,13 @@ public class msg_file_transfer_protocol extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL - sysid:"+sysid+" compid:"+compid+" target_network:"+target_network+" target_system:"+target_system+" target_component:"+target_component+" payload:"+payload+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL";
+    }
 }
         

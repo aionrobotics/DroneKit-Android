@@ -167,5 +167,13 @@ public class msg_meminfo extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MEMINFO - sysid:"+sysid+" compid:"+compid+" brkval:"+brkval+" freemem:"+freemem+" freemem32:"+freemem32+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MEMINFO";
+    }
 }
         

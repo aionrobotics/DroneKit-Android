@@ -200,5 +200,13 @@ public class msg_fence_point extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_FENCE_POINT - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lng:"+lng+" target_system:"+target_system+" target_component:"+target_component+" idx:"+idx+" count:"+count+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_FENCE_POINT";
+    }
 }
         

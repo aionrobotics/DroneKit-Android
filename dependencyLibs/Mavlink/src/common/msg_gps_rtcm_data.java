@@ -192,5 +192,13 @@ public class msg_gps_rtcm_data extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GPS_RTCM_DATA - sysid:"+sysid+" compid:"+compid+" flags:"+flags+" len:"+len+" data:"+data+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GPS_RTCM_DATA";
+    }
 }
         

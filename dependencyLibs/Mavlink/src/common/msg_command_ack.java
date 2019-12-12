@@ -156,5 +156,13 @@ public class msg_command_ack extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_COMMAND_ACK - sysid:"+sysid+" compid:"+compid+" command:"+command+" result:"+result+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_COMMAND_ACK";
+    }
 }
         

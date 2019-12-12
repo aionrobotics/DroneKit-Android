@@ -266,5 +266,13 @@ public class msg_gimbal_report extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GIMBAL_REPORT - sysid:"+sysid+" compid:"+compid+" delta_time:"+delta_time+" delta_angle_x:"+delta_angle_x+" delta_angle_y:"+delta_angle_y+" delta_angle_z:"+delta_angle_z+" delta_velocity_x:"+delta_velocity_x+" delta_velocity_y:"+delta_velocity_y+" delta_velocity_z:"+delta_velocity_z+" joint_roll:"+joint_roll+" joint_el:"+joint_el+" joint_az:"+joint_az+" target_system:"+target_system+" target_component:"+target_component+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GIMBAL_REPORT";
+    }
 }
         

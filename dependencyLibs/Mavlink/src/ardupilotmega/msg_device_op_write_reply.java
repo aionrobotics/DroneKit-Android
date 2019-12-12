@@ -156,5 +156,13 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_DEVICE_OP_WRITE_REPLY - sysid:"+sysid+" compid:"+compid+" request_id:"+request_id+" result:"+result+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_DEVICE_OP_WRITE_REPLY";
+    }
 }
         

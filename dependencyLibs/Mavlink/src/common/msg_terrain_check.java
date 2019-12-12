@@ -156,5 +156,13 @@ public class msg_terrain_check extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_TERRAIN_CHECK - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lon:"+lon+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_TERRAIN_CHECK";
+    }
 }
         

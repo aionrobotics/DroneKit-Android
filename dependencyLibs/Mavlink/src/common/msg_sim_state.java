@@ -365,5 +365,13 @@ public class msg_sim_state extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SIM_STATE - sysid:"+sysid+" compid:"+compid+" q1:"+q1+" q2:"+q2+" q3:"+q3+" q4:"+q4+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" lat:"+lat+" lon:"+lon+" alt:"+alt+" std_dev_horz:"+std_dev_horz+" std_dev_vert:"+std_dev_vert+" vn:"+vn+" ve:"+ve+" vd:"+vd+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SIM_STATE";
+    }
 }
         

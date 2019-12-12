@@ -275,5 +275,13 @@ public class msg_optical_flow_rad extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_OPTICAL_FLOW_RAD - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" integration_time_us:"+integration_time_us+" integrated_x:"+integrated_x+" integrated_y:"+integrated_y+" integrated_xgyro:"+integrated_xgyro+" integrated_ygyro:"+integrated_ygyro+" integrated_zgyro:"+integrated_zgyro+" time_delta_distance_us:"+time_delta_distance_us+" distance:"+distance+" temperature:"+temperature+" sensor_id:"+sensor_id+" quality:"+quality+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_OPTICAL_FLOW_RAD";
+    }
 }
         

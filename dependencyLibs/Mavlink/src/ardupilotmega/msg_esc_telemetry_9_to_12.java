@@ -350,5 +350,13 @@ public class msg_esc_telemetry_9_to_12 extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_ESC_TELEMETRY_9_TO_12 - sysid:"+sysid+" compid:"+compid+" voltage:"+voltage+" current:"+current+" totalcurrent:"+totalcurrent+" rpm:"+rpm+" count:"+count+" temperature:"+temperature+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_ESC_TELEMETRY_9_TO_12";
+    }
 }
         

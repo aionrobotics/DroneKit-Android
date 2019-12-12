@@ -189,5 +189,13 @@ public class msg_log_entry extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_LOG_ENTRY - sysid:"+sysid+" compid:"+compid+" time_utc:"+time_utc+" size:"+size+" id:"+id+" num_logs:"+num_logs+" last_log_num:"+last_log_num+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_LOG_ENTRY";
+    }
 }
         

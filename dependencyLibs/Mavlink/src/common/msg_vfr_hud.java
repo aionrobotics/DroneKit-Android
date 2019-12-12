@@ -200,5 +200,13 @@ public class msg_vfr_hud extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_VFR_HUD - sysid:"+sysid+" compid:"+compid+" airspeed:"+airspeed+" groundspeed:"+groundspeed+" alt:"+alt+" climb:"+climb+" heading:"+heading+" throttle:"+throttle+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_VFR_HUD";
+    }
 }
         

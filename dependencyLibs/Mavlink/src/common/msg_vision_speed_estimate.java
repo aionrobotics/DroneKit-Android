@@ -234,5 +234,13 @@ public class msg_vision_speed_estimate extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE - sysid:"+sysid+" compid:"+compid+" usec:"+usec+" x:"+x+" y:"+y+" z:"+z+" covariance:"+covariance+" reset_counter:"+reset_counter+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE";
+    }
 }
         

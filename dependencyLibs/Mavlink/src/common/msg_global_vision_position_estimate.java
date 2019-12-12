@@ -267,5 +267,13 @@ public class msg_global_vision_position_estimate extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE - sysid:"+sysid+" compid:"+compid+" usec:"+usec+" x:"+x+" y:"+y+" z:"+z+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" covariance:"+covariance+" reset_counter:"+reset_counter+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GLOBAL_VISION_POSITION_ESTIMATE";
+    }
 }
         

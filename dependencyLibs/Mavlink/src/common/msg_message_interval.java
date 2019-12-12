@@ -156,5 +156,13 @@ public class msg_message_interval extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MESSAGE_INTERVAL - sysid:"+sysid+" compid:"+compid+" interval_us:"+interval_us+" message_id:"+message_id+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MESSAGE_INTERVAL";
+    }
 }
         

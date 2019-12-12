@@ -189,5 +189,13 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT - sysid:"+sysid+" compid:"+compid+" rl_torque_cmd:"+rl_torque_cmd+" el_torque_cmd:"+el_torque_cmd+" az_torque_cmd:"+az_torque_cmd+" target_system:"+target_system+" target_component:"+target_component+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT";
+    }
 }
         

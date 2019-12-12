@@ -211,5 +211,13 @@ public class msg_ekf_status_report extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_EKF_STATUS_REPORT - sysid:"+sysid+" compid:"+compid+" velocity_variance:"+velocity_variance+" pos_horiz_variance:"+pos_horiz_variance+" pos_vert_variance:"+pos_vert_variance+" compass_variance:"+compass_variance+" terrain_alt_variance:"+terrain_alt_variance+" flags:"+flags+" airspeed_variance:"+airspeed_variance+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_EKF_STATUS_REPORT";
+    }
 }
         

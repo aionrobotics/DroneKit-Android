@@ -178,5 +178,13 @@ public class msg_mission_ack extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MISSION_ACK - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" type:"+type+" mission_type:"+mission_type+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MISSION_ACK";
+    }
 }
         

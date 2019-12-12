@@ -277,5 +277,13 @@ public class msg_adap_tuning extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_ADAP_TUNING - sysid:"+sysid+" compid:"+compid+" desired:"+desired+" achieved:"+achieved+" error:"+error+" theta:"+theta+" omega:"+omega+" sigma:"+sigma+" theta_dot:"+theta_dot+" omega_dot:"+omega_dot+" sigma_dot:"+sigma_dot+" f:"+f+" f_dot:"+f_dot+" u:"+u+" axis:"+axis+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_ADAP_TUNING";
+    }
 }
         

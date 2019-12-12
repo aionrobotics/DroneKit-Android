@@ -205,5 +205,13 @@ public class msg_flight_information extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_FLIGHT_INFORMATION - sysid:"+sysid+" compid:"+compid+" arming_time_utc:"+arming_time_utc+" takeoff_time_utc:"+takeoff_time_utc+" flight_uuid:"+flight_uuid+" time_boot_ms:"+time_boot_ms+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_FLIGHT_INFORMATION";
+    }
 }
         

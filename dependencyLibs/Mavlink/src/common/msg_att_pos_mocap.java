@@ -259,5 +259,13 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_ATT_POS_MOCAP - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" q:"+q+" x:"+x+" y:"+y+" z:"+z+" covariance:"+covariance+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_ATT_POS_MOCAP";
+    }
 }
         

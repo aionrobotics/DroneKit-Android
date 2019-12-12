@@ -203,5 +203,13 @@ public class msg_gps_inject_data extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GPS_INJECT_DATA - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" len:"+len+" data:"+data+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GPS_INJECT_DATA";
+    }
 }
         

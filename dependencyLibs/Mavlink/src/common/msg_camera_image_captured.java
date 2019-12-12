@@ -345,5 +345,13 @@ public class msg_camera_image_captured extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED - sysid:"+sysid+" compid:"+compid+" time_utc:"+time_utc+" time_boot_ms:"+time_boot_ms+" lat:"+lat+" lon:"+lon+" alt:"+alt+" relative_alt:"+relative_alt+" q:"+q+" image_index:"+image_index+" camera_id:"+camera_id+" capture_result:"+capture_result+" file_url:"+file_url+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED";
+    }
 }
         

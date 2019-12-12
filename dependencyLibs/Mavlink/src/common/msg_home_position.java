@@ -289,5 +289,13 @@ public class msg_home_position extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HOME_POSITION - sysid:"+sysid+" compid:"+compid+" latitude:"+latitude+" longitude:"+longitude+" altitude:"+altitude+" x:"+x+" y:"+y+" z:"+z+" q:"+q+" approach_x:"+approach_x+" approach_y:"+approach_y+" approach_z:"+approach_z+" time_usec:"+time_usec+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HOME_POSITION";
+    }
 }
         

@@ -222,5 +222,13 @@ public class msg_nav_controller_output extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT - sysid:"+sysid+" compid:"+compid+" nav_roll:"+nav_roll+" nav_pitch:"+nav_pitch+" alt_error:"+alt_error+" aspd_error:"+aspd_error+" xtrack_error:"+xtrack_error+" nav_bearing:"+nav_bearing+" target_bearing:"+target_bearing+" wp_dist:"+wp_dist+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT";
+    }
 }
         

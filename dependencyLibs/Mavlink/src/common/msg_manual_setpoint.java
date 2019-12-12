@@ -211,5 +211,13 @@ public class msg_manual_setpoint extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_MANUAL_SETPOINT - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" thrust:"+thrust+" mode_switch:"+mode_switch+" manual_override_switch:"+manual_override_switch+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_MANUAL_SETPOINT";
+    }
 }
         

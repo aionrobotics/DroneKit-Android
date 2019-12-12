@@ -289,5 +289,13 @@ public class msg_param_map_rc extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_PARAM_MAP_RC - sysid:"+sysid+" compid:"+compid+" param_value0:"+param_value0+" scale:"+scale+" param_value_min:"+param_value_min+" param_value_max:"+param_value_max+" param_index:"+param_index+" target_system:"+target_system+" target_component:"+target_component+" param_id:"+param_id+" parameter_rc_channel_index:"+parameter_rc_channel_index+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_PARAM_MAP_RC";
+    }
 }
         

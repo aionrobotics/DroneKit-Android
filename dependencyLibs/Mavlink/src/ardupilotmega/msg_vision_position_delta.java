@@ -257,5 +257,13 @@ public class msg_vision_position_delta extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_VISION_POSITION_DELTA - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" time_delta_usec:"+time_delta_usec+" angle_delta:"+angle_delta+" position_delta:"+position_delta+" confidence:"+confidence+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_VISION_POSITION_DELTA";
+    }
 }
         

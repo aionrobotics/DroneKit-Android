@@ -244,5 +244,13 @@ public class msg_ahrs3 extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_AHRS3 - sysid:"+sysid+" compid:"+compid+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" altitude:"+altitude+" lat:"+lat+" lng:"+lng+" v1:"+v1+" v2:"+v2+" v3:"+v3+" v4:"+v4+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_AHRS3";
+    }
 }
         

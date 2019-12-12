@@ -167,5 +167,13 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK - sysid:"+sysid+" compid:"+compid+" gcs_system_id:"+gcs_system_id+" control_request:"+control_request+" ack:"+ack+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK";
+    }
 }
         

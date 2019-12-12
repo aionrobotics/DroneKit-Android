@@ -297,5 +297,13 @@ public class msg_camera_feedback extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_FEEDBACK - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" lat:"+lat+" lng:"+lng+" alt_msl:"+alt_msl+" alt_rel:"+alt_rel+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" foc_len:"+foc_len+" img_idx:"+img_idx+" target_system:"+target_system+" cam_idx:"+cam_idx+" flags:"+flags+" completed_captures:"+completed_captures+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CAMERA_FEEDBACK";
+    }
 }
         

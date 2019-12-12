@@ -200,5 +200,13 @@ public class msg_heartbeat extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HEARTBEAT - sysid:"+sysid+" compid:"+compid+" custom_mode:"+custom_mode+" type:"+type+" autopilot:"+autopilot+" base_mode:"+base_mode+" system_status:"+system_status+" mavlink_version:"+mavlink_version+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HEARTBEAT";
+    }
 }
         

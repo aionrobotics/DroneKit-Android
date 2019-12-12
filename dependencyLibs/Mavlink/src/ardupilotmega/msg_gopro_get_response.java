@@ -192,5 +192,13 @@ public class msg_gopro_get_response extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GOPRO_GET_RESPONSE - sysid:"+sysid+" compid:"+compid+" cmd_id:"+cmd_id+" status:"+status+" value:"+value+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GOPRO_GET_RESPONSE";
+    }
 }
         

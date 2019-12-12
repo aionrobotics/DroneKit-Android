@@ -344,5 +344,13 @@ public class msg_hil_state_quaternion extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_STATE_QUATERNION - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" attitude_quaternion:"+attitude_quaternion+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" lat:"+lat+" lon:"+lon+" alt:"+alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" ind_airspeed:"+ind_airspeed+" true_airspeed:"+true_airspeed+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HIL_STATE_QUATERNION";
+    }
 }
         

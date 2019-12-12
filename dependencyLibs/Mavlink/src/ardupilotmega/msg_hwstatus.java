@@ -156,5 +156,13 @@ public class msg_hwstatus extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HWSTATUS - sysid:"+sysid+" compid:"+compid+" Vcc:"+Vcc+" I2Cerr:"+I2Cerr+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HWSTATUS";
+    }
 }
         

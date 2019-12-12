@@ -176,5 +176,13 @@ public class msg_aoa_ssa extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_AOA_SSA - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" AOA:"+AOA+" SSA:"+SSA+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_AOA_SSA";
+    }
 }
         

@@ -192,5 +192,13 @@ public class msg_data32 extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_DATA32 - sysid:"+sysid+" compid:"+compid+" type:"+type+" len:"+len+" data:"+data+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_DATA32";
+    }
 }
         

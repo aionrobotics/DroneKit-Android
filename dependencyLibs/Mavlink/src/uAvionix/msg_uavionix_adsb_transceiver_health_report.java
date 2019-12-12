@@ -145,5 +145,13 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
     public String toString() {
         return "MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT - sysid:"+sysid+" compid:"+compid+" rfHealth:"+rfHealth+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT";
+    }
 }
         

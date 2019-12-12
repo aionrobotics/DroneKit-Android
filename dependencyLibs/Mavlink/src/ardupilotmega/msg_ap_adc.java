@@ -200,5 +200,13 @@ public class msg_ap_adc extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_AP_ADC - sysid:"+sysid+" compid:"+compid+" adc1:"+adc1+" adc2:"+adc2+" adc3:"+adc3+" adc4:"+adc4+" adc5:"+adc5+" adc6:"+adc6+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_AP_ADC";
+    }
 }
         

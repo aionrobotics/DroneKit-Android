@@ -165,5 +165,13 @@ public class msg_system_time extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SYSTEM_TIME - sysid:"+sysid+" compid:"+compid+" time_unix_usec:"+time_unix_usec+" time_boot_ms:"+time_boot_ms+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SYSTEM_TIME";
+    }
 }
         

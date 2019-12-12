@@ -167,5 +167,13 @@ public class msg_power_status extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_POWER_STATUS - sysid:"+sysid+" compid:"+compid+" Vcc:"+Vcc+" Vservo:"+Vservo+" flags:"+flags+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_POWER_STATUS";
+    }
 }
         

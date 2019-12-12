@@ -165,5 +165,13 @@ public class msg_camera_trigger extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_TRIGGER - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" seq:"+seq+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CAMERA_TRIGGER";
+    }
 }
         

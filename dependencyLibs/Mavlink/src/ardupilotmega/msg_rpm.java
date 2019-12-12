@@ -156,5 +156,13 @@ public class msg_rpm extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_RPM - sysid:"+sysid+" compid:"+compid+" rpm1:"+rpm1+" rpm2:"+rpm2+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_RPM";
+    }
 }
         

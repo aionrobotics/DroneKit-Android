@@ -156,5 +156,13 @@ public class msg_log_erase extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_LOG_ERASE - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_LOG_ERASE";
+    }
 }
         

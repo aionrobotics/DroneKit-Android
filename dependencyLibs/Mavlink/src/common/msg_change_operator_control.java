@@ -234,5 +234,13 @@ public class msg_change_operator_control extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" control_request:"+control_request+" version:"+version+" passkey:"+passkey+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL";
+    }
 }
         

@@ -255,5 +255,13 @@ public class msg_digicam_configure extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_DIGICAM_CONFIGURE - sysid:"+sysid+" compid:"+compid+" extra_value:"+extra_value+" shutter_speed:"+shutter_speed+" target_system:"+target_system+" target_component:"+target_component+" mode:"+mode+" aperture:"+aperture+" iso:"+iso+" exposure_type:"+exposure_type+" command_id:"+command_id+" engine_cut_off:"+engine_cut_off+" extra_param:"+extra_param+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_DIGICAM_CONFIGURE";
+    }
 }
         

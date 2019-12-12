@@ -255,5 +255,13 @@ public class msg_command_long extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_COMMAND_LONG - sysid:"+sysid+" compid:"+compid+" param1:"+param1+" param2:"+param2+" param3:"+param3+" param4:"+param4+" param5:"+param5+" param6:"+param6+" param7:"+param7+" command:"+command+" target_system:"+target_system+" target_component:"+target_component+" confirmation:"+confirmation+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_COMMAND_LONG";
+    }
 }
         

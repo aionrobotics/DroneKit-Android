@@ -225,5 +225,13 @@ public class msg_logging_data extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_LOGGING_DATA - sysid:"+sysid+" compid:"+compid+" sequence:"+sequence+" target_system:"+target_system+" target_component:"+target_component+" length:"+length+" first_message_offset:"+first_message_offset+" data:"+data+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_LOGGING_DATA";
+    }
 }
         

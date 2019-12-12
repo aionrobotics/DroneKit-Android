@@ -268,5 +268,13 @@ public class msg_wifi_config_ap extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_WIFI_CONFIG_AP - sysid:"+sysid+" compid:"+compid+" ssid:"+ssid+" password:"+password+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_WIFI_CONFIG_AP";
+    }
 }
         

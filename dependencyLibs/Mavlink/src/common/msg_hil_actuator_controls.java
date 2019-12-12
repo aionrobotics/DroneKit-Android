@@ -221,5 +221,13 @@ public class msg_hil_actuator_controls extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" flags:"+flags+" controls:"+controls+" mode:"+mode+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS";
+    }
 }
         

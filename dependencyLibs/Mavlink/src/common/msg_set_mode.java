@@ -167,5 +167,13 @@ public class msg_set_mode extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SET_MODE - sysid:"+sysid+" compid:"+compid+" custom_mode:"+custom_mode+" target_system:"+target_system+" base_mode:"+base_mode+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SET_MODE";
+    }
 }
         

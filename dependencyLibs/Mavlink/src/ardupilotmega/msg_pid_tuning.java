@@ -211,5 +211,13 @@ public class msg_pid_tuning extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_PID_TUNING - sysid:"+sysid+" compid:"+compid+" desired:"+desired+" achieved:"+achieved+" FF:"+FF+" P:"+P+" I:"+I+" D:"+D+" axis:"+axis+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_PID_TUNING";
+    }
 }
         

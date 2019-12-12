@@ -212,5 +212,13 @@ public class msg_statustext_long extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_STATUSTEXT_LONG - sysid:"+sysid+" compid:"+compid+" severity:"+severity+" text:"+text+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_STATUSTEXT_LONG";
+    }
 }
         

@@ -211,5 +211,13 @@ public class msg_data_transmission_handshake extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE - sysid:"+sysid+" compid:"+compid+" size:"+size+" width:"+width+" height:"+height+" packets:"+packets+" type:"+type+" payload:"+payload+" jpg_quality:"+jpg_quality+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE";
+    }
 }
         

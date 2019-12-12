@@ -198,5 +198,13 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN - sysid:"+sysid+" compid:"+compid+" latitude:"+latitude+" longitude:"+longitude+" altitude:"+altitude+" target_system:"+target_system+" time_usec:"+time_usec+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN";
+    }
 }
         

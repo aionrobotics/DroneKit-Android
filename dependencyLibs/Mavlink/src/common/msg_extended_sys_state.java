@@ -156,5 +156,13 @@ public class msg_extended_sys_state extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_EXTENDED_SYS_STATE - sysid:"+sysid+" compid:"+compid+" vtol_state:"+vtol_state+" landed_state:"+landed_state+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_EXTENDED_SYS_STATE";
+    }
 }
         

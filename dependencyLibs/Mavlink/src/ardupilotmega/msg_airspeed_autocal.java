@@ -266,5 +266,13 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_AIRSPEED_AUTOCAL - sysid:"+sysid+" compid:"+compid+" vx:"+vx+" vy:"+vy+" vz:"+vz+" diff_pressure:"+diff_pressure+" EAS2TAS:"+EAS2TAS+" ratio:"+ratio+" state_x:"+state_x+" state_y:"+state_y+" state_z:"+state_z+" Pax:"+Pax+" Pby:"+Pby+" Pcz:"+Pcz+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_AIRSPEED_AUTOCAL";
+    }
 }
         

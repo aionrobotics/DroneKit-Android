@@ -245,5 +245,13 @@ public class msg_param_set extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_PARAM_SET - sysid:"+sysid+" compid:"+compid+" param_value:"+param_value+" target_system:"+target_system+" target_component:"+target_component+" param_id:"+param_id+" param_type:"+param_type+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_PARAM_SET";
+    }
 }
         

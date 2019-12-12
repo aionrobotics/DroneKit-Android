@@ -234,5 +234,13 @@ public class msg_global_position_int extends MAVLinkMessage {
     public String toString() {
         return "MAVLINK_MSG_ID_GLOBAL_POSITION_INT - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" lat:"+lat+" lon:"+lon+" alt:"+alt+" relative_alt:"+relative_alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" hdg:"+hdg+"";
     }
+    
+    /**
+     * Returns a human-readable string of the name of the message
+     */
+    @Override
+    public String name() {
+        return "MAVLINK_MSG_ID_GLOBAL_POSITION_INT";
+    }
 }
         
