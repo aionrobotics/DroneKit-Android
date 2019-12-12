@@ -45,6 +45,7 @@ public class msg_button_change extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_button_change extends MAVLinkMessage {
         packet.payload.putUnsignedInt(last_change_ms);
         packet.payload.putUnsignedByte(state);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_button_change extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_button_change extends MAVLinkMessage {
         this.last_change_ms = payload.getUnsignedInt();
         this.state = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_button_change extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.last_change_ms = (long)jo.optLong("last_change_ms");
-        this.state = (short)jo.optInt("state");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.last_change_ms = (long)jo.optLong("last_change_ms",0);
+        this.state = (short)jo.optInt("state",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_button_change extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_button_change extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_BUTTON_CHANGE - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" last_change_ms:"+last_change_ms+" state:"+state+"";
     }

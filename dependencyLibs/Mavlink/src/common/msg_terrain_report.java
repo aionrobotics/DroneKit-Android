@@ -65,6 +65,7 @@ public class msg_terrain_report extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_terrain_report extends MAVLinkMessage {
         packet.payload.putUnsignedShort(pending);
         packet.payload.putUnsignedShort(loaded);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_terrain_report extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_terrain_report extends MAVLinkMessage {
         this.pending = payload.getUnsignedShort();
         this.loaded = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_terrain_report extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.terrain_height = (float)jo.optFloat("terrain_height");
-        this.current_height = (float)jo.optFloat("current_height");
-        this.spacing = (int)jo.optInt("spacing");
-        this.pending = (int)jo.optInt("pending");
-        this.loaded = (int)jo.optInt("loaded");
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.terrain_height = (float)jo.optDouble("terrain_height",0);
+        this.current_height = (float)jo.optDouble("current_height",0);
+        this.spacing = (int)jo.optInt("spacing",0);
+        this.pending = (int)jo.optInt("pending",0);
+        this.loaded = (int)jo.optInt("loaded",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_terrain_report extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_terrain_report extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_TERRAIN_REPORT - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lon:"+lon+" terrain_height:"+terrain_height+" current_height:"+current_height+" spacing:"+spacing+" pending:"+pending+" loaded:"+loaded+"";
     }

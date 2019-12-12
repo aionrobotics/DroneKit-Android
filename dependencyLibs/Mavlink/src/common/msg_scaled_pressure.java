@@ -50,6 +50,7 @@ public class msg_scaled_pressure extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -61,7 +62,9 @@ public class msg_scaled_pressure extends MAVLinkMessage {
         packet.payload.putFloat(press_diff);
         packet.payload.putShort(temperature);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -70,6 +73,7 @@ public class msg_scaled_pressure extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -78,7 +82,9 @@ public class msg_scaled_pressure extends MAVLinkMessage {
         this.press_diff = payload.getFloat();
         this.temperature = payload.getShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -140,10 +146,10 @@ public class msg_scaled_pressure extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.press_abs = (float)jo.optFloat("press_abs");
-        this.press_diff = (float)jo.optFloat("press_diff");
-        this.temperature = (short)jo.optInt("temperature");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.press_abs = (float)jo.optDouble("press_abs",0);
+        this.press_diff = (float)jo.optDouble("press_diff",0);
+        this.temperature = (short)jo.optInt("temperature",0);
         
         
     }
@@ -151,6 +157,7 @@ public class msg_scaled_pressure extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -167,6 +174,7 @@ public class msg_scaled_pressure extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SCALED_PRESSURE - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" press_abs:"+press_abs+" press_diff:"+press_diff+" temperature:"+temperature+"";
     }

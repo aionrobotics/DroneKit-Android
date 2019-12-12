@@ -65,6 +65,7 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
         packet.payload.putFloat(pitch);
         packet.payload.putFloat(yaw);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
         this.pitch = payload.getFloat();
         this.yaw = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_local_position_ned_system_global_offset extends MAVLinkMessage 
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" x:"+x+" y:"+y+" z:"+z+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+"";
     }

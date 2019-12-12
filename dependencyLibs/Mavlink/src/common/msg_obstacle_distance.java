@@ -70,6 +70,7 @@ public class msg_obstacle_distance extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -87,12 +88,10 @@ public class msg_obstacle_distance extends MAVLinkMessage {
         packet.payload.putUnsignedByte(sensor_type);
         packet.payload.putUnsignedByte(increment);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(increment_f);
-        }
-        if(isMavlink2) {
-            packet.payload.putFloat(angle_offset);
+        if (isMavlink2) {
+             packet.payload.putFloat(increment_f);
+             packet.payload.putFloat(angle_offset);
+            
         }
         return packet;
     }
@@ -102,6 +101,7 @@ public class msg_obstacle_distance extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -116,12 +116,10 @@ public class msg_obstacle_distance extends MAVLinkMessage {
         this.sensor_type = payload.getUnsignedByte();
         this.increment = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.increment_f = payload.getFloat();
-        }
-        if(isMavlink2) {
-            this.angle_offset = payload.getFloat();
+        if (isMavlink2) {
+             this.increment_f = payload.getFloat();
+             this.angle_offset = payload.getFloat();
+            
         }
     }
 
@@ -192,26 +190,33 @@ public class msg_obstacle_distance extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
          
-        JSONArray ja_distances = jo.optJSONArray("distances");
-        for (int i = 0; i < Math.min(this.distances.length, ja_distances.length()); i++) {
-            this.distances[i] = (int)ja_distances.getInt(i);
+        if (jo.has("distances")) {
+            JSONArray ja_distances = jo.optJSONArray("distances");
+            if (ja_distances == null) {
+                this.distances[0] = (int)jo.optInt("distances", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.distances.length, ja_distances.length()); i++) {
+                    this.distances[i] = (int)ja_distances.optInt(i,0);
+                }
+            }
         }
-                
-        this.min_distance = (int)jo.optInt("min_distance");
-        this.max_distance = (int)jo.optInt("max_distance");
-        this.sensor_type = (short)jo.optInt("sensor_type");
-        this.increment = (short)jo.optInt("increment");
+                    
+        this.min_distance = (int)jo.optInt("min_distance",0);
+        this.max_distance = (int)jo.optInt("max_distance",0);
+        this.sensor_type = (short)jo.optInt("sensor_type",0);
+        this.increment = (short)jo.optInt("increment",0);
         
-        this.increment_f = (float)jo.optFloat("increment_f");
-        this.angle_offset = (float)jo.optFloat("angle_offset");
+        this.increment_f = (float)jo.optDouble("increment_f",0);
+        this.angle_offset = (float)jo.optDouble("angle_offset",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -238,6 +243,7 @@ public class msg_obstacle_distance extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_OBSTACLE_DISTANCE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" distances:"+distances+" min_distance:"+min_distance+" max_distance:"+max_distance+" sensor_type:"+sensor_type+" increment:"+increment+" increment_f:"+increment_f+" angle_offset:"+angle_offset+"";
     }

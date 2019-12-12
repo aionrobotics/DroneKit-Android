@@ -60,6 +60,7 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -140,7 +144,9 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -207,41 +213,77 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
         readJSONheader(jo);
         
          
-        JSONArray ja_voltage = jo.optJSONArray("voltage");
-        for (int i = 0; i < Math.min(this.voltage.length, ja_voltage.length()); i++) {
-            this.voltage[i] = (int)ja_voltage.getInt(i);
+        if (jo.has("voltage")) {
+            JSONArray ja_voltage = jo.optJSONArray("voltage");
+            if (ja_voltage == null) {
+                this.voltage[0] = (int)jo.optInt("voltage", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.voltage.length, ja_voltage.length()); i++) {
+                    this.voltage[i] = (int)ja_voltage.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_current = jo.optJSONArray("current");
-        for (int i = 0; i < Math.min(this.current.length, ja_current.length()); i++) {
-            this.current[i] = (int)ja_current.getInt(i);
+        if (jo.has("current")) {
+            JSONArray ja_current = jo.optJSONArray("current");
+            if (ja_current == null) {
+                this.current[0] = (int)jo.optInt("current", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.current.length, ja_current.length()); i++) {
+                    this.current[i] = (int)ja_current.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_totalcurrent = jo.optJSONArray("totalcurrent");
-        for (int i = 0; i < Math.min(this.totalcurrent.length, ja_totalcurrent.length()); i++) {
-            this.totalcurrent[i] = (int)ja_totalcurrent.getInt(i);
+        if (jo.has("totalcurrent")) {
+            JSONArray ja_totalcurrent = jo.optJSONArray("totalcurrent");
+            if (ja_totalcurrent == null) {
+                this.totalcurrent[0] = (int)jo.optInt("totalcurrent", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.totalcurrent.length, ja_totalcurrent.length()); i++) {
+                    this.totalcurrent[i] = (int)ja_totalcurrent.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_rpm = jo.optJSONArray("rpm");
-        for (int i = 0; i < Math.min(this.rpm.length, ja_rpm.length()); i++) {
-            this.rpm[i] = (int)ja_rpm.getInt(i);
+        if (jo.has("rpm")) {
+            JSONArray ja_rpm = jo.optJSONArray("rpm");
+            if (ja_rpm == null) {
+                this.rpm[0] = (int)jo.optInt("rpm", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.rpm.length, ja_rpm.length()); i++) {
+                    this.rpm[i] = (int)ja_rpm.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_count = jo.optJSONArray("count");
-        for (int i = 0; i < Math.min(this.count.length, ja_count.length()); i++) {
-            this.count[i] = (int)ja_count.getInt(i);
+        if (jo.has("count")) {
+            JSONArray ja_count = jo.optJSONArray("count");
+            if (ja_count == null) {
+                this.count[0] = (int)jo.optInt("count", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.count.length, ja_count.length()); i++) {
+                    this.count[i] = (int)ja_count.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_temperature = jo.optJSONArray("temperature");
-        for (int i = 0; i < Math.min(this.temperature.length, ja_temperature.length()); i++) {
-            this.temperature[i] = (short)ja_temperature.getInt(i);
+        if (jo.has("temperature")) {
+            JSONArray ja_temperature = jo.optJSONArray("temperature");
+            if (ja_temperature == null) {
+                this.temperature[0] = (short)jo.optInt("temperature", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.temperature.length, ja_temperature.length()); i++) {
+                    this.temperature[i] = (short)ja_temperature.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -249,6 +291,7 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -303,6 +346,7 @@ public class msg_esc_telemetry_1_to_4 extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4 - sysid:"+sysid+" compid:"+compid+" voltage:"+voltage+" current:"+current+" totalcurrent:"+totalcurrent+" rpm:"+rpm+" count:"+count+" temperature:"+temperature+"";
     }

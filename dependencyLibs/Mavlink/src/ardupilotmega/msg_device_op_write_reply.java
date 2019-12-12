@@ -40,6 +40,7 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
         packet.payload.putUnsignedInt(request_id);
         packet.payload.putUnsignedByte(result);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.request_id = payload.getUnsignedInt();
         this.result = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.request_id = (long)jo.optLong("request_id");
-        this.result = (short)jo.optInt("result");
+        this.request_id = (long)jo.optLong("request_id",0);
+        this.result = (short)jo.optInt("result",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_device_op_write_reply extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DEVICE_OP_WRITE_REPLY - sysid:"+sysid+" compid:"+compid+" request_id:"+request_id+" result:"+result+"";
     }

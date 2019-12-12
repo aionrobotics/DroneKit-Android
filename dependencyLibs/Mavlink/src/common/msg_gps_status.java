@@ -60,6 +60,7 @@ public class msg_gps_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -93,7 +94,9 @@ public class msg_gps_status extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -102,6 +105,7 @@ public class msg_gps_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -132,7 +136,9 @@ public class msg_gps_status extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -198,37 +204,67 @@ public class msg_gps_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.satellites_visible = (short)jo.optInt("satellites_visible");
+        this.satellites_visible = (short)jo.optInt("satellites_visible",0);
          
-        JSONArray ja_satellite_prn = jo.optJSONArray("satellite_prn");
-        for (int i = 0; i < Math.min(this.satellite_prn.length, ja_satellite_prn.length()); i++) {
-            this.satellite_prn[i] = (short)ja_satellite_prn.getInt(i);
+        if (jo.has("satellite_prn")) {
+            JSONArray ja_satellite_prn = jo.optJSONArray("satellite_prn");
+            if (ja_satellite_prn == null) {
+                this.satellite_prn[0] = (short)jo.optInt("satellite_prn", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.satellite_prn.length, ja_satellite_prn.length()); i++) {
+                    this.satellite_prn[i] = (short)ja_satellite_prn.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_satellite_used = jo.optJSONArray("satellite_used");
-        for (int i = 0; i < Math.min(this.satellite_used.length, ja_satellite_used.length()); i++) {
-            this.satellite_used[i] = (short)ja_satellite_used.getInt(i);
+        if (jo.has("satellite_used")) {
+            JSONArray ja_satellite_used = jo.optJSONArray("satellite_used");
+            if (ja_satellite_used == null) {
+                this.satellite_used[0] = (short)jo.optInt("satellite_used", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.satellite_used.length, ja_satellite_used.length()); i++) {
+                    this.satellite_used[i] = (short)ja_satellite_used.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_satellite_elevation = jo.optJSONArray("satellite_elevation");
-        for (int i = 0; i < Math.min(this.satellite_elevation.length, ja_satellite_elevation.length()); i++) {
-            this.satellite_elevation[i] = (short)ja_satellite_elevation.getInt(i);
+        if (jo.has("satellite_elevation")) {
+            JSONArray ja_satellite_elevation = jo.optJSONArray("satellite_elevation");
+            if (ja_satellite_elevation == null) {
+                this.satellite_elevation[0] = (short)jo.optInt("satellite_elevation", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.satellite_elevation.length, ja_satellite_elevation.length()); i++) {
+                    this.satellite_elevation[i] = (short)ja_satellite_elevation.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_satellite_azimuth = jo.optJSONArray("satellite_azimuth");
-        for (int i = 0; i < Math.min(this.satellite_azimuth.length, ja_satellite_azimuth.length()); i++) {
-            this.satellite_azimuth[i] = (short)ja_satellite_azimuth.getInt(i);
+        if (jo.has("satellite_azimuth")) {
+            JSONArray ja_satellite_azimuth = jo.optJSONArray("satellite_azimuth");
+            if (ja_satellite_azimuth == null) {
+                this.satellite_azimuth[0] = (short)jo.optInt("satellite_azimuth", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.satellite_azimuth.length, ja_satellite_azimuth.length()); i++) {
+                    this.satellite_azimuth[i] = (short)ja_satellite_azimuth.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_satellite_snr = jo.optJSONArray("satellite_snr");
-        for (int i = 0; i < Math.min(this.satellite_snr.length, ja_satellite_snr.length()); i++) {
-            this.satellite_snr[i] = (short)ja_satellite_snr.getInt(i);
+        if (jo.has("satellite_snr")) {
+            JSONArray ja_satellite_snr = jo.optJSONArray("satellite_snr");
+            if (ja_satellite_snr == null) {
+                this.satellite_snr[0] = (short)jo.optInt("satellite_snr", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.satellite_snr.length, ja_satellite_snr.length()); i++) {
+                    this.satellite_snr[i] = (short)ja_satellite_snr.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -236,6 +272,7 @@ public class msg_gps_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -284,6 +321,7 @@ public class msg_gps_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GPS_STATUS - sysid:"+sysid+" compid:"+compid+" satellites_visible:"+satellites_visible+" satellite_prn:"+satellite_prn+" satellite_used:"+satellite_used+" satellite_elevation:"+satellite_elevation+" satellite_azimuth:"+satellite_azimuth+" satellite_snr:"+satellite_snr+"";
     }

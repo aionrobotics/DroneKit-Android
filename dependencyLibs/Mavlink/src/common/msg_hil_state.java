@@ -110,6 +110,7 @@ public class msg_hil_state extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -133,7 +134,9 @@ public class msg_hil_state extends MAVLinkMessage {
         packet.payload.putShort(yacc);
         packet.payload.putShort(zacc);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -142,6 +145,7 @@ public class msg_hil_state extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -162,7 +166,9 @@ public class msg_hil_state extends MAVLinkMessage {
         this.yacc = payload.getShort();
         this.zacc = payload.getShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -248,22 +254,22 @@ public class msg_hil_state extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.rollspeed = (float)jo.optFloat("rollspeed");
-        this.pitchspeed = (float)jo.optFloat("pitchspeed");
-        this.yawspeed = (float)jo.optFloat("yawspeed");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (int)jo.optInt("alt");
-        this.vx = (short)jo.optInt("vx");
-        this.vy = (short)jo.optInt("vy");
-        this.vz = (short)jo.optInt("vz");
-        this.xacc = (short)jo.optInt("xacc");
-        this.yacc = (short)jo.optInt("yacc");
-        this.zacc = (short)jo.optInt("zacc");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.rollspeed = (float)jo.optDouble("rollspeed",0);
+        this.pitchspeed = (float)jo.optDouble("pitchspeed",0);
+        this.yawspeed = (float)jo.optDouble("yawspeed",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (int)jo.optInt("alt",0);
+        this.vx = (short)jo.optInt("vx",0);
+        this.vy = (short)jo.optInt("vy",0);
+        this.vz = (short)jo.optInt("vz",0);
+        this.xacc = (short)jo.optInt("xacc",0);
+        this.yacc = (short)jo.optInt("yacc",0);
+        this.zacc = (short)jo.optInt("zacc",0);
         
         
     }
@@ -271,6 +277,7 @@ public class msg_hil_state extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -299,6 +306,7 @@ public class msg_hil_state extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_STATE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" lat:"+lat+" lon:"+lon+" alt:"+alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+"";
     }

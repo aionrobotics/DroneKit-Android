@@ -70,6 +70,7 @@ public class msg_nav_controller_output extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -85,7 +86,9 @@ public class msg_nav_controller_output extends MAVLinkMessage {
         packet.payload.putShort(target_bearing);
         packet.payload.putUnsignedShort(wp_dist);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -94,6 +97,7 @@ public class msg_nav_controller_output extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -106,7 +110,9 @@ public class msg_nav_controller_output extends MAVLinkMessage {
         this.target_bearing = payload.getShort();
         this.wp_dist = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -176,14 +182,14 @@ public class msg_nav_controller_output extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.nav_roll = (float)jo.optFloat("nav_roll");
-        this.nav_pitch = (float)jo.optFloat("nav_pitch");
-        this.alt_error = (float)jo.optFloat("alt_error");
-        this.aspd_error = (float)jo.optFloat("aspd_error");
-        this.xtrack_error = (float)jo.optFloat("xtrack_error");
-        this.nav_bearing = (short)jo.optInt("nav_bearing");
-        this.target_bearing = (short)jo.optInt("target_bearing");
-        this.wp_dist = (int)jo.optInt("wp_dist");
+        this.nav_roll = (float)jo.optDouble("nav_roll",0);
+        this.nav_pitch = (float)jo.optDouble("nav_pitch",0);
+        this.alt_error = (float)jo.optDouble("alt_error",0);
+        this.aspd_error = (float)jo.optDouble("aspd_error",0);
+        this.xtrack_error = (float)jo.optDouble("xtrack_error",0);
+        this.nav_bearing = (short)jo.optInt("nav_bearing",0);
+        this.target_bearing = (short)jo.optInt("target_bearing",0);
+        this.wp_dist = (int)jo.optInt("wp_dist",0);
         
         
     }
@@ -191,6 +197,7 @@ public class msg_nav_controller_output extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -211,6 +218,7 @@ public class msg_nav_controller_output extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT - sysid:"+sysid+" compid:"+compid+" nav_roll:"+nav_roll+" nav_pitch:"+nav_pitch+" alt_error:"+alt_error+" aspd_error:"+aspd_error+" xtrack_error:"+xtrack_error+" nav_bearing:"+nav_bearing+" target_bearing:"+target_bearing+" wp_dist:"+wp_dist+"";
     }

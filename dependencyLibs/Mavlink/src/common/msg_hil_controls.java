@@ -85,6 +85,7 @@ public class msg_hil_controls extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -103,7 +104,9 @@ public class msg_hil_controls extends MAVLinkMessage {
         packet.payload.putUnsignedByte(mode);
         packet.payload.putUnsignedByte(nav_mode);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -112,6 +115,7 @@ public class msg_hil_controls extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -127,7 +131,9 @@ public class msg_hil_controls extends MAVLinkMessage {
         this.mode = payload.getUnsignedByte();
         this.nav_mode = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -203,17 +209,17 @@ public class msg_hil_controls extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.roll_ailerons = (float)jo.optFloat("roll_ailerons");
-        this.pitch_elevator = (float)jo.optFloat("pitch_elevator");
-        this.yaw_rudder = (float)jo.optFloat("yaw_rudder");
-        this.throttle = (float)jo.optFloat("throttle");
-        this.aux1 = (float)jo.optFloat("aux1");
-        this.aux2 = (float)jo.optFloat("aux2");
-        this.aux3 = (float)jo.optFloat("aux3");
-        this.aux4 = (float)jo.optFloat("aux4");
-        this.mode = (short)jo.optInt("mode");
-        this.nav_mode = (short)jo.optInt("nav_mode");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.roll_ailerons = (float)jo.optDouble("roll_ailerons",0);
+        this.pitch_elevator = (float)jo.optDouble("pitch_elevator",0);
+        this.yaw_rudder = (float)jo.optDouble("yaw_rudder",0);
+        this.throttle = (float)jo.optDouble("throttle",0);
+        this.aux1 = (float)jo.optDouble("aux1",0);
+        this.aux2 = (float)jo.optDouble("aux2",0);
+        this.aux3 = (float)jo.optDouble("aux3",0);
+        this.aux4 = (float)jo.optDouble("aux4",0);
+        this.mode = (short)jo.optInt("mode",0);
+        this.nav_mode = (short)jo.optInt("nav_mode",0);
         
         
     }
@@ -221,6 +227,7 @@ public class msg_hil_controls extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -244,6 +251,7 @@ public class msg_hil_controls extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_CONTROLS - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" roll_ailerons:"+roll_ailerons+" pitch_elevator:"+pitch_elevator+" yaw_rudder:"+yaw_rudder+" throttle:"+throttle+" aux1:"+aux1+" aux2:"+aux2+" aux3:"+aux3+" aux4:"+aux4+" mode:"+mode+" nav_mode:"+nav_mode+"";
     }

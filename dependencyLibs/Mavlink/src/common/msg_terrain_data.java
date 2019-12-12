@@ -55,6 +55,7 @@ public class msg_terrain_data extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -71,7 +72,9 @@ public class msg_terrain_data extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(gridbit);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -80,6 +83,7 @@ public class msg_terrain_data extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -93,7 +97,9 @@ public class msg_terrain_data extends MAVLinkMessage {
                 
         this.gridbit = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -157,16 +163,22 @@ public class msg_terrain_data extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.grid_spacing = (int)jo.optInt("grid_spacing");
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.grid_spacing = (int)jo.optInt("grid_spacing",0);
          
-        JSONArray ja_data = jo.optJSONArray("data");
-        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
-            this.data[i] = (short)ja_data.getInt(i);
+        if (jo.has("data")) {
+            JSONArray ja_data = jo.optJSONArray("data");
+            if (ja_data == null) {
+                this.data[0] = (short)jo.optInt("data", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+                    this.data[i] = (short)ja_data.optInt(i,0);
+                }
+            }
         }
-                
-        this.gridbit = (short)jo.optInt("gridbit");
+                    
+        this.gridbit = (short)jo.optInt("gridbit",0);
         
         
     }
@@ -174,6 +186,7 @@ public class msg_terrain_data extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -197,6 +210,7 @@ public class msg_terrain_data extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_TERRAIN_DATA - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lon:"+lon+" grid_spacing:"+grid_spacing+" data:"+data+" gridbit:"+gridbit+"";
     }

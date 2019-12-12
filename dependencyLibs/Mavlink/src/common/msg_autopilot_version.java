@@ -90,6 +90,7 @@ public class msg_autopilot_version extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -120,13 +121,13 @@ public class msg_autopilot_version extends MAVLinkMessage {
         }
                     
         
-        
-        if(isMavlink2) {
-            
+        if (isMavlink2) {
+             
         for (int i = 0; i < uid2.length; i++) {
             packet.payload.putUnsignedByte(uid2[i]);
         }
                     
+            
         }
         return packet;
     }
@@ -136,6 +137,7 @@ public class msg_autopilot_version extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -163,13 +165,13 @@ public class msg_autopilot_version extends MAVLinkMessage {
         }
                 
         
-        
-        if(isMavlink2) {
-             
+        if (isMavlink2) {
+              
         for (int i = 0; i < this.uid2.length; i++) {
             this.uid2[i] = payload.getUnsignedByte();
         }
                 
+            
         }
     }
 
@@ -248,45 +250,70 @@ public class msg_autopilot_version extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.capabilities = (long)jo.optLong("capabilities");
-        this.uid = (long)jo.optLong("uid");
-        this.flight_sw_version = (long)jo.optLong("flight_sw_version");
-        this.middleware_sw_version = (long)jo.optLong("middleware_sw_version");
-        this.os_sw_version = (long)jo.optLong("os_sw_version");
-        this.board_version = (long)jo.optLong("board_version");
-        this.vendor_id = (int)jo.optInt("vendor_id");
-        this.product_id = (int)jo.optInt("product_id");
+        this.capabilities = (long)jo.optLong("capabilities",0);
+        this.uid = (long)jo.optLong("uid",0);
+        this.flight_sw_version = (long)jo.optLong("flight_sw_version",0);
+        this.middleware_sw_version = (long)jo.optLong("middleware_sw_version",0);
+        this.os_sw_version = (long)jo.optLong("os_sw_version",0);
+        this.board_version = (long)jo.optLong("board_version",0);
+        this.vendor_id = (int)jo.optInt("vendor_id",0);
+        this.product_id = (int)jo.optInt("product_id",0);
          
-        JSONArray ja_flight_custom_version = jo.optJSONArray("flight_custom_version");
-        for (int i = 0; i < Math.min(this.flight_custom_version.length, ja_flight_custom_version.length()); i++) {
-            this.flight_custom_version[i] = (short)ja_flight_custom_version.getInt(i);
+        if (jo.has("flight_custom_version")) {
+            JSONArray ja_flight_custom_version = jo.optJSONArray("flight_custom_version");
+            if (ja_flight_custom_version == null) {
+                this.flight_custom_version[0] = (short)jo.optInt("flight_custom_version", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.flight_custom_version.length, ja_flight_custom_version.length()); i++) {
+                    this.flight_custom_version[i] = (short)ja_flight_custom_version.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_middleware_custom_version = jo.optJSONArray("middleware_custom_version");
-        for (int i = 0; i < Math.min(this.middleware_custom_version.length, ja_middleware_custom_version.length()); i++) {
-            this.middleware_custom_version[i] = (short)ja_middleware_custom_version.getInt(i);
+        if (jo.has("middleware_custom_version")) {
+            JSONArray ja_middleware_custom_version = jo.optJSONArray("middleware_custom_version");
+            if (ja_middleware_custom_version == null) {
+                this.middleware_custom_version[0] = (short)jo.optInt("middleware_custom_version", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.middleware_custom_version.length, ja_middleware_custom_version.length()); i++) {
+                    this.middleware_custom_version[i] = (short)ja_middleware_custom_version.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_os_custom_version = jo.optJSONArray("os_custom_version");
-        for (int i = 0; i < Math.min(this.os_custom_version.length, ja_os_custom_version.length()); i++) {
-            this.os_custom_version[i] = (short)ja_os_custom_version.getInt(i);
+        if (jo.has("os_custom_version")) {
+            JSONArray ja_os_custom_version = jo.optJSONArray("os_custom_version");
+            if (ja_os_custom_version == null) {
+                this.os_custom_version[0] = (short)jo.optInt("os_custom_version", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.os_custom_version.length, ja_os_custom_version.length()); i++) {
+                    this.os_custom_version[i] = (short)ja_os_custom_version.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
          
-        JSONArray ja_uid2 = jo.optJSONArray("uid2");
-        for (int i = 0; i < Math.min(this.uid2.length, ja_uid2.length()); i++) {
-            this.uid2[i] = (short)ja_uid2.getInt(i);
+        if (jo.has("uid2")) {
+            JSONArray ja_uid2 = jo.optJSONArray("uid2");
+            if (ja_uid2 == null) {
+                this.uid2[0] = (short)jo.optInt("uid2", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.uid2.length, ja_uid2.length()); i++) {
+                    this.uid2[i] = (short)ja_uid2.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -335,6 +362,7 @@ public class msg_autopilot_version extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AUTOPILOT_VERSION - sysid:"+sysid+" compid:"+compid+" capabilities:"+capabilities+" uid:"+uid+" flight_sw_version:"+flight_sw_version+" middleware_sw_version:"+middleware_sw_version+" os_sw_version:"+os_sw_version+" board_version:"+board_version+" vendor_id:"+vendor_id+" product_id:"+product_id+" flight_custom_version:"+flight_custom_version+" middleware_custom_version:"+middleware_custom_version+" os_custom_version:"+os_custom_version+" uid2:"+uid2+"";
     }

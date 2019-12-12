@@ -85,6 +85,7 @@ public class msg_battery_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -105,12 +106,10 @@ public class msg_battery_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(type);
         packet.payload.putByte(battery_remaining);
         
-        
-        if(isMavlink2) {
-            packet.payload.putInt(time_remaining);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedByte(charge_state);
+        if (isMavlink2) {
+             packet.payload.putInt(time_remaining);
+             packet.payload.putUnsignedByte(charge_state);
+            
         }
         return packet;
     }
@@ -120,6 +119,7 @@ public class msg_battery_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -137,12 +137,10 @@ public class msg_battery_status extends MAVLinkMessage {
         this.type = payload.getUnsignedByte();
         this.battery_remaining = payload.getByte();
         
-        
-        if(isMavlink2) {
-            this.time_remaining = payload.getInt();
-        }
-        if(isMavlink2) {
-            this.charge_state = payload.getUnsignedByte();
+        if (isMavlink2) {
+             this.time_remaining = payload.getInt();
+             this.charge_state = payload.getUnsignedByte();
+            
         }
     }
 
@@ -219,29 +217,36 @@ public class msg_battery_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.current_consumed = (int)jo.optInt("current_consumed");
-        this.energy_consumed = (int)jo.optInt("energy_consumed");
-        this.temperature = (short)jo.optInt("temperature");
+        this.current_consumed = (int)jo.optInt("current_consumed",0);
+        this.energy_consumed = (int)jo.optInt("energy_consumed",0);
+        this.temperature = (short)jo.optInt("temperature",0);
          
-        JSONArray ja_voltages = jo.optJSONArray("voltages");
-        for (int i = 0; i < Math.min(this.voltages.length, ja_voltages.length()); i++) {
-            this.voltages[i] = (int)ja_voltages.getInt(i);
+        if (jo.has("voltages")) {
+            JSONArray ja_voltages = jo.optJSONArray("voltages");
+            if (ja_voltages == null) {
+                this.voltages[0] = (int)jo.optInt("voltages", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.voltages.length, ja_voltages.length()); i++) {
+                    this.voltages[i] = (int)ja_voltages.optInt(i,0);
+                }
+            }
         }
-                
-        this.current_battery = (short)jo.optInt("current_battery");
-        this.id = (short)jo.optInt("id");
-        this.battery_function = (short)jo.optInt("battery_function");
-        this.type = (short)jo.optInt("type");
-        this.battery_remaining = (byte)jo.optInt("battery_remaining");
+                    
+        this.current_battery = (short)jo.optInt("current_battery",0);
+        this.id = (short)jo.optInt("id",0);
+        this.battery_function = (short)jo.optInt("battery_function",0);
+        this.type = (short)jo.optInt("type",0);
+        this.battery_remaining = (byte)jo.optInt("battery_remaining",0);
         
-        this.time_remaining = (int)jo.optInt("time_remaining");
-        this.charge_state = (short)jo.optInt("charge_state");
+        this.time_remaining = (int)jo.optInt("time_remaining",0);
+        this.charge_state = (short)jo.optInt("charge_state",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -271,6 +276,7 @@ public class msg_battery_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_BATTERY_STATUS - sysid:"+sysid+" compid:"+compid+" current_consumed:"+current_consumed+" energy_consumed:"+energy_consumed+" temperature:"+temperature+" voltages:"+voltages+" current_battery:"+current_battery+" id:"+id+" battery_function:"+battery_function+" type:"+type+" battery_remaining:"+battery_remaining+" time_remaining:"+time_remaining+" charge_state:"+charge_state+"";
     }

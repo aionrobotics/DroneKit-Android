@@ -50,6 +50,7 @@ public class msg_setup_signing extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -65,7 +66,9 @@ public class msg_setup_signing extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -74,6 +77,7 @@ public class msg_setup_signing extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,7 +90,9 @@ public class msg_setup_signing extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -148,15 +154,21 @@ public class msg_setup_signing extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.initial_timestamp = (long)jo.optLong("initial_timestamp");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.initial_timestamp = (long)jo.optLong("initial_timestamp",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
          
-        JSONArray ja_secret_key = jo.optJSONArray("secret_key");
-        for (int i = 0; i < Math.min(this.secret_key.length, ja_secret_key.length()); i++) {
-            this.secret_key[i] = (short)ja_secret_key.getInt(i);
+        if (jo.has("secret_key")) {
+            JSONArray ja_secret_key = jo.optJSONArray("secret_key");
+            if (ja_secret_key == null) {
+                this.secret_key[0] = (short)jo.optInt("secret_key", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.secret_key.length, ja_secret_key.length()); i++) {
+                    this.secret_key[i] = (short)ja_secret_key.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -164,6 +176,7 @@ public class msg_setup_signing extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -186,6 +199,7 @@ public class msg_setup_signing extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SETUP_SIGNING - sysid:"+sysid+" compid:"+compid+" initial_timestamp:"+initial_timestamp+" target_system:"+target_system+" target_component:"+target_component+" secret_key:"+secret_key+"";
     }

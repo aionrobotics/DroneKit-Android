@@ -80,6 +80,7 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -101,7 +102,9 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(estimator_type);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -110,6 +113,7 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -128,7 +132,9 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
                 
         this.estimator_type = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -202,21 +208,27 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (int)jo.optInt("alt");
-        this.relative_alt = (int)jo.optInt("relative_alt");
-        this.vx = (float)jo.optFloat("vx");
-        this.vy = (float)jo.optFloat("vy");
-        this.vz = (float)jo.optFloat("vz");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (int)jo.optInt("alt",0);
+        this.relative_alt = (int)jo.optInt("relative_alt",0);
+        this.vx = (float)jo.optDouble("vx",0);
+        this.vy = (float)jo.optDouble("vy",0);
+        this.vz = (float)jo.optDouble("vz",0);
          
-        JSONArray ja_covariance = jo.optJSONArray("covariance");
-        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
-            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        if (jo.has("covariance")) {
+            JSONArray ja_covariance = jo.optJSONArray("covariance");
+            if (ja_covariance == null) {
+                this.covariance[0] = (float)jo.optDouble("covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+                    this.covariance[i] = (float)ja_covariance.optDouble(i,0);
+                }
+            }
         }
-                
-        this.estimator_type = (short)jo.optInt("estimator_type");
+                    
+        this.estimator_type = (short)jo.optInt("estimator_type",0);
         
         
     }
@@ -224,6 +236,7 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -252,6 +265,7 @@ public class msg_global_position_int_cov extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GLOBAL_POSITION_INT_COV - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" lat:"+lat+" lon:"+lon+" alt:"+alt+" relative_alt:"+relative_alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" covariance:"+covariance+" estimator_type:"+estimator_type+"";
     }

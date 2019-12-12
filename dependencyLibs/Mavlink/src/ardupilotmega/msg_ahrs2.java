@@ -60,6 +60,7 @@ public class msg_ahrs2 extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_ahrs2 extends MAVLinkMessage {
         packet.payload.putInt(lat);
         packet.payload.putInt(lng);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_ahrs2 extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_ahrs2 extends MAVLinkMessage {
         this.lat = payload.getInt();
         this.lng = payload.getInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_ahrs2 extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.altitude = (float)jo.optFloat("altitude");
-        this.lat = (int)jo.optInt("lat");
-        this.lng = (int)jo.optInt("lng");
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.altitude = (float)jo.optDouble("altitude",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lng = (int)jo.optInt("lng",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_ahrs2 extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_ahrs2 extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AHRS2 - sysid:"+sysid+" compid:"+compid+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" altitude:"+altitude+" lat:"+lat+" lng:"+lng+"";
     }

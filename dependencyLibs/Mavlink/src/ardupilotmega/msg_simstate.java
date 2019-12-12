@@ -85,6 +85,7 @@ public class msg_simstate extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -103,7 +104,9 @@ public class msg_simstate extends MAVLinkMessage {
         packet.payload.putInt(lat);
         packet.payload.putInt(lng);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -112,6 +115,7 @@ public class msg_simstate extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -127,7 +131,9 @@ public class msg_simstate extends MAVLinkMessage {
         this.lat = payload.getInt();
         this.lng = payload.getInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -203,17 +209,17 @@ public class msg_simstate extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.xacc = (float)jo.optFloat("xacc");
-        this.yacc = (float)jo.optFloat("yacc");
-        this.zacc = (float)jo.optFloat("zacc");
-        this.xgyro = (float)jo.optFloat("xgyro");
-        this.ygyro = (float)jo.optFloat("ygyro");
-        this.zgyro = (float)jo.optFloat("zgyro");
-        this.lat = (int)jo.optInt("lat");
-        this.lng = (int)jo.optInt("lng");
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.xacc = (float)jo.optDouble("xacc",0);
+        this.yacc = (float)jo.optDouble("yacc",0);
+        this.zacc = (float)jo.optDouble("zacc",0);
+        this.xgyro = (float)jo.optDouble("xgyro",0);
+        this.ygyro = (float)jo.optDouble("ygyro",0);
+        this.zgyro = (float)jo.optDouble("zgyro",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lng = (int)jo.optInt("lng",0);
         
         
     }
@@ -221,6 +227,7 @@ public class msg_simstate extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -244,6 +251,7 @@ public class msg_simstate extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SIMSTATE - sysid:"+sysid+" compid:"+compid+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" lat:"+lat+" lng:"+lng+"";
     }

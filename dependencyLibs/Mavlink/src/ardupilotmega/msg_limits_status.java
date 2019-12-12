@@ -75,6 +75,7 @@ public class msg_limits_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -91,7 +92,9 @@ public class msg_limits_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(mods_required);
         packet.payload.putUnsignedByte(mods_triggered);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -100,6 +103,7 @@ public class msg_limits_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -113,7 +117,9 @@ public class msg_limits_status extends MAVLinkMessage {
         this.mods_required = payload.getUnsignedByte();
         this.mods_triggered = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -185,15 +191,15 @@ public class msg_limits_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.last_trigger = (long)jo.optLong("last_trigger");
-        this.last_action = (long)jo.optLong("last_action");
-        this.last_recovery = (long)jo.optLong("last_recovery");
-        this.last_clear = (long)jo.optLong("last_clear");
-        this.breach_count = (int)jo.optInt("breach_count");
-        this.limits_state = (short)jo.optInt("limits_state");
-        this.mods_enabled = (short)jo.optInt("mods_enabled");
-        this.mods_required = (short)jo.optInt("mods_required");
-        this.mods_triggered = (short)jo.optInt("mods_triggered");
+        this.last_trigger = (long)jo.optLong("last_trigger",0);
+        this.last_action = (long)jo.optLong("last_action",0);
+        this.last_recovery = (long)jo.optLong("last_recovery",0);
+        this.last_clear = (long)jo.optLong("last_clear",0);
+        this.breach_count = (int)jo.optInt("breach_count",0);
+        this.limits_state = (short)jo.optInt("limits_state",0);
+        this.mods_enabled = (short)jo.optInt("mods_enabled",0);
+        this.mods_required = (short)jo.optInt("mods_required",0);
+        this.mods_triggered = (short)jo.optInt("mods_triggered",0);
         
         
     }
@@ -201,6 +207,7 @@ public class msg_limits_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -222,6 +229,7 @@ public class msg_limits_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_LIMITS_STATUS - sysid:"+sysid+" compid:"+compid+" last_trigger:"+last_trigger+" last_action:"+last_action+" last_recovery:"+last_recovery+" last_clear:"+last_clear+" breach_count:"+breach_count+" limits_state:"+limits_state+" mods_enabled:"+mods_enabled+" mods_required:"+mods_required+" mods_triggered:"+mods_triggered+"";
     }

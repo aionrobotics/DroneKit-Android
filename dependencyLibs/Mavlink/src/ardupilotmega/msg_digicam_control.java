@@ -80,6 +80,7 @@ public class msg_digicam_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_digicam_control extends MAVLinkMessage {
         packet.payload.putUnsignedByte(command_id);
         packet.payload.putUnsignedByte(extra_param);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_digicam_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -120,7 +124,9 @@ public class msg_digicam_control extends MAVLinkMessage {
         this.command_id = payload.getUnsignedByte();
         this.extra_param = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -194,16 +200,16 @@ public class msg_digicam_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.extra_value = (float)jo.optFloat("extra_value");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.session = (short)jo.optInt("session");
-        this.zoom_pos = (short)jo.optInt("zoom_pos");
-        this.zoom_step = (byte)jo.optInt("zoom_step");
-        this.focus_lock = (short)jo.optInt("focus_lock");
-        this.shot = (short)jo.optInt("shot");
-        this.command_id = (short)jo.optInt("command_id");
-        this.extra_param = (short)jo.optInt("extra_param");
+        this.extra_value = (float)jo.optDouble("extra_value",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.session = (short)jo.optInt("session",0);
+        this.zoom_pos = (short)jo.optInt("zoom_pos",0);
+        this.zoom_step = (byte)jo.optInt("zoom_step",0);
+        this.focus_lock = (short)jo.optInt("focus_lock",0);
+        this.shot = (short)jo.optInt("shot",0);
+        this.command_id = (short)jo.optInt("command_id",0);
+        this.extra_param = (short)jo.optInt("extra_param",0);
         
         
     }
@@ -211,6 +217,7 @@ public class msg_digicam_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -233,6 +240,7 @@ public class msg_digicam_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DIGICAM_CONTROL - sysid:"+sysid+" compid:"+compid+" extra_value:"+extra_value+" target_system:"+target_system+" target_component:"+target_component+" session:"+session+" zoom_pos:"+zoom_pos+" zoom_step:"+zoom_step+" focus_lock:"+focus_lock+" shot:"+shot+" command_id:"+command_id+" extra_param:"+extra_param+"";
     }

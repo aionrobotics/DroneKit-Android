@@ -60,6 +60,7 @@ public class msg_mount_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_mount_control extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_component);
         packet.payload.putUnsignedByte(save_position);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_mount_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_mount_control extends MAVLinkMessage {
         this.target_component = payload.getUnsignedByte();
         this.save_position = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_mount_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.input_a = (int)jo.optInt("input_a");
-        this.input_b = (int)jo.optInt("input_b");
-        this.input_c = (int)jo.optInt("input_c");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.save_position = (short)jo.optInt("save_position");
+        this.input_a = (int)jo.optInt("input_a",0);
+        this.input_b = (int)jo.optInt("input_b",0);
+        this.input_c = (int)jo.optInt("input_c",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.save_position = (short)jo.optInt("save_position",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_mount_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_mount_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MOUNT_CONTROL - sysid:"+sysid+" compid:"+compid+" input_a:"+input_a+" input_b:"+input_b+" input_c:"+input_c+" target_system:"+target_system+" target_component:"+target_component+" save_position:"+save_position+"";
     }

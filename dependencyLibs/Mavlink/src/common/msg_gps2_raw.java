@@ -90,6 +90,7 @@ public class msg_gps2_raw extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -109,7 +110,9 @@ public class msg_gps2_raw extends MAVLinkMessage {
         packet.payload.putUnsignedByte(satellites_visible);
         packet.payload.putUnsignedByte(dgps_numch);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -118,6 +121,7 @@ public class msg_gps2_raw extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -134,7 +138,9 @@ public class msg_gps2_raw extends MAVLinkMessage {
         this.satellites_visible = payload.getUnsignedByte();
         this.dgps_numch = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -212,18 +218,18 @@ public class msg_gps2_raw extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (int)jo.optInt("alt");
-        this.dgps_age = (long)jo.optLong("dgps_age");
-        this.eph = (int)jo.optInt("eph");
-        this.epv = (int)jo.optInt("epv");
-        this.vel = (int)jo.optInt("vel");
-        this.cog = (int)jo.optInt("cog");
-        this.fix_type = (short)jo.optInt("fix_type");
-        this.satellites_visible = (short)jo.optInt("satellites_visible");
-        this.dgps_numch = (short)jo.optInt("dgps_numch");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (int)jo.optInt("alt",0);
+        this.dgps_age = (long)jo.optLong("dgps_age",0);
+        this.eph = (int)jo.optInt("eph",0);
+        this.epv = (int)jo.optInt("epv",0);
+        this.vel = (int)jo.optInt("vel",0);
+        this.cog = (int)jo.optInt("cog",0);
+        this.fix_type = (short)jo.optInt("fix_type",0);
+        this.satellites_visible = (short)jo.optInt("satellites_visible",0);
+        this.dgps_numch = (short)jo.optInt("dgps_numch",0);
         
         
     }
@@ -231,6 +237,7 @@ public class msg_gps2_raw extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -255,6 +262,7 @@ public class msg_gps2_raw extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GPS2_RAW - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" lat:"+lat+" lon:"+lon+" alt:"+alt+" dgps_age:"+dgps_age+" eph:"+eph+" epv:"+epv+" vel:"+vel+" cog:"+cog+" fix_type:"+fix_type+" satellites_visible:"+satellites_visible+" dgps_numch:"+dgps_numch+"";
     }

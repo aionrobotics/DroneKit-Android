@@ -75,6 +75,7 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -91,7 +92,9 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_component);
         packet.payload.putUnsignedByte(frame);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -100,6 +103,7 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -113,7 +117,9 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
         this.target_component = payload.getUnsignedByte();
         this.frame = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -185,15 +191,15 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.p1x = (float)jo.optFloat("p1x");
-        this.p1y = (float)jo.optFloat("p1y");
-        this.p1z = (float)jo.optFloat("p1z");
-        this.p2x = (float)jo.optFloat("p2x");
-        this.p2y = (float)jo.optFloat("p2y");
-        this.p2z = (float)jo.optFloat("p2z");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.frame = (short)jo.optInt("frame");
+        this.p1x = (float)jo.optDouble("p1x",0);
+        this.p1y = (float)jo.optDouble("p1y",0);
+        this.p1z = (float)jo.optDouble("p1z",0);
+        this.p2x = (float)jo.optDouble("p2x",0);
+        this.p2y = (float)jo.optDouble("p2y",0);
+        this.p2z = (float)jo.optDouble("p2z",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.frame = (short)jo.optInt("frame",0);
         
         
     }
@@ -201,6 +207,7 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -222,6 +229,7 @@ public class msg_safety_set_allowed_area extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA - sysid:"+sysid+" compid:"+compid+" p1x:"+p1x+" p1y:"+p1y+" p1z:"+p1z+" p2x:"+p2x+" p2y:"+p2y+" p2z:"+p2z+" target_system:"+target_system+" target_component:"+target_component+" frame:"+frame+"";
     }

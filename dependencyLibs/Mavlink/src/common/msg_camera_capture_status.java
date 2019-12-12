@@ -60,6 +60,7 @@ public class msg_camera_capture_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_camera_capture_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(image_status);
         packet.payload.putUnsignedByte(video_status);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_camera_capture_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_camera_capture_status extends MAVLinkMessage {
         this.image_status = payload.getUnsignedByte();
         this.video_status = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_camera_capture_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.image_interval = (float)jo.optFloat("image_interval");
-        this.recording_time_ms = (long)jo.optLong("recording_time_ms");
-        this.available_capacity = (float)jo.optFloat("available_capacity");
-        this.image_status = (short)jo.optInt("image_status");
-        this.video_status = (short)jo.optInt("video_status");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.image_interval = (float)jo.optDouble("image_interval",0);
+        this.recording_time_ms = (long)jo.optLong("recording_time_ms",0);
+        this.available_capacity = (float)jo.optDouble("available_capacity",0);
+        this.image_status = (short)jo.optInt("image_status",0);
+        this.video_status = (short)jo.optInt("video_status",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_camera_capture_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_camera_capture_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" image_interval:"+image_interval+" recording_time_ms:"+recording_time_ms+" available_capacity:"+available_capacity+" image_status:"+image_status+" video_status:"+video_status+"";
     }

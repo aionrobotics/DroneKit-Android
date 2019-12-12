@@ -65,6 +65,7 @@ public class msg_radio_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_radio_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(noise);
         packet.payload.putUnsignedByte(remnoise);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_radio_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_radio_status extends MAVLinkMessage {
         this.noise = payload.getUnsignedByte();
         this.remnoise = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_radio_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.rxerrors = (int)jo.optInt("rxerrors");
-        this.fixed = (int)jo.optInt("fixed");
-        this.rssi = (short)jo.optInt("rssi");
-        this.remrssi = (short)jo.optInt("remrssi");
-        this.txbuf = (short)jo.optInt("txbuf");
-        this.noise = (short)jo.optInt("noise");
-        this.remnoise = (short)jo.optInt("remnoise");
+        this.rxerrors = (int)jo.optInt("rxerrors",0);
+        this.fixed = (int)jo.optInt("fixed",0);
+        this.rssi = (short)jo.optInt("rssi",0);
+        this.remrssi = (short)jo.optInt("remrssi",0);
+        this.txbuf = (short)jo.optInt("txbuf",0);
+        this.noise = (short)jo.optInt("noise",0);
+        this.remnoise = (short)jo.optInt("remnoise",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_radio_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_radio_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_RADIO_STATUS - sysid:"+sysid+" compid:"+compid+" rxerrors:"+rxerrors+" fixed:"+fixed+" rssi:"+rssi+" remrssi:"+remrssi+" txbuf:"+txbuf+" noise:"+noise+" remnoise:"+remnoise+"";
     }

@@ -50,6 +50,7 @@ public class msg_play_tune extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -64,13 +65,13 @@ public class msg_play_tune extends MAVLinkMessage {
         }
                     
         
-        
-        if(isMavlink2) {
-            
+        if (isMavlink2) {
+             
         for (int i = 0; i < tune2.length; i++) {
             packet.payload.putByte(tune2[i]);
         }
                     
+            
         }
         return packet;
     }
@@ -80,6 +81,7 @@ public class msg_play_tune extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -91,13 +93,13 @@ public class msg_play_tune extends MAVLinkMessage {
         }
                 
         
-        
-        if(isMavlink2) {
-             
+        if (isMavlink2) {
+              
         for (int i = 0; i < this.tune2.length; i++) {
             this.tune2[i] = payload.getByte();
         }
                 
+            
         }
     }
 
@@ -160,27 +162,44 @@ public class msg_play_tune extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
          
-        JSONArray ja_tune = jo.optJSONArray("tune");
-        for (int i = 0; i < Math.min(this.tune.length, ja_tune.length()); i++) {
-            this.tune[i] = (byte)ja_tune.getInt(i);
+        if (jo.has("tune")) {
+            JSONArray ja_tune = jo.optJSONArray("tune");
+            if (ja_tune == null) {
+                final String js_string_tune = jo.optString("tune");
+                final byte[] b_tune = js_string_tune.getBytes();
+                System.arraycopy(b_tune, 0, this.tune, 0, Math.min(this.tune.length, b_tune.length));
+            } else {
+                for (int i = 0; i < Math.min(this.tune.length, ja_tune.length()); i++) {
+                    this.tune[i] = (byte)ja_tune.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
          
-        JSONArray ja_tune2 = jo.optJSONArray("tune2");
-        for (int i = 0; i < Math.min(this.tune2.length, ja_tune2.length()); i++) {
-            this.tune2[i] = (byte)ja_tune2.getInt(i);
+        if (jo.has("tune2")) {
+            JSONArray ja_tune2 = jo.optJSONArray("tune2");
+            if (ja_tune2 == null) {
+                final String js_string_tune2 = jo.optString("tune2");
+                final byte[] b_tune2 = js_string_tune2.getBytes();
+                System.arraycopy(b_tune2, 0, this.tune2, 0, Math.min(this.tune2.length, b_tune2.length));
+            } else {
+                for (int i = 0; i < Math.min(this.tune2.length, ja_tune2.length()); i++) {
+                    this.tune2[i] = (byte)ja_tune2.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -267,6 +286,7 @@ public class msg_play_tune extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_PLAY_TUNE - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" tune:"+tune+" tune2:"+tune2+"";
     }

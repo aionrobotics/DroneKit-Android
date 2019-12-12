@@ -50,6 +50,7 @@ public class msg_fence_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -61,7 +62,9 @@ public class msg_fence_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(breach_status);
         packet.payload.putUnsignedByte(breach_type);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -70,6 +73,7 @@ public class msg_fence_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -78,7 +82,9 @@ public class msg_fence_status extends MAVLinkMessage {
         this.breach_status = payload.getUnsignedByte();
         this.breach_type = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -140,10 +146,10 @@ public class msg_fence_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.breach_time = (long)jo.optLong("breach_time");
-        this.breach_count = (int)jo.optInt("breach_count");
-        this.breach_status = (short)jo.optInt("breach_status");
-        this.breach_type = (short)jo.optInt("breach_type");
+        this.breach_time = (long)jo.optLong("breach_time",0);
+        this.breach_count = (int)jo.optInt("breach_count",0);
+        this.breach_status = (short)jo.optInt("breach_status",0);
+        this.breach_type = (short)jo.optInt("breach_type",0);
         
         
     }
@@ -151,6 +157,7 @@ public class msg_fence_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -167,6 +174,7 @@ public class msg_fence_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_FENCE_STATUS - sysid:"+sysid+" compid:"+compid+" breach_time:"+breach_time+" breach_count:"+breach_count+" breach_status:"+breach_status+" breach_type:"+breach_type+"";
     }

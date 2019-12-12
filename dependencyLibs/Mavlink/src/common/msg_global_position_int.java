@@ -76,6 +76,7 @@ public class msg_global_position_int extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -92,7 +93,9 @@ public class msg_global_position_int extends MAVLinkMessage {
         packet.payload.putShort(vz);
         packet.payload.putUnsignedShort(hdg);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -101,6 +104,7 @@ public class msg_global_position_int extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -114,7 +118,9 @@ public class msg_global_position_int extends MAVLinkMessage {
         this.vz = payload.getShort();
         this.hdg = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -186,15 +192,15 @@ public class msg_global_position_int extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (int)jo.optInt("alt");
-        this.relative_alt = (int)jo.optInt("relative_alt");
-        this.vx = (short)jo.optInt("vx");
-        this.vy = (short)jo.optInt("vy");
-        this.vz = (short)jo.optInt("vz");
-        this.hdg = (int)jo.optInt("hdg");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (int)jo.optInt("alt",0);
+        this.relative_alt = (int)jo.optInt("relative_alt",0);
+        this.vx = (short)jo.optInt("vx",0);
+        this.vy = (short)jo.optInt("vy",0);
+        this.vz = (short)jo.optInt("vz",0);
+        this.hdg = (int)jo.optInt("hdg",0);
         
         
     }
@@ -202,6 +208,7 @@ public class msg_global_position_int extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -223,6 +230,7 @@ public class msg_global_position_int extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GLOBAL_POSITION_INT - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" lat:"+lat+" lon:"+lon+" alt:"+alt+" relative_alt:"+relative_alt+" vx:"+vx+" vy:"+vy+" vz:"+vz+" hdg:"+hdg+"";
     }

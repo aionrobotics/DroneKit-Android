@@ -40,6 +40,7 @@ public class msg_message_interval extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_message_interval extends MAVLinkMessage {
         packet.payload.putInt(interval_us);
         packet.payload.putUnsignedShort(message_id);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_message_interval extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.interval_us = payload.getInt();
         this.message_id = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_message_interval extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.interval_us = (int)jo.optInt("interval_us");
-        this.message_id = (int)jo.optInt("message_id");
+        this.interval_us = (int)jo.optInt("interval_us",0);
+        this.message_id = (int)jo.optInt("message_id",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_message_interval extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_message_interval extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MESSAGE_INTERVAL - sysid:"+sysid+" compid:"+compid+" interval_us:"+interval_us+" message_id:"+message_id+"";
     }

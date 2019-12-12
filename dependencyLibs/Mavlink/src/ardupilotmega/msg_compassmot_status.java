@@ -60,6 +60,7 @@ public class msg_compassmot_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_compassmot_status extends MAVLinkMessage {
         packet.payload.putUnsignedShort(throttle);
         packet.payload.putUnsignedShort(interference);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_compassmot_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_compassmot_status extends MAVLinkMessage {
         this.throttle = payload.getUnsignedShort();
         this.interference = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_compassmot_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.current = (float)jo.optFloat("current");
-        this.CompensationX = (float)jo.optFloat("CompensationX");
-        this.CompensationY = (float)jo.optFloat("CompensationY");
-        this.CompensationZ = (float)jo.optFloat("CompensationZ");
-        this.throttle = (int)jo.optInt("throttle");
-        this.interference = (int)jo.optInt("interference");
+        this.current = (float)jo.optDouble("current",0);
+        this.CompensationX = (float)jo.optDouble("CompensationX",0);
+        this.CompensationY = (float)jo.optDouble("CompensationY",0);
+        this.CompensationZ = (float)jo.optDouble("CompensationZ",0);
+        this.throttle = (int)jo.optInt("throttle",0);
+        this.interference = (int)jo.optInt("interference",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_compassmot_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_compassmot_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_COMPASSMOT_STATUS - sysid:"+sysid+" compid:"+compid+" current:"+current+" CompensationX:"+CompensationX+" CompensationY:"+CompensationY+" CompensationZ:"+CompensationZ+" throttle:"+throttle+" interference:"+interference+"";
     }

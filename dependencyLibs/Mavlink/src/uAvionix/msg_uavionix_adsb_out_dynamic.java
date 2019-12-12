@@ -110,6 +110,7 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -133,7 +134,9 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
         packet.payload.putUnsignedByte(numSats);
         packet.payload.putUnsignedByte(emergencyStatus);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -142,6 +145,7 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -162,7 +166,9 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
         this.numSats = payload.getUnsignedByte();
         this.emergencyStatus = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -248,22 +254,22 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.utcTime = (long)jo.optLong("utcTime");
-        this.gpsLat = (int)jo.optInt("gpsLat");
-        this.gpsLon = (int)jo.optInt("gpsLon");
-        this.gpsAlt = (int)jo.optInt("gpsAlt");
-        this.baroAltMSL = (int)jo.optInt("baroAltMSL");
-        this.accuracyHor = (long)jo.optLong("accuracyHor");
-        this.accuracyVert = (int)jo.optInt("accuracyVert");
-        this.accuracyVel = (int)jo.optInt("accuracyVel");
-        this.velVert = (short)jo.optInt("velVert");
-        this.velNS = (short)jo.optInt("velNS");
-        this.VelEW = (short)jo.optInt("VelEW");
-        this.state = (int)jo.optInt("state");
-        this.squawk = (int)jo.optInt("squawk");
-        this.gpsFix = (short)jo.optInt("gpsFix");
-        this.numSats = (short)jo.optInt("numSats");
-        this.emergencyStatus = (short)jo.optInt("emergencyStatus");
+        this.utcTime = (long)jo.optLong("utcTime",0);
+        this.gpsLat = (int)jo.optInt("gpsLat",0);
+        this.gpsLon = (int)jo.optInt("gpsLon",0);
+        this.gpsAlt = (int)jo.optInt("gpsAlt",0);
+        this.baroAltMSL = (int)jo.optInt("baroAltMSL",0);
+        this.accuracyHor = (long)jo.optLong("accuracyHor",0);
+        this.accuracyVert = (int)jo.optInt("accuracyVert",0);
+        this.accuracyVel = (int)jo.optInt("accuracyVel",0);
+        this.velVert = (short)jo.optInt("velVert",0);
+        this.velNS = (short)jo.optInt("velNS",0);
+        this.VelEW = (short)jo.optInt("VelEW",0);
+        this.state = (int)jo.optInt("state",0);
+        this.squawk = (int)jo.optInt("squawk",0);
+        this.gpsFix = (short)jo.optInt("gpsFix",0);
+        this.numSats = (short)jo.optInt("numSats",0);
+        this.emergencyStatus = (short)jo.optInt("emergencyStatus",0);
         
         
     }
@@ -271,6 +277,7 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -299,6 +306,7 @@ public class msg_uavionix_adsb_out_dynamic extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC - sysid:"+sysid+" compid:"+compid+" utcTime:"+utcTime+" gpsLat:"+gpsLat+" gpsLon:"+gpsLon+" gpsAlt:"+gpsAlt+" baroAltMSL:"+baroAltMSL+" accuracyHor:"+accuracyHor+" accuracyVert:"+accuracyVert+" accuracyVel:"+accuracyVel+" velVert:"+velVert+" velNS:"+velNS+" VelEW:"+VelEW+" state:"+state+" squawk:"+squawk+" gpsFix:"+gpsFix+" numSats:"+numSats+" emergencyStatus:"+emergencyStatus+"";
     }

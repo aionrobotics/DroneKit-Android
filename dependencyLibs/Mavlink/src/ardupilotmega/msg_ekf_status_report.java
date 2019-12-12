@@ -65,6 +65,7 @@ public class msg_ekf_status_report extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -78,9 +79,9 @@ public class msg_ekf_status_report extends MAVLinkMessage {
         packet.payload.putFloat(terrain_alt_variance);
         packet.payload.putUnsignedShort(flags);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(airspeed_variance);
+        if (isMavlink2) {
+             packet.payload.putFloat(airspeed_variance);
+            
         }
         return packet;
     }
@@ -90,6 +91,7 @@ public class msg_ekf_status_report extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -100,9 +102,9 @@ public class msg_ekf_status_report extends MAVLinkMessage {
         this.terrain_alt_variance = payload.getFloat();
         this.flags = payload.getUnsignedShort();
         
-        
-        if(isMavlink2) {
-            this.airspeed_variance = payload.getFloat();
+        if (isMavlink2) {
+             this.airspeed_variance = payload.getFloat();
+            
         }
     }
 
@@ -171,20 +173,21 @@ public class msg_ekf_status_report extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.velocity_variance = (float)jo.optFloat("velocity_variance");
-        this.pos_horiz_variance = (float)jo.optFloat("pos_horiz_variance");
-        this.pos_vert_variance = (float)jo.optFloat("pos_vert_variance");
-        this.compass_variance = (float)jo.optFloat("compass_variance");
-        this.terrain_alt_variance = (float)jo.optFloat("terrain_alt_variance");
-        this.flags = (int)jo.optInt("flags");
+        this.velocity_variance = (float)jo.optDouble("velocity_variance",0);
+        this.pos_horiz_variance = (float)jo.optDouble("pos_horiz_variance",0);
+        this.pos_vert_variance = (float)jo.optDouble("pos_vert_variance",0);
+        this.compass_variance = (float)jo.optDouble("compass_variance",0);
+        this.terrain_alt_variance = (float)jo.optDouble("terrain_alt_variance",0);
+        this.flags = (int)jo.optInt("flags",0);
         
-        this.airspeed_variance = (float)jo.optFloat("airspeed_variance");
+        this.airspeed_variance = (float)jo.optDouble("airspeed_variance",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -204,6 +207,7 @@ public class msg_ekf_status_report extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_EKF_STATUS_REPORT - sysid:"+sysid+" compid:"+compid+" velocity_variance:"+velocity_variance+" pos_horiz_variance:"+pos_horiz_variance+" pos_vert_variance:"+pos_vert_variance+" compass_variance:"+compass_variance+" terrain_alt_variance:"+terrain_alt_variance+" flags:"+flags+" airspeed_variance:"+airspeed_variance+"";
     }

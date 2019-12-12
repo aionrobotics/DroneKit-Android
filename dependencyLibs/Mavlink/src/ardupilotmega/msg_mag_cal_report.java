@@ -115,6 +115,7 @@ public class msg_mag_cal_report extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -136,15 +137,11 @@ public class msg_mag_cal_report extends MAVLinkMessage {
         packet.payload.putUnsignedByte(cal_status);
         packet.payload.putUnsignedByte(autosaved);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(orientation_confidence);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedByte(old_orientation);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedByte(new_orientation);
+        if (isMavlink2) {
+             packet.payload.putFloat(orientation_confidence);
+             packet.payload.putUnsignedByte(old_orientation);
+             packet.payload.putUnsignedByte(new_orientation);
+            
         }
         return packet;
     }
@@ -154,6 +151,7 @@ public class msg_mag_cal_report extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -172,15 +170,11 @@ public class msg_mag_cal_report extends MAVLinkMessage {
         this.cal_status = payload.getUnsignedByte();
         this.autosaved = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.orientation_confidence = payload.getFloat();
-        }
-        if(isMavlink2) {
-            this.old_orientation = payload.getUnsignedByte();
-        }
-        if(isMavlink2) {
-            this.new_orientation = payload.getUnsignedByte();
+        if (isMavlink2) {
+             this.orientation_confidence = payload.getFloat();
+             this.old_orientation = payload.getUnsignedByte();
+             this.new_orientation = payload.getUnsignedByte();
+            
         }
     }
 
@@ -269,30 +263,31 @@ public class msg_mag_cal_report extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.fitness = (float)jo.optFloat("fitness");
-        this.ofs_x = (float)jo.optFloat("ofs_x");
-        this.ofs_y = (float)jo.optFloat("ofs_y");
-        this.ofs_z = (float)jo.optFloat("ofs_z");
-        this.diag_x = (float)jo.optFloat("diag_x");
-        this.diag_y = (float)jo.optFloat("diag_y");
-        this.diag_z = (float)jo.optFloat("diag_z");
-        this.offdiag_x = (float)jo.optFloat("offdiag_x");
-        this.offdiag_y = (float)jo.optFloat("offdiag_y");
-        this.offdiag_z = (float)jo.optFloat("offdiag_z");
-        this.compass_id = (short)jo.optInt("compass_id");
-        this.cal_mask = (short)jo.optInt("cal_mask");
-        this.cal_status = (short)jo.optInt("cal_status");
-        this.autosaved = (short)jo.optInt("autosaved");
+        this.fitness = (float)jo.optDouble("fitness",0);
+        this.ofs_x = (float)jo.optDouble("ofs_x",0);
+        this.ofs_y = (float)jo.optDouble("ofs_y",0);
+        this.ofs_z = (float)jo.optDouble("ofs_z",0);
+        this.diag_x = (float)jo.optDouble("diag_x",0);
+        this.diag_y = (float)jo.optDouble("diag_y",0);
+        this.diag_z = (float)jo.optDouble("diag_z",0);
+        this.offdiag_x = (float)jo.optDouble("offdiag_x",0);
+        this.offdiag_y = (float)jo.optDouble("offdiag_y",0);
+        this.offdiag_z = (float)jo.optDouble("offdiag_z",0);
+        this.compass_id = (short)jo.optInt("compass_id",0);
+        this.cal_mask = (short)jo.optInt("cal_mask",0);
+        this.cal_status = (short)jo.optInt("cal_status",0);
+        this.autosaved = (short)jo.optInt("autosaved",0);
         
-        this.orientation_confidence = (float)jo.optFloat("orientation_confidence");
-        this.old_orientation = (short)jo.optInt("old_orientation");
-        this.new_orientation = (short)jo.optInt("new_orientation");
+        this.orientation_confidence = (float)jo.optDouble("orientation_confidence",0);
+        this.old_orientation = (short)jo.optInt("old_orientation",0);
+        this.new_orientation = (short)jo.optInt("new_orientation",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -322,6 +317,7 @@ public class msg_mag_cal_report extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MAG_CAL_REPORT - sysid:"+sysid+" compid:"+compid+" fitness:"+fitness+" ofs_x:"+ofs_x+" ofs_y:"+ofs_y+" ofs_z:"+ofs_z+" diag_x:"+diag_x+" diag_y:"+diag_y+" diag_z:"+diag_z+" offdiag_x:"+offdiag_x+" offdiag_y:"+offdiag_y+" offdiag_z:"+offdiag_z+" compass_id:"+compass_id+" cal_mask:"+cal_mask+" cal_status:"+cal_status+" autosaved:"+autosaved+" orientation_confidence:"+orientation_confidence+" old_orientation:"+old_orientation+" new_orientation:"+new_orientation+"";
     }

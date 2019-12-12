@@ -60,6 +60,7 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -76,13 +77,13 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
         packet.payload.putFloat(y);
         packet.payload.putFloat(z);
         
-        
-        if(isMavlink2) {
-            
+        if (isMavlink2) {
+             
         for (int i = 0; i < covariance.length; i++) {
             packet.payload.putFloat(covariance[i]);
         }
                     
+            
         }
         return packet;
     }
@@ -92,6 +93,7 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -105,13 +107,13 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
         this.y = payload.getFloat();
         this.z = payload.getFloat();
         
-        
-        if(isMavlink2) {
-             
+        if (isMavlink2) {
+              
         for (int i = 0; i < this.covariance.length; i++) {
             this.covariance[i] = payload.getFloat();
         }
                 
+            
         }
     }
 
@@ -178,29 +180,42 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
+                    
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
         
          
-        JSONArray ja_covariance = jo.optJSONArray("covariance");
-        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
-            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        if (jo.has("covariance")) {
+            JSONArray ja_covariance = jo.optJSONArray("covariance");
+            if (ja_covariance == null) {
+                this.covariance[0] = (float)jo.optDouble("covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+                    this.covariance[i] = (float)ja_covariance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -231,6 +246,7 @@ public class msg_att_pos_mocap extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ATT_POS_MOCAP - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" q:"+q+" x:"+x+" y:"+y+" z:"+z+" covariance:"+covariance+"";
     }

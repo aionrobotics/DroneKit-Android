@@ -75,6 +75,7 @@ public class msg_device_op_read extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -95,7 +96,9 @@ public class msg_device_op_read extends MAVLinkMessage {
         packet.payload.putUnsignedByte(regstart);
         packet.payload.putUnsignedByte(count);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -104,6 +107,7 @@ public class msg_device_op_read extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -121,7 +125,9 @@ public class msg_device_op_read extends MAVLinkMessage {
         this.regstart = payload.getUnsignedByte();
         this.count = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -193,20 +199,28 @@ public class msg_device_op_read extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.request_id = (long)jo.optLong("request_id");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.bustype = (short)jo.optInt("bustype");
-        this.bus = (short)jo.optInt("bus");
-        this.address = (short)jo.optInt("address");
+        this.request_id = (long)jo.optLong("request_id",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.bustype = (short)jo.optInt("bustype",0);
+        this.bus = (short)jo.optInt("bus",0);
+        this.address = (short)jo.optInt("address",0);
          
-        JSONArray ja_busname = jo.optJSONArray("busname");
-        for (int i = 0; i < Math.min(this.busname.length, ja_busname.length()); i++) {
-            this.busname[i] = (byte)ja_busname.getInt(i);
+        if (jo.has("busname")) {
+            JSONArray ja_busname = jo.optJSONArray("busname");
+            if (ja_busname == null) {
+                final String js_string_busname = jo.optString("busname");
+                final byte[] b_busname = js_string_busname.getBytes();
+                System.arraycopy(b_busname, 0, this.busname, 0, Math.min(this.busname.length, b_busname.length));
+            } else {
+                for (int i = 0; i < Math.min(this.busname.length, ja_busname.length()); i++) {
+                    this.busname[i] = (byte)ja_busname.optInt(i,0);
+                }
+            }
         }
-                
-        this.regstart = (short)jo.optInt("regstart");
-        this.count = (short)jo.optInt("count");
+                    
+        this.regstart = (short)jo.optInt("regstart",0);
+        this.count = (short)jo.optInt("count",0);
         
         
     }
@@ -214,6 +228,7 @@ public class msg_device_op_read extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -270,6 +285,7 @@ public class msg_device_op_read extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DEVICE_OP_READ - sysid:"+sysid+" compid:"+compid+" request_id:"+request_id+" target_system:"+target_system+" target_component:"+target_component+" bustype:"+bustype+" bus:"+bus+" address:"+address+" busname:"+busname+" regstart:"+regstart+" count:"+count+"";
     }

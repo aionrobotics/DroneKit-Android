@@ -85,6 +85,7 @@ public class msg_distance_sensor extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -100,19 +101,15 @@ public class msg_distance_sensor extends MAVLinkMessage {
         packet.payload.putUnsignedByte(orientation);
         packet.payload.putUnsignedByte(covariance);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(horizontal_fov);
-        }
-        if(isMavlink2) {
-            packet.payload.putFloat(vertical_fov);
-        }
-        if(isMavlink2) {
-            
+        if (isMavlink2) {
+             packet.payload.putFloat(horizontal_fov);
+             packet.payload.putFloat(vertical_fov);
+             
         for (int i = 0; i < quaternion.length; i++) {
             packet.payload.putFloat(quaternion[i]);
         }
                     
+            
         }
         return packet;
     }
@@ -122,6 +119,7 @@ public class msg_distance_sensor extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -134,19 +132,15 @@ public class msg_distance_sensor extends MAVLinkMessage {
         this.orientation = payload.getUnsignedByte();
         this.covariance = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.horizontal_fov = payload.getFloat();
-        }
-        if(isMavlink2) {
-            this.vertical_fov = payload.getFloat();
-        }
-        if(isMavlink2) {
-             
+        if (isMavlink2) {
+             this.horizontal_fov = payload.getFloat();
+             this.vertical_fov = payload.getFloat();
+              
         for (int i = 0; i < this.quaternion.length; i++) {
             this.quaternion[i] = payload.getFloat();
         }
                 
+            
         }
     }
 
@@ -223,29 +217,36 @@ public class msg_distance_sensor extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.min_distance = (int)jo.optInt("min_distance");
-        this.max_distance = (int)jo.optInt("max_distance");
-        this.current_distance = (int)jo.optInt("current_distance");
-        this.type = (short)jo.optInt("type");
-        this.id = (short)jo.optInt("id");
-        this.orientation = (short)jo.optInt("orientation");
-        this.covariance = (short)jo.optInt("covariance");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.min_distance = (int)jo.optInt("min_distance",0);
+        this.max_distance = (int)jo.optInt("max_distance",0);
+        this.current_distance = (int)jo.optInt("current_distance",0);
+        this.type = (short)jo.optInt("type",0);
+        this.id = (short)jo.optInt("id",0);
+        this.orientation = (short)jo.optInt("orientation",0);
+        this.covariance = (short)jo.optInt("covariance",0);
         
-        this.horizontal_fov = (float)jo.optFloat("horizontal_fov");
-        this.vertical_fov = (float)jo.optFloat("vertical_fov");
+        this.horizontal_fov = (float)jo.optDouble("horizontal_fov",0);
+        this.vertical_fov = (float)jo.optDouble("vertical_fov",0);
          
-        JSONArray ja_quaternion = jo.optJSONArray("quaternion");
-        for (int i = 0; i < Math.min(this.quaternion.length, ja_quaternion.length()); i++) {
-            this.quaternion[i] = (float)ja_quaternion.getFloat(i);
+        if (jo.has("quaternion")) {
+            JSONArray ja_quaternion = jo.optJSONArray("quaternion");
+            if (ja_quaternion == null) {
+                this.quaternion[0] = (float)jo.optDouble("quaternion", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.quaternion.length, ja_quaternion.length()); i++) {
+                    this.quaternion[i] = (float)ja_quaternion.optDouble(i,0);
+                }
+            }
         }
-                
+                    
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -275,6 +276,7 @@ public class msg_distance_sensor extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DISTANCE_SENSOR - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" min_distance:"+min_distance+" max_distance:"+max_distance+" current_distance:"+current_distance+" type:"+type+" id:"+id+" orientation:"+orientation+" covariance:"+covariance+" horizontal_fov:"+horizontal_fov+" vertical_fov:"+vertical_fov+" quaternion:"+quaternion+"";
     }

@@ -50,6 +50,7 @@ public class msg_flight_information extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -61,7 +62,9 @@ public class msg_flight_information extends MAVLinkMessage {
         packet.payload.putUnsignedLong(flight_uuid);
         packet.payload.putUnsignedInt(time_boot_ms);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -70,6 +73,7 @@ public class msg_flight_information extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -78,7 +82,9 @@ public class msg_flight_information extends MAVLinkMessage {
         this.flight_uuid = payload.getUnsignedLong();
         this.time_boot_ms = payload.getUnsignedInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -140,10 +146,10 @@ public class msg_flight_information extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.arming_time_utc = (long)jo.optLong("arming_time_utc");
-        this.takeoff_time_utc = (long)jo.optLong("takeoff_time_utc");
-        this.flight_uuid = (long)jo.optLong("flight_uuid");
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.arming_time_utc = (long)jo.optLong("arming_time_utc",0);
+        this.takeoff_time_utc = (long)jo.optLong("takeoff_time_utc",0);
+        this.flight_uuid = (long)jo.optLong("flight_uuid",0);
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
         
         
     }
@@ -151,6 +157,7 @@ public class msg_flight_information extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -167,6 +174,7 @@ public class msg_flight_information extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_FLIGHT_INFORMATION - sysid:"+sysid+" compid:"+compid+" arming_time_utc:"+arming_time_utc+" takeoff_time_utc:"+takeoff_time_utc+" flight_uuid:"+flight_uuid+" time_boot_ms:"+time_boot_ms+"";
     }

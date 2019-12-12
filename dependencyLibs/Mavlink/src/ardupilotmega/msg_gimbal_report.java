@@ -90,6 +90,7 @@ public class msg_gimbal_report extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -109,7 +110,9 @@ public class msg_gimbal_report extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_system);
         packet.payload.putUnsignedByte(target_component);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -118,6 +121,7 @@ public class msg_gimbal_report extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -134,7 +138,9 @@ public class msg_gimbal_report extends MAVLinkMessage {
         this.target_system = payload.getUnsignedByte();
         this.target_component = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -212,18 +218,18 @@ public class msg_gimbal_report extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.delta_time = (float)jo.optFloat("delta_time");
-        this.delta_angle_x = (float)jo.optFloat("delta_angle_x");
-        this.delta_angle_y = (float)jo.optFloat("delta_angle_y");
-        this.delta_angle_z = (float)jo.optFloat("delta_angle_z");
-        this.delta_velocity_x = (float)jo.optFloat("delta_velocity_x");
-        this.delta_velocity_y = (float)jo.optFloat("delta_velocity_y");
-        this.delta_velocity_z = (float)jo.optFloat("delta_velocity_z");
-        this.joint_roll = (float)jo.optFloat("joint_roll");
-        this.joint_el = (float)jo.optFloat("joint_el");
-        this.joint_az = (float)jo.optFloat("joint_az");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.delta_time = (float)jo.optDouble("delta_time",0);
+        this.delta_angle_x = (float)jo.optDouble("delta_angle_x",0);
+        this.delta_angle_y = (float)jo.optDouble("delta_angle_y",0);
+        this.delta_angle_z = (float)jo.optDouble("delta_angle_z",0);
+        this.delta_velocity_x = (float)jo.optDouble("delta_velocity_x",0);
+        this.delta_velocity_y = (float)jo.optDouble("delta_velocity_y",0);
+        this.delta_velocity_z = (float)jo.optDouble("delta_velocity_z",0);
+        this.joint_roll = (float)jo.optDouble("joint_roll",0);
+        this.joint_el = (float)jo.optDouble("joint_el",0);
+        this.joint_az = (float)jo.optDouble("joint_az",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
         
         
     }
@@ -231,6 +237,7 @@ public class msg_gimbal_report extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -255,6 +262,7 @@ public class msg_gimbal_report extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GIMBAL_REPORT - sysid:"+sysid+" compid:"+compid+" delta_time:"+delta_time+" delta_angle_x:"+delta_angle_x+" delta_angle_y:"+delta_angle_y+" delta_angle_z:"+delta_angle_z+" delta_velocity_x:"+delta_velocity_x+" delta_velocity_y:"+delta_velocity_y+" delta_velocity_z:"+delta_velocity_z+" joint_roll:"+joint_roll+" joint_el:"+joint_el+" joint_az:"+joint_az+" target_system:"+target_system+" target_component:"+target_component+"";
     }

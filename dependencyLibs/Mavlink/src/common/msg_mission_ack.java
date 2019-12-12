@@ -50,6 +50,7 @@ public class msg_mission_ack extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -60,9 +61,9 @@ public class msg_mission_ack extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_component);
         packet.payload.putUnsignedByte(type);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedByte(mission_type);
+        if (isMavlink2) {
+             packet.payload.putUnsignedByte(mission_type);
+            
         }
         return packet;
     }
@@ -72,6 +73,7 @@ public class msg_mission_ack extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -79,9 +81,9 @@ public class msg_mission_ack extends MAVLinkMessage {
         this.target_component = payload.getUnsignedByte();
         this.type = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.mission_type = payload.getUnsignedByte();
+        if (isMavlink2) {
+             this.mission_type = payload.getUnsignedByte();
+            
         }
     }
 
@@ -144,17 +146,18 @@ public class msg_mission_ack extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.type = (short)jo.optInt("type");
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.type = (short)jo.optInt("type",0);
         
-        this.mission_type = (short)jo.optInt("mission_type");
+        this.mission_type = (short)jo.optInt("mission_type",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -171,6 +174,7 @@ public class msg_mission_ack extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MISSION_ACK - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" type:"+type+" mission_type:"+mission_type+"";
     }

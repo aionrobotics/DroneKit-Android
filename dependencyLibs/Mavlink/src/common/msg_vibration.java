@@ -65,6 +65,7 @@ public class msg_vibration extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_vibration extends MAVLinkMessage {
         packet.payload.putUnsignedInt(clipping_1);
         packet.payload.putUnsignedInt(clipping_2);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_vibration extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_vibration extends MAVLinkMessage {
         this.clipping_1 = payload.getUnsignedInt();
         this.clipping_2 = payload.getUnsignedInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_vibration extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.vibration_x = (float)jo.optFloat("vibration_x");
-        this.vibration_y = (float)jo.optFloat("vibration_y");
-        this.vibration_z = (float)jo.optFloat("vibration_z");
-        this.clipping_0 = (long)jo.optLong("clipping_0");
-        this.clipping_1 = (long)jo.optLong("clipping_1");
-        this.clipping_2 = (long)jo.optLong("clipping_2");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.vibration_x = (float)jo.optDouble("vibration_x",0);
+        this.vibration_y = (float)jo.optDouble("vibration_y",0);
+        this.vibration_z = (float)jo.optDouble("vibration_z",0);
+        this.clipping_0 = (long)jo.optLong("clipping_0",0);
+        this.clipping_1 = (long)jo.optLong("clipping_1",0);
+        this.clipping_2 = (long)jo.optLong("clipping_2",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_vibration extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_vibration extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_VIBRATION - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" vibration_x:"+vibration_x+" vibration_y:"+vibration_y+" vibration_z:"+vibration_z+" clipping_0:"+clipping_0+" clipping_1:"+clipping_1+" clipping_2:"+clipping_2+"";
     }

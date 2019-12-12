@@ -80,6 +80,7 @@ public class msg_optical_flow extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -95,12 +96,10 @@ public class msg_optical_flow extends MAVLinkMessage {
         packet.payload.putUnsignedByte(sensor_id);
         packet.payload.putUnsignedByte(quality);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(flow_rate_x);
-        }
-        if(isMavlink2) {
-            packet.payload.putFloat(flow_rate_y);
+        if (isMavlink2) {
+             packet.payload.putFloat(flow_rate_x);
+             packet.payload.putFloat(flow_rate_y);
+            
         }
         return packet;
     }
@@ -110,6 +109,7 @@ public class msg_optical_flow extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -122,12 +122,10 @@ public class msg_optical_flow extends MAVLinkMessage {
         this.sensor_id = payload.getUnsignedByte();
         this.quality = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.flow_rate_x = payload.getFloat();
-        }
-        if(isMavlink2) {
-            this.flow_rate_y = payload.getFloat();
+        if (isMavlink2) {
+             this.flow_rate_x = payload.getFloat();
+             this.flow_rate_y = payload.getFloat();
+            
         }
     }
 
@@ -202,23 +200,24 @@ public class msg_optical_flow extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.flow_comp_m_x = (float)jo.optFloat("flow_comp_m_x");
-        this.flow_comp_m_y = (float)jo.optFloat("flow_comp_m_y");
-        this.ground_distance = (float)jo.optFloat("ground_distance");
-        this.flow_x = (short)jo.optInt("flow_x");
-        this.flow_y = (short)jo.optInt("flow_y");
-        this.sensor_id = (short)jo.optInt("sensor_id");
-        this.quality = (short)jo.optInt("quality");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.flow_comp_m_x = (float)jo.optDouble("flow_comp_m_x",0);
+        this.flow_comp_m_y = (float)jo.optDouble("flow_comp_m_y",0);
+        this.ground_distance = (float)jo.optDouble("ground_distance",0);
+        this.flow_x = (short)jo.optInt("flow_x",0);
+        this.flow_y = (short)jo.optInt("flow_y",0);
+        this.sensor_id = (short)jo.optInt("sensor_id",0);
+        this.quality = (short)jo.optInt("quality",0);
         
-        this.flow_rate_x = (float)jo.optFloat("flow_rate_x");
-        this.flow_rate_y = (float)jo.optFloat("flow_rate_y");
+        this.flow_rate_x = (float)jo.optDouble("flow_rate_x",0);
+        this.flow_rate_y = (float)jo.optDouble("flow_rate_y",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -241,6 +240,7 @@ public class msg_optical_flow extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_OPTICAL_FLOW - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" flow_comp_m_x:"+flow_comp_m_x+" flow_comp_m_y:"+flow_comp_m_y+" ground_distance:"+ground_distance+" flow_x:"+flow_x+" flow_y:"+flow_y+" sensor_id:"+sensor_id+" quality:"+quality+" flow_rate_x:"+flow_rate_x+" flow_rate_y:"+flow_rate_y+"";
     }

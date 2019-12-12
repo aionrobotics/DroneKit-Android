@@ -60,6 +60,7 @@ public class msg_vfr_hud extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_vfr_hud extends MAVLinkMessage {
         packet.payload.putShort(heading);
         packet.payload.putUnsignedShort(throttle);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_vfr_hud extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_vfr_hud extends MAVLinkMessage {
         this.heading = payload.getShort();
         this.throttle = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_vfr_hud extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.airspeed = (float)jo.optFloat("airspeed");
-        this.groundspeed = (float)jo.optFloat("groundspeed");
-        this.alt = (float)jo.optFloat("alt");
-        this.climb = (float)jo.optFloat("climb");
-        this.heading = (short)jo.optInt("heading");
-        this.throttle = (int)jo.optInt("throttle");
+        this.airspeed = (float)jo.optDouble("airspeed",0);
+        this.groundspeed = (float)jo.optDouble("groundspeed",0);
+        this.alt = (float)jo.optDouble("alt",0);
+        this.climb = (float)jo.optDouble("climb",0);
+        this.heading = (short)jo.optInt("heading",0);
+        this.throttle = (int)jo.optInt("throttle",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_vfr_hud extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_vfr_hud extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_VFR_HUD - sysid:"+sysid+" compid:"+compid+" airspeed:"+airspeed+" groundspeed:"+groundspeed+" alt:"+alt+" climb:"+climb+" heading:"+heading+" throttle:"+throttle+"";
     }

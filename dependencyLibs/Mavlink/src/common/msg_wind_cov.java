@@ -75,6 +75,7 @@ public class msg_wind_cov extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -91,7 +92,9 @@ public class msg_wind_cov extends MAVLinkMessage {
         packet.payload.putFloat(horiz_accuracy);
         packet.payload.putFloat(vert_accuracy);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -100,6 +103,7 @@ public class msg_wind_cov extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -113,7 +117,9 @@ public class msg_wind_cov extends MAVLinkMessage {
         this.horiz_accuracy = payload.getFloat();
         this.vert_accuracy = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -185,15 +191,15 @@ public class msg_wind_cov extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.wind_x = (float)jo.optFloat("wind_x");
-        this.wind_y = (float)jo.optFloat("wind_y");
-        this.wind_z = (float)jo.optFloat("wind_z");
-        this.var_horiz = (float)jo.optFloat("var_horiz");
-        this.var_vert = (float)jo.optFloat("var_vert");
-        this.wind_alt = (float)jo.optFloat("wind_alt");
-        this.horiz_accuracy = (float)jo.optFloat("horiz_accuracy");
-        this.vert_accuracy = (float)jo.optFloat("vert_accuracy");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.wind_x = (float)jo.optDouble("wind_x",0);
+        this.wind_y = (float)jo.optDouble("wind_y",0);
+        this.wind_z = (float)jo.optDouble("wind_z",0);
+        this.var_horiz = (float)jo.optDouble("var_horiz",0);
+        this.var_vert = (float)jo.optDouble("var_vert",0);
+        this.wind_alt = (float)jo.optDouble("wind_alt",0);
+        this.horiz_accuracy = (float)jo.optDouble("horiz_accuracy",0);
+        this.vert_accuracy = (float)jo.optDouble("vert_accuracy",0);
         
         
     }
@@ -201,6 +207,7 @@ public class msg_wind_cov extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -222,6 +229,7 @@ public class msg_wind_cov extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_WIND_COV - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" wind_x:"+wind_x+" wind_y:"+wind_y+" wind_z:"+wind_z+" var_horiz:"+var_horiz+" var_vert:"+var_vert+" wind_alt:"+wind_alt+" horiz_accuracy:"+horiz_accuracy+" vert_accuracy:"+vert_accuracy+"";
     }

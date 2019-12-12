@@ -80,6 +80,7 @@ public class msg_raw_imu extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_raw_imu extends MAVLinkMessage {
         packet.payload.putShort(ymag);
         packet.payload.putShort(zmag);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_raw_imu extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -120,7 +124,9 @@ public class msg_raw_imu extends MAVLinkMessage {
         this.ymag = payload.getShort();
         this.zmag = payload.getShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -194,16 +200,16 @@ public class msg_raw_imu extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.xacc = (short)jo.optInt("xacc");
-        this.yacc = (short)jo.optInt("yacc");
-        this.zacc = (short)jo.optInt("zacc");
-        this.xgyro = (short)jo.optInt("xgyro");
-        this.ygyro = (short)jo.optInt("ygyro");
-        this.zgyro = (short)jo.optInt("zgyro");
-        this.xmag = (short)jo.optInt("xmag");
-        this.ymag = (short)jo.optInt("ymag");
-        this.zmag = (short)jo.optInt("zmag");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.xacc = (short)jo.optInt("xacc",0);
+        this.yacc = (short)jo.optInt("yacc",0);
+        this.zacc = (short)jo.optInt("zacc",0);
+        this.xgyro = (short)jo.optInt("xgyro",0);
+        this.ygyro = (short)jo.optInt("ygyro",0);
+        this.zgyro = (short)jo.optInt("zgyro",0);
+        this.xmag = (short)jo.optInt("xmag",0);
+        this.ymag = (short)jo.optInt("ymag",0);
+        this.zmag = (short)jo.optInt("zmag",0);
         
         
     }
@@ -211,6 +217,7 @@ public class msg_raw_imu extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -233,6 +240,7 @@ public class msg_raw_imu extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_RAW_IMU - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" xmag:"+xmag+" ymag:"+ymag+" zmag:"+zmag+"";
     }

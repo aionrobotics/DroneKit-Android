@@ -50,6 +50,7 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -65,7 +66,9 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -74,6 +77,7 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,7 +90,9 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -148,15 +154,21 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.seqno = (long)jo.optLong("seqno");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.seqno = (long)jo.optLong("seqno",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
          
-        JSONArray ja_data = jo.optJSONArray("data");
-        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
-            this.data[i] = (short)ja_data.getInt(i);
+        if (jo.has("data")) {
+            JSONArray ja_data = jo.optJSONArray("data");
+            if (ja_data == null) {
+                this.data[0] = (short)jo.optInt("data", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+                    this.data[i] = (short)ja_data.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -164,6 +176,7 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -186,6 +199,7 @@ public class msg_remote_log_data_block extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK - sysid:"+sysid+" compid:"+compid+" seqno:"+seqno+" target_system:"+target_system+" target_component:"+target_component+" data:"+data+"";
     }

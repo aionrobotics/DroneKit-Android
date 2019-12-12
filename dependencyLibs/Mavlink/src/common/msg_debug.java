@@ -45,6 +45,7 @@ public class msg_debug extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_debug extends MAVLinkMessage {
         packet.payload.putFloat(value);
         packet.payload.putUnsignedByte(ind);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_debug extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_debug extends MAVLinkMessage {
         this.value = payload.getFloat();
         this.ind = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_debug extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.value = (float)jo.optFloat("value");
-        this.ind = (short)jo.optInt("ind");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.value = (float)jo.optDouble("value",0);
+        this.ind = (short)jo.optInt("ind",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_debug extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_debug extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DEBUG - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" value:"+value+" ind:"+ind+"";
     }

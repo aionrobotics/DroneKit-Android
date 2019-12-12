@@ -75,6 +75,7 @@ public class msg_param_map_rc extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -95,7 +96,9 @@ public class msg_param_map_rc extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(parameter_rc_channel_index);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -104,6 +107,7 @@ public class msg_param_map_rc extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -121,7 +125,9 @@ public class msg_param_map_rc extends MAVLinkMessage {
                 
         this.parameter_rc_channel_index = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -193,20 +199,28 @@ public class msg_param_map_rc extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.param_value0 = (float)jo.optFloat("param_value0");
-        this.scale = (float)jo.optFloat("scale");
-        this.param_value_min = (float)jo.optFloat("param_value_min");
-        this.param_value_max = (float)jo.optFloat("param_value_max");
-        this.param_index = (short)jo.optInt("param_index");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.param_value0 = (float)jo.optDouble("param_value0",0);
+        this.scale = (float)jo.optDouble("scale",0);
+        this.param_value_min = (float)jo.optDouble("param_value_min",0);
+        this.param_value_max = (float)jo.optDouble("param_value_max",0);
+        this.param_index = (short)jo.optInt("param_index",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
          
-        JSONArray ja_param_id = jo.optJSONArray("param_id");
-        for (int i = 0; i < Math.min(this.param_id.length, ja_param_id.length()); i++) {
-            this.param_id[i] = (byte)ja_param_id.getInt(i);
+        if (jo.has("param_id")) {
+            JSONArray ja_param_id = jo.optJSONArray("param_id");
+            if (ja_param_id == null) {
+                final String js_string_param_id = jo.optString("param_id");
+                final byte[] b_param_id = js_string_param_id.getBytes();
+                System.arraycopy(b_param_id, 0, this.param_id, 0, Math.min(this.param_id.length, b_param_id.length));
+            } else {
+                for (int i = 0; i < Math.min(this.param_id.length, ja_param_id.length()); i++) {
+                    this.param_id[i] = (byte)ja_param_id.optInt(i,0);
+                }
+            }
         }
-                
-        this.parameter_rc_channel_index = (short)jo.optInt("parameter_rc_channel_index");
+                    
+        this.parameter_rc_channel_index = (short)jo.optInt("parameter_rc_channel_index",0);
         
         
     }
@@ -214,6 +228,7 @@ public class msg_param_map_rc extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -270,6 +285,7 @@ public class msg_param_map_rc extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_PARAM_MAP_RC - sysid:"+sysid+" compid:"+compid+" param_value0:"+param_value0+" scale:"+scale+" param_value_min:"+param_value_min+" param_value_max:"+param_value_max+" param_index:"+param_index+" target_system:"+target_system+" target_component:"+target_component+" param_id:"+param_id+" parameter_rc_channel_index:"+parameter_rc_channel_index+"";
     }

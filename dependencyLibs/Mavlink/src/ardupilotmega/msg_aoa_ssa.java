@@ -45,6 +45,7 @@ public class msg_aoa_ssa extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_aoa_ssa extends MAVLinkMessage {
         packet.payload.putFloat(AOA);
         packet.payload.putFloat(SSA);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_aoa_ssa extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_aoa_ssa extends MAVLinkMessage {
         this.AOA = payload.getFloat();
         this.SSA = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_aoa_ssa extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.AOA = (float)jo.optFloat("AOA");
-        this.SSA = (float)jo.optFloat("SSA");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.AOA = (float)jo.optDouble("AOA",0);
+        this.SSA = (float)jo.optDouble("SSA",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_aoa_ssa extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_aoa_ssa extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AOA_SSA - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" AOA:"+AOA+" SSA:"+SSA+"";
     }

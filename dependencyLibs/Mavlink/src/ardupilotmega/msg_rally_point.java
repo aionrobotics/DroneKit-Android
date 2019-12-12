@@ -80,6 +80,7 @@ public class msg_rally_point extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_rally_point extends MAVLinkMessage {
         packet.payload.putUnsignedByte(count);
         packet.payload.putUnsignedByte(flags);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_rally_point extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -120,7 +124,9 @@ public class msg_rally_point extends MAVLinkMessage {
         this.count = payload.getUnsignedByte();
         this.flags = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -194,16 +200,16 @@ public class msg_rally_point extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.lat = (int)jo.optInt("lat");
-        this.lng = (int)jo.optInt("lng");
-        this.alt = (short)jo.optInt("alt");
-        this.break_alt = (short)jo.optInt("break_alt");
-        this.land_dir = (int)jo.optInt("land_dir");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.idx = (short)jo.optInt("idx");
-        this.count = (short)jo.optInt("count");
-        this.flags = (short)jo.optInt("flags");
+        this.lat = (int)jo.optInt("lat",0);
+        this.lng = (int)jo.optInt("lng",0);
+        this.alt = (short)jo.optInt("alt",0);
+        this.break_alt = (short)jo.optInt("break_alt",0);
+        this.land_dir = (int)jo.optInt("land_dir",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.idx = (short)jo.optInt("idx",0);
+        this.count = (short)jo.optInt("count",0);
+        this.flags = (short)jo.optInt("flags",0);
         
         
     }
@@ -211,6 +217,7 @@ public class msg_rally_point extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -233,6 +240,7 @@ public class msg_rally_point extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_RALLY_POINT - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lng:"+lng+" alt:"+alt+" break_alt:"+break_alt+" land_dir:"+land_dir+" target_system:"+target_system+" target_component:"+target_component+" idx:"+idx+" count:"+count+" flags:"+flags+"";
     }

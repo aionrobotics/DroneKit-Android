@@ -65,6 +65,7 @@ public class msg_pid_tuning extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_pid_tuning extends MAVLinkMessage {
         packet.payload.putFloat(D);
         packet.payload.putUnsignedByte(axis);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_pid_tuning extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_pid_tuning extends MAVLinkMessage {
         this.D = payload.getFloat();
         this.axis = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_pid_tuning extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.desired = (float)jo.optFloat("desired");
-        this.achieved = (float)jo.optFloat("achieved");
-        this.FF = (float)jo.optFloat("FF");
-        this.P = (float)jo.optFloat("P");
-        this.I = (float)jo.optFloat("I");
-        this.D = (float)jo.optFloat("D");
-        this.axis = (short)jo.optInt("axis");
+        this.desired = (float)jo.optDouble("desired",0);
+        this.achieved = (float)jo.optDouble("achieved",0);
+        this.FF = (float)jo.optDouble("FF",0);
+        this.P = (float)jo.optDouble("P",0);
+        this.I = (float)jo.optDouble("I",0);
+        this.D = (float)jo.optDouble("D",0);
+        this.axis = (short)jo.optInt("axis",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_pid_tuning extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_pid_tuning extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_PID_TUNING - sysid:"+sysid+" compid:"+compid+" desired:"+desired+" achieved:"+achieved+" FF:"+FF+" P:"+P+" I:"+I+" D:"+D+" axis:"+axis+"";
     }

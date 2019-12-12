@@ -45,6 +45,7 @@ public class msg_power_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_power_status extends MAVLinkMessage {
         packet.payload.putUnsignedShort(Vservo);
         packet.payload.putUnsignedShort(flags);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_power_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_power_status extends MAVLinkMessage {
         this.Vservo = payload.getUnsignedShort();
         this.flags = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_power_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.Vcc = (int)jo.optInt("Vcc");
-        this.Vservo = (int)jo.optInt("Vservo");
-        this.flags = (int)jo.optInt("flags");
+        this.Vcc = (int)jo.optInt("Vcc",0);
+        this.Vservo = (int)jo.optInt("Vservo",0);
+        this.flags = (int)jo.optInt("flags",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_power_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_power_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_POWER_STATUS - sysid:"+sysid+" compid:"+compid+" Vcc:"+Vcc+" Vservo:"+Vservo+" flags:"+flags+"";
     }

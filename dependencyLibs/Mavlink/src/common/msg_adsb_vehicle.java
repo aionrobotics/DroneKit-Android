@@ -95,6 +95,7 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -119,7 +120,9 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
         packet.payload.putUnsignedByte(emitter_type);
         packet.payload.putUnsignedByte(tslc);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -128,6 +131,7 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -149,7 +153,9 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
         this.emitter_type = payload.getUnsignedByte();
         this.tslc = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -229,24 +235,32 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.ICAO_address = (long)jo.optLong("ICAO_address");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.altitude = (int)jo.optInt("altitude");
-        this.heading = (int)jo.optInt("heading");
-        this.hor_velocity = (int)jo.optInt("hor_velocity");
-        this.ver_velocity = (short)jo.optInt("ver_velocity");
-        this.flags = (int)jo.optInt("flags");
-        this.squawk = (int)jo.optInt("squawk");
-        this.altitude_type = (short)jo.optInt("altitude_type");
+        this.ICAO_address = (long)jo.optLong("ICAO_address",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.altitude = (int)jo.optInt("altitude",0);
+        this.heading = (int)jo.optInt("heading",0);
+        this.hor_velocity = (int)jo.optInt("hor_velocity",0);
+        this.ver_velocity = (short)jo.optInt("ver_velocity",0);
+        this.flags = (int)jo.optInt("flags",0);
+        this.squawk = (int)jo.optInt("squawk",0);
+        this.altitude_type = (short)jo.optInt("altitude_type",0);
          
-        JSONArray ja_callsign = jo.optJSONArray("callsign");
-        for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
-            this.callsign[i] = (byte)ja_callsign.getInt(i);
+        if (jo.has("callsign")) {
+            JSONArray ja_callsign = jo.optJSONArray("callsign");
+            if (ja_callsign == null) {
+                final String js_string_callsign = jo.optString("callsign");
+                final byte[] b_callsign = js_string_callsign.getBytes();
+                System.arraycopy(b_callsign, 0, this.callsign, 0, Math.min(this.callsign.length, b_callsign.length));
+            } else {
+                for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
+                    this.callsign[i] = (byte)ja_callsign.optInt(i,0);
+                }
+            }
         }
-                
-        this.emitter_type = (short)jo.optInt("emitter_type");
-        this.tslc = (short)jo.optInt("tslc");
+                    
+        this.emitter_type = (short)jo.optInt("emitter_type",0);
+        this.tslc = (short)jo.optInt("tslc",0);
         
         
     }
@@ -254,6 +268,7 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -314,6 +329,7 @@ public class msg_adsb_vehicle extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ADSB_VEHICLE - sysid:"+sysid+" compid:"+compid+" ICAO_address:"+ICAO_address+" lat:"+lat+" lon:"+lon+" altitude:"+altitude+" heading:"+heading+" hor_velocity:"+hor_velocity+" ver_velocity:"+ver_velocity+" flags:"+flags+" squawk:"+squawk+" altitude_type:"+altitude_type+" callsign:"+callsign+" emitter_type:"+emitter_type+" tslc:"+tslc+"";
     }

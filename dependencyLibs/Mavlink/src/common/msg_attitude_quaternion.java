@@ -70,6 +70,7 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -85,7 +86,9 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
         packet.payload.putFloat(pitchspeed);
         packet.payload.putFloat(yawspeed);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -94,6 +97,7 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -106,7 +110,9 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
         this.pitchspeed = payload.getFloat();
         this.yawspeed = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -176,14 +182,14 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.q1 = (float)jo.optFloat("q1");
-        this.q2 = (float)jo.optFloat("q2");
-        this.q3 = (float)jo.optFloat("q3");
-        this.q4 = (float)jo.optFloat("q4");
-        this.rollspeed = (float)jo.optFloat("rollspeed");
-        this.pitchspeed = (float)jo.optFloat("pitchspeed");
-        this.yawspeed = (float)jo.optFloat("yawspeed");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.q1 = (float)jo.optDouble("q1",0);
+        this.q2 = (float)jo.optDouble("q2",0);
+        this.q3 = (float)jo.optDouble("q3",0);
+        this.q4 = (float)jo.optDouble("q4",0);
+        this.rollspeed = (float)jo.optDouble("rollspeed",0);
+        this.pitchspeed = (float)jo.optDouble("pitchspeed",0);
+        this.yawspeed = (float)jo.optDouble("yawspeed",0);
         
         
     }
@@ -191,6 +197,7 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -211,6 +218,7 @@ public class msg_attitude_quaternion extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ATTITUDE_QUATERNION - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" q1:"+q1+" q2:"+q2+" q3:"+q3+" q4:"+q4+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+"";
     }

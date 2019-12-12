@@ -55,6 +55,7 @@ public class msg_log_entry extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -67,7 +68,9 @@ public class msg_log_entry extends MAVLinkMessage {
         packet.payload.putUnsignedShort(num_logs);
         packet.payload.putUnsignedShort(last_log_num);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -76,6 +79,7 @@ public class msg_log_entry extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -85,7 +89,9 @@ public class msg_log_entry extends MAVLinkMessage {
         this.num_logs = payload.getUnsignedShort();
         this.last_log_num = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -149,11 +155,11 @@ public class msg_log_entry extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_utc = (long)jo.optLong("time_utc");
-        this.size = (long)jo.optLong("size");
-        this.id = (int)jo.optInt("id");
-        this.num_logs = (int)jo.optInt("num_logs");
-        this.last_log_num = (int)jo.optInt("last_log_num");
+        this.time_utc = (long)jo.optLong("time_utc",0);
+        this.size = (long)jo.optLong("size",0);
+        this.id = (int)jo.optInt("id",0);
+        this.num_logs = (int)jo.optInt("num_logs",0);
+        this.last_log_num = (int)jo.optInt("last_log_num",0);
         
         
     }
@@ -161,6 +167,7 @@ public class msg_log_entry extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -178,6 +185,7 @@ public class msg_log_entry extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_LOG_ENTRY - sysid:"+sysid+" compid:"+compid+" time_utc:"+time_utc+" size:"+size+" id:"+id+" num_logs:"+num_logs+" last_log_num:"+last_log_num+"";
     }

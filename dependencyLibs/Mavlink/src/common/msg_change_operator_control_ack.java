@@ -45,6 +45,7 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
         packet.payload.putUnsignedByte(control_request);
         packet.payload.putUnsignedByte(ack);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
         this.control_request = payload.getUnsignedByte();
         this.ack = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.gcs_system_id = (short)jo.optInt("gcs_system_id");
-        this.control_request = (short)jo.optInt("control_request");
-        this.ack = (short)jo.optInt("ack");
+        this.gcs_system_id = (short)jo.optInt("gcs_system_id",0);
+        this.control_request = (short)jo.optInt("control_request",0);
+        this.ack = (short)jo.optInt("ack",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_change_operator_control_ack extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK - sysid:"+sysid+" compid:"+compid+" gcs_system_id:"+gcs_system_id+" control_request:"+control_request+" ack:"+ack+"";
     }

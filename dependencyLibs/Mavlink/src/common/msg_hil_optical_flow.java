@@ -90,6 +90,7 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -109,7 +110,9 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
         packet.payload.putUnsignedByte(sensor_id);
         packet.payload.putUnsignedByte(quality);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -118,6 +121,7 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -134,7 +138,9 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
         this.sensor_id = payload.getUnsignedByte();
         this.quality = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -212,18 +218,18 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.integration_time_us = (long)jo.optLong("integration_time_us");
-        this.integrated_x = (float)jo.optFloat("integrated_x");
-        this.integrated_y = (float)jo.optFloat("integrated_y");
-        this.integrated_xgyro = (float)jo.optFloat("integrated_xgyro");
-        this.integrated_ygyro = (float)jo.optFloat("integrated_ygyro");
-        this.integrated_zgyro = (float)jo.optFloat("integrated_zgyro");
-        this.time_delta_distance_us = (long)jo.optLong("time_delta_distance_us");
-        this.distance = (float)jo.optFloat("distance");
-        this.temperature = (short)jo.optInt("temperature");
-        this.sensor_id = (short)jo.optInt("sensor_id");
-        this.quality = (short)jo.optInt("quality");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.integration_time_us = (long)jo.optLong("integration_time_us",0);
+        this.integrated_x = (float)jo.optDouble("integrated_x",0);
+        this.integrated_y = (float)jo.optDouble("integrated_y",0);
+        this.integrated_xgyro = (float)jo.optDouble("integrated_xgyro",0);
+        this.integrated_ygyro = (float)jo.optDouble("integrated_ygyro",0);
+        this.integrated_zgyro = (float)jo.optDouble("integrated_zgyro",0);
+        this.time_delta_distance_us = (long)jo.optLong("time_delta_distance_us",0);
+        this.distance = (float)jo.optDouble("distance",0);
+        this.temperature = (short)jo.optInt("temperature",0);
+        this.sensor_id = (short)jo.optInt("sensor_id",0);
+        this.quality = (short)jo.optInt("quality",0);
         
         
     }
@@ -231,6 +237,7 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -255,6 +262,7 @@ public class msg_hil_optical_flow extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_OPTICAL_FLOW - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" integration_time_us:"+integration_time_us+" integrated_x:"+integrated_x+" integrated_y:"+integrated_y+" integrated_xgyro:"+integrated_xgyro+" integrated_ygyro:"+integrated_ygyro+" integrated_zgyro:"+integrated_zgyro+" time_delta_distance_us:"+time_delta_distance_us+" distance:"+distance+" temperature:"+temperature+" sensor_id:"+sensor_id+" quality:"+quality+"";
     }

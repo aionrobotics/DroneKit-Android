@@ -75,6 +75,7 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -99,7 +100,9 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
         packet.payload.putUnsignedByte(sw_version_major);
         packet.payload.putUnsignedByte(sw_version_minor);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -108,6 +111,7 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -129,7 +133,9 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
         this.sw_version_major = payload.getUnsignedByte();
         this.sw_version_minor = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -201,25 +207,39 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.uptime_sec = (long)jo.optLong("uptime_sec");
-        this.sw_vcs_commit = (long)jo.optLong("sw_vcs_commit");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.uptime_sec = (long)jo.optLong("uptime_sec",0);
+        this.sw_vcs_commit = (long)jo.optLong("sw_vcs_commit",0);
          
-        JSONArray ja_name = jo.optJSONArray("name");
-        for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
-            this.name[i] = (byte)ja_name.getInt(i);
+        if (jo.has("name")) {
+            JSONArray ja_name = jo.optJSONArray("name");
+            if (ja_name == null) {
+                final String js_string_name = jo.optString("name");
+                final byte[] b_name = js_string_name.getBytes();
+                System.arraycopy(b_name, 0, this.name, 0, Math.min(this.name.length, b_name.length));
+            } else {
+                for (int i = 0; i < Math.min(this.name.length, ja_name.length()); i++) {
+                    this.name[i] = (byte)ja_name.optInt(i,0);
+                }
+            }
         }
-                
-        this.hw_version_major = (short)jo.optInt("hw_version_major");
-        this.hw_version_minor = (short)jo.optInt("hw_version_minor");
+                    
+        this.hw_version_major = (short)jo.optInt("hw_version_major",0);
+        this.hw_version_minor = (short)jo.optInt("hw_version_minor",0);
          
-        JSONArray ja_hw_unique_id = jo.optJSONArray("hw_unique_id");
-        for (int i = 0; i < Math.min(this.hw_unique_id.length, ja_hw_unique_id.length()); i++) {
-            this.hw_unique_id[i] = (short)ja_hw_unique_id.getInt(i);
+        if (jo.has("hw_unique_id")) {
+            JSONArray ja_hw_unique_id = jo.optJSONArray("hw_unique_id");
+            if (ja_hw_unique_id == null) {
+                this.hw_unique_id[0] = (short)jo.optInt("hw_unique_id", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.hw_unique_id.length, ja_hw_unique_id.length()); i++) {
+                    this.hw_unique_id[i] = (short)ja_hw_unique_id.optInt(i,0);
+                }
+            }
         }
-                
-        this.sw_version_major = (short)jo.optInt("sw_version_major");
-        this.sw_version_minor = (short)jo.optInt("sw_version_minor");
+                    
+        this.sw_version_major = (short)jo.optInt("sw_version_major",0);
+        this.sw_version_minor = (short)jo.optInt("sw_version_minor",0);
         
         
     }
@@ -227,6 +247,7 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -289,6 +310,7 @@ public class msg_uavcan_node_info extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_UAVCAN_NODE_INFO - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" uptime_sec:"+uptime_sec+" sw_vcs_commit:"+sw_vcs_commit+" name:"+name+" hw_version_major:"+hw_version_major+" hw_version_minor:"+hw_version_minor+" hw_unique_id:"+hw_unique_id+" sw_version_major:"+sw_version_major+" sw_version_minor:"+sw_version_minor+"";
     }

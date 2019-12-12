@@ -65,6 +65,7 @@ public class msg_altitude extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_altitude extends MAVLinkMessage {
         packet.payload.putFloat(altitude_terrain);
         packet.payload.putFloat(bottom_clearance);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_altitude extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_altitude extends MAVLinkMessage {
         this.altitude_terrain = payload.getFloat();
         this.bottom_clearance = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_altitude extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.altitude_monotonic = (float)jo.optFloat("altitude_monotonic");
-        this.altitude_amsl = (float)jo.optFloat("altitude_amsl");
-        this.altitude_local = (float)jo.optFloat("altitude_local");
-        this.altitude_relative = (float)jo.optFloat("altitude_relative");
-        this.altitude_terrain = (float)jo.optFloat("altitude_terrain");
-        this.bottom_clearance = (float)jo.optFloat("bottom_clearance");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.altitude_monotonic = (float)jo.optDouble("altitude_monotonic",0);
+        this.altitude_amsl = (float)jo.optDouble("altitude_amsl",0);
+        this.altitude_local = (float)jo.optDouble("altitude_local",0);
+        this.altitude_relative = (float)jo.optDouble("altitude_relative",0);
+        this.altitude_terrain = (float)jo.optDouble("altitude_terrain",0);
+        this.bottom_clearance = (float)jo.optDouble("bottom_clearance",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_altitude extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_altitude extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ALTITUDE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" altitude_monotonic:"+altitude_monotonic+" altitude_amsl:"+altitude_amsl+" altitude_local:"+altitude_local+" altitude_relative:"+altitude_relative+" altitude_terrain:"+altitude_terrain+" bottom_clearance:"+bottom_clearance+"";
     }

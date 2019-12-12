@@ -35,6 +35,7 @@ public class msg_auth_key extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -47,7 +48,9 @@ public class msg_auth_key extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -56,6 +59,7 @@ public class msg_auth_key extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -65,7 +69,9 @@ public class msg_auth_key extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,11 +128,19 @@ public class msg_auth_key extends MAVLinkMessage {
         readJSONheader(jo);
         
          
-        JSONArray ja_key = jo.optJSONArray("key");
-        for (int i = 0; i < Math.min(this.key.length, ja_key.length()); i++) {
-            this.key[i] = (byte)ja_key.getInt(i);
+        if (jo.has("key")) {
+            JSONArray ja_key = jo.optJSONArray("key");
+            if (ja_key == null) {
+                final String js_string_key = jo.optString("key");
+                final byte[] b_key = js_string_key.getBytes();
+                System.arraycopy(b_key, 0, this.key, 0, Math.min(this.key.length, b_key.length));
+            } else {
+                for (int i = 0; i < Math.min(this.key.length, ja_key.length()); i++) {
+                    this.key[i] = (byte)ja_key.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -134,6 +148,7 @@ public class msg_auth_key extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -182,6 +197,7 @@ public class msg_auth_key extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AUTH_KEY - sysid:"+sysid+" compid:"+compid+" key:"+key+"";
     }

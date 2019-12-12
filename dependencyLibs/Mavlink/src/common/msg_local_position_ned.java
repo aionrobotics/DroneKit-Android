@@ -65,6 +65,7 @@ public class msg_local_position_ned extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_local_position_ned extends MAVLinkMessage {
         packet.payload.putFloat(vy);
         packet.payload.putFloat(vz);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_local_position_ned extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_local_position_ned extends MAVLinkMessage {
         this.vy = payload.getFloat();
         this.vz = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_local_position_ned extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
-        this.vx = (float)jo.optFloat("vx");
-        this.vy = (float)jo.optFloat("vy");
-        this.vz = (float)jo.optFloat("vz");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
+        this.vx = (float)jo.optDouble("vx",0);
+        this.vy = (float)jo.optDouble("vy",0);
+        this.vz = (float)jo.optDouble("vz",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_local_position_ned extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_local_position_ned extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_LOCAL_POSITION_NED - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" x:"+x+" y:"+y+" z:"+z+" vx:"+vx+" vy:"+vy+" vz:"+vz+"";
     }

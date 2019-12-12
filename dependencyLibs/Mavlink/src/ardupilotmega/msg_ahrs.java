@@ -65,6 +65,7 @@ public class msg_ahrs extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_ahrs extends MAVLinkMessage {
         packet.payload.putFloat(error_rp);
         packet.payload.putFloat(error_yaw);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_ahrs extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_ahrs extends MAVLinkMessage {
         this.error_rp = payload.getFloat();
         this.error_yaw = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_ahrs extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.omegaIx = (float)jo.optFloat("omegaIx");
-        this.omegaIy = (float)jo.optFloat("omegaIy");
-        this.omegaIz = (float)jo.optFloat("omegaIz");
-        this.accel_weight = (float)jo.optFloat("accel_weight");
-        this.renorm_val = (float)jo.optFloat("renorm_val");
-        this.error_rp = (float)jo.optFloat("error_rp");
-        this.error_yaw = (float)jo.optFloat("error_yaw");
+        this.omegaIx = (float)jo.optDouble("omegaIx",0);
+        this.omegaIy = (float)jo.optDouble("omegaIy",0);
+        this.omegaIz = (float)jo.optDouble("omegaIz",0);
+        this.accel_weight = (float)jo.optDouble("accel_weight",0);
+        this.renorm_val = (float)jo.optDouble("renorm_val",0);
+        this.error_rp = (float)jo.optDouble("error_rp",0);
+        this.error_yaw = (float)jo.optDouble("error_yaw",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_ahrs extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_ahrs extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AHRS - sysid:"+sysid+" compid:"+compid+" omegaIx:"+omegaIx+" omegaIy:"+omegaIy+" omegaIz:"+omegaIz+" accel_weight:"+accel_weight+" renorm_val:"+renorm_val+" error_rp:"+error_rp+" error_yaw:"+error_yaw+"";
     }

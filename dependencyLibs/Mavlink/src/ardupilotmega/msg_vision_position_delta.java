@@ -55,6 +55,7 @@ public class msg_vision_position_delta extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -75,7 +76,9 @@ public class msg_vision_position_delta extends MAVLinkMessage {
                     
         packet.payload.putFloat(confidence);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -84,6 +87,7 @@ public class msg_vision_position_delta extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -101,7 +105,9 @@ public class msg_vision_position_delta extends MAVLinkMessage {
                 
         this.confidence = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -165,21 +171,33 @@ public class msg_vision_position_delta extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.time_delta_usec = (long)jo.optLong("time_delta_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.time_delta_usec = (long)jo.optLong("time_delta_usec",0);
          
-        JSONArray ja_angle_delta = jo.optJSONArray("angle_delta");
-        for (int i = 0; i < Math.min(this.angle_delta.length, ja_angle_delta.length()); i++) {
-            this.angle_delta[i] = (float)ja_angle_delta.getFloat(i);
+        if (jo.has("angle_delta")) {
+            JSONArray ja_angle_delta = jo.optJSONArray("angle_delta");
+            if (ja_angle_delta == null) {
+                this.angle_delta[0] = (float)jo.optDouble("angle_delta", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.angle_delta.length, ja_angle_delta.length()); i++) {
+                    this.angle_delta[i] = (float)ja_angle_delta.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_position_delta = jo.optJSONArray("position_delta");
-        for (int i = 0; i < Math.min(this.position_delta.length, ja_position_delta.length()); i++) {
-            this.position_delta[i] = (float)ja_position_delta.getFloat(i);
+        if (jo.has("position_delta")) {
+            JSONArray ja_position_delta = jo.optJSONArray("position_delta");
+            if (ja_position_delta == null) {
+                this.position_delta[0] = (float)jo.optDouble("position_delta", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.position_delta.length, ja_position_delta.length()); i++) {
+                    this.position_delta[i] = (float)ja_position_delta.optDouble(i,0);
+                }
+            }
         }
-                
-        this.confidence = (float)jo.optFloat("confidence");
+                    
+        this.confidence = (float)jo.optDouble("confidence",0);
         
         
     }
@@ -187,6 +205,7 @@ public class msg_vision_position_delta extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -216,6 +235,7 @@ public class msg_vision_position_delta extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_VISION_POSITION_DELTA - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" time_delta_usec:"+time_delta_usec+" angle_delta:"+angle_delta+" position_delta:"+position_delta+" confidence:"+confidence+"";
     }

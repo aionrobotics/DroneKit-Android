@@ -60,6 +60,7 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -81,7 +82,9 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -90,6 +93,7 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -108,7 +112,9 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -174,22 +180,34 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.rollspeed = (float)jo.optFloat("rollspeed");
-        this.pitchspeed = (float)jo.optFloat("pitchspeed");
-        this.yawspeed = (float)jo.optFloat("yawspeed");
+                    
+        this.rollspeed = (float)jo.optDouble("rollspeed",0);
+        this.pitchspeed = (float)jo.optDouble("pitchspeed",0);
+        this.yawspeed = (float)jo.optDouble("yawspeed",0);
          
-        JSONArray ja_covariance = jo.optJSONArray("covariance");
-        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
-            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        if (jo.has("covariance")) {
+            JSONArray ja_covariance = jo.optJSONArray("covariance");
+            if (ja_covariance == null) {
+                this.covariance[0] = (float)jo.optDouble("covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+                    this.covariance[i] = (float)ja_covariance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -197,6 +215,7 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -227,6 +246,7 @@ public class msg_attitude_quaternion_cov extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ATTITUDE_QUATERNION_COV - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" q:"+q+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" covariance:"+covariance+"";
     }

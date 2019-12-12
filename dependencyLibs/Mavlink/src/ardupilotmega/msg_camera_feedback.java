@@ -100,6 +100,7 @@ public class msg_camera_feedback extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -120,9 +121,9 @@ public class msg_camera_feedback extends MAVLinkMessage {
         packet.payload.putUnsignedByte(cam_idx);
         packet.payload.putUnsignedByte(flags);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(completed_captures);
+        if (isMavlink2) {
+             packet.payload.putUnsignedShort(completed_captures);
+            
         }
         return packet;
     }
@@ -132,6 +133,7 @@ public class msg_camera_feedback extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -149,9 +151,9 @@ public class msg_camera_feedback extends MAVLinkMessage {
         this.cam_idx = payload.getUnsignedByte();
         this.flags = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.completed_captures = payload.getUnsignedShort();
+        if (isMavlink2) {
+             this.completed_captures = payload.getUnsignedShort();
+            
         }
     }
 
@@ -234,27 +236,28 @@ public class msg_camera_feedback extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.lat = (int)jo.optInt("lat");
-        this.lng = (int)jo.optInt("lng");
-        this.alt_msl = (float)jo.optFloat("alt_msl");
-        this.alt_rel = (float)jo.optFloat("alt_rel");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.foc_len = (float)jo.optFloat("foc_len");
-        this.img_idx = (int)jo.optInt("img_idx");
-        this.target_system = (short)jo.optInt("target_system");
-        this.cam_idx = (short)jo.optInt("cam_idx");
-        this.flags = (short)jo.optInt("flags");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lng = (int)jo.optInt("lng",0);
+        this.alt_msl = (float)jo.optDouble("alt_msl",0);
+        this.alt_rel = (float)jo.optDouble("alt_rel",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.foc_len = (float)jo.optDouble("foc_len",0);
+        this.img_idx = (int)jo.optInt("img_idx",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.cam_idx = (short)jo.optInt("cam_idx",0);
+        this.flags = (short)jo.optInt("flags",0);
         
-        this.completed_captures = (int)jo.optInt("completed_captures");
+        this.completed_captures = (int)jo.optInt("completed_captures",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -281,6 +284,7 @@ public class msg_camera_feedback extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_FEEDBACK - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" lat:"+lat+" lng:"+lng+" alt_msl:"+alt_msl+" alt_rel:"+alt_rel+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" foc_len:"+foc_len+" img_idx:"+img_idx+" target_system:"+target_system+" cam_idx:"+cam_idx+" flags:"+flags+" completed_captures:"+completed_captures+"";
     }

@@ -115,6 +115,7 @@ public class msg_control_system_state extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -151,7 +152,9 @@ public class msg_control_system_state extends MAVLinkMessage {
         packet.payload.putFloat(pitch_rate);
         packet.payload.putFloat(yaw_rate);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -160,6 +163,7 @@ public class msg_control_system_state extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -193,7 +197,9 @@ public class msg_control_system_state extends MAVLinkMessage {
         this.pitch_rate = payload.getFloat();
         this.yaw_rate = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -281,38 +287,56 @@ public class msg_control_system_state extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.x_acc = (float)jo.optFloat("x_acc");
-        this.y_acc = (float)jo.optFloat("y_acc");
-        this.z_acc = (float)jo.optFloat("z_acc");
-        this.x_vel = (float)jo.optFloat("x_vel");
-        this.y_vel = (float)jo.optFloat("y_vel");
-        this.z_vel = (float)jo.optFloat("z_vel");
-        this.x_pos = (float)jo.optFloat("x_pos");
-        this.y_pos = (float)jo.optFloat("y_pos");
-        this.z_pos = (float)jo.optFloat("z_pos");
-        this.airspeed = (float)jo.optFloat("airspeed");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.x_acc = (float)jo.optDouble("x_acc",0);
+        this.y_acc = (float)jo.optDouble("y_acc",0);
+        this.z_acc = (float)jo.optDouble("z_acc",0);
+        this.x_vel = (float)jo.optDouble("x_vel",0);
+        this.y_vel = (float)jo.optDouble("y_vel",0);
+        this.z_vel = (float)jo.optDouble("z_vel",0);
+        this.x_pos = (float)jo.optDouble("x_pos",0);
+        this.y_pos = (float)jo.optDouble("y_pos",0);
+        this.z_pos = (float)jo.optDouble("z_pos",0);
+        this.airspeed = (float)jo.optDouble("airspeed",0);
          
-        JSONArray ja_vel_variance = jo.optJSONArray("vel_variance");
-        for (int i = 0; i < Math.min(this.vel_variance.length, ja_vel_variance.length()); i++) {
-            this.vel_variance[i] = (float)ja_vel_variance.getFloat(i);
+        if (jo.has("vel_variance")) {
+            JSONArray ja_vel_variance = jo.optJSONArray("vel_variance");
+            if (ja_vel_variance == null) {
+                this.vel_variance[0] = (float)jo.optDouble("vel_variance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.vel_variance.length, ja_vel_variance.length()); i++) {
+                    this.vel_variance[i] = (float)ja_vel_variance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_pos_variance = jo.optJSONArray("pos_variance");
-        for (int i = 0; i < Math.min(this.pos_variance.length, ja_pos_variance.length()); i++) {
-            this.pos_variance[i] = (float)ja_pos_variance.getFloat(i);
+        if (jo.has("pos_variance")) {
+            JSONArray ja_pos_variance = jo.optJSONArray("pos_variance");
+            if (ja_pos_variance == null) {
+                this.pos_variance[0] = (float)jo.optDouble("pos_variance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.pos_variance.length, ja_pos_variance.length()); i++) {
+                    this.pos_variance[i] = (float)ja_pos_variance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.roll_rate = (float)jo.optFloat("roll_rate");
-        this.pitch_rate = (float)jo.optFloat("pitch_rate");
-        this.yaw_rate = (float)jo.optFloat("yaw_rate");
+                    
+        this.roll_rate = (float)jo.optDouble("roll_rate",0);
+        this.pitch_rate = (float)jo.optDouble("pitch_rate",0);
+        this.yaw_rate = (float)jo.optDouble("yaw_rate",0);
         
         
     }
@@ -320,6 +344,7 @@ public class msg_control_system_state extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -367,6 +392,7 @@ public class msg_control_system_state extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CONTROL_SYSTEM_STATE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" x_acc:"+x_acc+" y_acc:"+y_acc+" z_acc:"+z_acc+" x_vel:"+x_vel+" y_vel:"+y_vel+" z_vel:"+z_vel+" x_pos:"+x_pos+" y_pos:"+y_pos+" z_pos:"+z_pos+" airspeed:"+airspeed+" vel_variance:"+vel_variance+" pos_variance:"+pos_variance+" q:"+q+" roll_rate:"+roll_rate+" pitch_rate:"+pitch_rate+" yaw_rate:"+yaw_rate+"";
     }

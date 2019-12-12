@@ -10,6 +10,7 @@ import com.mavlink.MAVLinkPacket;
 import com.mavlink.messages.MAVLinkMessage;
 import com.mavlink.messages.MAVLinkPayload;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,6 +60,7 @@ public class msg_heartbeat extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -72,7 +74,9 @@ public class msg_heartbeat extends MAVLinkMessage {
         packet.payload.putUnsignedByte(system_status);
         packet.payload.putUnsignedByte(mavlink_version);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -81,6 +85,7 @@ public class msg_heartbeat extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -91,7 +96,9 @@ public class msg_heartbeat extends MAVLinkMessage {
         this.system_status = payload.getUnsignedByte();
         this.mavlink_version = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -157,12 +164,12 @@ public class msg_heartbeat extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.custom_mode = (long)jo.optLong("custom_mode");
-        this.type = (short)jo.optInt("type");
-        this.autopilot = (short)jo.optInt("autopilot");
-        this.base_mode = (short)jo.optInt("base_mode");
-        this.system_status = (short)jo.optInt("system_status");
-        this.mavlink_version = (short)jo.optInt("mavlink_version");
+        this.custom_mode = (long)jo.optLong("custom_mode",0);
+        this.type = (short)jo.optInt("type",0);
+        this.autopilot = (short)jo.optInt("autopilot",0);
+        this.base_mode = (short)jo.optInt("base_mode",0);
+        this.system_status = (short)jo.optInt("system_status",0);
+        this.mavlink_version = (short)jo.optInt("mavlink_version",0);
         
         
     }
@@ -170,6 +177,7 @@ public class msg_heartbeat extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -188,6 +196,7 @@ public class msg_heartbeat extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HEARTBEAT - sysid:"+sysid+" compid:"+compid+" custom_mode:"+custom_mode+" type:"+type+" autopilot:"+autopilot+" base_mode:"+base_mode+" system_status:"+system_status+" mavlink_version:"+mavlink_version+"";
     }

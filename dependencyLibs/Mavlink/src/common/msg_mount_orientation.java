@@ -55,6 +55,7 @@ public class msg_mount_orientation extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -66,9 +67,9 @@ public class msg_mount_orientation extends MAVLinkMessage {
         packet.payload.putFloat(pitch);
         packet.payload.putFloat(yaw);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(yaw_absolute);
+        if (isMavlink2) {
+             packet.payload.putFloat(yaw_absolute);
+            
         }
         return packet;
     }
@@ -78,6 +79,7 @@ public class msg_mount_orientation extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,9 +88,9 @@ public class msg_mount_orientation extends MAVLinkMessage {
         this.pitch = payload.getFloat();
         this.yaw = payload.getFloat();
         
-        
-        if(isMavlink2) {
-            this.yaw_absolute = payload.getFloat();
+        if (isMavlink2) {
+             this.yaw_absolute = payload.getFloat();
+            
         }
     }
 
@@ -153,18 +155,19 @@ public class msg_mount_orientation extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
         
-        this.yaw_absolute = (float)jo.optFloat("yaw_absolute");
+        this.yaw_absolute = (float)jo.optDouble("yaw_absolute",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -182,6 +185,7 @@ public class msg_mount_orientation extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MOUNT_ORIENTATION - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" yaw_absolute:"+yaw_absolute+"";
     }

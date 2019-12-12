@@ -90,6 +90,7 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -109,7 +110,9 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
         packet.payload.putFloat(Pby);
         packet.payload.putFloat(Pcz);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -118,6 +121,7 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -134,7 +138,9 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
         this.Pby = payload.getFloat();
         this.Pcz = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -212,18 +218,18 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.vx = (float)jo.optFloat("vx");
-        this.vy = (float)jo.optFloat("vy");
-        this.vz = (float)jo.optFloat("vz");
-        this.diff_pressure = (float)jo.optFloat("diff_pressure");
-        this.EAS2TAS = (float)jo.optFloat("EAS2TAS");
-        this.ratio = (float)jo.optFloat("ratio");
-        this.state_x = (float)jo.optFloat("state_x");
-        this.state_y = (float)jo.optFloat("state_y");
-        this.state_z = (float)jo.optFloat("state_z");
-        this.Pax = (float)jo.optFloat("Pax");
-        this.Pby = (float)jo.optFloat("Pby");
-        this.Pcz = (float)jo.optFloat("Pcz");
+        this.vx = (float)jo.optDouble("vx",0);
+        this.vy = (float)jo.optDouble("vy",0);
+        this.vz = (float)jo.optDouble("vz",0);
+        this.diff_pressure = (float)jo.optDouble("diff_pressure",0);
+        this.EAS2TAS = (float)jo.optDouble("EAS2TAS",0);
+        this.ratio = (float)jo.optDouble("ratio",0);
+        this.state_x = (float)jo.optDouble("state_x",0);
+        this.state_y = (float)jo.optDouble("state_y",0);
+        this.state_z = (float)jo.optDouble("state_z",0);
+        this.Pax = (float)jo.optDouble("Pax",0);
+        this.Pby = (float)jo.optDouble("Pby",0);
+        this.Pcz = (float)jo.optDouble("Pcz",0);
         
         
     }
@@ -231,6 +237,7 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -255,6 +262,7 @@ public class msg_airspeed_autocal extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AIRSPEED_AUTOCAL - sysid:"+sysid+" compid:"+compid+" vx:"+vx+" vy:"+vy+" vz:"+vz+" diff_pressure:"+diff_pressure+" EAS2TAS:"+EAS2TAS+" ratio:"+ratio+" state_x:"+state_x+" state_y:"+state_y+" state_z:"+state_z+" Pax:"+Pax+" Pby:"+Pby+" Pcz:"+Pcz+"";
     }

@@ -95,6 +95,7 @@ public class msg_gps2_rtk extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -115,7 +116,9 @@ public class msg_gps2_rtk extends MAVLinkMessage {
         packet.payload.putUnsignedByte(nsats);
         packet.payload.putUnsignedByte(baseline_coords_type);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -124,6 +127,7 @@ public class msg_gps2_rtk extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -141,7 +145,9 @@ public class msg_gps2_rtk extends MAVLinkMessage {
         this.nsats = payload.getUnsignedByte();
         this.baseline_coords_type = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -221,19 +227,19 @@ public class msg_gps2_rtk extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_last_baseline_ms = (long)jo.optLong("time_last_baseline_ms");
-        this.tow = (long)jo.optLong("tow");
-        this.baseline_a_mm = (int)jo.optInt("baseline_a_mm");
-        this.baseline_b_mm = (int)jo.optInt("baseline_b_mm");
-        this.baseline_c_mm = (int)jo.optInt("baseline_c_mm");
-        this.accuracy = (long)jo.optLong("accuracy");
-        this.iar_num_hypotheses = (int)jo.optInt("iar_num_hypotheses");
-        this.wn = (int)jo.optInt("wn");
-        this.rtk_receiver_id = (short)jo.optInt("rtk_receiver_id");
-        this.rtk_health = (short)jo.optInt("rtk_health");
-        this.rtk_rate = (short)jo.optInt("rtk_rate");
-        this.nsats = (short)jo.optInt("nsats");
-        this.baseline_coords_type = (short)jo.optInt("baseline_coords_type");
+        this.time_last_baseline_ms = (long)jo.optLong("time_last_baseline_ms",0);
+        this.tow = (long)jo.optLong("tow",0);
+        this.baseline_a_mm = (int)jo.optInt("baseline_a_mm",0);
+        this.baseline_b_mm = (int)jo.optInt("baseline_b_mm",0);
+        this.baseline_c_mm = (int)jo.optInt("baseline_c_mm",0);
+        this.accuracy = (long)jo.optLong("accuracy",0);
+        this.iar_num_hypotheses = (int)jo.optInt("iar_num_hypotheses",0);
+        this.wn = (int)jo.optInt("wn",0);
+        this.rtk_receiver_id = (short)jo.optInt("rtk_receiver_id",0);
+        this.rtk_health = (short)jo.optInt("rtk_health",0);
+        this.rtk_rate = (short)jo.optInt("rtk_rate",0);
+        this.nsats = (short)jo.optInt("nsats",0);
+        this.baseline_coords_type = (short)jo.optInt("baseline_coords_type",0);
         
         
     }
@@ -241,6 +247,7 @@ public class msg_gps2_rtk extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -266,6 +273,7 @@ public class msg_gps2_rtk extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GPS2_RTK - sysid:"+sysid+" compid:"+compid+" time_last_baseline_ms:"+time_last_baseline_ms+" tow:"+tow+" baseline_a_mm:"+baseline_a_mm+" baseline_b_mm:"+baseline_b_mm+" baseline_c_mm:"+baseline_c_mm+" accuracy:"+accuracy+" iar_num_hypotheses:"+iar_num_hypotheses+" wn:"+wn+" rtk_receiver_id:"+rtk_receiver_id+" rtk_health:"+rtk_health+" rtk_rate:"+rtk_rate+" nsats:"+nsats+" baseline_coords_type:"+baseline_coords_type+"";
     }

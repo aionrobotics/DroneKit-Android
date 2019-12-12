@@ -75,6 +75,7 @@ public class msg_set_attitude_target extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -95,7 +96,9 @@ public class msg_set_attitude_target extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_component);
         packet.payload.putUnsignedByte(type_mask);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -104,6 +107,7 @@ public class msg_set_attitude_target extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -121,7 +125,9 @@ public class msg_set_attitude_target extends MAVLinkMessage {
         this.target_component = payload.getUnsignedByte();
         this.type_mask = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -193,20 +199,26 @@ public class msg_set_attitude_target extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.body_roll_rate = (float)jo.optFloat("body_roll_rate");
-        this.body_pitch_rate = (float)jo.optFloat("body_pitch_rate");
-        this.body_yaw_rate = (float)jo.optFloat("body_yaw_rate");
-        this.thrust = (float)jo.optFloat("thrust");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.type_mask = (short)jo.optInt("type_mask");
+                    
+        this.body_roll_rate = (float)jo.optDouble("body_roll_rate",0);
+        this.body_pitch_rate = (float)jo.optDouble("body_pitch_rate",0);
+        this.body_yaw_rate = (float)jo.optDouble("body_yaw_rate",0);
+        this.thrust = (float)jo.optDouble("thrust",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.type_mask = (short)jo.optInt("type_mask",0);
         
         
     }
@@ -214,6 +226,7 @@ public class msg_set_attitude_target extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -241,6 +254,7 @@ public class msg_set_attitude_target extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SET_ATTITUDE_TARGET - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" q:"+q+" body_roll_rate:"+body_roll_rate+" body_pitch_rate:"+body_pitch_rate+" body_yaw_rate:"+body_yaw_rate+" thrust:"+thrust+" target_system:"+target_system+" target_component:"+target_component+" type_mask:"+type_mask+"";
     }

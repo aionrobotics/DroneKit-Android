@@ -75,6 +75,7 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -95,7 +96,9 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -104,6 +107,7 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -121,7 +125,9 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -193,20 +199,26 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.direction_x = (float)jo.optFloat("direction_x");
-        this.direction_y = (float)jo.optFloat("direction_y");
-        this.direction_z = (float)jo.optFloat("direction_z");
-        this.compass_id = (short)jo.optInt("compass_id");
-        this.cal_mask = (short)jo.optInt("cal_mask");
-        this.cal_status = (short)jo.optInt("cal_status");
-        this.attempt = (short)jo.optInt("attempt");
-        this.completion_pct = (short)jo.optInt("completion_pct");
+        this.direction_x = (float)jo.optDouble("direction_x",0);
+        this.direction_y = (float)jo.optDouble("direction_y",0);
+        this.direction_z = (float)jo.optDouble("direction_z",0);
+        this.compass_id = (short)jo.optInt("compass_id",0);
+        this.cal_mask = (short)jo.optInt("cal_mask",0);
+        this.cal_status = (short)jo.optInt("cal_status",0);
+        this.attempt = (short)jo.optInt("attempt",0);
+        this.completion_pct = (short)jo.optInt("completion_pct",0);
          
-        JSONArray ja_completion_mask = jo.optJSONArray("completion_mask");
-        for (int i = 0; i < Math.min(this.completion_mask.length, ja_completion_mask.length()); i++) {
-            this.completion_mask[i] = (short)ja_completion_mask.getInt(i);
+        if (jo.has("completion_mask")) {
+            JSONArray ja_completion_mask = jo.optJSONArray("completion_mask");
+            if (ja_completion_mask == null) {
+                this.completion_mask[0] = (short)jo.optInt("completion_mask", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.completion_mask.length, ja_completion_mask.length()); i++) {
+                    this.completion_mask[i] = (short)ja_completion_mask.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -214,6 +226,7 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -241,6 +254,7 @@ public class msg_mag_cal_progress extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MAG_CAL_PROGRESS - sysid:"+sysid+" compid:"+compid+" direction_x:"+direction_x+" direction_y:"+direction_y+" direction_z:"+direction_z+" compass_id:"+compass_id+" cal_mask:"+cal_mask+" cal_status:"+cal_status+" attempt:"+attempt+" completion_pct:"+completion_pct+" completion_mask:"+completion_mask+"";
     }

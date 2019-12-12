@@ -105,6 +105,7 @@ public class msg_hil_sensor extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -127,7 +128,9 @@ public class msg_hil_sensor extends MAVLinkMessage {
         packet.payload.putFloat(temperature);
         packet.payload.putUnsignedInt(fields_updated);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -136,6 +139,7 @@ public class msg_hil_sensor extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -155,7 +159,9 @@ public class msg_hil_sensor extends MAVLinkMessage {
         this.temperature = payload.getFloat();
         this.fields_updated = payload.getUnsignedInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -239,21 +245,21 @@ public class msg_hil_sensor extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.xacc = (float)jo.optFloat("xacc");
-        this.yacc = (float)jo.optFloat("yacc");
-        this.zacc = (float)jo.optFloat("zacc");
-        this.xgyro = (float)jo.optFloat("xgyro");
-        this.ygyro = (float)jo.optFloat("ygyro");
-        this.zgyro = (float)jo.optFloat("zgyro");
-        this.xmag = (float)jo.optFloat("xmag");
-        this.ymag = (float)jo.optFloat("ymag");
-        this.zmag = (float)jo.optFloat("zmag");
-        this.abs_pressure = (float)jo.optFloat("abs_pressure");
-        this.diff_pressure = (float)jo.optFloat("diff_pressure");
-        this.pressure_alt = (float)jo.optFloat("pressure_alt");
-        this.temperature = (float)jo.optFloat("temperature");
-        this.fields_updated = (long)jo.optLong("fields_updated");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.xacc = (float)jo.optDouble("xacc",0);
+        this.yacc = (float)jo.optDouble("yacc",0);
+        this.zacc = (float)jo.optDouble("zacc",0);
+        this.xgyro = (float)jo.optDouble("xgyro",0);
+        this.ygyro = (float)jo.optDouble("ygyro",0);
+        this.zgyro = (float)jo.optDouble("zgyro",0);
+        this.xmag = (float)jo.optDouble("xmag",0);
+        this.ymag = (float)jo.optDouble("ymag",0);
+        this.zmag = (float)jo.optDouble("zmag",0);
+        this.abs_pressure = (float)jo.optDouble("abs_pressure",0);
+        this.diff_pressure = (float)jo.optDouble("diff_pressure",0);
+        this.pressure_alt = (float)jo.optDouble("pressure_alt",0);
+        this.temperature = (float)jo.optDouble("temperature",0);
+        this.fields_updated = (long)jo.optLong("fields_updated",0);
         
         
     }
@@ -261,6 +267,7 @@ public class msg_hil_sensor extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -288,6 +295,7 @@ public class msg_hil_sensor extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_SENSOR - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" xmag:"+xmag+" ymag:"+ymag+" zmag:"+zmag+" abs_pressure:"+abs_pressure+" diff_pressure:"+diff_pressure+" pressure_alt:"+pressure_alt+" temperature:"+temperature+" fields_updated:"+fields_updated+"";
     }

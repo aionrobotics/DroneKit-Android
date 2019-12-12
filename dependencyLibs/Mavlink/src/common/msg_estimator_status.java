@@ -80,6 +80,7 @@ public class msg_estimator_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_estimator_status extends MAVLinkMessage {
         packet.payload.putFloat(pos_vert_accuracy);
         packet.payload.putUnsignedShort(flags);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_estimator_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -120,7 +124,9 @@ public class msg_estimator_status extends MAVLinkMessage {
         this.pos_vert_accuracy = payload.getFloat();
         this.flags = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -194,16 +200,16 @@ public class msg_estimator_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.vel_ratio = (float)jo.optFloat("vel_ratio");
-        this.pos_horiz_ratio = (float)jo.optFloat("pos_horiz_ratio");
-        this.pos_vert_ratio = (float)jo.optFloat("pos_vert_ratio");
-        this.mag_ratio = (float)jo.optFloat("mag_ratio");
-        this.hagl_ratio = (float)jo.optFloat("hagl_ratio");
-        this.tas_ratio = (float)jo.optFloat("tas_ratio");
-        this.pos_horiz_accuracy = (float)jo.optFloat("pos_horiz_accuracy");
-        this.pos_vert_accuracy = (float)jo.optFloat("pos_vert_accuracy");
-        this.flags = (int)jo.optInt("flags");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.vel_ratio = (float)jo.optDouble("vel_ratio",0);
+        this.pos_horiz_ratio = (float)jo.optDouble("pos_horiz_ratio",0);
+        this.pos_vert_ratio = (float)jo.optDouble("pos_vert_ratio",0);
+        this.mag_ratio = (float)jo.optDouble("mag_ratio",0);
+        this.hagl_ratio = (float)jo.optDouble("hagl_ratio",0);
+        this.tas_ratio = (float)jo.optDouble("tas_ratio",0);
+        this.pos_horiz_accuracy = (float)jo.optDouble("pos_horiz_accuracy",0);
+        this.pos_vert_accuracy = (float)jo.optDouble("pos_vert_accuracy",0);
+        this.flags = (int)jo.optInt("flags",0);
         
         
     }
@@ -211,6 +217,7 @@ public class msg_estimator_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -233,6 +240,7 @@ public class msg_estimator_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ESTIMATOR_STATUS - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" vel_ratio:"+vel_ratio+" pos_horiz_ratio:"+pos_horiz_ratio+" pos_vert_ratio:"+pos_vert_ratio+" mag_ratio:"+mag_ratio+" hagl_ratio:"+hagl_ratio+" tas_ratio:"+tas_ratio+" pos_horiz_accuracy:"+pos_horiz_accuracy+" pos_vert_accuracy:"+pos_vert_accuracy+" flags:"+flags+"";
     }

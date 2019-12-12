@@ -70,6 +70,7 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -84,13 +85,13 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
         packet.payload.putFloat(pitch);
         packet.payload.putFloat(yaw);
         
-        
-        if(isMavlink2) {
-            
+        if (isMavlink2) {
+             
         for (int i = 0; i < covariance.length; i++) {
             packet.payload.putFloat(covariance[i]);
         }
                     
+            
         }
         return packet;
     }
@@ -100,6 +101,7 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -111,13 +113,13 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
         this.pitch = payload.getFloat();
         this.yaw = payload.getFloat();
         
-        
-        if(isMavlink2) {
-             
+        if (isMavlink2) {
+              
         for (int i = 0; i < this.covariance.length; i++) {
             this.covariance[i] = payload.getFloat();
         }
                 
+            
         }
     }
 
@@ -188,26 +190,33 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.usec = (long)jo.optLong("usec");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
+        this.usec = (long)jo.optLong("usec",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
         
          
-        JSONArray ja_covariance = jo.optJSONArray("covariance");
-        for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
-            this.covariance[i] = (float)ja_covariance.getFloat(i);
+        if (jo.has("covariance")) {
+            JSONArray ja_covariance = jo.optJSONArray("covariance");
+            if (ja_covariance == null) {
+                this.covariance[0] = (float)jo.optDouble("covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.covariance.length, ja_covariance.length()); i++) {
+                    this.covariance[i] = (float)ja_covariance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -234,6 +243,7 @@ public class msg_vicon_position_estimate extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_VICON_POSITION_ESTIMATE - sysid:"+sysid+" compid:"+compid+" usec:"+usec+" x:"+x+" y:"+y+" z:"+z+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" covariance:"+covariance+"";
     }

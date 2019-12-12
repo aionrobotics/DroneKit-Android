@@ -80,6 +80,7 @@ public class msg_deepstall extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -97,7 +98,9 @@ public class msg_deepstall extends MAVLinkMessage {
         packet.payload.putFloat(cross_track_error);
         packet.payload.putUnsignedByte(stage);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -106,6 +109,7 @@ public class msg_deepstall extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -120,7 +124,9 @@ public class msg_deepstall extends MAVLinkMessage {
         this.cross_track_error = payload.getFloat();
         this.stage = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -194,16 +200,16 @@ public class msg_deepstall extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.landing_lat = (int)jo.optInt("landing_lat");
-        this.landing_lon = (int)jo.optInt("landing_lon");
-        this.path_lat = (int)jo.optInt("path_lat");
-        this.path_lon = (int)jo.optInt("path_lon");
-        this.arc_entry_lat = (int)jo.optInt("arc_entry_lat");
-        this.arc_entry_lon = (int)jo.optInt("arc_entry_lon");
-        this.altitude = (float)jo.optFloat("altitude");
-        this.expected_travel_distance = (float)jo.optFloat("expected_travel_distance");
-        this.cross_track_error = (float)jo.optFloat("cross_track_error");
-        this.stage = (short)jo.optInt("stage");
+        this.landing_lat = (int)jo.optInt("landing_lat",0);
+        this.landing_lon = (int)jo.optInt("landing_lon",0);
+        this.path_lat = (int)jo.optInt("path_lat",0);
+        this.path_lon = (int)jo.optInt("path_lon",0);
+        this.arc_entry_lat = (int)jo.optInt("arc_entry_lat",0);
+        this.arc_entry_lon = (int)jo.optInt("arc_entry_lon",0);
+        this.altitude = (float)jo.optDouble("altitude",0);
+        this.expected_travel_distance = (float)jo.optDouble("expected_travel_distance",0);
+        this.cross_track_error = (float)jo.optDouble("cross_track_error",0);
+        this.stage = (short)jo.optInt("stage",0);
         
         
     }
@@ -211,6 +217,7 @@ public class msg_deepstall extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -233,6 +240,7 @@ public class msg_deepstall extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DEEPSTALL - sysid:"+sysid+" compid:"+compid+" landing_lat:"+landing_lat+" landing_lon:"+landing_lon+" path_lat:"+path_lat+" path_lon:"+path_lon+" arc_entry_lat:"+arc_entry_lat+" arc_entry_lon:"+arc_entry_lon+" altitude:"+altitude+" expected_travel_distance:"+expected_travel_distance+" cross_track_error:"+cross_track_error+" stage:"+stage+"";
     }

@@ -110,6 +110,7 @@ public class msg_odometry extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -144,9 +145,9 @@ public class msg_odometry extends MAVLinkMessage {
         packet.payload.putUnsignedByte(frame_id);
         packet.payload.putUnsignedByte(child_frame_id);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedByte(reset_counter);
+        if (isMavlink2) {
+             packet.payload.putUnsignedByte(reset_counter);
+            
         }
         return packet;
     }
@@ -156,6 +157,7 @@ public class msg_odometry extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -187,9 +189,9 @@ public class msg_odometry extends MAVLinkMessage {
         this.frame_id = payload.getUnsignedByte();
         this.child_frame_id = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.reset_counter = payload.getUnsignedByte();
+        if (isMavlink2) {
+             this.reset_counter = payload.getUnsignedByte();
+            
         }
     }
 
@@ -276,44 +278,63 @@ public class msg_odometry extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.vx = (float)jo.optFloat("vx");
-        this.vy = (float)jo.optFloat("vy");
-        this.vz = (float)jo.optFloat("vz");
-        this.rollspeed = (float)jo.optFloat("rollspeed");
-        this.pitchspeed = (float)jo.optFloat("pitchspeed");
-        this.yawspeed = (float)jo.optFloat("yawspeed");
+                    
+        this.vx = (float)jo.optDouble("vx",0);
+        this.vy = (float)jo.optDouble("vy",0);
+        this.vz = (float)jo.optDouble("vz",0);
+        this.rollspeed = (float)jo.optDouble("rollspeed",0);
+        this.pitchspeed = (float)jo.optDouble("pitchspeed",0);
+        this.yawspeed = (float)jo.optDouble("yawspeed",0);
          
-        JSONArray ja_pose_covariance = jo.optJSONArray("pose_covariance");
-        for (int i = 0; i < Math.min(this.pose_covariance.length, ja_pose_covariance.length()); i++) {
-            this.pose_covariance[i] = (float)ja_pose_covariance.getFloat(i);
+        if (jo.has("pose_covariance")) {
+            JSONArray ja_pose_covariance = jo.optJSONArray("pose_covariance");
+            if (ja_pose_covariance == null) {
+                this.pose_covariance[0] = (float)jo.optDouble("pose_covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.pose_covariance.length, ja_pose_covariance.length()); i++) {
+                    this.pose_covariance[i] = (float)ja_pose_covariance.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_velocity_covariance = jo.optJSONArray("velocity_covariance");
-        for (int i = 0; i < Math.min(this.velocity_covariance.length, ja_velocity_covariance.length()); i++) {
-            this.velocity_covariance[i] = (float)ja_velocity_covariance.getFloat(i);
+        if (jo.has("velocity_covariance")) {
+            JSONArray ja_velocity_covariance = jo.optJSONArray("velocity_covariance");
+            if (ja_velocity_covariance == null) {
+                this.velocity_covariance[0] = (float)jo.optDouble("velocity_covariance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.velocity_covariance.length, ja_velocity_covariance.length()); i++) {
+                    this.velocity_covariance[i] = (float)ja_velocity_covariance.optDouble(i,0);
+                }
+            }
         }
-                
-        this.frame_id = (short)jo.optInt("frame_id");
-        this.child_frame_id = (short)jo.optInt("child_frame_id");
+                    
+        this.frame_id = (short)jo.optInt("frame_id",0);
+        this.child_frame_id = (short)jo.optInt("child_frame_id",0);
         
-        this.reset_counter = (short)jo.optInt("reset_counter");
+        this.reset_counter = (short)jo.optInt("reset_counter",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -360,6 +381,7 @@ public class msg_odometry extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ODOMETRY - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" x:"+x+" y:"+y+" z:"+z+" q:"+q+" vx:"+vx+" vy:"+vy+" vz:"+vz+" rollspeed:"+rollspeed+" pitchspeed:"+pitchspeed+" yawspeed:"+yawspeed+" pose_covariance:"+pose_covariance+" velocity_covariance:"+velocity_covariance+" frame_id:"+frame_id+" child_frame_id:"+child_frame_id+" reset_counter:"+reset_counter+"";
     }

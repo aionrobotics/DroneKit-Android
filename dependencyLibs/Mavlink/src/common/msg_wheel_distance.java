@@ -45,6 +45,7 @@ public class msg_wheel_distance extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -59,7 +60,9 @@ public class msg_wheel_distance extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(count);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -68,6 +71,7 @@ public class msg_wheel_distance extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -79,7 +83,9 @@ public class msg_wheel_distance extends MAVLinkMessage {
                 
         this.count = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -139,14 +145,20 @@ public class msg_wheel_distance extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
          
-        JSONArray ja_distance = jo.optJSONArray("distance");
-        for (int i = 0; i < Math.min(this.distance.length, ja_distance.length()); i++) {
-            this.distance[i] = (double)ja_distance.getDouble(i);
+        if (jo.has("distance")) {
+            JSONArray ja_distance = jo.optJSONArray("distance");
+            if (ja_distance == null) {
+                this.distance[0] = (double)jo.optDouble("distance", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.distance.length, ja_distance.length()); i++) {
+                    this.distance[i] = (double)ja_distance.optDouble(i,0);
+                }
+            }
         }
-                
-        this.count = (short)jo.optInt("count");
+                    
+        this.count = (short)jo.optInt("count",0);
         
         
     }
@@ -154,6 +166,7 @@ public class msg_wheel_distance extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -175,6 +188,7 @@ public class msg_wheel_distance extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_WHEEL_DISTANCE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" distance:"+distance+" count:"+count+"";
     }

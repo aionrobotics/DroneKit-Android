@@ -60,6 +60,7 @@ public class msg_led_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -77,7 +78,9 @@ public class msg_led_control extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -86,6 +89,7 @@ public class msg_led_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -100,7 +104,9 @@ public class msg_led_control extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -166,17 +172,23 @@ public class msg_led_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.instance = (short)jo.optInt("instance");
-        this.pattern = (short)jo.optInt("pattern");
-        this.custom_len = (short)jo.optInt("custom_len");
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.instance = (short)jo.optInt("instance",0);
+        this.pattern = (short)jo.optInt("pattern",0);
+        this.custom_len = (short)jo.optInt("custom_len",0);
          
-        JSONArray ja_custom_bytes = jo.optJSONArray("custom_bytes");
-        for (int i = 0; i < Math.min(this.custom_bytes.length, ja_custom_bytes.length()); i++) {
-            this.custom_bytes[i] = (short)ja_custom_bytes.getInt(i);
+        if (jo.has("custom_bytes")) {
+            JSONArray ja_custom_bytes = jo.optJSONArray("custom_bytes");
+            if (ja_custom_bytes == null) {
+                this.custom_bytes[0] = (short)jo.optInt("custom_bytes", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.custom_bytes.length, ja_custom_bytes.length()); i++) {
+                    this.custom_bytes[i] = (short)ja_custom_bytes.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -184,6 +196,7 @@ public class msg_led_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -208,6 +221,7 @@ public class msg_led_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_LED_CONTROL - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" instance:"+instance+" pattern:"+pattern+" custom_len:"+custom_len+" custom_bytes:"+custom_bytes+"";
     }

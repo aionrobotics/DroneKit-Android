@@ -110,6 +110,7 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -133,7 +134,9 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_component);
         packet.payload.putUnsignedByte(coordinate_frame);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -142,6 +145,7 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -162,7 +166,9 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
         this.target_component = payload.getUnsignedByte();
         this.coordinate_frame = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -248,22 +254,22 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
-        this.vx = (float)jo.optFloat("vx");
-        this.vy = (float)jo.optFloat("vy");
-        this.vz = (float)jo.optFloat("vz");
-        this.afx = (float)jo.optFloat("afx");
-        this.afy = (float)jo.optFloat("afy");
-        this.afz = (float)jo.optFloat("afz");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.yaw_rate = (float)jo.optFloat("yaw_rate");
-        this.type_mask = (int)jo.optInt("type_mask");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.coordinate_frame = (short)jo.optInt("coordinate_frame");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
+        this.vx = (float)jo.optDouble("vx",0);
+        this.vy = (float)jo.optDouble("vy",0);
+        this.vz = (float)jo.optDouble("vz",0);
+        this.afx = (float)jo.optDouble("afx",0);
+        this.afy = (float)jo.optDouble("afy",0);
+        this.afz = (float)jo.optDouble("afz",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.yaw_rate = (float)jo.optDouble("yaw_rate",0);
+        this.type_mask = (int)jo.optInt("type_mask",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.coordinate_frame = (short)jo.optInt("coordinate_frame",0);
         
         
     }
@@ -271,6 +277,7 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -299,6 +306,7 @@ public class msg_set_position_target_local_ned extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" x:"+x+" y:"+y+" z:"+z+" vx:"+vx+" vy:"+vy+" vz:"+vz+" afx:"+afx+" afy:"+afy+" afz:"+afz+" yaw:"+yaw+" yaw_rate:"+yaw_rate+" type_mask:"+type_mask+" target_system:"+target_system+" target_component:"+target_component+" coordinate_frame:"+coordinate_frame+"";
     }

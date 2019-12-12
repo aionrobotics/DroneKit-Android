@@ -120,6 +120,7 @@ public class msg_servo_output_raw extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -137,30 +138,16 @@ public class msg_servo_output_raw extends MAVLinkMessage {
         packet.payload.putUnsignedShort(servo8_raw);
         packet.payload.putUnsignedByte(port);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo9_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo10_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo11_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo12_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo13_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo14_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo15_raw);
-        }
-        if(isMavlink2) {
-            packet.payload.putUnsignedShort(servo16_raw);
+        if (isMavlink2) {
+             packet.payload.putUnsignedShort(servo9_raw);
+             packet.payload.putUnsignedShort(servo10_raw);
+             packet.payload.putUnsignedShort(servo11_raw);
+             packet.payload.putUnsignedShort(servo12_raw);
+             packet.payload.putUnsignedShort(servo13_raw);
+             packet.payload.putUnsignedShort(servo14_raw);
+             packet.payload.putUnsignedShort(servo15_raw);
+             packet.payload.putUnsignedShort(servo16_raw);
+            
         }
         return packet;
     }
@@ -170,6 +157,7 @@ public class msg_servo_output_raw extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -184,30 +172,16 @@ public class msg_servo_output_raw extends MAVLinkMessage {
         this.servo8_raw = payload.getUnsignedShort();
         this.port = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.servo9_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo10_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo11_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo12_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo13_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo14_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo15_raw = payload.getUnsignedShort();
-        }
-        if(isMavlink2) {
-            this.servo16_raw = payload.getUnsignedShort();
+        if (isMavlink2) {
+             this.servo9_raw = payload.getUnsignedShort();
+             this.servo10_raw = payload.getUnsignedShort();
+             this.servo11_raw = payload.getUnsignedShort();
+             this.servo12_raw = payload.getUnsignedShort();
+             this.servo13_raw = payload.getUnsignedShort();
+             this.servo14_raw = payload.getUnsignedShort();
+             this.servo15_raw = payload.getUnsignedShort();
+             this.servo16_raw = payload.getUnsignedShort();
+            
         }
     }
 
@@ -298,31 +272,32 @@ public class msg_servo_output_raw extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.servo1_raw = (int)jo.optInt("servo1_raw");
-        this.servo2_raw = (int)jo.optInt("servo2_raw");
-        this.servo3_raw = (int)jo.optInt("servo3_raw");
-        this.servo4_raw = (int)jo.optInt("servo4_raw");
-        this.servo5_raw = (int)jo.optInt("servo5_raw");
-        this.servo6_raw = (int)jo.optInt("servo6_raw");
-        this.servo7_raw = (int)jo.optInt("servo7_raw");
-        this.servo8_raw = (int)jo.optInt("servo8_raw");
-        this.port = (short)jo.optInt("port");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.servo1_raw = (int)jo.optInt("servo1_raw",0);
+        this.servo2_raw = (int)jo.optInt("servo2_raw",0);
+        this.servo3_raw = (int)jo.optInt("servo3_raw",0);
+        this.servo4_raw = (int)jo.optInt("servo4_raw",0);
+        this.servo5_raw = (int)jo.optInt("servo5_raw",0);
+        this.servo6_raw = (int)jo.optInt("servo6_raw",0);
+        this.servo7_raw = (int)jo.optInt("servo7_raw",0);
+        this.servo8_raw = (int)jo.optInt("servo8_raw",0);
+        this.port = (short)jo.optInt("port",0);
         
-        this.servo9_raw = (int)jo.optInt("servo9_raw");
-        this.servo10_raw = (int)jo.optInt("servo10_raw");
-        this.servo11_raw = (int)jo.optInt("servo11_raw");
-        this.servo12_raw = (int)jo.optInt("servo12_raw");
-        this.servo13_raw = (int)jo.optInt("servo13_raw");
-        this.servo14_raw = (int)jo.optInt("servo14_raw");
-        this.servo15_raw = (int)jo.optInt("servo15_raw");
-        this.servo16_raw = (int)jo.optInt("servo16_raw");
+        this.servo9_raw = (int)jo.optInt("servo9_raw",0);
+        this.servo10_raw = (int)jo.optInt("servo10_raw",0);
+        this.servo11_raw = (int)jo.optInt("servo11_raw",0);
+        this.servo12_raw = (int)jo.optInt("servo12_raw",0);
+        this.servo13_raw = (int)jo.optInt("servo13_raw",0);
+        this.servo14_raw = (int)jo.optInt("servo14_raw",0);
+        this.servo15_raw = (int)jo.optInt("servo15_raw",0);
+        this.servo16_raw = (int)jo.optInt("servo16_raw",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -353,6 +328,7 @@ public class msg_servo_output_raw extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SERVO_OUTPUT_RAW - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" servo1_raw:"+servo1_raw+" servo2_raw:"+servo2_raw+" servo3_raw:"+servo3_raw+" servo4_raw:"+servo4_raw+" servo5_raw:"+servo5_raw+" servo6_raw:"+servo6_raw+" servo7_raw:"+servo7_raw+" servo8_raw:"+servo8_raw+" port:"+port+" servo9_raw:"+servo9_raw+" servo10_raw:"+servo10_raw+" servo11_raw:"+servo11_raw+" servo12_raw:"+servo12_raw+" servo13_raw:"+servo13_raw+" servo14_raw:"+servo14_raw+" servo15_raw:"+servo15_raw+" servo16_raw:"+servo16_raw+"";
     }

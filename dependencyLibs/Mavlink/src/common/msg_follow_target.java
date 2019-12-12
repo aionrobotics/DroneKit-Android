@@ -85,6 +85,7 @@ public class msg_follow_target extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -123,7 +124,9 @@ public class msg_follow_target extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(est_capabilities);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -132,6 +135,7 @@ public class msg_follow_target extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -167,7 +171,9 @@ public class msg_follow_target extends MAVLinkMessage {
                 
         this.est_capabilities = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -243,42 +249,72 @@ public class msg_follow_target extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.timestamp = (long)jo.optLong("timestamp");
-        this.custom_state = (long)jo.optLong("custom_state");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (float)jo.optFloat("alt");
+        this.timestamp = (long)jo.optLong("timestamp",0);
+        this.custom_state = (long)jo.optLong("custom_state",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (float)jo.optDouble("alt",0);
          
-        JSONArray ja_vel = jo.optJSONArray("vel");
-        for (int i = 0; i < Math.min(this.vel.length, ja_vel.length()); i++) {
-            this.vel[i] = (float)ja_vel.getFloat(i);
+        if (jo.has("vel")) {
+            JSONArray ja_vel = jo.optJSONArray("vel");
+            if (ja_vel == null) {
+                this.vel[0] = (float)jo.optDouble("vel", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.vel.length, ja_vel.length()); i++) {
+                    this.vel[i] = (float)ja_vel.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_acc = jo.optJSONArray("acc");
-        for (int i = 0; i < Math.min(this.acc.length, ja_acc.length()); i++) {
-            this.acc[i] = (float)ja_acc.getFloat(i);
+        if (jo.has("acc")) {
+            JSONArray ja_acc = jo.optJSONArray("acc");
+            if (ja_acc == null) {
+                this.acc[0] = (float)jo.optDouble("acc", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.acc.length, ja_acc.length()); i++) {
+                    this.acc[i] = (float)ja_acc.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_attitude_q = jo.optJSONArray("attitude_q");
-        for (int i = 0; i < Math.min(this.attitude_q.length, ja_attitude_q.length()); i++) {
-            this.attitude_q[i] = (float)ja_attitude_q.getFloat(i);
+        if (jo.has("attitude_q")) {
+            JSONArray ja_attitude_q = jo.optJSONArray("attitude_q");
+            if (ja_attitude_q == null) {
+                this.attitude_q[0] = (float)jo.optDouble("attitude_q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.attitude_q.length, ja_attitude_q.length()); i++) {
+                    this.attitude_q[i] = (float)ja_attitude_q.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_rates = jo.optJSONArray("rates");
-        for (int i = 0; i < Math.min(this.rates.length, ja_rates.length()); i++) {
-            this.rates[i] = (float)ja_rates.getFloat(i);
+        if (jo.has("rates")) {
+            JSONArray ja_rates = jo.optJSONArray("rates");
+            if (ja_rates == null) {
+                this.rates[0] = (float)jo.optDouble("rates", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.rates.length, ja_rates.length()); i++) {
+                    this.rates[i] = (float)ja_rates.optDouble(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_position_cov = jo.optJSONArray("position_cov");
-        for (int i = 0; i < Math.min(this.position_cov.length, ja_position_cov.length()); i++) {
-            this.position_cov[i] = (float)ja_position_cov.getFloat(i);
+        if (jo.has("position_cov")) {
+            JSONArray ja_position_cov = jo.optJSONArray("position_cov");
+            if (ja_position_cov == null) {
+                this.position_cov[0] = (float)jo.optDouble("position_cov", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.position_cov.length, ja_position_cov.length()); i++) {
+                    this.position_cov[i] = (float)ja_position_cov.optDouble(i,0);
+                }
+            }
         }
-                
-        this.est_capabilities = (short)jo.optInt("est_capabilities");
+                    
+        this.est_capabilities = (short)jo.optInt("est_capabilities",0);
         
         
     }
@@ -286,6 +322,7 @@ public class msg_follow_target extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -339,6 +376,7 @@ public class msg_follow_target extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_FOLLOW_TARGET - sysid:"+sysid+" compid:"+compid+" timestamp:"+timestamp+" custom_state:"+custom_state+" lat:"+lat+" lon:"+lon+" alt:"+alt+" vel:"+vel+" acc:"+acc+" attitude_q:"+attitude_q+" rates:"+rates+" position_cov:"+position_cov+" est_capabilities:"+est_capabilities+"";
     }

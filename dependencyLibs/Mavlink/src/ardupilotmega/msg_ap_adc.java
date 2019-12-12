@@ -60,6 +60,7 @@ public class msg_ap_adc extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_ap_adc extends MAVLinkMessage {
         packet.payload.putUnsignedShort(adc5);
         packet.payload.putUnsignedShort(adc6);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_ap_adc extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_ap_adc extends MAVLinkMessage {
         this.adc5 = payload.getUnsignedShort();
         this.adc6 = payload.getUnsignedShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_ap_adc extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.adc1 = (int)jo.optInt("adc1");
-        this.adc2 = (int)jo.optInt("adc2");
-        this.adc3 = (int)jo.optInt("adc3");
-        this.adc4 = (int)jo.optInt("adc4");
-        this.adc5 = (int)jo.optInt("adc5");
-        this.adc6 = (int)jo.optInt("adc6");
+        this.adc1 = (int)jo.optInt("adc1",0);
+        this.adc2 = (int)jo.optInt("adc2",0);
+        this.adc3 = (int)jo.optInt("adc3",0);
+        this.adc4 = (int)jo.optInt("adc4",0);
+        this.adc5 = (int)jo.optInt("adc5",0);
+        this.adc6 = (int)jo.optInt("adc6",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_ap_adc extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_ap_adc extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_AP_ADC - sysid:"+sysid+" compid:"+compid+" adc1:"+adc1+" adc2:"+adc2+" adc3:"+adc3+" adc4:"+adc4+" adc5:"+adc5+" adc6:"+adc6+"";
     }

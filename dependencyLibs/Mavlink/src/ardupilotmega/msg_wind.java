@@ -45,6 +45,7 @@ public class msg_wind extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_wind extends MAVLinkMessage {
         packet.payload.putFloat(speed);
         packet.payload.putFloat(speed_z);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_wind extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_wind extends MAVLinkMessage {
         this.speed = payload.getFloat();
         this.speed_z = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_wind extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.direction = (float)jo.optFloat("direction");
-        this.speed = (float)jo.optFloat("speed");
-        this.speed_z = (float)jo.optFloat("speed_z");
+        this.direction = (float)jo.optDouble("direction",0);
+        this.speed = (float)jo.optDouble("speed",0);
+        this.speed_z = (float)jo.optDouble("speed_z",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_wind extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_wind extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_WIND - sysid:"+sysid+" compid:"+compid+" direction:"+direction+" speed:"+speed+" speed_z:"+speed_z+"";
     }

@@ -95,6 +95,7 @@ public class msg_camera_information extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -127,7 +128,9 @@ public class msg_camera_information extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -136,6 +139,7 @@ public class msg_camera_information extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -165,7 +169,9 @@ public class msg_camera_information extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -245,34 +251,54 @@ public class msg_camera_information extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.firmware_version = (long)jo.optLong("firmware_version");
-        this.focal_length = (float)jo.optFloat("focal_length");
-        this.sensor_size_h = (float)jo.optFloat("sensor_size_h");
-        this.sensor_size_v = (float)jo.optFloat("sensor_size_v");
-        this.flags = (long)jo.optLong("flags");
-        this.resolution_h = (int)jo.optInt("resolution_h");
-        this.resolution_v = (int)jo.optInt("resolution_v");
-        this.cam_definition_version = (int)jo.optInt("cam_definition_version");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.firmware_version = (long)jo.optLong("firmware_version",0);
+        this.focal_length = (float)jo.optDouble("focal_length",0);
+        this.sensor_size_h = (float)jo.optDouble("sensor_size_h",0);
+        this.sensor_size_v = (float)jo.optDouble("sensor_size_v",0);
+        this.flags = (long)jo.optLong("flags",0);
+        this.resolution_h = (int)jo.optInt("resolution_h",0);
+        this.resolution_v = (int)jo.optInt("resolution_v",0);
+        this.cam_definition_version = (int)jo.optInt("cam_definition_version",0);
          
-        JSONArray ja_vendor_name = jo.optJSONArray("vendor_name");
-        for (int i = 0; i < Math.min(this.vendor_name.length, ja_vendor_name.length()); i++) {
-            this.vendor_name[i] = (short)ja_vendor_name.getInt(i);
+        if (jo.has("vendor_name")) {
+            JSONArray ja_vendor_name = jo.optJSONArray("vendor_name");
+            if (ja_vendor_name == null) {
+                this.vendor_name[0] = (short)jo.optInt("vendor_name", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.vendor_name.length, ja_vendor_name.length()); i++) {
+                    this.vendor_name[i] = (short)ja_vendor_name.optInt(i,0);
+                }
+            }
         }
-                
+                    
          
-        JSONArray ja_model_name = jo.optJSONArray("model_name");
-        for (int i = 0; i < Math.min(this.model_name.length, ja_model_name.length()); i++) {
-            this.model_name[i] = (short)ja_model_name.getInt(i);
+        if (jo.has("model_name")) {
+            JSONArray ja_model_name = jo.optJSONArray("model_name");
+            if (ja_model_name == null) {
+                this.model_name[0] = (short)jo.optInt("model_name", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.model_name.length, ja_model_name.length()); i++) {
+                    this.model_name[i] = (short)ja_model_name.optInt(i,0);
+                }
+            }
         }
-                
-        this.lens_id = (short)jo.optInt("lens_id");
+                    
+        this.lens_id = (short)jo.optInt("lens_id",0);
          
-        JSONArray ja_cam_definition_uri = jo.optJSONArray("cam_definition_uri");
-        for (int i = 0; i < Math.min(this.cam_definition_uri.length, ja_cam_definition_uri.length()); i++) {
-            this.cam_definition_uri[i] = (byte)ja_cam_definition_uri.getInt(i);
+        if (jo.has("cam_definition_uri")) {
+            JSONArray ja_cam_definition_uri = jo.optJSONArray("cam_definition_uri");
+            if (ja_cam_definition_uri == null) {
+                final String js_string_cam_definition_uri = jo.optString("cam_definition_uri");
+                final byte[] b_cam_definition_uri = js_string_cam_definition_uri.getBytes();
+                System.arraycopy(b_cam_definition_uri, 0, this.cam_definition_uri, 0, Math.min(this.cam_definition_uri.length, b_cam_definition_uri.length));
+            } else {
+                for (int i = 0; i < Math.min(this.cam_definition_uri.length, ja_cam_definition_uri.length()); i++) {
+                    this.cam_definition_uri[i] = (byte)ja_cam_definition_uri.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -280,6 +306,7 @@ public class msg_camera_information extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -352,6 +379,7 @@ public class msg_camera_information extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_INFORMATION - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" firmware_version:"+firmware_version+" focal_length:"+focal_length+" sensor_size_h:"+sensor_size_h+" sensor_size_v:"+sensor_size_v+" flags:"+flags+" resolution_h:"+resolution_h+" resolution_v:"+resolution_v+" cam_definition_version:"+cam_definition_version+" vendor_name:"+vendor_name+" model_name:"+model_name+" lens_id:"+lens_id+" cam_definition_uri:"+cam_definition_uri+"";
     }

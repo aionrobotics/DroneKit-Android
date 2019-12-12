@@ -40,6 +40,7 @@ public class msg_terrain_check extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_terrain_check extends MAVLinkMessage {
         packet.payload.putInt(lat);
         packet.payload.putInt(lon);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_terrain_check extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.lat = payload.getInt();
         this.lon = payload.getInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_terrain_check extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_terrain_check extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_terrain_check extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_TERRAIN_CHECK - sysid:"+sysid+" compid:"+compid+" lat:"+lat+" lon:"+lon+"";
     }

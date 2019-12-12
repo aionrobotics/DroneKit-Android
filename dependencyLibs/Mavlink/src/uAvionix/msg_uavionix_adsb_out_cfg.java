@@ -70,6 +70,7 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -89,7 +90,9 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
         packet.payload.putUnsignedByte(gpsOffsetLon);
         packet.payload.putUnsignedByte(rfSelect);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -98,6 +101,7 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -114,7 +118,9 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
         this.gpsOffsetLon = payload.getUnsignedByte();
         this.rfSelect = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -184,19 +190,27 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.ICAO = (long)jo.optLong("ICAO");
-        this.stallSpeed = (int)jo.optInt("stallSpeed");
+        this.ICAO = (long)jo.optLong("ICAO",0);
+        this.stallSpeed = (int)jo.optInt("stallSpeed",0);
          
-        JSONArray ja_callsign = jo.optJSONArray("callsign");
-        for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
-            this.callsign[i] = (byte)ja_callsign.getInt(i);
+        if (jo.has("callsign")) {
+            JSONArray ja_callsign = jo.optJSONArray("callsign");
+            if (ja_callsign == null) {
+                final String js_string_callsign = jo.optString("callsign");
+                final byte[] b_callsign = js_string_callsign.getBytes();
+                System.arraycopy(b_callsign, 0, this.callsign, 0, Math.min(this.callsign.length, b_callsign.length));
+            } else {
+                for (int i = 0; i < Math.min(this.callsign.length, ja_callsign.length()); i++) {
+                    this.callsign[i] = (byte)ja_callsign.optInt(i,0);
+                }
+            }
         }
-                
-        this.emitterType = (short)jo.optInt("emitterType");
-        this.aircraftSize = (short)jo.optInt("aircraftSize");
-        this.gpsOffsetLat = (short)jo.optInt("gpsOffsetLat");
-        this.gpsOffsetLon = (short)jo.optInt("gpsOffsetLon");
-        this.rfSelect = (short)jo.optInt("rfSelect");
+                    
+        this.emitterType = (short)jo.optInt("emitterType",0);
+        this.aircraftSize = (short)jo.optInt("aircraftSize",0);
+        this.gpsOffsetLat = (short)jo.optInt("gpsOffsetLat",0);
+        this.gpsOffsetLon = (short)jo.optInt("gpsOffsetLon",0);
+        this.rfSelect = (short)jo.optInt("rfSelect",0);
         
         
     }
@@ -204,6 +218,7 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -259,6 +274,7 @@ public class msg_uavionix_adsb_out_cfg extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG - sysid:"+sysid+" compid:"+compid+" ICAO:"+ICAO+" stallSpeed:"+stallSpeed+" callsign:"+callsign+" emitterType:"+emitterType+" aircraftSize:"+aircraftSize+" gpsOffsetLat:"+gpsOffsetLat+" gpsOffsetLon:"+gpsOffsetLon+" rfSelect:"+rfSelect+"";
     }

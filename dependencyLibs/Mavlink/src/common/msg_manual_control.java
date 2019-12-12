@@ -60,6 +60,7 @@ public class msg_manual_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_manual_control extends MAVLinkMessage {
         packet.payload.putUnsignedShort(buttons);
         packet.payload.putUnsignedByte(target);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_manual_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_manual_control extends MAVLinkMessage {
         this.buttons = payload.getUnsignedShort();
         this.target = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_manual_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.x = (short)jo.optInt("x");
-        this.y = (short)jo.optInt("y");
-        this.z = (short)jo.optInt("z");
-        this.r = (short)jo.optInt("r");
-        this.buttons = (int)jo.optInt("buttons");
-        this.target = (short)jo.optInt("target");
+        this.x = (short)jo.optInt("x",0);
+        this.y = (short)jo.optInt("y",0);
+        this.z = (short)jo.optInt("z",0);
+        this.r = (short)jo.optInt("r",0);
+        this.buttons = (int)jo.optInt("buttons",0);
+        this.target = (short)jo.optInt("target",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_manual_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_manual_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MANUAL_CONTROL - sysid:"+sysid+" compid:"+compid+" x:"+x+" y:"+y+" z:"+z+" r:"+r+" buttons:"+buttons+" target:"+target+"";
     }

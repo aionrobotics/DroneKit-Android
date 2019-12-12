@@ -50,6 +50,7 @@ public class msg_camera_settings extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -59,12 +60,10 @@ public class msg_camera_settings extends MAVLinkMessage {
         packet.payload.putUnsignedInt(time_boot_ms);
         packet.payload.putUnsignedByte(mode_id);
         
-        
-        if(isMavlink2) {
-            packet.payload.putFloat(zoomLevel);
-        }
-        if(isMavlink2) {
-            packet.payload.putFloat(focusLevel);
+        if (isMavlink2) {
+             packet.payload.putFloat(zoomLevel);
+             packet.payload.putFloat(focusLevel);
+            
         }
         return packet;
     }
@@ -74,18 +73,17 @@ public class msg_camera_settings extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.time_boot_ms = payload.getUnsignedInt();
         this.mode_id = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.zoomLevel = payload.getFloat();
-        }
-        if(isMavlink2) {
-            this.focusLevel = payload.getFloat();
+        if (isMavlink2) {
+             this.zoomLevel = payload.getFloat();
+             this.focusLevel = payload.getFloat();
+            
         }
     }
 
@@ -148,17 +146,18 @@ public class msg_camera_settings extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.mode_id = (short)jo.optInt("mode_id");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.mode_id = (short)jo.optInt("mode_id",0);
         
-        this.zoomLevel = (float)jo.optFloat("zoomLevel");
-        this.focusLevel = (float)jo.optFloat("focusLevel");
+        this.zoomLevel = (float)jo.optDouble("zoomLevel",0);
+        this.focusLevel = (float)jo.optDouble("focusLevel",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -175,6 +174,7 @@ public class msg_camera_settings extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_SETTINGS - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" mode_id:"+mode_id+" zoomLevel:"+zoomLevel+" focusLevel:"+focusLevel+"";
     }

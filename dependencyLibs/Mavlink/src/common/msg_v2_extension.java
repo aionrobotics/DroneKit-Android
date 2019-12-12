@@ -55,6 +55,7 @@ public class msg_v2_extension extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -71,7 +72,9 @@ public class msg_v2_extension extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -80,6 +83,7 @@ public class msg_v2_extension extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -93,7 +97,9 @@ public class msg_v2_extension extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -157,16 +163,22 @@ public class msg_v2_extension extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.message_type = (int)jo.optInt("message_type");
-        this.target_network = (short)jo.optInt("target_network");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.message_type = (int)jo.optInt("message_type",0);
+        this.target_network = (short)jo.optInt("target_network",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
          
-        JSONArray ja_payload = jo.optJSONArray("payload");
-        for (int i = 0; i < Math.min(this.payload.length, ja_payload.length()); i++) {
-            this.payload[i] = (short)ja_payload.getInt(i);
+        if (jo.has("payload")) {
+            JSONArray ja_payload = jo.optJSONArray("payload");
+            if (ja_payload == null) {
+                this.payload[0] = (short)jo.optInt("payload", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.payload.length, ja_payload.length()); i++) {
+                    this.payload[i] = (short)ja_payload.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -174,6 +186,7 @@ public class msg_v2_extension extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -197,6 +210,7 @@ public class msg_v2_extension extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_V2_EXTENSION - sysid:"+sysid+" compid:"+compid+" message_type:"+message_type+" target_network:"+target_network+" target_system:"+target_system+" target_component:"+target_component+" payload:"+payload+"";
     }

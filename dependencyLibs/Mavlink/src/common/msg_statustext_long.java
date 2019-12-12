@@ -40,6 +40,7 @@ public class msg_statustext_long extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -53,7 +54,9 @@ public class msg_statustext_long extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -62,6 +65,7 @@ public class msg_statustext_long extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -72,7 +76,9 @@ public class msg_statustext_long extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -130,13 +136,21 @@ public class msg_statustext_long extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.severity = (short)jo.optInt("severity");
+        this.severity = (short)jo.optInt("severity",0);
          
-        JSONArray ja_text = jo.optJSONArray("text");
-        for (int i = 0; i < Math.min(this.text.length, ja_text.length()); i++) {
-            this.text[i] = (byte)ja_text.getInt(i);
+        if (jo.has("text")) {
+            JSONArray ja_text = jo.optJSONArray("text");
+            if (ja_text == null) {
+                final String js_string_text = jo.optString("text");
+                final byte[] b_text = js_string_text.getBytes();
+                System.arraycopy(b_text, 0, this.text, 0, Math.min(this.text.length, b_text.length));
+            } else {
+                for (int i = 0; i < Math.min(this.text.length, ja_text.length()); i++) {
+                    this.text[i] = (byte)ja_text.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -144,6 +158,7 @@ public class msg_statustext_long extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -193,6 +208,7 @@ public class msg_statustext_long extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_STATUSTEXT_LONG - sysid:"+sysid+" compid:"+compid+" severity:"+severity+" text:"+text+"";
     }

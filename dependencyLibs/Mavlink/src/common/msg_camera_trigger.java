@@ -40,6 +40,7 @@ public class msg_camera_trigger extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_camera_trigger extends MAVLinkMessage {
         packet.payload.putUnsignedLong(time_usec);
         packet.payload.putUnsignedInt(seq);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_camera_trigger extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.time_usec = payload.getUnsignedLong();
         this.seq = payload.getUnsignedInt();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_camera_trigger extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.seq = (long)jo.optLong("seq");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.seq = (long)jo.optLong("seq",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_camera_trigger extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_camera_trigger extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_TRIGGER - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" seq:"+seq+"";
     }

@@ -75,6 +75,7 @@ public class msg_camera_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -91,7 +92,9 @@ public class msg_camera_status extends MAVLinkMessage {
         packet.payload.putUnsignedByte(cam_idx);
         packet.payload.putUnsignedByte(event_id);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -100,6 +103,7 @@ public class msg_camera_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -113,7 +117,9 @@ public class msg_camera_status extends MAVLinkMessage {
         this.cam_idx = payload.getUnsignedByte();
         this.event_id = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -185,15 +191,15 @@ public class msg_camera_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.p1 = (float)jo.optFloat("p1");
-        this.p2 = (float)jo.optFloat("p2");
-        this.p3 = (float)jo.optFloat("p3");
-        this.p4 = (float)jo.optFloat("p4");
-        this.img_idx = (int)jo.optInt("img_idx");
-        this.target_system = (short)jo.optInt("target_system");
-        this.cam_idx = (short)jo.optInt("cam_idx");
-        this.event_id = (short)jo.optInt("event_id");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.p1 = (float)jo.optDouble("p1",0);
+        this.p2 = (float)jo.optDouble("p2",0);
+        this.p3 = (float)jo.optDouble("p3",0);
+        this.p4 = (float)jo.optDouble("p4",0);
+        this.img_idx = (int)jo.optInt("img_idx",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.cam_idx = (short)jo.optInt("cam_idx",0);
+        this.event_id = (short)jo.optInt("event_id",0);
         
         
     }
@@ -201,6 +207,7 @@ public class msg_camera_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -222,6 +229,7 @@ public class msg_camera_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_STATUS - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" p1:"+p1+" p2:"+p2+" p3:"+p3+" p4:"+p4+" img_idx:"+img_idx+" target_system:"+target_system+" cam_idx:"+cam_idx+" event_id:"+event_id+"";
     }

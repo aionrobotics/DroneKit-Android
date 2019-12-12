@@ -150,6 +150,7 @@ public class msg_high_latency extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -181,7 +182,9 @@ public class msg_high_latency extends MAVLinkMessage {
         packet.payload.putUnsignedByte(failsafe);
         packet.payload.putUnsignedByte(wp_num);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -190,6 +193,7 @@ public class msg_high_latency extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -218,7 +222,9 @@ public class msg_high_latency extends MAVLinkMessage {
         this.failsafe = payload.getUnsignedByte();
         this.wp_num = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -320,30 +326,30 @@ public class msg_high_latency extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.custom_mode = (long)jo.optLong("custom_mode");
-        this.latitude = (int)jo.optInt("latitude");
-        this.longitude = (int)jo.optInt("longitude");
-        this.roll = (short)jo.optInt("roll");
-        this.pitch = (short)jo.optInt("pitch");
-        this.heading = (int)jo.optInt("heading");
-        this.heading_sp = (short)jo.optInt("heading_sp");
-        this.altitude_amsl = (short)jo.optInt("altitude_amsl");
-        this.altitude_sp = (short)jo.optInt("altitude_sp");
-        this.wp_distance = (int)jo.optInt("wp_distance");
-        this.base_mode = (short)jo.optInt("base_mode");
-        this.landed_state = (short)jo.optInt("landed_state");
-        this.throttle = (byte)jo.optInt("throttle");
-        this.airspeed = (short)jo.optInt("airspeed");
-        this.airspeed_sp = (short)jo.optInt("airspeed_sp");
-        this.groundspeed = (short)jo.optInt("groundspeed");
-        this.climb_rate = (byte)jo.optInt("climb_rate");
-        this.gps_nsat = (short)jo.optInt("gps_nsat");
-        this.gps_fix_type = (short)jo.optInt("gps_fix_type");
-        this.battery_remaining = (short)jo.optInt("battery_remaining");
-        this.temperature = (byte)jo.optInt("temperature");
-        this.temperature_air = (byte)jo.optInt("temperature_air");
-        this.failsafe = (short)jo.optInt("failsafe");
-        this.wp_num = (short)jo.optInt("wp_num");
+        this.custom_mode = (long)jo.optLong("custom_mode",0);
+        this.latitude = (int)jo.optInt("latitude",0);
+        this.longitude = (int)jo.optInt("longitude",0);
+        this.roll = (short)jo.optInt("roll",0);
+        this.pitch = (short)jo.optInt("pitch",0);
+        this.heading = (int)jo.optInt("heading",0);
+        this.heading_sp = (short)jo.optInt("heading_sp",0);
+        this.altitude_amsl = (short)jo.optInt("altitude_amsl",0);
+        this.altitude_sp = (short)jo.optInt("altitude_sp",0);
+        this.wp_distance = (int)jo.optInt("wp_distance",0);
+        this.base_mode = (short)jo.optInt("base_mode",0);
+        this.landed_state = (short)jo.optInt("landed_state",0);
+        this.throttle = (byte)jo.optInt("throttle",0);
+        this.airspeed = (short)jo.optInt("airspeed",0);
+        this.airspeed_sp = (short)jo.optInt("airspeed_sp",0);
+        this.groundspeed = (short)jo.optInt("groundspeed",0);
+        this.climb_rate = (byte)jo.optInt("climb_rate",0);
+        this.gps_nsat = (short)jo.optInt("gps_nsat",0);
+        this.gps_fix_type = (short)jo.optInt("gps_fix_type",0);
+        this.battery_remaining = (short)jo.optInt("battery_remaining",0);
+        this.temperature = (byte)jo.optInt("temperature",0);
+        this.temperature_air = (byte)jo.optInt("temperature_air",0);
+        this.failsafe = (short)jo.optInt("failsafe",0);
+        this.wp_num = (short)jo.optInt("wp_num",0);
         
         
     }
@@ -351,6 +357,7 @@ public class msg_high_latency extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -387,6 +394,7 @@ public class msg_high_latency extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIGH_LATENCY - sysid:"+sysid+" compid:"+compid+" custom_mode:"+custom_mode+" latitude:"+latitude+" longitude:"+longitude+" roll:"+roll+" pitch:"+pitch+" heading:"+heading+" heading_sp:"+heading_sp+" altitude_amsl:"+altitude_amsl+" altitude_sp:"+altitude_sp+" wp_distance:"+wp_distance+" base_mode:"+base_mode+" landed_state:"+landed_state+" throttle:"+throttle+" airspeed:"+airspeed+" airspeed_sp:"+airspeed_sp+" groundspeed:"+groundspeed+" climb_rate:"+climb_rate+" gps_nsat:"+gps_nsat+" gps_fix_type:"+gps_fix_type+" battery_remaining:"+battery_remaining+" temperature:"+temperature+" temperature_air:"+temperature_air+" failsafe:"+failsafe+" wp_num:"+wp_num+"";
     }

@@ -95,6 +95,7 @@ public class msg_sys_status extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -115,7 +116,9 @@ public class msg_sys_status extends MAVLinkMessage {
         packet.payload.putUnsignedShort(errors_count4);
         packet.payload.putByte(battery_remaining);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -124,6 +127,7 @@ public class msg_sys_status extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -141,7 +145,9 @@ public class msg_sys_status extends MAVLinkMessage {
         this.errors_count4 = payload.getUnsignedShort();
         this.battery_remaining = payload.getByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -221,19 +227,19 @@ public class msg_sys_status extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.onboard_control_sensors_present = (long)jo.optLong("onboard_control_sensors_present");
-        this.onboard_control_sensors_enabled = (long)jo.optLong("onboard_control_sensors_enabled");
-        this.onboard_control_sensors_health = (long)jo.optLong("onboard_control_sensors_health");
-        this.load = (int)jo.optInt("load");
-        this.voltage_battery = (int)jo.optInt("voltage_battery");
-        this.current_battery = (short)jo.optInt("current_battery");
-        this.drop_rate_comm = (int)jo.optInt("drop_rate_comm");
-        this.errors_comm = (int)jo.optInt("errors_comm");
-        this.errors_count1 = (int)jo.optInt("errors_count1");
-        this.errors_count2 = (int)jo.optInt("errors_count2");
-        this.errors_count3 = (int)jo.optInt("errors_count3");
-        this.errors_count4 = (int)jo.optInt("errors_count4");
-        this.battery_remaining = (byte)jo.optInt("battery_remaining");
+        this.onboard_control_sensors_present = (long)jo.optLong("onboard_control_sensors_present",0);
+        this.onboard_control_sensors_enabled = (long)jo.optLong("onboard_control_sensors_enabled",0);
+        this.onboard_control_sensors_health = (long)jo.optLong("onboard_control_sensors_health",0);
+        this.load = (int)jo.optInt("load",0);
+        this.voltage_battery = (int)jo.optInt("voltage_battery",0);
+        this.current_battery = (short)jo.optInt("current_battery",0);
+        this.drop_rate_comm = (int)jo.optInt("drop_rate_comm",0);
+        this.errors_comm = (int)jo.optInt("errors_comm",0);
+        this.errors_count1 = (int)jo.optInt("errors_count1",0);
+        this.errors_count2 = (int)jo.optInt("errors_count2",0);
+        this.errors_count3 = (int)jo.optInt("errors_count3",0);
+        this.errors_count4 = (int)jo.optInt("errors_count4",0);
+        this.battery_remaining = (byte)jo.optInt("battery_remaining",0);
         
         
     }
@@ -241,6 +247,7 @@ public class msg_sys_status extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -266,6 +273,7 @@ public class msg_sys_status extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SYS_STATUS - sysid:"+sysid+" compid:"+compid+" onboard_control_sensors_present:"+onboard_control_sensors_present+" onboard_control_sensors_enabled:"+onboard_control_sensors_enabled+" onboard_control_sensors_health:"+onboard_control_sensors_health+" load:"+load+" voltage_battery:"+voltage_battery+" current_battery:"+current_battery+" drop_rate_comm:"+drop_rate_comm+" errors_comm:"+errors_comm+" errors_count1:"+errors_count1+" errors_count2:"+errors_count2+" errors_count3:"+errors_count3+" errors_count4:"+errors_count4+" battery_remaining:"+battery_remaining+"";
     }

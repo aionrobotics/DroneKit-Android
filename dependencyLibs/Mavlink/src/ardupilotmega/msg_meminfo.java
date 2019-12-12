@@ -45,6 +45,7 @@ public class msg_meminfo extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -54,9 +55,9 @@ public class msg_meminfo extends MAVLinkMessage {
         packet.payload.putUnsignedShort(brkval);
         packet.payload.putUnsignedShort(freemem);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedInt(freemem32);
+        if (isMavlink2) {
+             packet.payload.putUnsignedInt(freemem32);
+            
         }
         return packet;
     }
@@ -66,15 +67,16 @@ public class msg_meminfo extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.brkval = payload.getUnsignedShort();
         this.freemem = payload.getUnsignedShort();
         
-        
-        if(isMavlink2) {
-            this.freemem32 = payload.getUnsignedInt();
+        if (isMavlink2) {
+             this.freemem32 = payload.getUnsignedInt();
+            
         }
     }
 
@@ -135,16 +137,17 @@ public class msg_meminfo extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.brkval = (int)jo.optInt("brkval");
-        this.freemem = (int)jo.optInt("freemem");
+        this.brkval = (int)jo.optInt("brkval",0);
+        this.freemem = (int)jo.optInt("freemem",0);
         
-        this.freemem32 = (long)jo.optLong("freemem32");
+        this.freemem32 = (long)jo.optLong("freemem32",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -160,6 +163,7 @@ public class msg_meminfo extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MEMINFO - sysid:"+sysid+" compid:"+compid+" brkval:"+brkval+" freemem:"+freemem+" freemem32:"+freemem32+"";
     }

@@ -135,6 +135,7 @@ public class msg_sim_state extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -163,7 +164,9 @@ public class msg_sim_state extends MAVLinkMessage {
         packet.payload.putFloat(ve);
         packet.payload.putFloat(vd);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -172,6 +175,7 @@ public class msg_sim_state extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -197,7 +201,9 @@ public class msg_sim_state extends MAVLinkMessage {
         this.ve = payload.getFloat();
         this.vd = payload.getFloat();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -293,27 +299,27 @@ public class msg_sim_state extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.q1 = (float)jo.optFloat("q1");
-        this.q2 = (float)jo.optFloat("q2");
-        this.q3 = (float)jo.optFloat("q3");
-        this.q4 = (float)jo.optFloat("q4");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.xacc = (float)jo.optFloat("xacc");
-        this.yacc = (float)jo.optFloat("yacc");
-        this.zacc = (float)jo.optFloat("zacc");
-        this.xgyro = (float)jo.optFloat("xgyro");
-        this.ygyro = (float)jo.optFloat("ygyro");
-        this.zgyro = (float)jo.optFloat("zgyro");
-        this.lat = (float)jo.optFloat("lat");
-        this.lon = (float)jo.optFloat("lon");
-        this.alt = (float)jo.optFloat("alt");
-        this.std_dev_horz = (float)jo.optFloat("std_dev_horz");
-        this.std_dev_vert = (float)jo.optFloat("std_dev_vert");
-        this.vn = (float)jo.optFloat("vn");
-        this.ve = (float)jo.optFloat("ve");
-        this.vd = (float)jo.optFloat("vd");
+        this.q1 = (float)jo.optDouble("q1",0);
+        this.q2 = (float)jo.optDouble("q2",0);
+        this.q3 = (float)jo.optDouble("q3",0);
+        this.q4 = (float)jo.optDouble("q4",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.xacc = (float)jo.optDouble("xacc",0);
+        this.yacc = (float)jo.optDouble("yacc",0);
+        this.zacc = (float)jo.optDouble("zacc",0);
+        this.xgyro = (float)jo.optDouble("xgyro",0);
+        this.ygyro = (float)jo.optDouble("ygyro",0);
+        this.zgyro = (float)jo.optDouble("zgyro",0);
+        this.lat = (float)jo.optDouble("lat",0);
+        this.lon = (float)jo.optDouble("lon",0);
+        this.alt = (float)jo.optDouble("alt",0);
+        this.std_dev_horz = (float)jo.optDouble("std_dev_horz",0);
+        this.std_dev_vert = (float)jo.optDouble("std_dev_vert",0);
+        this.vn = (float)jo.optDouble("vn",0);
+        this.ve = (float)jo.optDouble("ve",0);
+        this.vd = (float)jo.optDouble("vd",0);
         
         
     }
@@ -321,6 +327,7 @@ public class msg_sim_state extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -354,6 +361,7 @@ public class msg_sim_state extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SIM_STATE - sysid:"+sysid+" compid:"+compid+" q1:"+q1+" q2:"+q2+" q3:"+q3+" q4:"+q4+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" xacc:"+xacc+" yacc:"+yacc+" zacc:"+zacc+" xgyro:"+xgyro+" ygyro:"+ygyro+" zgyro:"+zgyro+" lat:"+lat+" lon:"+lon+" alt:"+alt+" std_dev_horz:"+std_dev_horz+" std_dev_vert:"+std_dev_vert+" vn:"+vn+" ve:"+ve+" vd:"+vd+"";
     }

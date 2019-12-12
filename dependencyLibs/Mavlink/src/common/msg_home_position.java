@@ -85,6 +85,7 @@ public class msg_home_position extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -106,9 +107,9 @@ public class msg_home_position extends MAVLinkMessage {
         packet.payload.putFloat(approach_y);
         packet.payload.putFloat(approach_z);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedLong(time_usec);
+        if (isMavlink2) {
+             packet.payload.putUnsignedLong(time_usec);
+            
         }
         return packet;
     }
@@ -118,6 +119,7 @@ public class msg_home_position extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -136,9 +138,9 @@ public class msg_home_position extends MAVLinkMessage {
         this.approach_y = payload.getFloat();
         this.approach_z = payload.getFloat();
         
-        
-        if(isMavlink2) {
-            this.time_usec = payload.getUnsignedLong();
+        if (isMavlink2) {
+             this.time_usec = payload.getUnsignedLong();
+            
         }
     }
 
@@ -215,29 +217,36 @@ public class msg_home_position extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.latitude = (int)jo.optInt("latitude");
-        this.longitude = (int)jo.optInt("longitude");
-        this.altitude = (int)jo.optInt("altitude");
-        this.x = (float)jo.optFloat("x");
-        this.y = (float)jo.optFloat("y");
-        this.z = (float)jo.optFloat("z");
+        this.latitude = (int)jo.optInt("latitude",0);
+        this.longitude = (int)jo.optInt("longitude",0);
+        this.altitude = (int)jo.optInt("altitude",0);
+        this.x = (float)jo.optDouble("x",0);
+        this.y = (float)jo.optDouble("y",0);
+        this.z = (float)jo.optDouble("z",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.approach_x = (float)jo.optFloat("approach_x");
-        this.approach_y = (float)jo.optFloat("approach_y");
-        this.approach_z = (float)jo.optFloat("approach_z");
+                    
+        this.approach_x = (float)jo.optDouble("approach_x",0);
+        this.approach_y = (float)jo.optDouble("approach_y",0);
+        this.approach_z = (float)jo.optDouble("approach_z",0);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -267,6 +276,7 @@ public class msg_home_position extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HOME_POSITION - sysid:"+sysid+" compid:"+compid+" latitude:"+latitude+" longitude:"+longitude+" altitude:"+altitude+" x:"+x+" y:"+y+" z:"+z+" q:"+q+" approach_x:"+approach_x+" approach_y:"+approach_y+" approach_z:"+approach_z+" time_usec:"+time_usec+"";
     }

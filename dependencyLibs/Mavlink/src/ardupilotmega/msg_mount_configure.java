@@ -60,6 +60,7 @@ public class msg_mount_configure extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -73,7 +74,9 @@ public class msg_mount_configure extends MAVLinkMessage {
         packet.payload.putUnsignedByte(stab_pitch);
         packet.payload.putUnsignedByte(stab_yaw);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -82,6 +85,7 @@ public class msg_mount_configure extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -92,7 +96,9 @@ public class msg_mount_configure extends MAVLinkMessage {
         this.stab_pitch = payload.getUnsignedByte();
         this.stab_yaw = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -158,12 +164,12 @@ public class msg_mount_configure extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.mount_mode = (short)jo.optInt("mount_mode");
-        this.stab_roll = (short)jo.optInt("stab_roll");
-        this.stab_pitch = (short)jo.optInt("stab_pitch");
-        this.stab_yaw = (short)jo.optInt("stab_yaw");
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.mount_mode = (short)jo.optInt("mount_mode",0);
+        this.stab_roll = (short)jo.optInt("stab_roll",0);
+        this.stab_pitch = (short)jo.optInt("stab_pitch",0);
+        this.stab_yaw = (short)jo.optInt("stab_yaw",0);
         
         
     }
@@ -171,6 +177,7 @@ public class msg_mount_configure extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -189,6 +196,7 @@ public class msg_mount_configure extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MOUNT_CONFIGURE - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" target_component:"+target_component+" mount_mode:"+mount_mode+" stab_roll:"+stab_roll+" stab_pitch:"+stab_pitch+" stab_yaw:"+stab_yaw+"";
     }

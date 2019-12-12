@@ -45,6 +45,7 @@ public class msg_gopro_get_response extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -59,7 +60,9 @@ public class msg_gopro_get_response extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -68,6 +71,7 @@ public class msg_gopro_get_response extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -79,7 +83,9 @@ public class msg_gopro_get_response extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -139,14 +145,20 @@ public class msg_gopro_get_response extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.cmd_id = (short)jo.optInt("cmd_id");
-        this.status = (short)jo.optInt("status");
+        this.cmd_id = (short)jo.optInt("cmd_id",0);
+        this.status = (short)jo.optInt("status",0);
          
-        JSONArray ja_value = jo.optJSONArray("value");
-        for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
-            this.value[i] = (short)ja_value.getInt(i);
+        if (jo.has("value")) {
+            JSONArray ja_value = jo.optJSONArray("value");
+            if (ja_value == null) {
+                this.value[0] = (short)jo.optInt("value", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
+                    this.value[i] = (short)ja_value.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -154,6 +166,7 @@ public class msg_gopro_get_response extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -175,6 +188,7 @@ public class msg_gopro_get_response extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GOPRO_GET_RESPONSE - sysid:"+sysid+" compid:"+compid+" cmd_id:"+cmd_id+" status:"+status+" value:"+value+"";
     }

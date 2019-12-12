@@ -85,6 +85,7 @@ public class msg_camera_image_captured extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -111,7 +112,9 @@ public class msg_camera_image_captured extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -120,6 +123,7 @@ public class msg_camera_image_captured extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -143,7 +147,9 @@ public class msg_camera_image_captured extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -219,27 +225,41 @@ public class msg_camera_image_captured extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_utc = (long)jo.optLong("time_utc");
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (int)jo.optInt("alt");
-        this.relative_alt = (int)jo.optInt("relative_alt");
+        this.time_utc = (long)jo.optLong("time_utc",0);
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (int)jo.optInt("alt",0);
+        this.relative_alt = (int)jo.optInt("relative_alt",0);
          
-        JSONArray ja_q = jo.optJSONArray("q");
-        for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
-            this.q[i] = (float)ja_q.getFloat(i);
+        if (jo.has("q")) {
+            JSONArray ja_q = jo.optJSONArray("q");
+            if (ja_q == null) {
+                this.q[0] = (float)jo.optDouble("q", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.q.length, ja_q.length()); i++) {
+                    this.q[i] = (float)ja_q.optDouble(i,0);
+                }
+            }
         }
-                
-        this.image_index = (int)jo.optInt("image_index");
-        this.camera_id = (short)jo.optInt("camera_id");
-        this.capture_result = (byte)jo.optInt("capture_result");
+                    
+        this.image_index = (int)jo.optInt("image_index",0);
+        this.camera_id = (short)jo.optInt("camera_id",0);
+        this.capture_result = (byte)jo.optInt("capture_result",0);
          
-        JSONArray ja_file_url = jo.optJSONArray("file_url");
-        for (int i = 0; i < Math.min(this.file_url.length, ja_file_url.length()); i++) {
-            this.file_url[i] = (byte)ja_file_url.getInt(i);
+        if (jo.has("file_url")) {
+            JSONArray ja_file_url = jo.optJSONArray("file_url");
+            if (ja_file_url == null) {
+                final String js_string_file_url = jo.optString("file_url");
+                final byte[] b_file_url = js_string_file_url.getBytes();
+                System.arraycopy(b_file_url, 0, this.file_url, 0, Math.min(this.file_url.length, b_file_url.length));
+            } else {
+                for (int i = 0; i < Math.min(this.file_url.length, ja_file_url.length()); i++) {
+                    this.file_url[i] = (byte)ja_file_url.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -247,6 +267,7 @@ public class msg_camera_image_captured extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -311,6 +332,7 @@ public class msg_camera_image_captured extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED - sysid:"+sysid+" compid:"+compid+" time_utc:"+time_utc+" time_boot_ms:"+time_boot_ms+" lat:"+lat+" lon:"+lon+" alt:"+alt+" relative_alt:"+relative_alt+" q:"+q+" image_index:"+image_index+" camera_id:"+camera_id+" capture_result:"+capture_result+" file_url:"+file_url+"";
     }

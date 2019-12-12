@@ -110,6 +110,7 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -133,7 +134,9 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
         packet.payload.putUnsignedByte(type4);
         packet.payload.putUnsignedByte(type5);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -142,6 +145,7 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -162,7 +166,9 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
         this.type4 = payload.getUnsignedByte();
         this.type5 = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -248,22 +254,22 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.min1 = (float)jo.optFloat("min1");
-        this.max1 = (float)jo.optFloat("max1");
-        this.min2 = (float)jo.optFloat("min2");
-        this.max2 = (float)jo.optFloat("max2");
-        this.min3 = (float)jo.optFloat("min3");
-        this.max3 = (float)jo.optFloat("max3");
-        this.min4 = (float)jo.optFloat("min4");
-        this.max4 = (float)jo.optFloat("max4");
-        this.min5 = (float)jo.optFloat("min5");
-        this.max5 = (float)jo.optFloat("max5");
-        this.numBands = (byte)jo.optInt("numBands");
-        this.type1 = (short)jo.optInt("type1");
-        this.type2 = (short)jo.optInt("type2");
-        this.type3 = (short)jo.optInt("type3");
-        this.type4 = (short)jo.optInt("type4");
-        this.type5 = (short)jo.optInt("type5");
+        this.min1 = (float)jo.optDouble("min1",0);
+        this.max1 = (float)jo.optDouble("max1",0);
+        this.min2 = (float)jo.optDouble("min2",0);
+        this.max2 = (float)jo.optDouble("max2",0);
+        this.min3 = (float)jo.optDouble("min3",0);
+        this.max3 = (float)jo.optDouble("max3",0);
+        this.min4 = (float)jo.optDouble("min4",0);
+        this.max4 = (float)jo.optDouble("max4",0);
+        this.min5 = (float)jo.optDouble("min5",0);
+        this.max5 = (float)jo.optDouble("max5",0);
+        this.numBands = (byte)jo.optInt("numBands",0);
+        this.type1 = (short)jo.optInt("type1",0);
+        this.type2 = (short)jo.optInt("type2",0);
+        this.type3 = (short)jo.optInt("type3",0);
+        this.type4 = (short)jo.optInt("type4",0);
+        this.type5 = (short)jo.optInt("type5",0);
         
         
     }
@@ -271,6 +277,7 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -299,6 +306,7 @@ public class msg_icarous_kinematic_bands extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS - sysid:"+sysid+" compid:"+compid+" min1:"+min1+" max1:"+max1+" min2:"+min2+" max2:"+max2+" min3:"+min3+" max3:"+max3+" min4:"+min4+" max4:"+max4+" min5:"+min5+" max5:"+max5+" numBands:"+numBands+" type1:"+type1+" type2:"+type2+" type3:"+type3+" type4:"+type4+" type5:"+type5+"";
     }

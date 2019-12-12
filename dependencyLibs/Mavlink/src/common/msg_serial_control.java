@@ -60,6 +60,7 @@ public class msg_serial_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -77,7 +78,9 @@ public class msg_serial_control extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -86,6 +89,7 @@ public class msg_serial_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -100,7 +104,9 @@ public class msg_serial_control extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -166,17 +172,23 @@ public class msg_serial_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.baudrate = (long)jo.optLong("baudrate");
-        this.timeout = (int)jo.optInt("timeout");
-        this.device = (short)jo.optInt("device");
-        this.flags = (short)jo.optInt("flags");
-        this.count = (short)jo.optInt("count");
+        this.baudrate = (long)jo.optLong("baudrate",0);
+        this.timeout = (int)jo.optInt("timeout",0);
+        this.device = (short)jo.optInt("device",0);
+        this.flags = (short)jo.optInt("flags",0);
+        this.count = (short)jo.optInt("count",0);
          
-        JSONArray ja_data = jo.optJSONArray("data");
-        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
-            this.data[i] = (short)ja_data.getInt(i);
+        if (jo.has("data")) {
+            JSONArray ja_data = jo.optJSONArray("data");
+            if (ja_data == null) {
+                this.data[0] = (short)jo.optInt("data", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+                    this.data[i] = (short)ja_data.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -184,6 +196,7 @@ public class msg_serial_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -208,6 +221,7 @@ public class msg_serial_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SERIAL_CONTROL - sysid:"+sysid+" compid:"+compid+" baudrate:"+baudrate+" timeout:"+timeout+" device:"+device+" flags:"+flags+" count:"+count+" data:"+data+"";
     }

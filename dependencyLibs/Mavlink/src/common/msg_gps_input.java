@@ -120,6 +120,7 @@ public class msg_gps_input extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -145,7 +146,9 @@ public class msg_gps_input extends MAVLinkMessage {
         packet.payload.putUnsignedByte(fix_type);
         packet.payload.putUnsignedByte(satellites_visible);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -154,6 +157,7 @@ public class msg_gps_input extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -176,7 +180,9 @@ public class msg_gps_input extends MAVLinkMessage {
         this.fix_type = payload.getUnsignedByte();
         this.satellites_visible = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -266,24 +272,24 @@ public class msg_gps_input extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.time_week_ms = (long)jo.optLong("time_week_ms");
-        this.lat = (int)jo.optInt("lat");
-        this.lon = (int)jo.optInt("lon");
-        this.alt = (float)jo.optFloat("alt");
-        this.hdop = (float)jo.optFloat("hdop");
-        this.vdop = (float)jo.optFloat("vdop");
-        this.vn = (float)jo.optFloat("vn");
-        this.ve = (float)jo.optFloat("ve");
-        this.vd = (float)jo.optFloat("vd");
-        this.speed_accuracy = (float)jo.optFloat("speed_accuracy");
-        this.horiz_accuracy = (float)jo.optFloat("horiz_accuracy");
-        this.vert_accuracy = (float)jo.optFloat("vert_accuracy");
-        this.ignore_flags = (int)jo.optInt("ignore_flags");
-        this.time_week = (int)jo.optInt("time_week");
-        this.gps_id = (short)jo.optInt("gps_id");
-        this.fix_type = (short)jo.optInt("fix_type");
-        this.satellites_visible = (short)jo.optInt("satellites_visible");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.time_week_ms = (long)jo.optLong("time_week_ms",0);
+        this.lat = (int)jo.optInt("lat",0);
+        this.lon = (int)jo.optInt("lon",0);
+        this.alt = (float)jo.optDouble("alt",0);
+        this.hdop = (float)jo.optDouble("hdop",0);
+        this.vdop = (float)jo.optDouble("vdop",0);
+        this.vn = (float)jo.optDouble("vn",0);
+        this.ve = (float)jo.optDouble("ve",0);
+        this.vd = (float)jo.optDouble("vd",0);
+        this.speed_accuracy = (float)jo.optDouble("speed_accuracy",0);
+        this.horiz_accuracy = (float)jo.optDouble("horiz_accuracy",0);
+        this.vert_accuracy = (float)jo.optDouble("vert_accuracy",0);
+        this.ignore_flags = (int)jo.optInt("ignore_flags",0);
+        this.time_week = (int)jo.optInt("time_week",0);
+        this.gps_id = (short)jo.optInt("gps_id",0);
+        this.fix_type = (short)jo.optInt("fix_type",0);
+        this.satellites_visible = (short)jo.optInt("satellites_visible",0);
         
         
     }
@@ -291,6 +297,7 @@ public class msg_gps_input extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -321,6 +328,7 @@ public class msg_gps_input extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GPS_INPUT - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" time_week_ms:"+time_week_ms+" lat:"+lat+" lon:"+lon+" alt:"+alt+" hdop:"+hdop+" vdop:"+vdop+" vn:"+vn+" ve:"+ve+" vd:"+vd+" speed_accuracy:"+speed_accuracy+" horiz_accuracy:"+horiz_accuracy+" vert_accuracy:"+vert_accuracy+" ignore_flags:"+ignore_flags+" time_week:"+time_week+" gps_id:"+gps_id+" fix_type:"+fix_type+" satellites_visible:"+satellites_visible+"";
     }

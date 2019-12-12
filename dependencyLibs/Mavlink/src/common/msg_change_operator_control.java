@@ -50,6 +50,7 @@ public class msg_change_operator_control extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -65,7 +66,9 @@ public class msg_change_operator_control extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -74,6 +77,7 @@ public class msg_change_operator_control extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,7 +90,9 @@ public class msg_change_operator_control extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -148,15 +154,23 @@ public class msg_change_operator_control extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.target_system = (short)jo.optInt("target_system");
-        this.control_request = (short)jo.optInt("control_request");
-        this.version = (short)jo.optInt("version");
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.control_request = (short)jo.optInt("control_request",0);
+        this.version = (short)jo.optInt("version",0);
          
-        JSONArray ja_passkey = jo.optJSONArray("passkey");
-        for (int i = 0; i < Math.min(this.passkey.length, ja_passkey.length()); i++) {
-            this.passkey[i] = (byte)ja_passkey.getInt(i);
+        if (jo.has("passkey")) {
+            JSONArray ja_passkey = jo.optJSONArray("passkey");
+            if (ja_passkey == null) {
+                final String js_string_passkey = jo.optString("passkey");
+                final byte[] b_passkey = js_string_passkey.getBytes();
+                System.arraycopy(b_passkey, 0, this.passkey, 0, Math.min(this.passkey.length, b_passkey.length));
+            } else {
+                for (int i = 0; i < Math.min(this.passkey.length, ja_passkey.length()); i++) {
+                    this.passkey[i] = (byte)ja_passkey.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -164,6 +178,7 @@ public class msg_change_operator_control extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -215,6 +230,7 @@ public class msg_change_operator_control extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL - sysid:"+sysid+" compid:"+compid+" target_system:"+target_system+" control_request:"+control_request+" version:"+version+" passkey:"+passkey+"";
     }

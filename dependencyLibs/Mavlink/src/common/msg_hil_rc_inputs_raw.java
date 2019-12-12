@@ -100,6 +100,7 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -121,7 +122,9 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
         packet.payload.putUnsignedShort(chan12_raw);
         packet.payload.putUnsignedByte(rssi);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -130,6 +133,7 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -148,7 +152,9 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
         this.chan12_raw = payload.getUnsignedShort();
         this.rssi = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -230,20 +236,20 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.chan1_raw = (int)jo.optInt("chan1_raw");
-        this.chan2_raw = (int)jo.optInt("chan2_raw");
-        this.chan3_raw = (int)jo.optInt("chan3_raw");
-        this.chan4_raw = (int)jo.optInt("chan4_raw");
-        this.chan5_raw = (int)jo.optInt("chan5_raw");
-        this.chan6_raw = (int)jo.optInt("chan6_raw");
-        this.chan7_raw = (int)jo.optInt("chan7_raw");
-        this.chan8_raw = (int)jo.optInt("chan8_raw");
-        this.chan9_raw = (int)jo.optInt("chan9_raw");
-        this.chan10_raw = (int)jo.optInt("chan10_raw");
-        this.chan11_raw = (int)jo.optInt("chan11_raw");
-        this.chan12_raw = (int)jo.optInt("chan12_raw");
-        this.rssi = (short)jo.optInt("rssi");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.chan1_raw = (int)jo.optInt("chan1_raw",0);
+        this.chan2_raw = (int)jo.optInt("chan2_raw",0);
+        this.chan3_raw = (int)jo.optInt("chan3_raw",0);
+        this.chan4_raw = (int)jo.optInt("chan4_raw",0);
+        this.chan5_raw = (int)jo.optInt("chan5_raw",0);
+        this.chan6_raw = (int)jo.optInt("chan6_raw",0);
+        this.chan7_raw = (int)jo.optInt("chan7_raw",0);
+        this.chan8_raw = (int)jo.optInt("chan8_raw",0);
+        this.chan9_raw = (int)jo.optInt("chan9_raw",0);
+        this.chan10_raw = (int)jo.optInt("chan10_raw",0);
+        this.chan11_raw = (int)jo.optInt("chan11_raw",0);
+        this.chan12_raw = (int)jo.optInt("chan12_raw",0);
+        this.rssi = (short)jo.optInt("rssi",0);
         
         
     }
@@ -251,6 +257,7 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -277,6 +284,7 @@ public class msg_hil_rc_inputs_raw extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" chan1_raw:"+chan1_raw+" chan2_raw:"+chan2_raw+" chan3_raw:"+chan3_raw+" chan4_raw:"+chan4_raw+" chan5_raw:"+chan5_raw+" chan6_raw:"+chan6_raw+" chan7_raw:"+chan7_raw+" chan8_raw:"+chan8_raw+" chan9_raw:"+chan9_raw+" chan10_raw:"+chan10_raw+" chan11_raw:"+chan11_raw+" chan12_raw:"+chan12_raw+" rssi:"+rssi+"";
     }

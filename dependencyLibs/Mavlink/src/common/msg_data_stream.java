@@ -45,6 +45,7 @@ public class msg_data_stream extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -55,7 +56,9 @@ public class msg_data_stream extends MAVLinkMessage {
         packet.payload.putUnsignedByte(stream_id);
         packet.payload.putUnsignedByte(on_off);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -64,6 +67,7 @@ public class msg_data_stream extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -71,7 +75,9 @@ public class msg_data_stream extends MAVLinkMessage {
         this.stream_id = payload.getUnsignedByte();
         this.on_off = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -131,9 +137,9 @@ public class msg_data_stream extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.message_rate = (int)jo.optInt("message_rate");
-        this.stream_id = (short)jo.optInt("stream_id");
-        this.on_off = (short)jo.optInt("on_off");
+        this.message_rate = (int)jo.optInt("message_rate",0);
+        this.stream_id = (short)jo.optInt("stream_id",0);
+        this.on_off = (short)jo.optInt("on_off",0);
         
         
     }
@@ -141,6 +147,7 @@ public class msg_data_stream extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -156,6 +163,7 @@ public class msg_data_stream extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DATA_STREAM - sysid:"+sysid+" compid:"+compid+" message_rate:"+message_rate+" stream_id:"+stream_id+" on_off:"+on_off+"";
     }

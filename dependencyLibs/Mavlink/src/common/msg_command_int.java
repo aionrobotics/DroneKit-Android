@@ -95,6 +95,7 @@ public class msg_command_int extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -115,7 +116,9 @@ public class msg_command_int extends MAVLinkMessage {
         packet.payload.putUnsignedByte(current);
         packet.payload.putUnsignedByte(autocontinue);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -124,6 +127,7 @@ public class msg_command_int extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -141,7 +145,9 @@ public class msg_command_int extends MAVLinkMessage {
         this.current = payload.getUnsignedByte();
         this.autocontinue = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -221,19 +227,19 @@ public class msg_command_int extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.param1 = (float)jo.optFloat("param1");
-        this.param2 = (float)jo.optFloat("param2");
-        this.param3 = (float)jo.optFloat("param3");
-        this.param4 = (float)jo.optFloat("param4");
-        this.x = (int)jo.optInt("x");
-        this.y = (int)jo.optInt("y");
-        this.z = (float)jo.optFloat("z");
-        this.command = (int)jo.optInt("command");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.frame = (short)jo.optInt("frame");
-        this.current = (short)jo.optInt("current");
-        this.autocontinue = (short)jo.optInt("autocontinue");
+        this.param1 = (float)jo.optDouble("param1",0);
+        this.param2 = (float)jo.optDouble("param2",0);
+        this.param3 = (float)jo.optDouble("param3",0);
+        this.param4 = (float)jo.optDouble("param4",0);
+        this.x = (int)jo.optInt("x",0);
+        this.y = (int)jo.optInt("y",0);
+        this.z = (float)jo.optDouble("z",0);
+        this.command = (int)jo.optInt("command",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.frame = (short)jo.optInt("frame",0);
+        this.current = (short)jo.optInt("current",0);
+        this.autocontinue = (short)jo.optInt("autocontinue",0);
         
         
     }
@@ -241,6 +247,7 @@ public class msg_command_int extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -266,6 +273,7 @@ public class msg_command_int extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_COMMAND_INT - sysid:"+sysid+" compid:"+compid+" param1:"+param1+" param2:"+param2+" param3:"+param3+" param4:"+param4+" x:"+x+" y:"+y+" z:"+z+" command:"+command+" target_system:"+target_system+" target_component:"+target_component+" frame:"+frame+" current:"+current+" autocontinue:"+autocontinue+"";
     }

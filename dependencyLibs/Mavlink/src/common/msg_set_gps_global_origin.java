@@ -55,6 +55,7 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -66,9 +67,9 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
         packet.payload.putInt(altitude);
         packet.payload.putUnsignedByte(target_system);
         
-        
-        if(isMavlink2) {
-            packet.payload.putUnsignedLong(time_usec);
+        if (isMavlink2) {
+             packet.payload.putUnsignedLong(time_usec);
+            
         }
         return packet;
     }
@@ -78,6 +79,7 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,9 +88,9 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
         this.altitude = payload.getInt();
         this.target_system = payload.getUnsignedByte();
         
-        
-        if(isMavlink2) {
-            this.time_usec = payload.getUnsignedLong();
+        if (isMavlink2) {
+             this.time_usec = payload.getUnsignedLong();
+            
         }
     }
 
@@ -153,18 +155,19 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.latitude = (int)jo.optInt("latitude");
-        this.longitude = (int)jo.optInt("longitude");
-        this.altitude = (int)jo.optInt("altitude");
-        this.target_system = (short)jo.optInt("target_system");
+        this.latitude = (int)jo.optInt("latitude",0);
+        this.longitude = (int)jo.optInt("longitude",0);
+        this.altitude = (int)jo.optInt("altitude",0);
+        this.target_system = (short)jo.optInt("target_system",0);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
         
     }
     
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -182,6 +185,7 @@ public class msg_set_gps_global_origin extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN - sysid:"+sysid+" compid:"+compid+" latitude:"+latitude+" longitude:"+longitude+" altitude:"+altitude+" target_system:"+target_system+" time_usec:"+time_usec+"";
     }

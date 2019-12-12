@@ -55,6 +55,7 @@ public class msg_request_data_stream extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -67,7 +68,9 @@ public class msg_request_data_stream extends MAVLinkMessage {
         packet.payload.putUnsignedByte(req_stream_id);
         packet.payload.putUnsignedByte(start_stop);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -76,6 +79,7 @@ public class msg_request_data_stream extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -85,7 +89,9 @@ public class msg_request_data_stream extends MAVLinkMessage {
         this.req_stream_id = payload.getUnsignedByte();
         this.start_stop = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -149,11 +155,11 @@ public class msg_request_data_stream extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.req_message_rate = (int)jo.optInt("req_message_rate");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.req_stream_id = (short)jo.optInt("req_stream_id");
-        this.start_stop = (short)jo.optInt("start_stop");
+        this.req_message_rate = (int)jo.optInt("req_message_rate",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.req_stream_id = (short)jo.optInt("req_stream_id",0);
+        this.start_stop = (short)jo.optInt("start_stop",0);
         
         
     }
@@ -161,6 +167,7 @@ public class msg_request_data_stream extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -178,6 +185,7 @@ public class msg_request_data_stream extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_REQUEST_DATA_STREAM - sysid:"+sysid+" compid:"+compid+" req_message_rate:"+req_message_rate+" target_system:"+target_system+" target_component:"+target_component+" req_stream_id:"+req_stream_id+" start_stop:"+start_stop+"";
     }

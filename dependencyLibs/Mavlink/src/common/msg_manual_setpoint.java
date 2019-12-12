@@ -65,6 +65,7 @@ public class msg_manual_setpoint extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_manual_setpoint extends MAVLinkMessage {
         packet.payload.putUnsignedByte(mode_switch);
         packet.payload.putUnsignedByte(manual_override_switch);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_manual_setpoint extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_manual_setpoint extends MAVLinkMessage {
         this.mode_switch = payload.getUnsignedByte();
         this.manual_override_switch = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_manual_setpoint extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_boot_ms = (long)jo.optLong("time_boot_ms");
-        this.roll = (float)jo.optFloat("roll");
-        this.pitch = (float)jo.optFloat("pitch");
-        this.yaw = (float)jo.optFloat("yaw");
-        this.thrust = (float)jo.optFloat("thrust");
-        this.mode_switch = (short)jo.optInt("mode_switch");
-        this.manual_override_switch = (short)jo.optInt("manual_override_switch");
+        this.time_boot_ms = (long)jo.optLong("time_boot_ms",0);
+        this.roll = (float)jo.optDouble("roll",0);
+        this.pitch = (float)jo.optDouble("pitch",0);
+        this.yaw = (float)jo.optDouble("yaw",0);
+        this.thrust = (float)jo.optDouble("thrust",0);
+        this.mode_switch = (short)jo.optInt("mode_switch",0);
+        this.manual_override_switch = (short)jo.optInt("manual_override_switch",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_manual_setpoint extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_manual_setpoint extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MANUAL_SETPOINT - sysid:"+sysid+" compid:"+compid+" time_boot_ms:"+time_boot_ms+" roll:"+roll+" pitch:"+pitch+" yaw:"+yaw+" thrust:"+thrust+" mode_switch:"+mode_switch+" manual_override_switch:"+manual_override_switch+"";
     }

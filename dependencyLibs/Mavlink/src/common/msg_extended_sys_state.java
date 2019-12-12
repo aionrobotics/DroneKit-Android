@@ -40,6 +40,7 @@ public class msg_extended_sys_state extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_extended_sys_state extends MAVLinkMessage {
         packet.payload.putUnsignedByte(vtol_state);
         packet.payload.putUnsignedByte(landed_state);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_extended_sys_state extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.vtol_state = payload.getUnsignedByte();
         this.landed_state = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_extended_sys_state extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.vtol_state = (short)jo.optInt("vtol_state");
-        this.landed_state = (short)jo.optInt("landed_state");
+        this.vtol_state = (short)jo.optInt("vtol_state",0);
+        this.landed_state = (short)jo.optInt("landed_state",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_extended_sys_state extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_extended_sys_state extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_EXTENDED_SYS_STATE - sysid:"+sysid+" compid:"+compid+" vtol_state:"+vtol_state+" landed_state:"+landed_state+"";
     }

@@ -45,6 +45,7 @@ public class msg_actuator_control_target extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -59,7 +60,9 @@ public class msg_actuator_control_target extends MAVLinkMessage {
                     
         packet.payload.putUnsignedByte(group_mlx);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -68,6 +71,7 @@ public class msg_actuator_control_target extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -79,7 +83,9 @@ public class msg_actuator_control_target extends MAVLinkMessage {
                 
         this.group_mlx = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -139,14 +145,20 @@ public class msg_actuator_control_target extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
+        this.time_usec = (long)jo.optLong("time_usec",0);
          
-        JSONArray ja_controls = jo.optJSONArray("controls");
-        for (int i = 0; i < Math.min(this.controls.length, ja_controls.length()); i++) {
-            this.controls[i] = (float)ja_controls.getFloat(i);
+        if (jo.has("controls")) {
+            JSONArray ja_controls = jo.optJSONArray("controls");
+            if (ja_controls == null) {
+                this.controls[0] = (float)jo.optDouble("controls", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.controls.length, ja_controls.length()); i++) {
+                    this.controls[i] = (float)ja_controls.optDouble(i,0);
+                }
+            }
         }
-                
-        this.group_mlx = (short)jo.optInt("group_mlx");
+                    
+        this.group_mlx = (short)jo.optInt("group_mlx",0);
         
         
     }
@@ -154,6 +166,7 @@ public class msg_actuator_control_target extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -175,6 +188,7 @@ public class msg_actuator_control_target extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" controls:"+controls+" group_mlx:"+group_mlx+"";
     }

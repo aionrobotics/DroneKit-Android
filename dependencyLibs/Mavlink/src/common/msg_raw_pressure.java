@@ -55,6 +55,7 @@ public class msg_raw_pressure extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -67,7 +68,9 @@ public class msg_raw_pressure extends MAVLinkMessage {
         packet.payload.putShort(press_diff2);
         packet.payload.putShort(temperature);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -76,6 +79,7 @@ public class msg_raw_pressure extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -85,7 +89,9 @@ public class msg_raw_pressure extends MAVLinkMessage {
         this.press_diff2 = payload.getShort();
         this.temperature = payload.getShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -149,11 +155,11 @@ public class msg_raw_pressure extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.time_usec = (long)jo.optLong("time_usec");
-        this.press_abs = (short)jo.optInt("press_abs");
-        this.press_diff1 = (short)jo.optInt("press_diff1");
-        this.press_diff2 = (short)jo.optInt("press_diff2");
-        this.temperature = (short)jo.optInt("temperature");
+        this.time_usec = (long)jo.optLong("time_usec",0);
+        this.press_abs = (short)jo.optInt("press_abs",0);
+        this.press_diff1 = (short)jo.optInt("press_diff1",0);
+        this.press_diff2 = (short)jo.optInt("press_diff2",0);
+        this.temperature = (short)jo.optInt("temperature",0);
         
         
     }
@@ -161,6 +167,7 @@ public class msg_raw_pressure extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -178,6 +185,7 @@ public class msg_raw_pressure extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_RAW_PRESSURE - sysid:"+sysid+" compid:"+compid+" time_usec:"+time_usec+" press_abs:"+press_abs+" press_diff1:"+press_diff1+" press_diff2:"+press_diff2+" temperature:"+temperature+"";
     }

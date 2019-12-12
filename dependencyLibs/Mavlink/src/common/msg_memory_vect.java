@@ -50,6 +50,7 @@ public class msg_memory_vect extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -65,7 +66,9 @@ public class msg_memory_vect extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -74,6 +77,7 @@ public class msg_memory_vect extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -86,7 +90,9 @@ public class msg_memory_vect extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -148,15 +154,21 @@ public class msg_memory_vect extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.address = (int)jo.optInt("address");
-        this.ver = (short)jo.optInt("ver");
-        this.type = (short)jo.optInt("type");
+        this.address = (int)jo.optInt("address",0);
+        this.ver = (short)jo.optInt("ver",0);
+        this.type = (short)jo.optInt("type",0);
          
-        JSONArray ja_value = jo.optJSONArray("value");
-        for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
-            this.value[i] = (byte)ja_value.getInt(i);
+        if (jo.has("value")) {
+            JSONArray ja_value = jo.optJSONArray("value");
+            if (ja_value == null) {
+                this.value[0] = (byte)jo.optInt("value", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.value.length, ja_value.length()); i++) {
+                    this.value[i] = (byte)ja_value.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -164,6 +176,7 @@ public class msg_memory_vect extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -186,6 +199,7 @@ public class msg_memory_vect extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_MEMORY_VECT - sysid:"+sysid+" compid:"+compid+" address:"+address+" ver:"+ver+" type:"+type+" value:"+value+"";
     }

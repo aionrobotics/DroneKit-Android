@@ -55,6 +55,7 @@ public class msg_resource_request extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -75,7 +76,9 @@ public class msg_resource_request extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -84,6 +87,7 @@ public class msg_resource_request extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -101,7 +105,9 @@ public class msg_resource_request extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -165,21 +171,33 @@ public class msg_resource_request extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.request_id = (short)jo.optInt("request_id");
-        this.uri_type = (short)jo.optInt("uri_type");
+        this.request_id = (short)jo.optInt("request_id",0);
+        this.uri_type = (short)jo.optInt("uri_type",0);
          
-        JSONArray ja_uri = jo.optJSONArray("uri");
-        for (int i = 0; i < Math.min(this.uri.length, ja_uri.length()); i++) {
-            this.uri[i] = (short)ja_uri.getInt(i);
+        if (jo.has("uri")) {
+            JSONArray ja_uri = jo.optJSONArray("uri");
+            if (ja_uri == null) {
+                this.uri[0] = (short)jo.optInt("uri", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.uri.length, ja_uri.length()); i++) {
+                    this.uri[i] = (short)ja_uri.optInt(i,0);
+                }
+            }
         }
-                
-        this.transfer_type = (short)jo.optInt("transfer_type");
+                    
+        this.transfer_type = (short)jo.optInt("transfer_type",0);
          
-        JSONArray ja_storage = jo.optJSONArray("storage");
-        for (int i = 0; i < Math.min(this.storage.length, ja_storage.length()); i++) {
-            this.storage[i] = (short)ja_storage.getInt(i);
+        if (jo.has("storage")) {
+            JSONArray ja_storage = jo.optJSONArray("storage");
+            if (ja_storage == null) {
+                this.storage[0] = (short)jo.optInt("storage", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.storage.length, ja_storage.length()); i++) {
+                    this.storage[i] = (short)ja_storage.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -187,6 +205,7 @@ public class msg_resource_request extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -216,6 +235,7 @@ public class msg_resource_request extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_RESOURCE_REQUEST - sysid:"+sysid+" compid:"+compid+" request_id:"+request_id+" uri_type:"+uri_type+" uri:"+uri+" transfer_type:"+transfer_type+" storage:"+storage+"";
     }

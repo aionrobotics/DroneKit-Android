@@ -35,6 +35,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -43,7 +44,9 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
         
         packet.payload.putUnsignedByte(rfHealth);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -52,12 +55,15 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.rfHealth = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -113,7 +119,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
 
         readJSONheader(jo);
         
-        this.rfHealth = (short)jo.optInt("rfHealth");
+        this.rfHealth = (short)jo.optInt("rfHealth",0);
         
         
     }
@@ -121,6 +127,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -134,6 +141,7 @@ public class msg_uavionix_adsb_transceiver_health_report extends MAVLinkMessage 
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT - sysid:"+sysid+" compid:"+compid+" rfHealth:"+rfHealth+"";
     }

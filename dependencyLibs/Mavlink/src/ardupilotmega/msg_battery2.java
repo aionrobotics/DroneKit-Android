@@ -40,6 +40,7 @@ public class msg_battery2 extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_battery2 extends MAVLinkMessage {
         packet.payload.putUnsignedShort(voltage);
         packet.payload.putShort(current_battery);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_battery2 extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.voltage = payload.getUnsignedShort();
         this.current_battery = payload.getShort();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_battery2 extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.voltage = (int)jo.optInt("voltage");
-        this.current_battery = (short)jo.optInt("current_battery");
+        this.voltage = (int)jo.optInt("voltage",0);
+        this.current_battery = (short)jo.optInt("current_battery",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_battery2 extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_battery2 extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_BATTERY2 - sysid:"+sysid+" compid:"+compid+" voltage:"+voltage+" current_battery:"+current_battery+"";
     }

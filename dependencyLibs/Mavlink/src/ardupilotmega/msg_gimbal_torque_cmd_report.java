@@ -55,6 +55,7 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -67,7 +68,9 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_system);
         packet.payload.putUnsignedByte(target_component);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -76,6 +79,7 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -85,7 +89,9 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
         this.target_system = payload.getUnsignedByte();
         this.target_component = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -149,11 +155,11 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.rl_torque_cmd = (short)jo.optInt("rl_torque_cmd");
-        this.el_torque_cmd = (short)jo.optInt("el_torque_cmd");
-        this.az_torque_cmd = (short)jo.optInt("az_torque_cmd");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.rl_torque_cmd = (short)jo.optInt("rl_torque_cmd",0);
+        this.el_torque_cmd = (short)jo.optInt("el_torque_cmd",0);
+        this.az_torque_cmd = (short)jo.optInt("az_torque_cmd",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
         
         
     }
@@ -161,6 +167,7 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -178,6 +185,7 @@ public class msg_gimbal_torque_cmd_report extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT - sysid:"+sysid+" compid:"+compid+" rl_torque_cmd:"+rl_torque_cmd+" el_torque_cmd:"+el_torque_cmd+" az_torque_cmd:"+az_torque_cmd+" target_system:"+target_system+" target_component:"+target_component+"";
     }

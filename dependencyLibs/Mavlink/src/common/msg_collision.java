@@ -65,6 +65,7 @@ public class msg_collision extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -79,7 +80,9 @@ public class msg_collision extends MAVLinkMessage {
         packet.payload.putUnsignedByte(action);
         packet.payload.putUnsignedByte(threat_level);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -88,6 +91,7 @@ public class msg_collision extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -99,7 +103,9 @@ public class msg_collision extends MAVLinkMessage {
         this.action = payload.getUnsignedByte();
         this.threat_level = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -167,13 +173,13 @@ public class msg_collision extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.id = (long)jo.optLong("id");
-        this.time_to_minimum_delta = (float)jo.optFloat("time_to_minimum_delta");
-        this.altitude_minimum_delta = (float)jo.optFloat("altitude_minimum_delta");
-        this.horizontal_minimum_delta = (float)jo.optFloat("horizontal_minimum_delta");
-        this.src = (short)jo.optInt("src");
-        this.action = (short)jo.optInt("action");
-        this.threat_level = (short)jo.optInt("threat_level");
+        this.id = (long)jo.optLong("id",0);
+        this.time_to_minimum_delta = (float)jo.optDouble("time_to_minimum_delta",0);
+        this.altitude_minimum_delta = (float)jo.optDouble("altitude_minimum_delta",0);
+        this.horizontal_minimum_delta = (float)jo.optDouble("horizontal_minimum_delta",0);
+        this.src = (short)jo.optInt("src",0);
+        this.action = (short)jo.optInt("action",0);
+        this.threat_level = (short)jo.optInt("threat_level",0);
         
         
     }
@@ -181,6 +187,7 @@ public class msg_collision extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -200,6 +207,7 @@ public class msg_collision extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_COLLISION - sysid:"+sysid+" compid:"+compid+" id:"+id+" time_to_minimum_delta:"+time_to_minimum_delta+" altitude_minimum_delta:"+altitude_minimum_delta+" horizontal_minimum_delta:"+horizontal_minimum_delta+" src:"+src+" action:"+action+" threat_level:"+threat_level+"";
     }

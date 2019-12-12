@@ -85,6 +85,7 @@ public class msg_digicam_configure extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -103,7 +104,9 @@ public class msg_digicam_configure extends MAVLinkMessage {
         packet.payload.putUnsignedByte(engine_cut_off);
         packet.payload.putUnsignedByte(extra_param);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -112,6 +115,7 @@ public class msg_digicam_configure extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -127,7 +131,9 @@ public class msg_digicam_configure extends MAVLinkMessage {
         this.engine_cut_off = payload.getUnsignedByte();
         this.extra_param = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -203,17 +209,17 @@ public class msg_digicam_configure extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.extra_value = (float)jo.optFloat("extra_value");
-        this.shutter_speed = (int)jo.optInt("shutter_speed");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
-        this.mode = (short)jo.optInt("mode");
-        this.aperture = (short)jo.optInt("aperture");
-        this.iso = (short)jo.optInt("iso");
-        this.exposure_type = (short)jo.optInt("exposure_type");
-        this.command_id = (short)jo.optInt("command_id");
-        this.engine_cut_off = (short)jo.optInt("engine_cut_off");
-        this.extra_param = (short)jo.optInt("extra_param");
+        this.extra_value = (float)jo.optDouble("extra_value",0);
+        this.shutter_speed = (int)jo.optInt("shutter_speed",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
+        this.mode = (short)jo.optInt("mode",0);
+        this.aperture = (short)jo.optInt("aperture",0);
+        this.iso = (short)jo.optInt("iso",0);
+        this.exposure_type = (short)jo.optInt("exposure_type",0);
+        this.command_id = (short)jo.optInt("command_id",0);
+        this.engine_cut_off = (short)jo.optInt("engine_cut_off",0);
+        this.extra_param = (short)jo.optInt("extra_param",0);
         
         
     }
@@ -221,6 +227,7 @@ public class msg_digicam_configure extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -244,6 +251,7 @@ public class msg_digicam_configure extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DIGICAM_CONFIGURE - sysid:"+sysid+" compid:"+compid+" extra_value:"+extra_value+" shutter_speed:"+shutter_speed+" target_system:"+target_system+" target_component:"+target_component+" mode:"+mode+" aperture:"+aperture+" iso:"+iso+" exposure_type:"+exposure_type+" command_id:"+command_id+" engine_cut_off:"+engine_cut_off+" extra_param:"+extra_param+"";
     }

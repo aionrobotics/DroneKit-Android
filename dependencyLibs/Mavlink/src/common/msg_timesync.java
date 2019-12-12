@@ -40,6 +40,7 @@ public class msg_timesync extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -49,7 +50,9 @@ public class msg_timesync extends MAVLinkMessage {
         packet.payload.putLong(tc1);
         packet.payload.putLong(ts1);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -58,13 +61,16 @@ public class msg_timesync extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
         this.tc1 = payload.getLong();
         this.ts1 = payload.getLong();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -122,8 +128,8 @@ public class msg_timesync extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.tc1 = (long)jo.optLong("tc1");
-        this.ts1 = (long)jo.optLong("ts1");
+        this.tc1 = (long)jo.optLong("tc1",0);
+        this.ts1 = (long)jo.optLong("ts1",0);
         
         
     }
@@ -131,6 +137,7 @@ public class msg_timesync extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -145,6 +152,7 @@ public class msg_timesync extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_TIMESYNC - sysid:"+sysid+" compid:"+compid+" tc1:"+tc1+" ts1:"+ts1+"";
     }

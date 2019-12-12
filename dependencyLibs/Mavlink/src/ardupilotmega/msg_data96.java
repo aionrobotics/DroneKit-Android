@@ -45,6 +45,7 @@ public class msg_data96 extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -59,7 +60,9 @@ public class msg_data96 extends MAVLinkMessage {
         }
                     
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -68,6 +71,7 @@ public class msg_data96 extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -79,7 +83,9 @@ public class msg_data96 extends MAVLinkMessage {
         }
                 
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -139,14 +145,20 @@ public class msg_data96 extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.type = (short)jo.optInt("type");
-        this.len = (short)jo.optInt("len");
+        this.type = (short)jo.optInt("type",0);
+        this.len = (short)jo.optInt("len",0);
          
-        JSONArray ja_data = jo.optJSONArray("data");
-        for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
-            this.data[i] = (short)ja_data.getInt(i);
+        if (jo.has("data")) {
+            JSONArray ja_data = jo.optJSONArray("data");
+            if (ja_data == null) {
+                this.data[0] = (short)jo.optInt("data", 0);
+            } else {
+                for (int i = 0; i < Math.min(this.data.length, ja_data.length()); i++) {
+                    this.data[i] = (short)ja_data.optInt(i,0);
+                }
+            }
         }
-                
+                    
         
         
     }
@@ -154,6 +166,7 @@ public class msg_data96 extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -175,6 +188,7 @@ public class msg_data96 extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_DATA96 - sysid:"+sysid+" compid:"+compid+" type:"+type+" len:"+len+" data:"+data+"";
     }

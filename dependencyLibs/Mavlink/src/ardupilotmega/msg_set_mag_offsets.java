@@ -55,6 +55,7 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
      * Generates the payload for a mavlink message for a message of this type
      * @return
      */
+    @Override
     public MAVLinkPacket pack() {
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH,isMavlink2);
         packet.sysid = 255;
@@ -67,7 +68,9 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
         packet.payload.putUnsignedByte(target_system);
         packet.payload.putUnsignedByte(target_component);
         
-        
+        if (isMavlink2) {
+            
+        }
         return packet;
     }
 
@@ -76,6 +79,7 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
      *
      * @param payload The message to decode
      */
+    @Override
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
         
@@ -85,7 +89,9 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
         this.target_system = payload.getUnsignedByte();
         this.target_component = payload.getUnsignedByte();
         
-        
+        if (isMavlink2) {
+            
+        }
     }
 
     /**
@@ -149,11 +155,11 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
 
         readJSONheader(jo);
         
-        this.mag_ofs_x = (short)jo.optInt("mag_ofs_x");
-        this.mag_ofs_y = (short)jo.optInt("mag_ofs_y");
-        this.mag_ofs_z = (short)jo.optInt("mag_ofs_z");
-        this.target_system = (short)jo.optInt("target_system");
-        this.target_component = (short)jo.optInt("target_component");
+        this.mag_ofs_x = (short)jo.optInt("mag_ofs_x",0);
+        this.mag_ofs_y = (short)jo.optInt("mag_ofs_y",0);
+        this.mag_ofs_z = (short)jo.optInt("mag_ofs_z",0);
+        this.target_system = (short)jo.optInt("target_system",0);
+        this.target_component = (short)jo.optInt("target_component",0);
         
         
     }
@@ -161,6 +167,7 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
     /**
      * Convert this class to a JSON Object
      */
+    @Override
     public JSONObject toJSON() throws JSONException {
         final JSONObject jo = getJSONheader();
         
@@ -178,6 +185,7 @@ public class msg_set_mag_offsets extends MAVLinkMessage {
     /**
      * Returns a string with the MSG name and data
      */
+    @Override
     public String toString() {
         return "MAVLINK_MSG_ID_SET_MAG_OFFSETS - sysid:"+sysid+" compid:"+compid+" mag_ofs_x:"+mag_ofs_x+" mag_ofs_y:"+mag_ofs_y+" mag_ofs_z:"+mag_ofs_z+" target_system:"+target_system+" target_component:"+target_component+"";
     }
