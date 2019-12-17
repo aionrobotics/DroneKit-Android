@@ -80,6 +80,19 @@ public enum VehicleMode implements DroneAttribute {
         return label;
     }
 
+    public static VehicleMode createFromType(Type type, int modeValue) {
+        return createFromType(type.getDroneType(), modeValue);
+    }
+
+    public static VehicleMode createFromType(int type, int modeValue) {
+        for (VehicleMode vehicleMode : VehicleMode.values()) {
+            if (vehicleMode.mode == modeValue && vehicleMode.getDroneType() == type) {
+                return vehicleMode;
+            }
+        }
+        return UNKNOWN;
+    }
+
     @Override
     public String toString(){
         return getLabel();
